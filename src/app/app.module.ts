@@ -18,6 +18,7 @@ import { IconsComponent }   from './icons/icons.component';
 import { MapsComponent }   from './maps/maps.component';
 import { NotificationsComponent }   from './notifications/notifications.component';
 import { UpgradeComponent }   from './upgrade/upgrade.component';
+import { HttpModule } from '@angular/http';
 
 @NgModule({
   declarations: [
@@ -35,6 +36,7 @@ import { UpgradeComponent }   from './upgrade/upgrade.component';
     BrowserModule,
     RouterModule.forRoot(AppRoutes),
     SidebarModule,
+    HttpModule,
     NavbarModule,
     FooterModule,
     FixedPluginModule,

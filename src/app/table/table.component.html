@@ -3,14 +3,23 @@
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
-                    <h4 class="title">Striped Table</h4>
-                    <p class="category">Here is a subtitle for this table</p>
+                    <h4 class="title">Primera División</h4>
+                    <p class="category">Temporada {{season}}</p>
                 </div>
-                <div class="content table-responsive table-full-width">
+                <div *ngIf="tableData1.dataRows.length !=0" class="content table-responsive table-full-width">
                     <table class="table table-striped">
                         <thead>
                             <tr>
-                                <th *ngFor="let cell of tableData1.headerRow">{{ cell }}</th>
+                                <th>POS</th>
+                                <th>Nombre</th>
+                                <th>PJ</th>
+                                <th>G</th>
+                                <th>E</th>
+                                <th>P</th>
+                                <th>GF</th>
+                                <th>GC</th>
+                                <th>DG</th>
+                                <th>PTS</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -21,21 +30,33 @@
                     </table>
 
                 </div>
+                <div *ngIf="tableData1.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                    Clasificación no disponible
+                </div>
             </div>
         </div>
 
 
         <div class="col-md-12">
-            <div class="card card-plain">
+            <div class="card">
                 <div class="header">
-                    <h4 class="title">Table on Plain Background</h4>
-                    <p class="category">Here is a subtitle for this table</p>
+                    <h4 class="title">Segunda División</h4>
+                    <p class="category">Temporada {{season}}</p>
                 </div>
-                <div class="content table-responsive table-full-width">
+                <div *ngIf="tableData2.dataRows.length != 0" class="content table-responsive table-full-width">
                     <table class="table table-hover">
                         <thead>
                             <tr>
-                                <th *ngFor="let cell of tableData2.headerRow">{{ cell }}</th>
+                                <th>POS</th>
+                                <th>Nombre</th>
+                                <th>PJ</th>
+                                <th>G</th>
+                                <th>E</th>
+                                <th>P</th>
+                                <th>GF</th>
+                                <th>GC</th>
+                                <th>DG</th>
+                                <th>PTS</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,6 +65,9 @@
                             </tr>
                         </tbody>
                     </table>
+                </div>
+                <div *ngIf="tableData2.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                    Clasificación no disponible
                 </div>
             </div>
         </div>

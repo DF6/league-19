@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { AngularWaitBarrier } from 'blocking-proxy/built/lib/angular_wait_barrier';
 
 declare interface TableData {
     headerRow: string[];
@@ -14,28 +16,77 @@ declare interface TableData {
 export class TableComponent implements OnInit{
     public tableData1: TableData;
     public tableData2: TableData;
+
+    constructor(private http: Http){}
+
     ngOnInit(){
+        this.setTableConfig();
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'ST'}).subscribe( (response) => {
+            /*let premierLastEdition = this.getLastEdition('Primera', response);
+            let secondLastEdition = this.getLastEdition('Segunda', response);
+            let premierStandings = [];
+            let secondStandings = [];
+            for(let i = 0; i < response; i++) {
+                if(response[i].tournament_id == premierLastEdition) {
+                    premierStandings.push([
+                        response[i].team,
+                        response[i].round,
+                        response[i].won,
+                        response[i].draw,
+                        response[i].lost,
+                        response[i].goalsFor,
+                        response[i].goalsAgainst,
+                        response[i].goalsFor - response[i].goalsAgainst,
+                        response[i].points
+                    ]);
+                }else if (response[i].tournament_id == secondLastEdition) {
+                    secondStandings.push([
+                        response[i].team,
+                        response[i].round,
+                        response[i].won,
+                        response[i].draw,
+                        response[i].lost,
+                        response[i].goalsFor,
+                        response[i].goalsAgainst,
+                        response[i].goalsFor - response[i].goalsAgainst,
+                        response[i].points
+                    ]);
+                }
+            }
+
+            for(let p = 1; p < premierStandings.length; p++) {
+                for(let p2 = p; p2 > 0 && premierStandings[p2].points > premierStandings[p2-1].points; p2--) {
+                    premierStandings.splice(p2-1, 0, premierStandings.splice(p, 1)[0]);
+                }
+            }
+            for(let p = 1; p < secondStandings.length; p++) {
+                for(let p2 = p; p2 > 0 && secondStandings[p2].points > secondStandings[p2-1].points; p2--) {
+                    secondStandings.splice(p2-1, 0, secondStandings.splice(p, 1)[0]);
+                }
+            }*/
+            console.log(response);
+        });
+    }
+
+    private getLastEdition(league, tournament_id) {
+        let tournaments = window.sessionStorage.getItem('tournaments');
+        let lastEdition = -1;
+        for (let i = 0; i < tournaments.length; i++) {
+            /*if(tournaments[i].name == league && tournament_id == tournaments[i].id) {
+                lastEdition = tournament_id;
+            }*/
+        }
+        return lastEdition;
+    }
+
+    private setTableConfig() {
         this.tableData1 = {
-            headerRow: [ 'ID', 'Name', 'Country', 'City', 'Salary'],
-            dataRows: [
-                ['1', 'Dakota Rice', 'Niger', 'Oud-Turnhout', '$36,738'],
-                ['2', 'Minerva Hooper', 'Curaçao', 'Sinaai-Waas', '$23,789'],
-                ['3', 'Sage Rodriguez', 'Netherlands', 'Baileux', '$56,142'],
-                ['4', 'Philip Chaney', 'Korea, South', 'Overland Park', '$38,735'],
-                ['5', 'Doris Greene', 'Malawi', 'Feldkirchen in Kärnten', '$63,542'],
-                ['6', 'Mason Porter', 'Chile', 'Gloucester', '$78,615']
-            ]
+            headerRow: [ 'position', 'team', 'round', 'won', 'draw', 'lost', 'goalsFor', 'goalsAgainst', 'goalsDifference', 'points'],
+            dataRows: []
         };
         this.tableData2 = {
-            headerRow: [ 'ID', 'Name',  'Salary', 'Country', 'City' ],
-            dataRows: [
-                ['1', 'Dakota Rice','$36,738', 'Niger', 'Oud-Turnhout' ],
-                ['2', 'Minerva Hooper', '$23,789', 'Curaçao', 'Sinaai-Waas'],
-                ['3', 'Sage Rodriguez', '$56,142', 'Netherlands', 'Baileux' ],
-                ['4', 'Philip Chaney', '$38,735', 'Korea, South', 'Overland Park' ],
-                ['5', 'Doris Greene', '$63,542', 'Malawi', 'Feldkirchen in Kärnten', ],
-                ['6', 'Mason Porter', '$78,615', 'Chile', 'Gloucester' ]
-            ]
+            headerRow: [ 'position', 'team', 'round', 'won', 'draw', 'lost', 'goalsFor', 'goalsAgainst', 'goalsDifference', 'points'],
+            dataRows: []
         };
     }
 }
