@@ -8,8 +8,8 @@
   ini_set('max_execution_time', 300);
   //session_start();
 	$db_host="localhost";
-	$db_name="id8571106_copamugre";
-	$db_user="id8571106_copamugre";//"root";//
+	$db_name="u832717839_mugre";
+	$db_user="u832717839_mugre";//"root";//
 	$db_pass="(CopaMugreFIFA2019)";//"";//
 
 	$link=mysqli_connect($db_host, $db_user, $db_pass) or die ("Error conectando a la base de datos - " . mysql_error());
