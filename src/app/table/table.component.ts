@@ -16,65 +16,77 @@ declare interface TableData {
 export class TableComponent implements OnInit{
     public tableData1: TableData;
     public tableData2: TableData;
+    public tournaments: any[];
+    public teams: any[];
 
     constructor(private http: Http){}
 
-    ngOnInit(){
+    ngOnInit() {
+        this.tournaments = JSON.parse(sessionStorage.getItem('tournaments'));
+        this.teams = JSON.parse(sessionStorage.getItem('teams'));
         this.setTableConfig();
         this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'ST'}).subscribe( (response) => {
-            /*let premierLastEdition = this.getLastEdition('Primera', response);
-            let secondLastEdition = this.getLastEdition('Segunda', response);
+            let standingsArray = response.json().standings;
+            const premierLastEdition = this.getLastEdition('Primera', standingsArray[0].tournamentID).toString();
+            const secondLastEdition = this.getLastEdition('Segunda', standingsArray[8].tournamentID).toString();
             let premierStandings = [];
             let secondStandings = [];
-            for(let i = 0; i < response; i++) {
-                if(response[i].tournament_id == premierLastEdition) {
+            for (let i = 0; i < standingsArray.length; i++) {
+                if (standingsArray[i].tournamentID == premierLastEdition) {
                     premierStandings.push([
-                        response[i].team,
-                        response[i].round,
-                        response[i].won,
-                        response[i].draw,
-                        response[i].lost,
-                        response[i].goalsFor,
-                        response[i].goalsAgainst,
-                        response[i].goalsFor - response[i].goalsAgainst,
-                        response[i].points
+                        0,
+                        parseInt(standingsArray[i].team),
+                        parseInt(standingsArray[i].round),
+                        parseInt(standingsArray[i].won),
+                        parseInt(standingsArray[i].draw),
+                        parseInt(standingsArray[i].lost),
+                        parseInt(standingsArray[i].goalsFor),
+                        parseInt(standingsArray[i].goalsAgainst),
+                        parseInt(standingsArray[i].goalsFor) - parseInt(standingsArray[i].goalsAgainst),
+                        parseInt(standingsArray[i].points)
                     ]);
-                }else if (response[i].tournament_id == secondLastEdition) {
+                }else if (standingsArray[i].tournamentID == secondLastEdition) {
                     secondStandings.push([
-                        response[i].team,
-                        response[i].round,
-                        response[i].won,
-                        response[i].draw,
-                        response[i].lost,
-                        response[i].goalsFor,
-                        response[i].goalsAgainst,
-                        response[i].goalsFor - response[i].goalsAgainst,
-                        response[i].points
+                        0,
+                        parseInt(standingsArray[i].team),
+                        parseInt(standingsArray[i].round),
+                        parseInt(standingsArray[i].won),
+                        parseInt(standingsArray[i].draw),
+                        parseInt(standingsArray[i].lost),
+                        parseInt(standingsArray[i].goalsFor),
+                        parseInt(standingsArray[i].goalsAgainst),
+                        parseInt(standingsArray[i].goalsFor) - parseInt(standingsArray[i].goalsAgainst),
+                        parseInt(standingsArray[i].points)
                     ]);
                 }
             }
 
-            for(let p = 1; p < premierStandings.length; p++) {
-                for(let p2 = p; p2 > 0 && premierStandings[p2].points > premierStandings[p2-1].points; p2--) {
-                    premierStandings.splice(p2-1, 0, premierStandings.splice(p, 1)[0]);
+            for (let p = 1; p < premierStandings.length; p++) {
+                let p2 = p
+                while (p2 > 0) {
+                    if (parseInt(premierStandings[p2][9]) > parseInt(premierStandings[p2 - 1][9])){
+                        premierStandings.splice(p2 - 1, 0, premierStandings.splice(p, 1)[0]);
+                        p2 = 0;
+                    }
+                    p2--;
                 }
             }
-            for(let p = 1; p < secondStandings.length; p++) {
-                for(let p2 = p; p2 > 0 && secondStandings[p2].points > secondStandings[p2-1].points; p2--) {
-                    secondStandings.splice(p2-1, 0, secondStandings.splice(p, 1)[0]);
+            for ( let p = 1; p < secondStandings.length; p++) {
+                for (let p2 = p; p2 > 0 && parseInt(secondStandings[p2][9]) > parseInt(secondStandings[p2 - 1][9]); p2--) {
+                    secondStandings.splice(p2 - 1, 0, secondStandings.splice(p, 1)[0]);
                 }
-            }*/
-            console.log(response);
+            }
+            this.tableData1.dataRows = premierStandings;
+            this.tableData2.dataRows = secondStandings;
         });
     }
 
     private getLastEdition(league, tournament_id) {
-        let tournaments = window.sessionStorage.getItem('tournaments');
         let lastEdition = -1;
-        for (let i = 0; i < tournaments.length; i++) {
-            /*if(tournaments[i].name == league && tournament_id == tournaments[i].id) {
+        for (let i = 0; i < this.tournaments.length; i++) {
+            if (this.tournaments[i].name == league && tournament_id == this.tournaments[i].id) {
                 lastEdition = tournament_id;
-            }*/
+            }
         }
         return lastEdition;
     }
