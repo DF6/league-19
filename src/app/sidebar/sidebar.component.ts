@@ -10,13 +10,13 @@ export interface RouteInfo {
 }
 
 export const ROUTES: RouteInfo[] = [
-    /*{ path: 'dashboard', title: 'Panel de Control',  icon: 'ti-panel', class: '' },
-    { path: 'user', title: 'Perfil',  icon:'ti-user', class: '' },*/
+    { path: 'dashboard', title: 'Panel de Control',  icon: 'ti-panel', class: '' },
+    { path: 'user', title: 'Perfil',  icon:'ti-user', class: '' },
     { path: 'table', title: 'Liga',  icon:'ti-view-list-alt', class: '' },
-    /*{ path: 'typography', title: 'Partidos Pendientes',  icon:'ti-text', class: '' },
+    { path: 'typography', title: 'Partidos Pendientes',  icon:'ti-text', class: '' },
     { path: 'icons', title: 'Plantillas',  icon:'ti-pencil-alt2', class: '' },
     { path: 'maps', title: 'Mercado',  icon:'ti-map', class: '' },
-    { path: 'notifications', title: 'Copa',  icon:'ti-bell', class: '' },*/
+    { path: 'notifications', title: 'Copa',  icon:'ti-bell', class: '' },
     { path: 'upgrade', title: 'Normas',  icon:'ti-view-list-alt', class: 'active-pro' },
 ];
 

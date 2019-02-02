@@ -6,20 +6,20 @@
                         <div class="row">
                             <div class="col-xs-5">
                                 <div class="icon-big icon-warning text-center">
-                                    <i class="ti-server"></i>
+                                    <img src="{{user.team.imageRoute}}"/>
                                 </div>
                             </div>
                             <div class="col-xs-7">
                                 <div class="numbers">
-                                    <p>Capacity</p>
-                                    105GB
+                                    <p>Equipo</p>
+                                    {{user.team.name}}
                                 </div>
                             </div>
                         </div>
                         <div class="footer">
                             <hr />
                             <div class="stats">
-                                <i class="ti-reload"></i> Updated now
+                                Código de equipo: {{user.team.shortName}}
                             </div>
                         </div>
                     </div>
@@ -36,15 +36,16 @@
                             </div>
                             <div class="col-xs-7">
                                 <div class="numbers">
-                                    <p>Revenue</p>
-                                    $1,345
+                                    <p>Presupuesto</p>
+                                    {{user.team.budget}}
                                 </div>
                             </div>
                         </div>
                         <div class="footer">
                             <hr />
                             <div class="stats">
-                                <i class="ti-calendar"></i> Last day
+                                <span *ngIf="user.team.budget >= 0">Todo en regla</span>
+                                <span *ngIf="user.team.budget < 0" style="color: red">¡En negativo!</span>
                             </div>
                         </div>
                     </div>
@@ -61,15 +62,15 @@
                             </div>
                             <div class="col-xs-7">
                                 <div class="numbers">
-                                    <p>Errors</p>
-                                    23
+                                    <p>Partidos</p>
+                                    {{getRemainingMatches(user.team.id)}}
                                 </div>
                             </div>
                         </div>
                         <div class="footer">
                             <hr />
                             <div class="stats">
-                                <i class="ti-timer"></i> In the last hour
+                                <i class="ti-timer"></i>¡Es hora de jugar!
                             </div>
                         </div>
                     </div>
@@ -86,15 +87,15 @@
                             </div>
                             <div class="col-xs-7">
                                 <div class="numbers">
-                                    <p>Followers</p>
-                                    +45
+                                    <p>Jugadores</p>
+                                    {{getPlayersByTeam(user.team.id).length}}
                                 </div>
                             </div>
                         </div>
                         <div class="footer">
                             <hr />
                             <div class="stats">
-                                <i class="ti-reload"></i> Updated now
+                                Y todos corren más que tú
                             </div>
                         </div>
                     </div>
@@ -106,20 +107,30 @@
             <div class="col-md-12">
                 <div class="card">
                     <div class="header">
-                        <h4 class="title">Users Behavior</h4>
-                        <p class="category">24 Hours performance</p>
+                        <h4 class="title">Partidos Pendientes</h4>
                     </div>
                     <div class="content">
-                        <div id="chartHours" class="ct-chart"></div>
+                        <div id="chartHours" class="ct-chart">
+                            <div class="col-md-4" style="background-color: #31708f; height: 100%; border-radius: 2%;">
+                                
+                            </div>
+                            <div class="col-md-4" style="background-color: #a94442; height: 100%; border-radius: 2%;">
+
+                            </div>
+                            <div class="col-md-4" style="background-color: #8a6d3b; height: 100%; border-radius: 2%;">
+
+                            </div>
+                        </div>
                         <div class="footer">
                             <div class="chart-legend">
-                                <i class="fa fa-circle text-info"></i> Open
-                                <i class="fa fa-circle text-danger"></i> Click
-                                <i class="fa fa-circle text-warning"></i> Click Second Time
+                                <!--<i *ngFor="getTournamentsByTeam(user.team.id)"></i>-->
+                                <i class="fa fa-circle text-info"></i> Liga
+                                <i class="fa fa-circle text-danger"></i> Copa
+                                <i class="fa fa-circle text-warning"></i> Champions
                             </div>
                             <hr>
                             <div class="stats">
-                                <i class="ti-reload"></i> Updated 3 minutes ago
+                                
                             </div>
                         </div>
                     </div>

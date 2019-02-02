@@ -1,0 +1,39 @@
+<div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Partidos pendientes</h4>
+                    </div>
+                    <div *ngIf="tableData1.dataRows.length !=0" class="content table-responsive table-full-width">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Torneo</th>
+                                    <th>Ronda</th>
+                                    <th>Local</th>
+                                    <th></th>
+                                    <th>Visitante</th>
+                                    <th>Rellenar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of tableData1.dataRows">
+                                    <td>{{getTournamentById(row.tournamentID)}}</td>
+                                    <td>row.round</td>
+                                    <td>row.local</td>
+                                    <td>-</td>
+                                    <td>row.away</td>
+                                    <td><a href="">Rellenar</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+    
+                    </div>
+                    <div *ngIf="tableData1.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                        Partidos no disponibles
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
