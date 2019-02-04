@@ -557,7 +557,8 @@
         $salary=$row['salary'];
         $teamID=$row['team_id'];
         $position=utf8_decode($row['position']);
-        $players[] = array('id'=> $id, 'teamID'=> $teamID, 'name'=> $name, 'salary'=> $salary, 'position'=> $position);
+        $buyedThisMarket=$row['buyed_this_market'];
+        $players[] = array('id'=> $id, 'teamID'=> $teamID, 'name'=> $name, 'salary'=> $salary, 'position'=> $position, 'buyedThisMarket'=> $buyedThisMarket);
     }
     $data['players']=$players;
     $data['success'] = true;
