@@ -1,324 +1,509 @@
-('Courtois', 1, 'POR', 89)
-('Carvajal', 1, 'LD', 85)
-('Varane', 1, 'DFC', 86)
-('Sergio Ramos', 1, 'DFC', 90)
-('Marcelo', 1, 'LI', 87)
-('Casemiro', 1, 'MCD', 87)
-('Modric', 1, 'MC', 91)
-('Kroos', 1, 'MC', 90)
-('Bale', 1, 'ED', 88)
-('Benzema', 1, 'DC', 85)
-('Vinicius', 1, 'EI', 77)
-('Asensio', 1, 'EI', 84)
-('Lucas Vazquez', 1, 'ED', 83)
-('Mariano', 1, 'DC', 80)
-('Isco', 1, 'MCO', 87)
-('Ceballos', 1, 'MC', 81)
-('Nacho', 1, 'DFC', 83)
-('Keylor Navas', 1, 'POR', 87)
-('Odriozola', 1, 'LD', 80)
-('Marcos Llorente', 1, 'MCD', 79)
-('Vallejo', 1, 'DFC', 77)
-('Fede Valverde', 1, 'MC', 76)
-('Reguilon', 1, 'LI', 70)
-('Brahim', 1, 'EI', 69)
-('Javi Sanchez', 1, 'DFC', 67)
-('Cristo Gonzalez', 1, 'DC', 66)
-('Jaume', 1, 'MC', 64)
-('Sergio Lopez', 1, 'LD', 66)
-('Fran Garcia', 1, 'LI', 64)
-('Fidalgo', 1, 'MC', 65)
-('Feuilassier', 1, 'EI', 65)
-('Manu Hernando', 1, 'DFC', 64)
-('Luca Zidane', 1, 'POR', 62)
+INSERT INTO players (name, team_id, position, overage) VALUES ('Courtois', 1, 'POR', 89);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Carvajal', 1, 'LD', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Varane', 1, 'DFC', 86);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Sergio Ramos', 1, 'DFC', 90);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Marcelo', 1, 'LI', 87);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Casemiro', 1, 'MCD', 87);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Modric', 1, 'MC', 91);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Kroos', 1, 'MC', 90);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Bale', 1, 'ED', 88);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Benzema', 1, 'DC', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Vinicius', 1, 'EI', 77);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Asensio', 1, 'EI', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Lucas Vazquez', 1, 'ED', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Mariano', 1, 'DC', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Isco', 1, 'MCO', 87);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Ceballos', 1, 'MC', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Nacho', 1, 'DFC', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Keylor Navas', 1, 'POR', 87);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Odriozola', 1, 'LD', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Marcos Llorente', 1, 'MCD', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Vallejo', 1, 'DFC', 77);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Fede Valverde', 1, 'MC', 76);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Reguilon', 1, 'LI', 70);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Brahim', 1, 'EI', 69);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Javi Sanchez', 1, 'DFC', 67);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Cristo Gonzalez', 1, 'DC', 66);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Jaume', 1, 'MC', 64);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Sergio Lopez', 1, 'LD', 66);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Fran Garcia', 1, 'LI', 64);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Fidalgo', 1, 'MC', 65);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Feuilassier', 1, 'EI', 65);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Manu Hernando', 1, 'DFC', 64);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Luca Zidane', 1, 'POR', 62);
 
-('Ter Stegen', 2, 'POR', 89)
-('Sergi Roberto', 2, 'LD', 83)
-('Pique', 2, 'DFC', 87)
-('Lenglet', 2, 'DFC', 82)
-('Jordi Alba', 2, 'LI', 87)
-('Busquets', 2, 'MCD', 89)
-('Rakitic', 2, 'MC', 87)
-('Arthur', 2, 'MC', 82)
-('Messi', 2, 'ED', 94)
-('Luis Suarez', 2, 'DC', 91)
-('Dembele', 2, 'ED', 84)
-('Coutinho', 2, 'EI', 88)
-('Malcom', 2, 'ED', 82)
-('Arturo Vidal', 2, 'MC', 85)
-('Kevin-Prince Boateng', 2, 'MC', 81)
-('Nelson Semedo', 2, 'LD', 81)
-('Jeison Murillo', 2, 'DFC', 80)
-('Cillessen', 2, 'POR', 82)
-('Aleña', 2, 'MC', 74)
-('Umtiti', 2, 'DFC', 87)
-('Vermaelen', 2, 'DFC', 77)
-('Sergi Samper', 2, 'MCD', 73)
-('Rafinha', 2, 'MCO', 82)
-('Miranda', 2, 'LI', 66)
-('Chumi', 2, 'DFC', 65)
-('Riqui Puig', 2, 'MC', 69)
-('Oriol Busquets', 2, 'MCD', 97)
-('Wague', 2, 'LD', 69)
-('Abel Ruiz', 2, 'DC', 67)
-('Guillem Jaime', 2, 'ED', 64)
-('Jorge Cuenca', 2, 'DFC', 65)
-('Iñaki Peña', 2, 'POR', 61)
-('Denis Suarez', 2, 'MC', 79)
+INSERT INTO players (name, team_id, position, overage) VALUES ('Ter Stegen', 2, 'POR', 89);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Sergi Roberto', 2, 'LD', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Pique', 2, 'DFC', 87);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Lenglet', 2, 'DFC', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Jordi Alba', 2, 'LI', 87);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Busquets', 2, 'MCD', 89);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Rakitic', 2, 'MC', 87);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Arthur', 2, 'MC', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Messi', 2, 'ED', 94);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Luis Suarez', 2, 'DC', 91);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Dembele', 2, 'ED', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Coutinho', 2, 'EI', 88);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Malcom', 2, 'ED', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Arturo Vidal', 2, 'MC', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Kevin-Prince Boateng', 2, 'MC', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Nelson Semedo', 2, 'LD', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Jeison Murillo', 2, 'DFC', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Cillessen', 2, 'POR', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Aleña', 2, 'MC', 74);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Umtiti', 2, 'DFC', 87);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Vermaelen', 2, 'DFC', 77);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Sergi Samper', 2, 'MCD', 73);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Rafinha', 2, 'MCO', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Miranda', 2, 'LI', 66);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Chumi', 2, 'DFC', 65);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Riqui Puig', 2, 'MC', 69);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Oriol Busquets', 2, 'MCD', 97);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Wague', 2, 'LD', 69);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Abel Ruiz', 2, 'DC', 67);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Guillem Jaime', 2, 'ED', 64);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Jorge Cuenca', 2, 'DFC', 65);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Iñaki Peña', 2, 'POR', 61);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Denis Suarez', 2, 'MC', 79);
 
-('Neuer', 3, 'POR', 89)
-('Sule', 3, 'LD', 86)
-('Kimmich', 3, 'DFC', 84)
-('Boateng', 3, 'DFC', 85)
-('Alaba', 3, 'LI', 84)
-('Goretzka', 3, 'MC', 83)
-('Thiago', 3, 'MC', 87)
-('Coman', 3, 'MI', 83)
-('Gnabry', 3, 'MI', 83)
-('Muller', 3, 'MCO', 86)
-('Lewandowski', 3, 'DC', 90)
-('James Rodriguez', 3, 'MCO', 87)
-('Robben', 3, 'MD', 84)
-('Ribery', 3, 'MI', 83)
-('Javi Martinez', 3, 'MCD', 83)
-('Renato Sanches', 3, 'MC', 75)
-('Hummels', 3, 'DFC', 88)
-('Ulreich', 3, 'POR', 80)
-('Rafinha', 3, 'LD', 76)
-('Tolisso', 3, 'MC', 83)
-('Davies', 3, 'MI', 72)
-('Shabani', 3, 'MCO', 62)
-('Fruchtl', 3, 'POR', 65)
-('Mai', 3, 'DFC', 64)
-('Awoudja', 3, 'DFC', 61)
-('Jeong Woo Yeong', 3, 'MI', 61)
-('Hoffman', 3, 'POR', 56)
-('Batista Meier', 3, 'MI', 63)
-('Will', 3, 'MC', 61)
-('Meier', 3, 'LI', 59)
+INSERT INTO players (name, team_id, position, overage) VALUES ('Neuer', 3, 'POR', 89);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Sule', 3, 'LD', 86);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Kimmich', 3, 'DFC', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Boateng', 3, 'DFC', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Alaba', 3, 'LI', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Goretzka', 3, 'MC', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Thiago', 3, 'MC', 87);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Coman', 3, 'MI', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Gnabry', 3, 'MI', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Muller', 3, 'MCO', 86);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Lewandowski', 3, 'DC', 90);
+INSERT INTO players (name, team_id, position, overage) VALUES ('James Rodriguez', 3, 'MCO', 87);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Robben', 3, 'MD', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Ribery', 3, 'MI', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Javi Martinez', 3, 'MCD', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Renato Sanches', 3, 'MC', 75);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Hummels', 3, 'DFC', 88);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Ulreich', 3, 'POR', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Rafinha', 3, 'LD', 76);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Tolisso', 3, 'MC', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Davies', 3, 'MI', 72);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Shabani', 3, 'MCO', 62);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Fruchtl', 3, 'POR', 65);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Mai', 3, 'DFC', 64);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Awoudja', 3, 'DFC', 61);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Jeong Woo Yeong', 3, 'MI', 61);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Hoffman', 3, 'POR', 56);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Batista Meier', 3, 'MI', 63);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Will', 3, 'MC', 61);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Meier', 3, 'LI', 59);
 
-('Szczesny', 4, 'POR', 86)
-('Cancelo', 4, 'LD', 83)
-('Bonucci', 4, 'DFC', 86)
-('Chiellini', 4, 'DFC', 90)
-('Alex Sandro', 4, 'LI', 86)
-('Pjanic', 4, 'MC', 86)
-('Bentancur', 4, 'MC', 78)
-('Matuidi', 4, 'MCD', 85)
-('Dybala', 4, 'MCO', 89)
-('Mandzukic', 4, 'DC', 85)
-('Cristiano Ronaldo', 4, 'DC', 94)
-('Douglas Costa', 4, 'MI', 85)
-('Khedira', 4, 'MC', 84)
-('Bernardeschi', 4, 'MD', 82)
-('Emre Can', 4, 'MC', 80)
-('Barzagli', 4, 'DFC', 83)
-('Martin Caceres', 4, 'DFC', 78)
-('Perin', 4, 'POR', 84)
-('De Sciglio', 4, 'LD', 78)
-('Kean', 4, 'DC', 72)
-('Spinazzola', 4, 'MI', 77)
-('Rugani', 4, 'DFC', 82)
-('Cuadrado', 4, 'MD', 84)
-('Beruatto', 4, 'LI', 62)
-('Pinsoglio', 4, 'POR', 72)
+INSERT INTO players (name, team_id, position, overage) VALUES ('Szczesny', 4, 'POR', 86);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Cancelo', 4, 'LD', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Bonucci', 4, 'DFC', 86);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Chiellini', 4, 'DFC', 90);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Alex Sandro', 4, 'LI', 86);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Pjanic', 4, 'MC', 86);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Bentancur', 4, 'MC', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Matuidi', 4, 'MCD', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Dybala', 4, 'MCO', 89);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Mandzukic', 4, 'DC', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Cristiano Ronaldo', 4, 'DC', 94);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Douglas Costa', 4, 'MI', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Khedira', 4, 'MC', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Bernardeschi', 4, 'MD', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Emre Can', 4, 'MC', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Barzagli', 4, 'DFC', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Martin Caceres', 4, 'DFC', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Perin', 4, 'POR', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('De Sciglio', 4, 'LD', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Kean', 4, 'DC', 72);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Spinazzola', 4, 'MI', 77);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Rugani', 4, 'DFC', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Cuadrado', 4, 'MD', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Beruatto', 4, 'LI', 62);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Pinsoglio', 4, 'POR', 72);
 
-('Oblak', 5, 'POR', 90)
-('Arias', 5, 'LD', 79)
-('Gimenez', 5, 'DFC', 84)
-('Godin', 5, 'DFC', 90)
-('Lucas Hernandez', 5, 'LI', 83)
-('Koke', 5, 'MI', 85)
-('Rodri', 5, 'MC', 82)
-('Saul', 5, 'MC', 85)
-('Lemar', 5, 'MI', 83)
-('Griezmann', 5, 'SD', 89)
-('Morata', 5, 'DC', 82)
-('Kalinic', 5, 'DC', 79)
-('Thomas Partey', 5, 'MCD', 82)
-('Vitolo', 5, 'MI', 81)
-('Angel Correa', 5, 'MD', 81)
-('Filipe Luis', 5, 'LI', 85)
-('Juanfran', 5, 'LD', 80)
-('Adan', 5, 'POR', 82)
-('Diego Costa', 5, 'DC', 84)
-('Savic', 5, 'DFC', 83)
-('Montero', 5, 'DFC', 64)
-('Borja Garces', 5, 'DC', 64)
-('Joaquin', 5, 'MI', 63)
-('Toni Moya', 5, 'MC', 62)
-('Carlos Isaac', 5, 'LD', 63)
-('Mollejo', 5, 'ED', 60)
-('Cristian Rodriguez', 5, 'MCO', 60)
-('Dario Poveda', 5, 'DC', 61)
-('Oscar Pinchi', 5, 'MI', 66)
-('Tachi', 5, 'DFC', 62)
-('Solano', 5, 'LD', 62)
-('Alex Dos Santos', 5, 'POR', 61)
-('San Roman', 5, 'POR', 60)
+INSERT INTO players (name, team_id, position, overage) VALUES ('Oblak', 5, 'POR', 90);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Arias', 5, 'LD', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Gimenez', 5, 'DFC', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Godin', 5, 'DFC', 90);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Lucas Hernandez', 5, 'LI', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Koke', 5, 'MI', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Rodri', 5, 'MC', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Saul', 5, 'MC', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Lemar', 5, 'MI', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Griezmann', 5, 'SD', 89);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Morata', 5, 'DC', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Kalinic', 5, 'DC', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Thomas Partey', 5, 'MCD', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Vitolo', 5, 'MI', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Angel Correa', 5, 'MD', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Filipe Luis', 5, 'LI', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Juanfran', 5, 'LD', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Adan', 5, 'POR', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Diego Costa', 5, 'DC', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Savic', 5, 'DFC', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Montero', 5, 'DFC', 64);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Borja Garces', 5, 'DC', 64);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Joaquin', 5, 'MI', 63);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Toni Moya', 5, 'MC', 62);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Carlos Isaac', 5, 'LD', 63);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Mollejo', 5, 'ED', 60);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Cristian Rodriguez', 5, 'MCO', 60);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Dario Poveda', 5, 'DC', 61);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Oscar Pinchi', 5, 'MI', 66);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Tachi', 5, 'DFC', 62);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Solano', 5, 'LD', 62);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Alex Dos Santos', 5, 'POR', 61);
+INSERT INTO players (name, team_id, position, overage) VALUES ('San Roman', 5, 'POR', 60);
 
-('Buffon', 6, 'POR', 88)
-('Kehrer', 6, 'DFC', 78)
-('Thiago Silva', 6, 'DFC', 88)
-('Kimpembe', 6, 'DFC', 83)
-('Bernat', 6, 'LI', 77)
-('Verratti', 6, 'MC', 86)
-('Marquinhos', 6, 'DFC', 85)
-('Di Maria', 6, 'ED', 84)
-('Neymar', 6, 'EI', 92)
-('Cavani', 6, 'DC', 89)
-('Mbappe', 6, 'ED', 88)
-('Choupo-Moting', 6, 'DC', 77)
-('Diaby', 6, 'ED', 72)
-('Draxler', 6, 'MC', 83)
-('Paredes', 6, 'MC', 80)
-('Dani Alves', 6, 'LD', 82)
-('Meunier', 6, 'LD', 82)
-('Areola', 6, 'POR', 81)
-('Kurzawa', 6, 'LI', 78)
-('Nsoki', 6, 'LI', 68)
-('Rimane', 6, 'DFC', 64)
-('Dagba', 6, 'LD', 64)
-('Nkunku', 6, 'MC', 76)
-('Rabiot', 6, 'MC', 83)
-('Adli', 6, 'MC', 65)
-('Bernede', 6, 'MCO', 64)
-('Lassana Diarra', 6, 'MCD', 79)
-('Cibois', 6, 'POR', 62)
-('Georgen', 6, 'LD', 63)
+INSERT INTO players (name, team_id, position, overage) VALUES ('Buffon', 6, 'POR', 88);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Kehrer', 6, 'DFC', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Thiago Silva', 6, 'DFC', 88);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Kimpembe', 6, 'DFC', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Bernat', 6, 'LI', 77);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Verratti', 6, 'MC', 86);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Marquinhos', 6, 'DFC', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Di Maria', 6, 'ED', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Neymar', 6, 'EI', 92);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Cavani', 6, 'DC', 89);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Mbappe', 6, 'ED', 88);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Choupo-Moting', 6, 'DC', 77);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Diaby', 6, 'ED', 72);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Draxler', 6, 'MC', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Paredes', 6, 'MC', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Dani Alves', 6, 'LD', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Meunier', 6, 'LD', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Areola', 6, 'POR', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Kurzawa', 6, 'LI', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Nsoki', 6, 'LI', 68);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Rimane', 6, 'DFC', 64);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Dagba', 6, 'LD', 64);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Nkunku', 6, 'MC', 76);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Rabiot', 6, 'MC', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Adli', 6, 'MC', 65);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Bernede', 6, 'MCO', 64);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Lassana Diarra', 6, 'MCD', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Cibois', 6, 'POR', 62);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Georgen', 6, 'LD', 63);
 
-('Ederson', 7, 'POR', 86)
-('Walker', 7, 'LD', 84)
-('Stones', 7, 'DFC', 83)
-('Laporte', 7, 'DFC', 84)
-('Delph', 7, 'LI', 80)
-('Fernandinho', 7, 'MCD', 87)
-('Bernardo Silva', 7, 'MCO', 86)
-('David Silva', 7, 'MCO', 90)
-('Sterling', 7, 'ED', 87)
-('Aguero', 7, 'DC', 89)
-('Sane', 7, 'EI', 86)
-('Mahrez', 7, 'ED', 85)
-('Gabriel Jesus', 7, 'DC', 83)
-('De Bruyne', 7, 'MCO', 91)
-('Gundogan', 7, 'MC', 84)
-('Kompany', 7, 'DFC', 85)
-('Otamendi', 7, 'DFC', 85)
-('Muric', 7, 'POR', 64)
-('Foden', 7, 'MCO', 75)
-('Mendy', 7, 'LI', 81)
-('Sandler', 7, 'DFC', 70)
-('Zinchenko', 7, 'LI', 72)
-('Danilo', 7, 'LD', 79)
-('Claudio Bravo', 7, 'POR', 78)
-('Mangala', 7, 'DFC', 76)
-('Gomes', 7, 'MCD', 66)
-('Grimshaw', 7, 'POR', 54)
-('Humphreys-Grant', 7, 'DFC', 62)
-('Eric Garcia', 7, 'DFC', 64)
-('Nmecha', 7, 'MCO', 62)
-('Latibeaudiere', 7, 'DFC', 59)
-('Dele-Bashiru', 7, 'MC', 57)
-('Garre', 7, 'EI', 60)
+INSERT INTO players (name, team_id, position, overage) VALUES ('Ederson', 7, 'POR', 86);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Walker', 7, 'LD', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Stones', 7, 'DFC', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Laporte', 7, 'DFC', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Delph', 7, 'LI', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Fernandinho', 7, 'MCD', 87);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Bernardo Silva', 7, 'MCO', 86);
+INSERT INTO players (name, team_id, position, overage) VALUES ('David Silva', 7, 'MCO', 90);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Sterling', 7, 'ED', 87);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Aguero', 7, 'DC', 89);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Sane', 7, 'EI', 86);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Mahrez', 7, 'ED', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Gabriel Jesus', 7, 'DC', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('De Bruyne', 7, 'MCO', 91);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Gundogan', 7, 'MC', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Kompany', 7, 'DFC', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Otamendi', 7, 'DFC', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Muric', 7, 'POR', 64);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Foden', 7, 'MCO', 75);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Mendy', 7, 'LI', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Sandler', 7, 'DFC', 70);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Zinchenko', 7, 'LI', 72);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Danilo', 7, 'LD', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Claudio Bravo', 7, 'POR', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Mangala', 7, 'DFC', 76);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Gomes', 7, 'MCD', 66);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Grimshaw', 7, 'POR', 54);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Humphreys-Grant', 7, 'DFC', 62);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Eric Garcia', 7, 'DFC', 64);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Nmecha', 7, 'MCO', 62);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Latibeaudiere', 7, 'DFC', 59);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Dele-Bashiru', 7, 'MC', 57);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Garre', 7, 'EI', 60);
 
-('Leno', 8, 'POR', 83)
-('Lichsteiner', 8, 'LD', 78)
-('Mustafi', 8, 'DFC', 82)
-('Sokratis', 8, 'DFC', 83)
-('Kolasinac', 8, 'LI', 79)
-('Torreira', 8, 'MCD', 82)
-('Xhaka', 8, 'MC', 81)
-('Guendouzi', 8, 'MC', 71)
-('Ozil', 8, 'MCO', 85)
-('Lacazette', 8, 'DC', 85)
-('Aubameyang', 8, 'DC', 88)
-('Ramsey', 8, 'MC', 82)
-('Mkhytarian', 8, 'MD', 82)
-('Iwobi', 8, 'MI', 78)
-('Maitland-Niles', 8, 'MC', 71)
-('Koscielny', 8, 'DFC', 82)
-('Monreal', 8, 'LI', 80)
-('Cech', 8, 'POR', 82)
-('Jenkinson', 8, 'LD', 69)
-('Nketiah', 8, 'DC', 66)
-('Holding', 8, 'DFC', 76)
-('Elneny', 8, 'MCD', 77)
-('Smith Rowe', 8, 'EI', 65)
-('Welbeck', 8, 'EI', 77)
-('Medley', 8, 'DFC', 60)
-('Mavropanos', 8, 'DFC', 68)
-('Willock', 8, 'MC', 63)
-('Saka', 8, 'EI', 65)
-('Zelalem', 8, 'MC', 65)
-('Pleguezuelo', 8, 'DFC', 68)
-('Bramall', 8, 'LI', 63)
-('Iliev', 8, 'POR', 57)
-('Bellerin', 8, 'LD', 80)
+INSERT INTO players (name, team_id, position, overage) VALUES ('Leno', 8, 'POR', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Lichsteiner', 8, 'LD', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Mustafi', 8, 'DFC', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Sokratis', 8, 'DFC', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Kolasinac', 8, 'LI', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Torreira', 8, 'MCD', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Xhaka', 8, 'MC', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Guendouzi', 8, 'MC', 71);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Ozil', 8, 'MCO', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Lacazette', 8, 'DC', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Aubameyang', 8, 'DC', 88);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Ramsey', 8, 'MC', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Mkhytarian', 8, 'MD', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Iwobi', 8, 'MI', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Maitland-Niles', 8, 'MC', 71);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Koscielny', 8, 'DFC', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Monreal', 8, 'LI', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Cech', 8, 'POR', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Jenkinson', 8, 'LD', 69);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Nketiah', 8, 'DC', 66);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Holding', 8, 'DFC', 76);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Elneny', 8, 'MCD', 77);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Smith Rowe', 8, 'EI', 65);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Welbeck', 8, 'EI', 77);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Medley', 8, 'DFC', 60);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Mavropanos', 8, 'DFC', 68);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Willock', 8, 'MC', 63);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Saka', 8, 'EI', 65);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Zelalem', 8, 'MC', 65);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Pleguezuelo', 8, 'DFC', 68);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Bramall', 8, 'LI', 63);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Iliev', 8, 'POR', 57);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Bellerin', 8, 'LD', 80);
 
-('De Gea', 9, 'POR', 91)
-('Young' , 9, 'LD', 79)
-('Lindelof' , 9, 'DCD', 80)
-('Jones' , 9, 'DCD', 79)
-('Shaw', 9, 'LI', 80)
-('Matic', 9, 'MCD', 84)
-('Ander Herrera', 9, 'MCD', 81)
-('Pogba', 9, 'MCI', 87)
-('Lingard', 9, 'ED', 82)
-('Marcus Rashford', 9, 'DC', 82)
-('Martial' 9, 'EI', 84)
-('Romelu Lukaku', 9, 'DC', 86)
-('Alexis Sanchez', 9, 'EI', 85)
-('Juan Mata' ,9, 'ED', 82)
-('Fred', 9, 'MC', 80)
-('Eric Bailly', 9, 'DFC', 81)
-('Diogo Dalot', 9, 'LD', 73)
-('Sergio Romero', 9, 'POR', 80)
-('Andreas Pereira', 9, 'MC', 77)
-('Antonio Valencia', 9, 'LD', 80)
-('Fellaini', 9, 'MC', 78)
-('Smaling', 9, 'DFC', 80)
-('Marcos Rojo', 9, 'DFC', 79)
-('Lee Grant', 9, 'POR', 74)
-('Matteo Darmian', 9, 'LI', 76)
-('Scott McTominay', 9, 'MC', 71)
-('Tahith Chong', 9, 'ED', 66)
-('Angel Gomes', 9, 'MCO', 67)
-('Joel Pereira', 9, 'POR', 70)
-('James Garner', 9, 'MCD', 62)
-('Callum Gribbin', 9, 'MCO', 65)
-('Joshua Bohui', 9, 'EI', 62)
-('Mason Greenwood', 9, 'DC', 65)
+INSERT INTO players (name, team_id, position, overage) VALUES ('De Gea', 9, 'POR', 91);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Young' , 9, 'LD', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Lindelof' , 9, 'DCD', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Jones' , 9, 'DCD', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Shaw', 9, 'LI', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Matic', 9, 'MCD', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Ander Herrera', 9, 'MCD', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Pogba', 9, 'MCI', 87);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Lingard', 9, 'ED', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Marcus Rashford', 9, 'DC', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Martial', 9, 'EI', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Romelu Lukaku', 9, 'DC', 86);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Alexis Sanchez', 9, 'EI', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Juan Mata' ,9, 'ED', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Fred', 9, 'MC', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Eric Bailly', 9, 'DFC', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Diogo Dalot', 9, 'LD', 73);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Sergio Romero', 9, 'POR', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Andreas Pereira', 9, 'MC', 77);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Antonio Valencia', 9, 'LD', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Fellaini', 9, 'MC', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Smaling', 9, 'DFC', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Marcos Rojo', 9, 'DFC', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Lee Grant', 9, 'POR', 74);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Matteo Darmian', 9, 'LI', 76);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Scott McTominay', 9, 'MC', 71);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Tahith Chong', 9, 'ED', 66);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Angel Gomes', 9, 'MCO', 67);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Joel Pereira', 9, 'POR', 70);
+INSERT INTO players (name, team_id, position, overage) VALUES ('James Garner', 9, 'MCD', 62);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Callum Gribbin', 9, 'MCO', 65);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Joshua Bohui', 9, 'EI', 62);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Mason Greenwood', 9, 'DC', 65);
 
-('Alisson', 10, 'POR', 87)
-('Alexander-Arnold', 10, 'LD', 79)
-('Joe Gomez', 10, 'DFC', 78)
-('Van Dijk', 10, 'DFC', 88)
-('Andrew Robertson', 10, 'LI', 83)
-('Wijnaldum', 10, 'MC', 83)
-('Fabinho', 10, 'MCD', 84)
-('Shaqiri', 10, 'ED', 82)
-('Mane', 10, 'EI', 86)
-('Roberto Firmino', 10, 'DC', 86)
-('Salah', 10, 'ED', 89)
-('Daniel Sturridge', 10, 'DC', 79)
-('Naby Keita', 10, 'MC', 83)
-('Jordan Henderson', 10, 'MCD', 82)
-('James Milner', 10, 'MC', 81)
-('Dejan Lovren', 10, 'DFC', 81)
-('Alberto Moreno', 10, 'LI', 76)
-('Mignolet', 10, 'POR', 78)
-('Joel Matip', 10, 'DFC', 80)
-('Lallana', 10, 'MC', 79)
-('Origi', 10, 'DC', 77)
-('Rafael Camacho', 10, 'EI', 62)
-('Nathaniel Phillips', 10, 'DFC', 61)
-('Curtis Jones', 10, 'MC', 61)
-('Oxlade-Chamberlain', 10, 'MC', 80)
-('Rhian Brewster', 10, 'DC', 62)
-('Bobby Adekanye', 10, 'ED', 60)
-('Caoimhin Kelleher', 10, 'POR', 58)
-('Connor Randall', 10, 'LD', 61)
-('Conor Masterson', 10, 'DFC', 61)
-('Lazar Markovic', 10, 'MD', 74)
-('Pedro Chirivella', 10, 'MC', 66)
-('Ki-Jana Hoever', 10, 'LD', 61)
+INSERT INTO players (name, team_id, position, overage) VALUES ('Alisson', 10, 'POR', 87);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Alexander-Arnold', 10, 'LD', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Joe Gomez', 10, 'DFC', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Van Dijk', 10, 'DFC', 88);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Andrew Robertson', 10, 'LI', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Wijnaldum', 10, 'MC', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Fabinho', 10, 'MCD', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Shaqiri', 10, 'ED', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Mane', 10, 'EI', 86);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Roberto Firmino', 10, 'DC', 86);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Salah', 10, 'ED', 89);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Daniel Sturridge', 10, 'DC', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Naby Keita', 10, 'MC', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Jordan Henderson', 10, 'MCD', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('James Milner', 10, 'MC', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Dejan Lovren', 10, 'DFC', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Alberto Moreno', 10, 'LI', 76);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Mignolet', 10, 'POR', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Joel Matip', 10, 'DFC', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Lallana', 10, 'MC', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Origi', 10, 'DC', 77);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Rafael Camacho', 10, 'EI', 62);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Nathaniel Phillips', 10, 'DFC', 61);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Curtis Jones', 10, 'MC', 61);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Oxlade-Chamberlain', 10, 'MC', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Rhian Brewster', 10, 'DC', 62);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Bobby Adekanye', 10, 'ED', 60);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Caoimhin Kelleher', 10, 'POR', 58);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Connor Randall', 10, 'LD', 61);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Conor Masterson', 10, 'DFC', 61);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Lazar Markovic', 10, 'MD', 74);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Pedro Chirivella', 10, 'MC', 66);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Ki-Jana Hoever', 10, 'LD', 61);
+
+INSERT INTO players (name, team_id, position, overage) VALUES ('Kepa', 11, 'POR', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Azpilicueta', 11, 'LD', 86);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Rudiger', 11, 'DFC', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('David Luiz', 11, 'DFC', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Marcos Alonso', 11, 'LI', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Kante', 11, 'MCD', 89);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Jorginho', 11, 'MC', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Mateo Kovacic', 11, 'MC', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Pedro', 11, 'ED', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Higuain', 11, 'DC', 87);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Hazard', 11, 'EI', 91);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Willian', 11, 'ED', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Giroud', 11, 'DC', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Hudson-Odoi', 11, 'EI', 70);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Ross Barkley', 11, 'MCO', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Andreas Christensen', 11, 'DFC', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Emerson', 11, 'LI', 75);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Willy Caballero', 11, 'POR', 75);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Loftus- Cheek', 11, 'MC', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Gary Cahill', 11, 'DFC', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Zappacosta', 11, 'LD', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Drinkwater', 11, 'MC', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Ethan Ampadu', 11, 'DFC', 65);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Lucas Piazon', 11, 'ED', 72);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Rob Green', 11, 'POR', 70);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Billy Gilmour', 11, 'MC', 61);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Taylor-Crossdale', 11, 'DC', 61);
+INSERT INTO players (name, team_id, position, overage) VALUES ('McEachran', 11, 'MCO', 59);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Marcin Bulka', 11, 'POR', 56);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Marco Van Ginkel', 11, 'MC', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Kyle Scott', 11, 'MC', 60);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Ike Ugbo', 11, 'DC', 61);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Marc Guehi', 11, 'DFC', 58);
+
+INSERT INTO players (name, team_id, position, overage) VALUES ('Burki', 12, 'POR', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Piszczek', 12, 'LD', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Toprak', 12, 'DFC', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Diallo', 12, 'DFC', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Hakimi', 12, 'LI', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Witsel', 12, 'MCD', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Delaney', 12, 'MCD', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Jadon Sancho', 12, 'MD', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Guerreiro', 12, 'MI', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Reus', 12, 'MCO', 88);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Paco Alcacer', 12, 'DC', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Philipp', 12, 'DC', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Gotze', 12, 'MC', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Dahoud', 12, 'MC', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Weigl', 12, 'MCD', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Pulisic', 12, 'MD', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Schmelzer', 12, 'LI', 77);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Hitz', 12, 'POR', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Akanji', 12, 'DFC', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Larsen', 12, 'MI', 74);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Marius Wolf', 12, 'MD', 77);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Zagadou', 12, 'DFC', 75);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Kagawa', 12, 'MCO', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Sergio Gomez', 12, 'MCO', 68);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Toljan', 12, 'LD', 73);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Balerdi', 12, 'DFC', 64);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Bafounta', 12, 'MC', 59);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Oelschlagel', 12, 'POR', 65);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Wanner', 12, 'MI', 60);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Bakir', 12, 'MD', 58);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Kehr', 12, 'DC', 57);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Burnic', 12, 'MCD', 66);
+
+INSERT INTO players (name, team_id, position, overage) VALUES ('Strakosha', 13, 'POR', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Wallace', 13, 'DFC', 77);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Acerbi', 13, 'DFC', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Radu', 13, 'DFC', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Parolo', 13, 'MCD', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Lucas Leiva', 13, 'MCD', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Marusic', 13, 'MD', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Milinkovic-Savic', 13, 'MC', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Lulic', 13, 'MI', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Luis Alberto', 13, 'MCO', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Immobile', 13, 'DC', 87);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Caicedo', 13, 'DC', 77);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Badelj', 13, 'MCD', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Berisha', 13, 'MI', 76);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Basta', 13, 'LD', 77);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Luiz Felipe', 13, 'DFC', 75);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Patric', 13, 'LD', 72);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Potro', 13, 'POR', 76);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Bastos', 13, 'DFC', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Jordan Lukaku', 13, 'MI', 77);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Joaquin Correa', 13, 'MI', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Cataldi', 13, 'MC', 75);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Durmisi', 13, 'LI', 76);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Guerrieri', 13, 'POR', 61);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Murgia', 13, 'MC', 72);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Morrison', 13, 'MCO', 76);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Bruno Jordao', 13, 'MC', 60);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Filippini', 13, 'LI', 65);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Pedro Neto', 13, 'DC', 62);
+
+INSERT INTO players (name, team_id, position, overage) VALUES ('Handanovic', 14, 'POR', 88);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Vrsaljko', 14, 'LD', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('De Vrij', 14, 'DFC', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Skriniar', 14, 'DFC', 86);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Asamoah', 14, 'LI', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Matias Vecino', 14, 'MCD', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Brozovic', 14, 'MCD', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Politano', 14, 'MD', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Perisic', 14, 'MI', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Nainggolan', 14, 'MC', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Icardi', 14, 'DC', 87);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Lautaro Martinez', 14, 'DC', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Balde', 14, 'MD', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Gagliardini', 14, 'MCD', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Miranda', 14, 'DFC', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Cedric', 14, 'LD', 77);
+INSERT INTO players (name, team_id, position, overage) VALUES ('D Ambrosio', 14, 'LD', 76);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Padelli', 14, 'POR', 74);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Dalbert', 14, 'LI', 76);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Candreva', 14, 'MD', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Ranocchia', 14, 'DFC', 76);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Joao Mario', 14, 'MCO', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Di Gennaro', 14, 'POR', 67);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Berni', 14, 'POR', 64);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Borja Valero', 14, 'MCO', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Samuele Longo', 14, 'DC', 72);
+
+INSERT INTO players (name, team_id, position, overage) VALUES ('Lloris', 15, 'POR', 88);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Trippier', 15, 'LD', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Alderweireld', 15, 'DFC', 87);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Vertonghen', 15, 'DFC', 87);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Rose', 15, 'LI', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Moussa Sissoko', 15, 'MCD', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Winks', 15, 'MC', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Eriksen', 15, 'MCO', 88);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Dele Alli', 15, 'MCO', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Son', 15, 'MI', 85);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Kane', 15, 'DC', 90);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Lucas Moura', 15, 'MD', 83);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Lamela', 15, 'MD', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Dier', 15, 'MCD', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Davinson Sanchez', 15, 'DFC', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Aurier', 15, 'LD', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Ben Davies', 15, 'LI', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Gazzaniga', 15, 'POR', 75);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Foyth', 15, 'DFC', 73);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Llorente', 15, 'DC', 76);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Wanyama', 15, 'MCD', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Skipp', 15, 'MCD', 64);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Walker-Peters', 15, 'LD', 71);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Vorm', 15, 'POR', 76);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Nkoudou', 15, 'MI', 75);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Kazaiah Sterling', 15, 'DC', 61);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Amos', 15, 'MC', 65);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Oakley-Boothe', 15, 'MC', 64);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Shayon Harrison', 15, 'DC', 61);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Alfie Whiteman', 15, 'POR', 61);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Eyoma', 15, 'DFC', 61);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Janssen', 15, 'DC', 75);
+INSERT INTO players (name, team_id, position, overage) VALUES ('George Marsh', 15, 'MCD', 57);
+
+
+INSERT INTO players (name, team_id, position, overage) VALUES ('Ospina', 16, 'POR', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Hysaj', 16, 'LD', 80);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Albiol', 16, 'DFC', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Koulibaly', 16, 'DFC', 88);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Mario Rui', 16, 'LI', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Callejon', 16, 'ED', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Allan', 16, 'MC', 84);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Hamsik', 16, 'MC', 86);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Zielinski', 16, 'MC', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Milik', 16, 'DC', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Insigne', 16, 'EI', 88);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Mertens', 16, 'SD', 87);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Verdi', 16, 'ED', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Ounas', 16, 'ED', 74);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Fabian', 16, 'MC', 82);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Maksimovic', 16, 'DFC', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Malcuit', 16, 'LD', 76);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Karnezis', 16, 'POR', 79);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Diawara', 16, 'MC', 76);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Luperto', 16, 'DFC', 70);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Ghoulam', 16, 'LI', 81);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Meret', 16, 'POR', 75);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Chiriches', 16, 'DFC', 78);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Younes', 16, 'EI', 75);
+INSERT INTO players (name, team_id, position, overage) VALUES ('Gaetano', 16, 'MCO', 61);
