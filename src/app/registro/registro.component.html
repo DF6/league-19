@@ -1,0 +1,47 @@
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-8 col-md-7">
+                <div class="card">
+                        <div class="header">
+                            <h4 class="title">Registro de usuario - *No poner tildes, por favor</h4>
+                        </div>
+                        <div class="content">
+                            
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Usuario</label>
+                                            <input [disabled]="disable" [(ngModel)]="user" type="text" class="form-control border-input">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Contraseña</label>
+                                            <input [disabled]="disable" [(ngModel)]="pass" type="password" class="form-control border-input">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                                <label>Confirmar contraseña</label>
+                                                <input [disabled]="disable" [(ngModel)]="pass2" type="password" class="form-control border-input">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                                    <label>Email</label>
+                                                    <input [disabled]="disable" [(ngModel)]="email" type="text" class="form-control border-input">
+                                        </div>
+                                    </div>
+                                </div>
+    
+                                <div class="row">
+                                    <div class="text-center">
+                                        <button [disabled]="disable" type="button" class="btn btn-info btn-fill btn-wd" (click)="register()">Registrar</button>
+                                    </div>
+                                <div class="clearfix"></div>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>

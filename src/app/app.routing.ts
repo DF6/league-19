@@ -8,43 +8,53 @@ import { IconsComponent }   from './icons/icons.component';
 import { MapsComponent }   from './maps/maps.component';
 import { NotificationsComponent }   from './notifications/notifications.component';
 import { UpgradeComponent }   from './upgrade/upgrade.component';
+import { LoginComponent } from './login/login.component';
+import { RegistroComponent } from './registro/registro.component';
 
 export const AppRoutes: Routes = [
     {
         path: '',
-        redirectTo: 'upgrade',
+        redirectTo: 'registro',
         pathMatch: 'full',
     },
     {
-        path: 'dashboard',
+        path: 'panelcontrol',
         component: DashboardComponent
     },
     {
-        path: 'user',
+        path: 'usuario',
         component: UserComponent
     },
     {
-        path: 'table',
+        path: 'liga',
         component: TableComponent
     },
     {
-        path: 'typography',
+        path: 'partidospendientes',
         component: TypographyComponent
     },
     {
-        path: 'icons',
+        path: 'plantillas',
         component: IconsComponent
     },
     {
-        path: 'maps',
+        path: 'mercado',
         component: MapsComponent
     },
     {
-        path: 'notifications',
+        path: 'copa',
         component: NotificationsComponent
     },
     {
-        path: 'upgrade',
+        path: 'normas',
         component: UpgradeComponent
+    },
+    {
+        path: 'login',
+        component: LoginComponent
+    },
+    {
+        path: 'registro',
+        component: RegistroComponent
     }
 ]

@@ -557,7 +557,8 @@
         $salary=$row['salary'];
         $teamID=$row['team_id'];
         $position=utf8_decode($row['position']);
-        $players[] = array('id'=> $id, 'teamID'=> $teamID, 'name'=> $name, 'salary'=> $salary, 'position'=> $position);
+        $overage=$row['overage'];
+        $players[] = array('id'=> $id, 'teamID'=> $teamID, 'name'=> $name, 'salary'=> $salary, 'position'=> $position, 'overage' => $overage);
     }
     $data['players']=$players;
     $data['success'] = true;
