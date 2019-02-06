@@ -558,7 +558,7 @@
         $teamID=$row['team_id'];
         $position=utf8_decode($row['position']);
         $overage=$row['overage'];
-        $buyedThisMarket=$row['buyed_this_market']
+        $buyedThisMarket=$row['buyed_this_market'];
         $players[] = array('id'=> $id, 'teamID'=> $teamID, 'name'=> $name, 'salary'=> $salary, 'position'=> $position, 'overage' => $overage, 'buyedThisMarket'=> $buyedThisMarket);
     }
     $data['players']=$players;

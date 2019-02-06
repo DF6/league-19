@@ -6,7 +6,7 @@
                         <img src="{{team.imageRoute}}"/><h4 class="title">{{team.name}}</h4>
                         <p class="category">{{team.shortName}}</p>
                     </div>
-                    <div *ngIf="team.players" class="content table-responsive table-full-width">
+                    <div *ngIf="isThereAnyPlayer(team.id)" class="content table-responsive table-full-width">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -16,7 +16,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let row of team.players">
+                                <tr *ngFor="let row of getPlayersByTeam(team.id)">
                                     <td>{{row.position}}</td>
                                     <td>{{row.name}}</td>
                                     <td>{{row.overage}}</td>
@@ -25,7 +25,7 @@
                         </table>
     
                     </div>
-                    <div *ngIf="team.players" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                    <div *ngIf="!isThereAnyPlayer(team.id)" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
                         Plantilla no disponible
                     </div>
                 </div>
