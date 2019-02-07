@@ -12,8 +12,8 @@ export class IconsComponent{
     public players;
 
     constructor() {
-        this.teams = JSON.parse(sessionStorage.getItem('teams'));
-        this.players = JSON.parse(sessionStorage.getItem('players'));
+        this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
+        this.players = JSON.parse(sessionStorage.getItem('players')).players;
     }
 
     public isThereAnyPlayer(team) {
@@ -29,7 +29,8 @@ export class IconsComponent{
     public getPlayersByTeam(team) {
         let playersOfTheTeam = [];
         this.players.forEach( (value, key) =>{
-            if(value.teamID == team && !playersOfTheTeam) {
+            if(value.teamID == team) {
+                value.salary = parseInt(value.salary);
                 playersOfTheTeam.push(value);
             }
         });

@@ -1,5 +1,5 @@
 <div class="container-fluid">
-        <div class="row">
+        <div *ngIf="teams" class="row">
             <div *ngFor="let team of teams" class="col-md-12">
                 <div class="card">
                     <div class="header">
@@ -13,6 +13,7 @@
                                     <th>Posición</th>
                                     <th>Nombre</th>
                                     <th>Media</th>
+                                    <th>Cláusula</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -20,6 +21,8 @@
                                     <td>{{row.position}}</td>
                                     <td>{{row.name}}</td>
                                     <td>{{row.overage}}</td>
+                                    <td *ngIf="row.salary<10">{{(row.salary*10)}}</td>
+                                    <td *ngIf="row.salary>=10">INTOCABLE</td>
                                 </tr>
                             </tbody>
                         </table>

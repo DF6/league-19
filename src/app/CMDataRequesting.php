@@ -83,6 +83,9 @@
        case "regUsu":
           saveUser($link, $params);
             break;
+       case "updUsu":
+          updateUser($link, $params);
+            break;
        case "claJug":
           forceSign($link, $params);
             break;

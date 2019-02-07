@@ -22,8 +22,8 @@ export class TableComponent implements OnInit{
     constructor(private http: Http){}
 
     ngOnInit() {
-        this.tournaments = JSON.parse(sessionStorage.getItem('tournaments'));
-        this.teams = JSON.parse(sessionStorage.getItem('teams'));
+        this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
+        this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
         this.setTableConfig();
         this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'ST'}).subscribe( (response) => {
             let standingsArray = response.json().standings;
@@ -31,11 +31,13 @@ export class TableComponent implements OnInit{
             const secondLastEdition = this.getLastEdition('Segunda', standingsArray[8].tournamentID).toString();
             let premierStandings = [];
             let secondStandings = [];
+            let pStands = [];
+            let sStands = [];
             for (let i = 0; i < standingsArray.length; i++) {
                 if (standingsArray[i].tournamentID == premierLastEdition) {
                     premierStandings.push([
                         0,
-                        parseInt(standingsArray[i].team),
+                        this.getTeamById(parseInt(standingsArray[i].team)).name,
                         parseInt(standingsArray[i].round),
                         parseInt(standingsArray[i].won),
                         parseInt(standingsArray[i].draw),
@@ -48,7 +50,7 @@ export class TableComponent implements OnInit{
                 }else if (standingsArray[i].tournamentID == secondLastEdition) {
                     secondStandings.push([
                         0,
-                        parseInt(standingsArray[i].team),
+                        this.getTeamById(parseInt(standingsArray[i].team)).name,
                         parseInt(standingsArray[i].round),
                         parseInt(standingsArray[i].won),
                         parseInt(standingsArray[i].draw),
@@ -61,23 +63,38 @@ export class TableComponent implements OnInit{
                 }
             }
 
-            for (let p = 1; p < premierStandings.length; p++) {
-                let p2 = p
-                while (p2 > 0) {
-                    if (parseInt(premierStandings[p2][9]) > parseInt(premierStandings[p2 - 1][9])){
-                        premierStandings.splice(p2 - 1, 0, premierStandings.splice(p, 1)[0]);
-                        p2 = 0;
+            let position = 1;
+            while(premierStandings.length != 0) {
+                let indexToInsert = -1;
+                let maxPoints = -1;
+                premierStandings.forEach( (value, key) => {
+                    if(value[9] > maxPoints) {
+                        indexToInsert = key;
+                        maxPoints = value[9];
                     }
-                    p2--;
-                }
+                });
+                let teamToInsert = premierStandings.splice(indexToInsert, 1);
+                teamToInsert[0][0] = position;
+                pStands.push(teamToInsert[0]);
+                position++;
             }
-            for ( let p = 1; p < secondStandings.length; p++) {
-                for (let p2 = p; p2 > 0 && parseInt(secondStandings[p2][9]) > parseInt(secondStandings[p2 - 1][9]); p2--) {
-                    secondStandings.splice(p2 - 1, 0, secondStandings.splice(p, 1)[0]);
-                }
+            position = 1;
+            while(secondStandings.length != 0) {
+                let indexToInsert = -1;
+                let maxPoints = -1;
+                secondStandings.forEach( (value, key) => {
+                    if(value[9] > maxPoints) {
+                        indexToInsert = key;
+                        maxPoints = value[9];
+                    }
+                });
+                let teamToInsert = secondStandings.splice(indexToInsert, 1);
+                teamToInsert[0][0] = position;
+                sStands.push(teamToInsert[0]);
+                position++;
             }
-            this.tableData1.dataRows = premierStandings;
-            this.tableData2.dataRows = secondStandings;
+            this.tableData1.dataRows = pStands;
+            this.tableData2.dataRows = sStands;
         });
     }
 
@@ -89,6 +106,16 @@ export class TableComponent implements OnInit{
             }
         }
         return lastEdition;
+    }
+
+    public getTeamById(team) {
+        let teamToReturn = null;
+        this.teams.forEach( (value) => {
+            if(value.id == team) {
+                teamToReturn = value;
+            }
+        });
+        return teamToReturn;
     }
 
     private setTableConfig() {
