@@ -21,8 +21,9 @@
                                     <td>{{row.position}}</td>
                                     <td>{{row.name}}</td>
                                     <td>{{row.overage}}</td>
-                                    <td *ngIf="row.salary<10">{{(row.salary*10)}}</td>
-                                    <td *ngIf="row.salary>=10">INTOCABLE</td>
+                                    <td *ngIf="row.salary<10 && !row.buyedThisMarket">{{(row.salary*10)}} M€</td>
+                                    <td *ngIf="row.salary>=10 && !row.buyedThisMarket">INTOCABLE</td>
+                                    <td *ngIf="row.buyedThisMarket">COMPRADO</td>
                                 </tr>
                             </tbody>
                         </table>
