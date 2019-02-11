@@ -25,8 +25,8 @@ export class LoginComponent{
         let userExists = false;
         let passMatch = false;
         this.users.forEach( (value) => {
-            if(value.user == this.user) {
-                if(value.pass == this.pass) {
+            if(value.user.toLowerCase() == this.user.toLowerCase()) {
+                if(value.pass.toLowerCase() == this.pass.toLowerCase()) {
                     sessionStorage.setItem('user', JSON.stringify({id: value.id, teamID: value.teamID, user: value.user, pass: value.pass, email: value.email}));
                     passMatch = true;
                     alert('Bienvenido ' + value.user);
