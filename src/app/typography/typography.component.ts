@@ -17,14 +17,15 @@ export class TypographyComponent{
     public tableData1: TableData;
     public user;
     public tournaments;
+    public teams;
     public matches = [];
 
     constructor(private http: Http) {
-        /*this.user = JSON.parse(sessionStorage.getItem('user'));
-        this.tournaments = JSON.parse(sessionStorage.getItem('tournaments'));
+        this.user = JSON.parse(sessionStorage.getItem('user'));
+        this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
+        this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
         this.setTableConfig();
         this.getMatchesByTeam(this.user.teamID);
-        this.setUndisputedMatches();*/
     }
 
     private getMatchesByTeam(team) {
@@ -35,15 +36,18 @@ export class TypographyComponent{
                     this.matches.push(value);
                 }
             });
+            this.setUndisputedMatches();
         });
     }
 
     private setUndisputedMatches() {
+        let finalTableMatches = []
         this.matches.forEach( (value, key) => {
-            if (!value.localGoals.isNumber() && !value.awayGoals.isNumber()) {
-                this.matches.splice(key, 1);
+            if (value.localGoals == "-1" && value.awayGoals == "-1") {
+                finalTableMatches.push(value);
             }
         });
+        this.matches = finalTableMatches;
         this.tableData1.dataRows = this.matches;
     }
 
@@ -56,11 +60,22 @@ export class TypographyComponent{
 
     public getTournamentById(id) {
         let tournament = {};
-        this.tournaments.forEach( (value, key) => {
+        id = parseInt(id);
+        this.tournaments.forEach( (value) => {
             if (value.id == id) {
                 tournament = value;
             }
         });
         return tournament;
+    }
+
+    public getTeamById(team) {
+        let teamToReturn = null;
+        this.teams.forEach( (value) => {
+            if(value.id == team) {
+                teamToReturn = value;
+            }
+        });
+        return teamToReturn;
     }
 }

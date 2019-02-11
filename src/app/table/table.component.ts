@@ -16,8 +16,11 @@ declare interface TableData {
 export class TableComponent implements OnInit{
     public tableData1: TableData;
     public tableData2: TableData;
+    public tableData3: TableData;
+    public tableData4: TableData;
     public tournaments: any[];
     public teams: any[];
+    public standingsArray;
 
     constructor(private http: Http){}
 
@@ -26,39 +29,39 @@ export class TableComponent implements OnInit{
         this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
         this.setTableConfig();
         this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'ST'}).subscribe( (response) => {
-            let standingsArray = response.json().standings;
-            const premierLastEdition = this.getLastEdition('Primera', standingsArray[0].tournamentID).toString();
-            const secondLastEdition = this.getLastEdition('Segunda', standingsArray[8].tournamentID).toString();
+            this.standingsArray = response.json().standings;
+            const premierLastEdition = this.getLastEdition('Primera', this.standingsArray[0].tournamentID).toString();
+            const secondLastEdition = this.getLastEdition('Segunda', this.standingsArray[8].tournamentID).toString();
             let premierStandings = [];
             let secondStandings = [];
             let pStands = [];
             let sStands = [];
-            for (let i = 0; i < standingsArray.length; i++) {
-                if (standingsArray[i].tournamentID == premierLastEdition) {
+            for (let i = 0; i < this.standingsArray.length; i++) {
+                if (this.standingsArray[i].tournamentID == premierLastEdition) {
                     premierStandings.push([
                         0,
-                        this.getTeamById(parseInt(standingsArray[i].team)).name,
-                        parseInt(standingsArray[i].round),
-                        parseInt(standingsArray[i].won),
-                        parseInt(standingsArray[i].draw),
-                        parseInt(standingsArray[i].lost),
-                        parseInt(standingsArray[i].goalsFor),
-                        parseInt(standingsArray[i].goalsAgainst),
-                        parseInt(standingsArray[i].goalsFor) - parseInt(standingsArray[i].goalsAgainst),
-                        parseInt(standingsArray[i].points)
+                        this.getTeamById(parseInt(this.standingsArray[i].team)).name,
+                        parseInt(this.standingsArray[i].round),
+                        parseInt(this.standingsArray[i].won),
+                        parseInt(this.standingsArray[i].draw),
+                        parseInt(this.standingsArray[i].lost),
+                        parseInt(this.standingsArray[i].goalsFor),
+                        parseInt(this.standingsArray[i].goalsAgainst),
+                        parseInt(this.standingsArray[i].goalsFor) - parseInt(this.standingsArray[i].goalsAgainst),
+                        parseInt(this.standingsArray[i].points)
                     ]);
-                }else if (standingsArray[i].tournamentID == secondLastEdition) {
+                }else if (this.standingsArray[i].tournamentID == secondLastEdition) {
                     secondStandings.push([
                         0,
-                        this.getTeamById(parseInt(standingsArray[i].team)).name,
-                        parseInt(standingsArray[i].round),
-                        parseInt(standingsArray[i].won),
-                        parseInt(standingsArray[i].draw),
-                        parseInt(standingsArray[i].lost),
-                        parseInt(standingsArray[i].goalsFor),
-                        parseInt(standingsArray[i].goalsAgainst),
-                        parseInt(standingsArray[i].goalsFor) - parseInt(standingsArray[i].goalsAgainst),
-                        parseInt(standingsArray[i].points)
+                        this.getTeamById(parseInt(this.standingsArray[i].team)).name,
+                        parseInt(this.standingsArray[i].round),
+                        parseInt(this.standingsArray[i].won),
+                        parseInt(this.standingsArray[i].draw),
+                        parseInt(this.standingsArray[i].lost),
+                        parseInt(this.standingsArray[i].goalsFor),
+                        parseInt(this.standingsArray[i].goalsAgainst),
+                        parseInt(this.standingsArray[i].goalsFor) - parseInt(this.standingsArray[i].goalsAgainst),
+                        parseInt(this.standingsArray[i].points)
                     ]);
                 }
             }
@@ -96,6 +99,23 @@ export class TableComponent implements OnInit{
             this.tableData1.dataRows = pStands;
             this.tableData2.dataRows = sStands;
         });
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
+            const matches = response.json() ? response.json().matches : null;
+            sessionStorage.setItem('matches', JSON.stringify({matches: matches}));
+            let premierMatches = [];
+            let secondMatches = [];
+            const premierLastEdition = this.getLastEdition('Primera', this.standingsArray[0].tournamentID).toString();
+            const secondLastEdition = this.getLastEdition('Segunda', this.standingsArray[8].tournamentID).toString();
+            matches.forEach( (value) => {
+                if(value.tournament == premierLastEdition) {
+                    premierMatches.push(value);
+                }else if(value.tournament == secondLastEdition) {
+                    secondMatches.push(value);
+                }
+            });
+            this.tableData3.dataRows = premierMatches;
+            this.tableData4.dataRows = secondMatches;
+        });
     }
 
     private getLastEdition(league, tournament_id) {
@@ -125,6 +145,14 @@ export class TableComponent implements OnInit{
         };
         this.tableData2 = {
             headerRow: [ 'position', 'team', 'round', 'won', 'draw', 'lost', 'goalsFor', 'goalsAgainst', 'goalsDifference', 'points'],
+            dataRows: []
+        };
+        this.tableData3 = {
+            headerRow: [ 'round', 'local', 'result', 'away', 'summary'],
+            dataRows: []
+        };
+        this.tableData4 = {
+            headerRow: [ 'round', 'local', 'result', 'away', 'summary'],
             dataRows: []
         };
     }

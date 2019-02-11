@@ -1,8 +1,8 @@
 <div class="container-fluid">
 
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalRellenar">
+        <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalRellenar">
                 Rellenar
-        </button>
+        </button>-->
 
         <div class="row">
             <div class="col-md-12">
@@ -24,11 +24,11 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let row of tableData1.dataRows">
-                                    <td>{{getTournamentById(row.tournamentID).name}}</td>
-                                    <td>row.round</td>
-                                    <td>row.local</td>
+                                    <td>{{getTournamentById(row.tournament).name}}</td>
+                                    <td>{{row.round}}</td>
+                                    <td>{{getTeamById(row.local).name}}</td>
                                     <td>-</td>
-                                    <td>row.away</td>
+                                    <td>{{getTeamById(row.away).name}}</td>
                                     <td><a href="" (click)="fillMatchData(row.id)">Rellenar</a></td>
                                 </tr>
                             </tbody>

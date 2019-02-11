@@ -36,41 +36,6 @@
             </div>
         </div>
 
-        <!--<div class="col-md-12">
-                <div class="card">
-                    <div class="header">
-                        <h4 class="title">Partidos</h4>
-                        <p class="category">Primera División - Temporada {{season}}</p>
-                    </div>
-                    <div *ngIf="tableData3.dataRows.length != 0" class="content table-responsive table-full-width">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>Jornada</th>
-                                    <th>Local</th>
-                                    <th>Resultado</th>
-                                    <th>Visitante</th>
-                                    <th>Resumen</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let row of tableData3.dataRows">
-                                    <td>{{row.round}}</td>
-                                    <td>{{getTeamById(row.local).name}}</td>
-                                    <td>{{row.localGoals}} - {{row.awayGoals}}</td>
-                                    <td>{{getTeamById(row.away).name}}</td>
-                                    <td><a *ngIf="row.localGoals" href="">Resumen</a></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div *ngIf="tableData3.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
-                        Partidos no disponibles
-                    </div>
-                </div>
-            </div>-->
-
-
         <div class="col-md-12">
             <div class="card">
                 <div class="header">
@@ -106,7 +71,41 @@
             </div>
         </div>
 
-        <!--<div class="col-md-12">
+        <div class="col-md-6">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Partidos</h4>
+                        <p class="category">Primera División - Temporada {{season}}</p>
+                    </div>
+                    <div *ngIf="tableData3.dataRows.length != 0" class="content table-responsive table-full-width">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Jornada</th>
+                                    <th>Local</th>
+                                    <th>Resultado</th>
+                                    <th>Visitante</th>
+                                    <th>Resumen</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of tableData3.dataRows">
+                                    <td style="text-align: center;">{{row.round}}</td>
+                                    <td style="text-align: center;">{{getTeamById(row.local).name}}</td>
+                                    <td style="text-align: center;"><span *ngIf="row.localGoals != -1">{{row.localGoals}} - {{row.awayGoals}}</span><span *ngIf="row.localGoals == -1">-</span></td>
+                                    <td style="text-align: center;">{{getTeamById(row.away).name}}</td>
+                                    <td style="text-align: center;"><a *ngIf="row.localGoals != -1" href="">Resumen</a><span *ngIf="row.localGoals == -1">Por jugar</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div *ngIf="tableData3.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                        Partidos no disponibles
+                    </div>
+                </div>
+            </div>
+
+        <div class="col-md-6">
                 <div class="card">
                     <div class="header">
                         <h4 class="title">Partidos</h4>
@@ -125,10 +124,11 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let row of tableData4.dataRows">
-                                    <td>{{row.round}}</td>
-                                    <td>{{getTeamById(row.local).name}}</td>
-                                    <td>{{row.localGoals}} - {{row.awayGoals}}</td>
-                                    <td><a *ngIf="row.localGoals" href="">Resumen</a></td>
+                                    <td style="text-align: center;">{{row.round}}</td>
+                                    <td style="text-align: center;">{{getTeamById(row.local).name}}</td>
+                                    <td style="text-align: center;"><span *ngIf="row.localGoals != -1">{{row.localGoals}} - {{row.awayGoals}}</span><span *ngIf="row.localGoals == -1">-</span></td>
+                                    <td style="text-align: center;">{{getTeamById(row.away).name}}</td>
+                                    <td style="text-align: center;"><a *ngIf="row.localGoals != -1" href="">Resumen</a><span *ngIf="row.localGoals == -1">Por jugar</span></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -137,6 +137,6 @@
                         Partidos no disponibles
                     </div>
                 </div>
-            </div>-->
+            </div>
     </div>
 </div>

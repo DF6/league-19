@@ -16,7 +16,6 @@ export class AppComponent{
       const users = response.json() ? response.json().users : null;
       sessionStorage.setItem('users', JSON.stringify({users: users}));
     });
-    sessionStorage.setItem('user', JSON.stringify({id: '2', teamID: '13', user: 'axelldf6', pass: '(CopaMugreFIFA2019)', email: '0'}));
     this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'TO'}).subscribe( (response) => {
       const tournaments = response.json() ? response.json().tournaments : null;
       sessionStorage.setItem('tournaments', JSON.stringify({tournaments: tournaments}));

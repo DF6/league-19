@@ -1,56 +1,32 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-4 col-md-5">
-                <div class="card card-user">
-                    <div class="image">
-                        <img src="assets/img/background.jpg" alt="..."/>
-                    </div>
-                    <div class="content">
-                        <div class="author">
-                          <img class="avatar border-white" src="{{user.team.imageRoute}}" alt="..."/>
-                          <h4 class="title">{{user.name}}<br />
-                          </h4>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="text-center">
-                        <div class="row">
-                            <div class="col-md-3 col-md-offset-1">
-                                <h5>12<br /><small>Files</small></h5>
-                            </div>
-                            <div class="col-md-4">
-                                <h5>2GB<br /><small>Used</small></h5>
-                            </div>
-                            <div class="col-md-3">
-                                <h5>24,6$<br /><small>Spent</small></h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
                 <div class="card">
                         <div class="header">
-                            <h4 class="title">Ajustes de perfil</h4>
+                            <h4 class="title">Entrar</h4>
                         </div>
                         <div class="content">
                             
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label>Cambiar contraseña</label>
-                                            <input type="text" class="form-control border-input">
+                                            <label>Usuario</label>
+                                            <input [disabled]="disableInputs" [(ngModel)]="user" type="text" class="form-control border-input">
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label>Confirmar contraseña</label>
-                                            <input type="text" class="form-control border-input">
+                                            <label>Contraseña</label>
+                                            <input [disabled]="disableInputs" [(ngModel)]="pass" type="password" class="form-control border-input">
                                         </div>
                                     </div>
                                 </div>
     
                                 <div class="row">
-                                    <div class="text-center">
-                                        <button type="button" class="btn btn-info btn-fill btn-wd" (click)="changePass()">Cambiar contraseña</button>
+                                    <div class="text-center" style="cursor: pointer;">
+                                        <span 
+                                        style="font-weight: bold; padding: 8px;border: 2pt solid black; background-color: #ccc; border-radius: 5px;" 
+                                        (click)="login()">Entrar</span>
                                     </div>
                                 <div class="clearfix"></div>
                             
@@ -58,41 +34,5 @@
                     </div>
                 </div>
             </div>
-            <div class="col-lg-8 col-md-7">
-            <div class="card">
-                    <div class="header">
-                        <h4 class="title">Mi plantilla - {{getPlayersByTeam(user.team.id).length}} jugadores</h4>
-                    </div>
-                    <div class="content">
-                        <ul class="list-unstyled team-members">
-                                    <li *ngFor="let player of getPlayersByTeam(user.team.id)">
-                                        <div class="row">
-                                            <div class="col-xs-1">
-                                                <div class="avatar">
-                                                    <img src="assets/img/faces/face-0.jpg" class="img-circle img-no-padding img-responsive">
-                                                </div>
-                                            </div>
-                                            <div class="col-xs-5">
-                                                {{player.name}}
-                                                <br />
-                                                <span><small>{{player.position}}</small></span>
-                                            </div>
-                                            <div class="col-xs-1">
-                                                {{player.overage}}
-                                            </div>
-                                            <div class="col-xs-2">
-                                                {{player.salary}}M€
-                                            </div>
-                                            <div class="col-xs-3 text-right">
-                                                Cambiar sueldo <button class="btn btn-sm btn-success btn-icon" ng-click="changeSalary(player.id)"><i class="fa fa-envelope"></i></button>
-                                            </div>
-                                        </div>
-                                    </li>
-                                </ul>
-                            <span style="margin-left: 1%;">Total Sueldos: {{getTotalSalariesByTeam(user.team.id)}}M€ (Límite 100M€)</span>
-                    </div>
-                </div>
-
-
         </div>
     </div>
