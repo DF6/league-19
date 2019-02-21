@@ -44,6 +44,7 @@ export class TypographyComponent{
         let finalTableMatches = []
         this.matches.forEach( (value, key) => {
             if (value.localGoals == "-1" && value.awayGoals == "-1") {
+                value.filling = false;
                 finalTableMatches.push(value);
             }
         });

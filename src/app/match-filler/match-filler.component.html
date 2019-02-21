@@ -1,0 +1,123 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <h1>{{getTeamById(data.local).name}} {{local.score}}</h1>
+                <span style="display:block;">Goles</span>
+                <div>
+                    <select *ngFor="let localscorer of local.scorers" [(ngModel)]="localscorer">
+                        <option *ngFor="let teamPlayer of localPlayers" 
+                        value="{{teamPlayer.id}}">{{teamPlayer.name}}</option>
+                        <option value="0">No lo sé</option>
+                    </select>
+                </div>
+                <button (click)="addScorer(data.local)"></button>
+                <span style="display:block;">Asistencias</span>
+                <div>
+                    <select *ngFor="let localassistants of local.assistants" [(ngModel)]="localassistants">
+                        <option *ngFor="let teamPlayer of localPlayers" 
+                        value="{{teamPlayer.id}}">{{teamPlayer.name}}</option>
+                        <option value="0">No lo sé</option>
+                    </select>
+                </div>
+                <button (click)="addAssistant(data.local)"></button>
+                <span style="display:block;">Amarillas</span>
+                <div>
+                    <select *ngFor="let localyellowCard of local.yellowCards" [(ngModel)]="localyellowCard">
+                        <option *ngFor="let teamPlayer of localPlayers" 
+                        value="{{teamPlayer.id}}">{{teamPlayer.name}}</option>
+                        <option value="0">No lo sé</option>
+                    </select>
+                </div>
+                <button (click)="addYellowCard(data.local)"></button>
+                <span style="display:block;">Rojas</span>
+                <div>
+                    <select *ngFor="let localredCard of local.redCards" [(ngModel)]="localredCard">
+                        <option *ngFor="let teamPlayer of localPlayers" 
+                        value="{{teamPlayer.id}}">{{teamPlayer.name}}</option>
+                        <option value="0">No lo sé</option>
+                    </select>
+                </div>
+                <button (click)="addRedCard(data.local)"></button>
+                <span style="display:block;">Lesiones</span>
+                <div>
+                    <select *ngFor="let localInjury of local.injuries" [(ngModel)]="localInjury">
+                        <option *ngFor="let teamPlayer of localPlayers" 
+                        value="{{teamPlayer.id}}">{{teamPlayer.name}}</option>
+                        <option value="0">No lo sé</option>
+                    </select>
+                </div>
+                <button (click)="addInjury(data.local)"></button>
+                <span style="display:block;">MVP</span>
+                <div>
+                    <select *ngFor="let localMVP of local.mvp" [(ngModel)]="localMVP">
+                        <option *ngFor="let teamPlayer of localPlayers" 
+                        value="{{teamPlayer.id}}">{{teamPlayer.name}}</option>
+                        <option value="0">No lo sé</option>
+                    </select>
+                </div>
+                <button (click)="addMVP(data.local)"></button>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="card">
+                <h1>{{away.score}} {{getTeamById(data.away).name}}</h1>
+                <span style="display:block;">Goles</span>
+                <div>
+                        <select *ngFor="let awayscorer of away.scorers" [(ngModel)]="awayscorer">
+                            <option *ngFor="let teamPlayer of awayPlayers" 
+                            value="{{teamPlayer.id}}">{{teamPlayer.name}}</option>
+                            <option value="0">No lo sé</option>
+                        </select>
+                    </div>
+                    <button (click)="addScorer(data.away)"></button>
+                    <span style="display:block;">Asistencias</span>
+                    <div>
+                        <select *ngFor="let awayassistants of away.assistants" [(ngModel)]="awayassistants">
+                            <option *ngFor="let teamPlayer of awayPlayers" 
+                            value="{{teamPlayer.id}}">{{teamPlayer.name}}</option>
+                            <option value="0">No lo sé</option>
+                        </select>
+                    </div>
+                    <button (click)="addAssistant(data.away)"></button>
+                    <span style="display:block;">Amarillas</span>
+                    <div>
+                        <select *ngFor="let awayyellowCard of away.yellowCards" [(ngModel)]="awayyellowCard">
+                            <option *ngFor="let teamPlayer of awayPlayers" 
+                            value="{{teamPlayer.id}}">{{teamPlayer.name}}</option>
+                            <option value="0">No lo sé</option>
+                        </select>
+                    </div>
+                    <button (click)="addYellowCard(data.away)"></button>
+                    <span style="display:block;">Rojas</span>
+                    <div>
+                        <select *ngFor="let awayredCard of away.redCards" [(ngModel)]="awayredCard">
+                            <option *ngFor="let teamPlayer of awayPlayers" 
+                            value="{{teamPlayer.id}}">{{teamPlayer.name}}</option>
+                            <option value="0">No lo sé</option>
+                        </select>
+                    </div>
+                    <button (click)="addRedCard(data.away)"></button>
+                    <span style="display:block;">Lesiones</span>
+                    <div>
+                        <select *ngFor="let awayInjury of away.injuries" [(ngModel)]="awayInjury">
+                            <option *ngFor="let teamPlayer of awayPlayers" 
+                            value="{{teamPlayer.id}}">{{teamPlayer.name}}</option>
+                            <option value="0">No lo sé</option>
+                        </select>
+                    </div>
+                    <button (click)="addInjury(data.away)"></button>
+                <span style="display:block;">MVP</span>
+                    <div>
+                        <select *ngFor="let awayMVP of away.mvp" [(ngModel)]="awayMVP">
+                            <option *ngFor="let teamPlayer of awayPlayers" 
+                            value="{{teamPlayer.id}}">{{teamPlayer.name}}</option>
+                            <option value="0">No lo sé</option>
+                        </select>
+                    </div>
+                    <button (click)="addMVP(data.away)"></button>
+            </div>
+        </div>
+    </div>
+</div>

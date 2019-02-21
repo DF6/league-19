@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 
-declare var $:any;
+declare var $: any;
 
 @Component({
   selector: 'app-root',
@@ -9,7 +9,7 @@ declare var $:any;
   styleUrls: ['./app.component.css']
 })
 
-export class AppComponent{
+export class AppComponent {
 
   constructor(private http: Http) {
     this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'U'}).subscribe( (response) => {
