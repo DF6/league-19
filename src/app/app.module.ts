@@ -22,6 +22,7 @@ import { UpgradeComponent }   from './upgrade/upgrade.component';
 import { HttpModule } from '@angular/http';
 import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './registro/registro.component';
+import { MatchFillerModule } from './match-filler/match-filler.module';
 
 @NgModule({
   declarations: [
@@ -46,6 +47,7 @@ import { RegistroComponent } from './registro/registro.component';
     NavbarModule,
     FooterModule,
     FixedPluginModule,
+    MatchFillerModule,
     NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=YOUR_KEY_HERE'})
 
   ],

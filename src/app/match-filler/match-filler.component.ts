@@ -19,7 +19,7 @@ export interface MatchData {
     templateUrl: 'match-filler.component.html'
 })
 
-export class TableComponent implements OnInit{
+export class MatchFillerComponent implements OnInit{
 
     @Input() data: MatchData;
     @Output() matchFilled = new EventEmitter<boolean>();
@@ -30,6 +30,7 @@ export class TableComponent implements OnInit{
     public players: any[];
     public localPlayers: any[];
     public awayPlayers: any[];
+    public models: any;
 
     constructor(private http: Http){
         this.local = {
@@ -50,6 +51,20 @@ export class TableComponent implements OnInit{
             injuries: [],
             mvp: []
         };
+        this.models = {
+            localScorer: null,
+            awayScorer: null,
+            localAssistant: null,
+            awayAssistant: null,
+            localYellowCard: null,
+            awayYellowCard: null,
+            localRedCard: null,
+            awayRedCard: null,
+            localinjury: null,
+            awayinjury: null,
+            localmvp: null,
+            awaymvp: null
+        }
     }
 
     ngOnInit() {
@@ -62,10 +77,10 @@ export class TableComponent implements OnInit{
 
     public addScorer(team) {
         if (team == this.data.local) {
-            this.local.scorers.push();
+            this.local.scorers.push(this.models.localScorer);
             this.local.score++;
         } else if (team == this.data.away) {
-            this.away.scorers.push();
+            this.away.scorers.push(this.models.awayScorer);
             this.away.score++;
         }
     }
@@ -82,9 +97,9 @@ export class TableComponent implements OnInit{
 
     public addAssistant(team) {
         if (team == this.data.local) {
-            this.local.assistants.push();
+            this.local.assistants.push(this.models.localAssistant);
         } else if (team == this.data.away) {
-            this.away.assistants.push();
+            this.away.assistants.push(this.models.awayAssistant);
         }
     }
 
@@ -98,9 +113,9 @@ export class TableComponent implements OnInit{
 
     public addYellowCard(team) {
         if (team == this.data.local) {
-            this.local.yellowCards.push();
+            this.local.yellowCards.push(this.models.localYellowCard);
         } else if (team == this.data.away) {
-            this.away.yellowCards.push();
+            this.away.yellowCards.push(this.models.addYellowCard);
         }
     }
 
@@ -114,9 +129,9 @@ export class TableComponent implements OnInit{
 
     public addRedCard(team) {
         if (team == this.data.local) {
-            this.local.redCards.push();
+            this.local.redCards.push(this.models.localRedCard);
         } else if (team == this.data.away) {
-            this.away.redCards.push();
+            this.away.redCards.push(this.models.awayRedCard);
         }
     }
 
@@ -130,9 +145,9 @@ export class TableComponent implements OnInit{
 
     public addInjury(team) {
         if (team == this.data.local) {
-            this.local.injuries.push();
+            this.local.injuries.push(this.models.localinjury);
         } else if (team == this.data.away) {
-            this.away.injuries.push();
+            this.away.injuries.push(this.models.awayinjury);
         }
     }
 
@@ -147,9 +162,9 @@ export class TableComponent implements OnInit{
     public addMVP(team) {
         if (this.local.mvp.length == 0 && this.away.mvp.length == 0) {
             if (team == this.data.local) {
-                this.local.mvp.push();
+                this.local.mvp.push(this.models.localmvp);
             } else if (team == this.data.away) {
-                this.away.mvp.push();
+                this.away.mvp.push(this.models.awaymvp);
             }
         }else{
             alert('Ya tienes un MVP');
@@ -181,7 +196,7 @@ export class TableComponent implements OnInit{
             }
             this.http.post('./CMDataRequesting.php', {type: 'updSta', points: local.points, won: local.won, draw: local.draw, lost: local.lost, goalsFor: this.local.score, goalsAgainst: this.away.score, tournamentID: this.data.tournament, team: this.data.local}).subscribe( () => {});
             this.http.post('./CMDataRequesting.php', {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, goalsFor: this.away.score, goalsAgainst: this.local.score, tournamentID: this.data.tournament, team: this.data.away}).subscribe( () => {});
-            
+            this.matchFilled.emit();
         });
     }
 
@@ -193,6 +208,16 @@ export class TableComponent implements OnInit{
             }
         });
         return teamToReturn;
+    }
+
+    public getPlayerById(player) {
+        let playerToReturn = null;
+        this.players.forEach( (value) => {
+            if(value.id == player) {
+                playerToReturn = value;
+            }
+        });
+        return playerToReturn;
     }
 
     public getPlayersByTeam(team) {

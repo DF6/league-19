@@ -29,9 +29,9 @@
                                     <td *ngIf="!row.filling">{{getTeamById(row.local).name}}</td>
                                     <td *ngIf="!row.filling">-</td>
                                     <td *ngIf="!row.filling">{{getTeamById(row.away).name}}</td>
-                                    <td *ngIf="!row.filling"><a href="" (click)="row.filling = true">Rellenar</a></td>
-                                    <td *ngIf="row.filling">
-                                        <match-filler *ngIf="row.filling" data="row" (matchFilled)="matchFilled($event)"></match-filler>
+                                    <td *ngIf="!row.filling"><a style="cursor:pointer;" (click)="row.filling = true">Rellenar</a></td>
+                                    <td *ngIf="row.filling" colspan="6">
+                                        <match-filler *ngIf="row.filling" [data]="row" (matchFilled)="matchFilled($event)"></match-filler>
                                     </td>
                                 </tr>
                             </tbody>
