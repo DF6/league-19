@@ -21,6 +21,7 @@ export class TableComponent implements OnInit{
     public tournaments: any[];
     public teams: any[];
     public standingsArray;
+    public season;
 
     constructor(private http: Http){}
 
@@ -31,6 +32,7 @@ export class TableComponent implements OnInit{
         this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'ST'}).subscribe( (response) => {
             this.standingsArray = response.json().standings;
             const premierLastEdition = this.getLastEdition('Primera', this.standingsArray[0].tournamentID).toString();
+            this.season = premierLastEdition;
             const secondLastEdition = this.getLastEdition('Segunda', this.standingsArray[8].tournamentID).toString();
             let premierStandings = [];
             let secondStandings = [];

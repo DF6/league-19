@@ -53,4 +53,12 @@ export class UserComponent{
         }
     }
     
+    public getTotalSalariesByTeam(team) {
+        let playerToBe = this.getPlayersByTeam(team);
+        let total = 0;
+        playerToBe.forEach( (value) => {
+            total += parseFloat(value.salary);
+        });
+        return total;
+    }
 }

@@ -391,8 +391,7 @@
   function insertAction($con, $params)
   {
     $data = array();
-    $query="INSERT INTO actions (match_id, type, player) values (".$params->matchID.", '".$params->actionType."', ".$params->player.")";
-    $resultado=mysqli_query($con, $query) or die("Error insertando accion");
+    $resultado=$con->multi_query($params->query) or die("Error insertando accion");
     $data['success'] = true;
     $data['message'] = "Accion insertada";
     echo json_encode($data);

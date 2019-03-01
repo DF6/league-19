@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { SideBarService } from './sidebar.service';
 
 declare var $:any;
 
@@ -12,14 +13,19 @@ export interface RouteInfo {
 export const ROUTES: RouteInfo[] = [
     /*{ path: 'panelcontrol', title: 'Panel de Control',  icon: 'ti-panel', class: '' },
     { path: 'mercado', title: 'Mercado',  icon:'ti-map', class: '' },*/
-    { path: 'liga', title: 'Liga',  icon:'ti-view-list-alt', class: '' },
-    { path: 'copa', title: 'Copa',  icon:'ti-bell', class: '' },
+    { path: 'liga', title: 'Liga',  icon: 'ti-view-list-alt', class: '' },
+    { path: 'copa', title: 'Copa',  icon: 'ti-bell', class: '' },
     { path: 'partidospendientes', title: 'Partidos Pendientes',  icon:'ti-text', class: '' },
-    { path: 'usuario', title: 'Perfil',  icon:'ti-user', class: '' },
-    { path: 'plantillas', title: 'Plantillas',  icon:'ti-pencil-alt2', class: '' },
+    { path: 'usuario', title: 'Perfil',  icon: 'ti-user', class: '' },
+    { path: 'plantillas', title: 'Plantillas',  icon: 'ti-pencil-alt2', class: '' },
+    { path: 'logout', title: 'Cerrar Sesion', icon: 'ti-user', class: ''},
+    { path: 'normas', title: 'Normas',  icon: 'ti-view-list-alt', class: 'active-pro' },
+];
+
+export const ROUTESNOTLOGGED: RouteInfo[] = [
     { path: 'registro', title: 'Registro', icon: 'ti-user', class: ''},
     { path: 'login', title: 'Entrar', icon: 'ti-user', class: ''},
-    { path: 'normas', title: 'Normas',  icon:'ti-view-list-alt', class: 'active-pro' },
+    { path: 'normas', title: 'Normas',  icon: 'ti-view-list-alt', class: 'active-pro' },
 ];
 
 @Component({
@@ -30,8 +36,20 @@ export const ROUTES: RouteInfo[] = [
 
 export class SidebarComponent implements OnInit {
     public menuItems: any[];
+
+    constructor(
+        private sideBarService: SideBarService
+      ) { }
+
     ngOnInit() {
-        this.menuItems = ROUTES.filter(menuItem => menuItem);
+        this.menuItems = ROUTESNOTLOGGED.filter(menuItem => menuItem);
+        this.sideBarService.logged.subscribe(isLogged => {
+            if (isLogged) {
+                this.menuItems = ROUTES.filter(menuItem => menuItem);
+            } else {
+                this.menuItems = ROUTESNOTLOGGED.filter(menuItem => menuItem);
+            }
+          });
     }
     isNotMobileMenu(){
         if($(window).width() > 991){

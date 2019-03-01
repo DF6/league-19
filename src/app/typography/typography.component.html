@@ -25,13 +25,43 @@
                             <tbody>
                                 <tr *ngFor="let row of tableData1.dataRows">
                                     <td *ngIf="!row.filling">{{getTournamentById(row.tournament).name}}</td>
-                                    <td *ngIf="!row.filling">{{row.round}}</td>
+                                    <td *ngIf="!row.filling && 
+                                    getTournamentById(row.tournament).name == 'Primera' ||
+                                    getTournamentById(row.tournament).name == 'Segunda'">{{row.round}}</td>
+                                    <td *ngIf="!row.filling && 
+                                    getTournamentById(row.tournament).name == 'Copa' &&row.round < 3">Octavos de final</td>
+                                    <!--<td *ngIf="!row.filling && 
+                                    getTournamentById(row.tournament).name == 'Champions' && row.round < 7">Fase de grupos</td>
+                                    <td *ngIf="!row.filling && 
+                                    ((getTournamentById(row.tournament).name == 'Copa' ||
+                                    getTournamentById(row.tournament).name == 'EL') && 
+                                    (row.round == 3 || row.round == 4)) ||
+                                    (getTournamentById(row.tournament).name == 'Champions' 
+                                    && (row.round == 7 || row.round == 8))">Cuartos de final</td>
+                                    <td *ngIf="!row.filling && 
+                                    ((getTournamentById(row.tournament).name == 'Copa' ||
+                                    getTournamentById(row.tournament).name == 'EL') && 
+                                    (row.round == 5 || row.round == 6)) ||
+                                    (getTournamentById(row.tournament).name == 'Champions' 
+                                    && (row.round == 9 || row.round == 10))">Semifinales</td>
+                                    <td *ngIf="!row.filling && 
+                                    ((getTournamentById(row.tournament).name == 'Copa' ||
+                                    getTournamentById(row.tournament).name == 'EL' ||
+                                    getTournamentById(row.tournament).name == 'Intertoto'') && row.round == 7) ||
+                                    (getTournamentById(row.tournament).name == 'Champions' 
+                                    && row.round == 11)">Tercer y Cuarto Puesto</td>
+                                    <td *ngIf="!row.filling && 
+                                    ((getTournamentById(row.tournament).name == 'Copa' ||
+                                    getTournamentById(row.tournament).name == 'EL' ||
+                                    getTournamentById(row.tournament).name == 'Intertoto'') && row.round == 8) ||
+                                    (getTournamentById(row.tournament).name == 'Champions' 
+                                    && row.round == 12)">Final</td>-->
                                     <td *ngIf="!row.filling">{{getTeamById(row.local).name}}</td>
                                     <td *ngIf="!row.filling">-</td>
                                     <td *ngIf="!row.filling">{{getTeamById(row.away).name}}</td>
                                     <td *ngIf="!row.filling"><a style="cursor:pointer;" (click)="row.filling = true">Rellenar</a></td>
                                     <td *ngIf="row.filling" colspan="6">
-                                        <match-filler *ngIf="row.filling" [data]="row" (matchFilled)="matchFilled($event)"></match-filler>
+                                        <match-filler *ngIf="row.filling" [data]="row" (matchFilled)="getMatchesByTeam(user.teamID)"></match-filler>
                                     </td>
                                 </tr>
                             </tbody>

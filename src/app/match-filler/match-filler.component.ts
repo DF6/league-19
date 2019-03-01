@@ -196,8 +196,62 @@ export class MatchFillerComponent implements OnInit{
             }
             this.http.post('./CMDataRequesting.php', {type: 'updSta', points: local.points, won: local.won, draw: local.draw, lost: local.lost, goalsFor: this.local.score, goalsAgainst: this.away.score, tournamentID: this.data.tournament, team: this.data.local}).subscribe( () => {});
             this.http.post('./CMDataRequesting.php', {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, goalsFor: this.away.score, goalsAgainst: this.local.score, tournamentID: this.data.tournament, team: this.data.away}).subscribe( () => {});
-            this.matchFilled.emit();
+            this.sendActionsOfTheMatch();
         });
+    }
+
+    public sendActionsOfTheMatch() {
+        let query = '';
+        this.local.scorers.forEach( (value) => {
+            query += this.mountAction('G', value);
+        });
+        this.local.assistants.forEach( (value) => {
+            query += this.mountAction('A', value);
+        });
+        this.local.yellowCards.forEach( (value) => {
+            query += this.mountAction('Y', value);
+        });
+        this.local.redCards.forEach( (value) => {
+            query += this.mountAction('R', value);
+        });
+        this.local.injuries.forEach( (value) => {
+            query += this.mountAction('I', value);
+        });
+        this.local.mvp.forEach( (value) => {
+            query += this.mountAction('M', value);
+        });
+        this.away.scorers.forEach( (value) => {
+            query += this.mountAction('G', value);
+        });
+        this.away.assistants.forEach( (value) => {
+            query += this.mountAction('A', value);
+        });
+        this.away.yellowCards.forEach( (value) => {
+            query += this.mountAction('Y', value);
+        });
+        this.away.redCards.forEach( (value) => {
+            query += this.mountAction('R', value);
+        });
+        this.away.injuries.forEach( (value) => {
+            query += this.mountAction('I', value);
+        });
+        this.away.mvp.forEach( (value) => {
+            query += this.mountAction('M', value);
+        });
+        if (query != '') {
+            this.http.post('./CMDataRequesting.php', {type: 'insAct', query: query}).subscribe( () => {
+                this.matchFilled.emit();
+            });
+        } else {
+            this.matchFilled.emit();
+        }
+    }
+
+    public mountAction(type, player) {
+        return "INSERT INTO actions (match_id, type, player) values ("
+         + this.data.id + ", '"
+         + type + "', "
+         + player + "); ";
     }
 
     public getTeamById(team) {

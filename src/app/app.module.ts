@@ -23,6 +23,7 @@ import { HttpModule } from '@angular/http';
 import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './registro/registro.component';
 import { MatchFillerModule } from './match-filler/match-filler.module';
+import { LogoutComponent } from './logout/logout.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { MatchFillerModule } from './match-filler/match-filler.module';
     NotificationsComponent,
     UpgradeComponent,
     LoginComponent,
-    RegistroComponent
+    RegistroComponent,
+    LogoutComponent
   ],
   imports: [
     BrowserModule,
