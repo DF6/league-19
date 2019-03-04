@@ -94,7 +94,7 @@
                                     <td style="text-align: center;">{{getTeamById(row.local).name}}</td>
                                     <td style="text-align: center;"><span *ngIf="row.localGoals != -1">{{row.localGoals}} - {{row.awayGoals}}</span><span *ngIf="row.localGoals == -1">-</span></td>
                                     <td style="text-align: center;">{{getTeamById(row.away).name}}</td>
-                                    <td style="text-align: center;"><a *ngIf="row.localGoals != -1" href="">Resumen</a><span *ngIf="row.localGoals == -1">Por jugar</span></td>
+                                    <td style="text-align: center;"><a *ngIf="row.localGoals != -1" style="cursor:pointer;" (click)="showSummary(row.id)">Resumen</a><span *ngIf="row.localGoals == -1">Por jugar</span></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -128,7 +128,7 @@
                                     <td style="text-align: center;">{{getTeamById(row.local).name}}</td>
                                     <td style="text-align: center;"><span *ngIf="row.localGoals != -1">{{row.localGoals}} - {{row.awayGoals}}</span><span *ngIf="row.localGoals == -1">-</span></td>
                                     <td style="text-align: center;">{{getTeamById(row.away).name}}</td>
-                                    <td style="text-align: center;"><a *ngIf="row.localGoals != -1" href="">Resumen</a><span *ngIf="row.localGoals == -1">Por jugar</span></td>
+                                    <td style="text-align: center;"><a *ngIf="row.localGoals != -1" style="cursor:pointer;" (click)="showSummary(row.id)">Resumen</a><span *ngIf="row.localGoals == -1">Por jugar</span></td>
                                 </tr>
                             </tbody>
                         </table>

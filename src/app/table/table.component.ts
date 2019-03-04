@@ -7,6 +7,8 @@ declare interface TableData {
     dataRows: string[][];
 }
 
+declare var $:any;
+
 @Component({
     selector: 'table-cmp',
     moduleId: module.id,
@@ -22,6 +24,7 @@ export class TableComponent implements OnInit{
     public teams: any[];
     public standingsArray;
     public season;
+    public matches;
 
     constructor(private http: Http){}
 
@@ -102,13 +105,13 @@ export class TableComponent implements OnInit{
             this.tableData2.dataRows = sStands;
         });
         this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
-            const matches = response.json() ? response.json().matches : null;
-            sessionStorage.setItem('matches', JSON.stringify({matches: matches}));
+            this.matches = response.json() ? response.json().matches : null;
+            sessionStorage.setItem('matches', JSON.stringify({matches: this.matches}));
             let premierMatches = [];
             let secondMatches = [];
             const premierLastEdition = this.getLastEdition('Primera', this.standingsArray[0].tournamentID).toString();
             const secondLastEdition = this.getLastEdition('Segunda', this.standingsArray[8].tournamentID).toString();
-            matches.forEach( (value) => {
+            this.matches.forEach( (value) => {
                 if(value.tournament == premierLastEdition) {
                     premierMatches.push(value);
                 }else if(value.tournament == secondLastEdition) {
@@ -130,14 +133,41 @@ export class TableComponent implements OnInit{
         return lastEdition;
     }
 
+    public getMatchById(match) {
+        let matchToReturn = null;
+        this.matches.forEach( (value) => {
+            if (value.id == match) {
+                matchToReturn = value;
+            }
+        });
+        return matchToReturn;
+    }
+
     public getTeamById(team) {
         let teamToReturn = null;
         this.teams.forEach( (value) => {
-            if(value.id == team) {
+            if (value.id == team) {
                 teamToReturn = value;
             }
         });
         return teamToReturn;
+    }
+
+    public showSummary(match) {
+        let matchSummary = this.getMatchById(match);
+        let message = this.getTeamById(matchSummary.local).name + ' ' + matchSummary.localGoals + ' - ';
+        message += this.getTeamById(matchSummary.away).name + ' ' + matchSummary.awayGoals;
+        $.notify({
+        	icon: "ti-gift",
+        	message: message
+        },{
+            type: 'success',
+            timer: 4000,
+            placement: {
+                from: 'top',
+                align: 'center'
+            }
+        });
     }
 
     private setTableConfig() {

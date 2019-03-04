@@ -115,7 +115,7 @@ export class MatchFillerComponent implements OnInit{
         if (team == this.data.local) {
             this.local.yellowCards.push(this.models.localYellowCard);
         } else if (team == this.data.away) {
-            this.away.yellowCards.push(this.models.addYellowCard);
+            this.away.yellowCards.push(this.models.awayYellowCard);
         }
     }
 

@@ -2,9 +2,9 @@
     <div class="row">
         <div class="col-md-6">
             <div class="card" style="padding: 16px;">
-                <h1 class="col-md-4" style="text-align: right;">{{getTeamById(data.local).name}} {{local.score}}</h1>
-                <span style="display:block;float:right;">Goles</span>
-                <div style="float: right">
+                <h1 style="text-align: right !important;">{{getTeamById(data.local).name}} {{local.score}}</h1>
+                <span style="display:block;">Goles</span>
+                <div>
                     <ul class="heroes">
                         <li *ngFor="let locScore of local.scorers">{{getPlayerById(locScore).name}}</li>
                     </ul>
@@ -14,7 +14,7 @@
                         <option [ngValue]="0">No lo sé</option>
                     </select>
                 </div>
-                <button (click)="addScorer(data.local)">Añadir</button>
+                <button (click)="addScorer(data.local)" style="margin-top: 4px;">Añadir</button>
                 <span style="display:block;">Asistencias</span>
                 <div>
                     <ul class="heroes">
@@ -26,7 +26,7 @@
                         <option [ngValue]="0">No lo sé</option>
                     </select>
                 </div>
-                <button (click)="addAssistant(data.local)">Añadir</button>
+                <button (click)="addAssistant(data.local)" style="margin-top: 4px;">Añadir</button>
                 <span style="display:block;">Amarillas</span>
                 <div>
                     <ul class="heroes">
@@ -38,7 +38,7 @@
                         <option [ngValue]="0">No lo sé</option>
                     </select>
                 </div>
-                <button (click)="addYellowCard(data.local)">Añadir</button>
+                <button (click)="addYellowCard(data.local)" style="margin-top: 4px;">Añadir</button>
                 <span style="display:block;">Rojas</span>
                 <div>
                     <ul class="heroes">
@@ -50,7 +50,7 @@
                         <option [ngValue]="0">No lo sé</option>
                     </select>
                 </div>
-                <button (click)="addRedCard(data.local)">Añadir</button>
+                <button (click)="addRedCard(data.local)" style="margin-top: 4px;">Añadir</button>
                 <span style="display:block;">Lesiones</span>
                 <div>
                     <ul class="heroes">
@@ -62,7 +62,7 @@
                         <option [ngValue]="0">No lo sé</option>
                     </select>
                 </div>
-                <button (click)="addInjury(data.local)">Añadir</button>
+                <button (click)="addInjury(data.local)" style="margin-top: 4px;">Añadir</button>
                 <span style="display:block;">MVP</span>
                 <div>
                     <ul class="heroes">
@@ -74,13 +74,13 @@
                         <option [ngValue]="0">No lo sé</option>
                     </select>
                 </div>
-                <button (click)="addMVP(data.local)">Añadir</button>
+                <button (click)="addMVP(data.local)" style="margin-top: 4px;">Añadir</button>
             </div>
         </div>
 
         <div class="col-md-6">
             <div class="card" style="padding: 16px;">
-                <h1>{{away.score}} {{getTeamById(data.away).name}}</h1>
+                <h1 style="text-align: left !important;">{{away.score}} {{getTeamById(data.away).name}}</h1>
                 <span style="display:block;">Goles</span>
                 <div>
                     <ul class="heroes">
@@ -92,7 +92,7 @@
                             <option [ngValue]="0">No lo sé</option>
                     </select>
                     </div>
-                    <button (click)="addScorer(data.away)">Añadir</button>
+                    <button (click)="addScorer(data.away)" style="margin-top: 4px;">Añadir</button>
                     <span style="display:block;">Asistencias</span>
                     <div>
                         <ul class="heroes">
@@ -104,7 +104,7 @@
                             <option [ngValue]="0">No lo sé</option>
                         </select>
                     </div>
-                    <button (click)="addAssistant(data.away)">Añadir</button>
+                    <button (click)="addAssistant(data.away)" style="margin-top: 4px;">Añadir</button>
                     <span style="display:block;">Amarillas</span>
                     <div>
                         <ul class="heroes">
@@ -116,7 +116,7 @@
                             <option [ngValue]="0">No lo sé</option>
                         </select>
                     </div>
-                    <button (click)="addYellowCard(data.away)">Añadir</button>
+                    <button (click)="addYellowCard(data.away)" style="margin-top: 4px;">Añadir</button>
                     <span style="display:block;">Rojas</span>
                     <div>
                         <ul class="heroes">
@@ -128,7 +128,7 @@
                             <option [ngValue]="0">No lo sé</option>
                         </select>
                     </div>
-                    <button (click)="addRedCard(data.away)">Añadir</button>
+                    <button (click)="addRedCard(data.away)" style="margin-top: 4px;">Añadir</button>
                     <span style="display:block;">Lesiones</span>
                     <div>
                         <ul class="heroes">
@@ -140,7 +140,7 @@
                             <option [ngValue]="0">No lo sé</option>
                         </select>
                     </div>
-                    <button (click)="addInjury(data.away)">Añadir</button>
+                    <button (click)="addInjury(data.away)" style="margin-top: 4px;">Añadir</button>
                 <span style="display:block;">MVP</span>
                     <div>
                         <ul class="heroes">
@@ -152,7 +152,7 @@
                             <option [ngValue]="0">No lo sé</option>
                         </select>
                     </div>
-                    <button (click)="addMVP(data.away)">Añadir</button>
+                    <button (click)="addMVP(data.away)" style="margin-top: 4px;">Añadir</button>
             </div>
         </div>
     </div>

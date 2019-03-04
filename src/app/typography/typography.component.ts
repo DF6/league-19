@@ -29,6 +29,7 @@ export class TypographyComponent{
     }
 
     private getMatchesByTeam(team) {
+        this.matches = [];
         this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
             let matchesArray = response.json().matches;
             matchesArray.forEach( (value, key) => {

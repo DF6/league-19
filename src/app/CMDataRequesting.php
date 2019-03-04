@@ -391,7 +391,7 @@
   function insertAction($con, $params)
   {
     $data = array();
-    $resultado=$con->multi_query($params->query) or die("Error insertando accion");
+    mysqli_multi_query($con, $params->query) or die("Error insertando accion");
     $data['success'] = true;
     $data['message'] = "Accion insertada";
     echo json_encode($data);
