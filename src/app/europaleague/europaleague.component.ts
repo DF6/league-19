@@ -4,12 +4,12 @@ import { Http } from '@angular/http';
 declare var $:any;
 
 @Component({
-    selector: 'notifications-cmp',
+    selector: 'europaleague-cmp',
     moduleId: module.id,
-    templateUrl: 'notifications.component.html'
+    templateUrl: 'europaleague.component.html'
 })
 
-export class NotificationsComponent implements OnInit{
+export class EuropaLeagueComponent implements OnInit{
 
     public teams;
     public matches;
@@ -30,7 +30,7 @@ export class NotificationsComponent implements OnInit{
         let finalTableMatches = [];
         this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
             let matchesArray = response.json().matches;
-            const cupLastEdition = this.getLastEdition('Copa');
+            const cupLastEdition = this.getLastEdition('Europa League');
             const tournament = this.getTournamentByEdition(cupLastEdition);
             this.season = cupLastEdition;
             matchesArray.forEach( (value, key) => {
@@ -56,7 +56,7 @@ export class NotificationsComponent implements OnInit{
     private getTournamentByEdition(edition) {
         let tournament = -1;
         for (let i = 0; i < this.tournaments.length; i++) {
-            if (this.tournaments[i].name == 'Copa' && edition == this.tournaments[i].edition) {
+            if (this.tournaments[i].name == 'Europa League' && edition == this.tournaments[i].edition) {
                 tournament = this.tournaments[i].id;
             }
         }
@@ -71,23 +71,5 @@ export class NotificationsComponent implements OnInit{
             }
         });
         return teamToReturn;
-    }
-
-    showNotification(from, align){
-        var type = ['','info','success','warning','danger'];
-
-        var color = Math.floor((Math.random() * 4) + 1);
-
-    	$.notify({
-        	icon: "ti-gift",
-        	message: "Welcome to <b>Paper Dashboard</b> - a beautiful freebie for every web developer."
-        },{
-            type: type[color],
-            timer: 4000,
-            placement: {
-                from: from,
-                align: align
-            }
-        });
     }
 }

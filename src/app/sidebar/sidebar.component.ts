@@ -11,21 +11,26 @@ export interface RouteInfo {
 }
 
 export const ROUTES: RouteInfo[] = [
-    /*{ path: 'panelcontrol', title: 'Panel de Control',  icon: 'ti-panel', class: '' },
-    { path: 'mercado', title: 'Mercado',  icon:'ti-map', class: '' },*/
+    // { path: 'panelcontrol', title: 'Panel de Control',  icon: 'ti-panel', class: '' },
+    // { path: 'mercado', title: 'Mercado',  icon:'ti-map', class: '' },
     { path: 'liga', title: 'Liga',  icon: 'ti-view-list-alt', class: '' },
     { path: 'copa', title: 'Copa',  icon: 'ti-bell', class: '' },
+    { path: 'champions', title: 'Champions',  icon: 'ti-bell', class: '' },
+    { path: 'el', title: 'Europa League',  icon: 'ti-bell', class: '' },
+    { path: 'intertoto', title: 'Intertoto',  icon: 'ti-bell', class: '' },
+    { path: 'nations', title: 'Liga de Naciones',  icon: 'ti-bell', class: '' },
+    { path: 'estadisticas', title: 'Estadisticas',  icon:'ti-text', class: '' },
     { path: 'partidospendientes', title: 'Partidos Pendientes',  icon:'ti-text', class: '' },
     { path: 'usuario', title: 'Perfil',  icon: 'ti-user', class: '' },
     { path: 'plantillas', title: 'Plantillas',  icon: 'ti-pencil-alt2', class: '' },
+    { path: 'normas', title: 'Normas',  icon: 'ti-view-list-alt', class: '' },
     { path: 'logout', title: 'Cerrar Sesion', icon: 'ti-user', class: ''},
-    { path: 'normas', title: 'Normas',  icon: 'ti-view-list-alt', class: 'active-pro' },
 ];
 
 export const ROUTESNOTLOGGED: RouteInfo[] = [
     { path: 'registro', title: 'Registro', icon: 'ti-user', class: ''},
     { path: 'login', title: 'Entrar', icon: 'ti-user', class: ''},
-    { path: 'normas', title: 'Normas',  icon: 'ti-view-list-alt', class: 'active-pro' },
+    { path: 'normas', title: 'Normas',  icon: 'ti-view-list-alt', class: '' },
 ];
 
 @Component({

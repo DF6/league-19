@@ -274,6 +274,16 @@ export class MatchFillerComponent implements OnInit{
         return playerToReturn;
     }
 
+    public getTournamentById(tournament) {
+        let tournamentToReturn = null;
+        this.tournaments.forEach( (value) => {
+            if(value.id == tournament) {
+                tournamentToReturn = value;
+            }
+        });
+        return tournamentToReturn;
+    }
+
     public getPlayersByTeam(team) {
         let playersToReturn = [];
         this.players.forEach( (value) => {

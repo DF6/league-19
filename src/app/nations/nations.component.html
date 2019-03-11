@@ -1,0 +1,181 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Liga de Naciones División 1</h4>
+                    <p class="category">Temporada {{season}}</p>
+                </div>
+                <div *ngIf="groupA.dataRows.length !=0" class="content table-responsive table-full-width">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>POS</th>
+                                <th>Nombre</th>
+                                <th>PJ</th>
+                                <th>G</th>
+                                <th>E</th>
+                                <th>P</th>
+                                <th>GF</th>
+                                <th>GC</th>
+                                <th>DG</th>
+                                <th>PTS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of groupA.dataRows">
+                                <td *ngFor="let cell of row">{{cell}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div *ngIf="groupA.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                    Clasificación no disponible
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Liga de Naciones División 2</h4>
+                    <p class="category">Temporada {{season}}</p>
+                </div>
+                <div *ngIf="groupB.dataRows.length != 0" class="content table-responsive table-full-width">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>POS</th>
+                                <th>Nombre</th>
+                                <th>PJ</th>
+                                <th>G</th>
+                                <th>E</th>
+                                <th>P</th>
+                                <th>GF</th>
+                                <th>GC</th>
+                                <th>DG</th>
+                                <th>PTS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of groupB.dataRows">
+                                <td *ngFor="let cell of row">{{cell}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div *ngIf="groupB.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                    Clasificación no disponible
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Liga de Naciones División 3</h4>
+                    <p class="category">Temporada {{season}}</p>
+                </div>
+                <div *ngIf="groupC.dataRows.length !=0" class="content table-responsive table-full-width">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>POS</th>
+                                <th>Nombre</th>
+                                <th>PJ</th>
+                                <th>G</th>
+                                <th>E</th>
+                                <th>P</th>
+                                <th>GF</th>
+                                <th>GC</th>
+                                <th>DG</th>
+                                <th>PTS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of groupC.dataRows">
+                                <td *ngFor="let cell of row">{{cell}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div *ngIf="groupC.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                    Clasificación no disponible
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Liga de Naciones División 4</h4>
+                    <p class="category">Temporada {{season}}</p>
+                </div>
+                <div *ngIf="groupD.dataRows.length !=0" class="content table-responsive table-full-width">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>POS</th>
+                                <th>Nombre</th>
+                                <th>PJ</th>
+                                <th>G</th>
+                                <th>E</th>
+                                <th>P</th>
+                                <th>GF</th>
+                                <th>GC</th>
+                                <th>DG</th>
+                                <th>PTS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of groupD.dataRows">
+                                <td *ngFor="let cell of row">{{cell}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div *ngIf="groupD.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                    Clasificación no disponible
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Partidos</h4>
+                    <p class="category">Liga de Naciones - Temporada {{season}}</p>
+                </div>
+                <div *ngIf="tableData3.dataRows.length != 0" class="content table-responsive table-full-width">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Jornada</th>
+                                <th>Local</th>
+                                <th>Resultado</th>
+                                <th>Visitante</th>
+                                <th>Resumen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of nationMatches.dataRows">
+                                <td style="text-align: center;">{{row.round}}</td>
+                                <td style="text-align: center;">{{getTeamById(row.local).nation}}</td>
+                                <td style="text-align: center;"><span *ngIf="row.localGoals != -1">{{row.localGoals}} - {{row.awayGoals}}</span><span *ngIf="row.localGoals == -1">-</span></td>
+                                <td style="text-align: center;">{{getTeamById(row.away).nation}}</td>
+                                <td style="text-align: center;"><a *ngIf="row.localGoals != -1" style="cursor:pointer;" (click)="showSummary(row.id)">Resumen</a><span *ngIf="row.localGoals == -1">Por jugar</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div *ngIf="tableData3.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                    Partidos no disponibles
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>

@@ -24,6 +24,10 @@ import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './registro/registro.component';
 import { MatchFillerModule } from './match-filler/match-filler.module';
 import { LogoutComponent } from './logout/logout.component';
+import { StatisticsComponent } from './statistics/statistics.component';
+import { EuropaLeagueComponent } from './europaleague/europaleague.component';
+import { IntertotoComponent } from './intertoto/intertoto.component';
+import { ChampionsComponent } from './champions/champions.component';
 
 @NgModule({
   declarations: [
@@ -38,7 +42,11 @@ import { LogoutComponent } from './logout/logout.component';
     UpgradeComponent,
     LoginComponent,
     RegistroComponent,
-    LogoutComponent
+    LogoutComponent,
+    StatisticsComponent,
+    EuropaLeagueComponent,
+    IntertotoComponent,
+    ChampionsComponent
   ],
   imports: [
     BrowserModule,

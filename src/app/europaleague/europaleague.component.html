@@ -1,0 +1,125 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4" *ngIf="matches">
+                <h3>Cuartos de final</h3>
+                <table style="margin-top: 30px;min-width:16.6%;min-height:14.65%;border-radius: 10%;background-color: #ccc5b9;" class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <td style="border-right: 1px solid #000;">{{getTeamById(matches[0].local).name}}</td>
+                                <td style="border-right: 1px solid #000;" *ngIf="matches[0].localGoals != -1">{{matches[0].localGoals}}</td>
+                                <td *ngIf="matches[4].awayGoals != -1">{{matches[4].awayGoals}}</td>
+                            </tr>
+                            <tr>
+                                <td style="border-right: 1px solid #000;">{{getTeamById(matches[0].away).name}}</td>
+                                <td style="border-right: 1px solid #000;" *ngIf="matches[0].awayGoals != -1">{{matches[0].awayGoals}}</td>
+                                <td *ngIf="matches[4].localGoals != -1">{{matches[4].localGoals}}</td>
+                            </tr>
+                        </tbody>
+                    </table><table style="margin-top: 30px;min-width:16.6%;min-height:14.65%;border-radius: 10%;background-color: #ccc5b9;" class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <td style="border-right: 1px solid #000;">{{getTeamById(matches[1].local).name}}</td>
+                                    <td style="border-right: 1px solid #000;" *ngIf="matches[1].localGoals != -1">{{matches[1].localGoals}}</td>
+                                    <td *ngIf="matches[5].awayGoals != -1">{{matches[5].awayGoals}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border-right: 1px solid #000;">{{getTeamById(matches[1].away).name}}</td>
+                                    <td style="border-right: 1px solid #000;" *ngIf="matches[1].awayGoals != -1">{{matches[1].awayGoals}}</td>
+                                    <td *ngIf="matches[5].localGoals != -1">{{matches[5].localGoals}}</td>
+                                </tr>
+                            </tbody>
+                        </table><table style="margin-top: 30px;min-width:16.6%;min-height:14.65%;border-radius: 10%;background-color: #ccc5b9;" class="table table-hover">
+                                <tbody>
+                                    <tr>
+                                        <td style="border-right: 1px solid #000;">{{getTeamById(matches[2].local).name}}</td>
+                                        <td style="border-right: 1px solid #000;" *ngIf="matches[2].localGoals != -1">{{matches[2].localGoals}}</td>
+                                        <td *ngIf="matches[6].awayGoals != -1">{{matches[6].awayGoals}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="border-right: 1px solid #000;">{{getTeamById(matches[2].away).name}}</td>
+                                        <td style="border-right: 1px solid #000;" *ngIf="matches[2].awayGoals != -1">{{matches[2].awayGoals}}</td>
+                                        <td *ngIf="matches[6].localGoals != -1">{{matches[6].localGoals}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <table style="margin-top: 30px;min-width:16.6%;min-height:14.65%;border-radius: 10%;background-color: #ccc5b9;" class="table table-hover">
+                                    <tbody>
+                                        <tr>
+                                            <td style="border-right: 1px solid #000;">{{getTeamById(matches[3].local).name}}</td>
+                                            <td style="border-right: 1px solid #000;" *ngIf="matches[3].localGoals != -1">{{matches[3].localGoals}}</td>
+                                            <td *ngIf="matches[7].awayGoals != -1">{{matches[7].awayGoals}}</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border-right: 1px solid #000;">{{getTeamById(matches[3].away).name}}</td>
+                                            <td style="border-right: 1px solid #000;" *ngIf="matches[3].awayGoals != -1">{{matches[3].awayGoals}}</td>
+                                            <td *ngIf="matches[7].localGoals != -1">{{matches[7].localGoals}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+            </div>
+            <div class="col-md-4" *ngIf="matches">
+                <h3>Semifinales</h3>
+                <table style="margin-top: 60px;min-width:16.6%;min-height:14.65%;border-radius: 10%;background-color: #ccc5b9;" class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <td style="border-right: 1px solid #000;">{{getTeamById(matches[8].local).name}}</td>
+                                <td style="border-right: 1px solid #000;" *ngIf="matches[8].localGoals != -1">{{matches[8].localGoals}}</td>
+                                <td *ngIf="matches[10].awayGoals != -1">{{matches[10].awayGoals}}</td>
+                            </tr>
+                            <tr>
+                                <td style="border-right: 1px solid #000;">{{getTeamById(matches[8].away).name}}</td>
+                                <td style="border-right: 1px solid #000;" *ngIf="matches[8].awayGoals != -1">{{matches[8].awayGoals}}</td>
+                                <td *ngIf="matches[10].localGoals != -1">{{matches[10].localGoals}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table style="margin-top: 60px;min-width:16.6%;min-height:14.65%;border-radius: 10%;background-color: #ccc5b9;" class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <td style="border-right: 1px solid #000;">{{getTeamById(matches[9].local).name}}</td>
+                                    <td style="border-right: 1px solid #000;" *ngIf="matches[9].localGoals != -1">{{matches[9].localGoals}}</td>
+                                    <td *ngIf="matches[11].awayGoals != -1">{{matches[11].awayGoals}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border-right: 1px solid #000;">{{getTeamById(matches[9].away).name}}</td>
+                                    <td style="border-right: 1px solid #000;" *ngIf="matches[9].awayGoals != -1">{{matches[9].awayGoals}}</td>
+                                    <td *ngIf="matches[11].localGoals != -1">{{matches[11].localGoals}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+            </div>
+            <div class="col-md-4" *ngIf="matches">
+                <h3>Final</h3>
+                <table style="margin-top: 15px;min-width:16.6%;min-height:14.65%;border-radius: 10%;background-color: #ccc5b9;" class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <td style="border-right: 1px solid #000;">{{getTeamById(matches[12].local).name}}</td>
+                                <td style="border-right: 1px solid #000;" *ngIf="matches[12].localGoals != -1">{{matches[12].localGoals}}</td>
+                            </tr>
+                            <tr>
+                                <td style="border-right: 1px solid #000;">{{getTeamById(matches[12].away).name}}</td>
+                                <td style="border-right: 1px solid #000;" *ngIf="matches[12].awayGoals != -1">{{matches[12].awayGoals}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                <h3>Tercer y Cuarto Puesto</h3>
+                <table style="margin-top: 15px;min-width:16.6%;min-height:14.65%;border-radius: 10%;background-color: #ccc5b9;" class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <td style="border-right: 1px solid #000;">{{getTeamById(matches[13].local).name}}</td>
+                                <td style="border-right: 1px solid #000;" *ngIf="matches[13].localGoals != -1">{{matches[13].localGoals}}</td>
+                            </tr>
+                            <tr>
+                                <td style="border-right: 1px solid #000;">{{getTeamById(matches[13].away).name}}</td>
+                                <td style="border-right: 1px solid #000;" *ngIf="matches[13].awayGoals != -1">{{matches[13].awayGoals}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+            <div *ngIf="!matches" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                Partidos no disponibles
+            </div>
+        </div>
+    </div>
+</div>

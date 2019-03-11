@@ -11,6 +11,10 @@ import { UpgradeComponent }   from './upgrade/upgrade.component';
 import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './registro/registro.component';
 import { LogoutComponent } from './logout/logout.component';
+import { StatisticsComponent } from './statistics/statistics.component';
+import { EuropaLeagueComponent } from './europaleague/europaleague.component';
+import { IntertotoComponent } from './intertoto/intertoto.component';
+import { ChampionsComponent } from './champions/champions.component';
 
 export const AppRoutes: Routes = [
     {
@@ -61,5 +65,25 @@ export const AppRoutes: Routes = [
     {
         path: 'registro',
         component: RegistroComponent
+    },
+    {
+        path: 'estadisticas',
+        component: StatisticsComponent
+    },
+    {
+        path: 'champions',
+        component: ChampionsComponent
+    },
+    {
+        path: 'el',
+        component: EuropaLeagueComponent
+    },
+    {
+        path: 'intertoto',
+        component: IntertotoComponent
+    },
+    {
+        path: 'nations',
+        component: StatisticsComponent
     }
 ]

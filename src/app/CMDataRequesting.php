@@ -536,7 +536,8 @@
 		    $shortName=utf8_decode($row['short_name']);
         $budget=$row['budget'];
         $teamImage=$row['image_route'];
-        $teams[] = array('id'=> $id, 'name'=> $name, 'shortName'=> $shortName, 'budget'=> $budget, 'teamImage'=> $teamImage);
+        $nation=utf8_decode($row['nation']);
+        $teams[] = array('id'=> $id, 'name'=> $name, 'shortName'=> $shortName, 'budget'=> $budget, 'teamImage'=> $teamImage, 'nation'=> $nation);
     }
     $data['teams']=$teams;
     $data['success'] = true;

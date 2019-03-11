@@ -1,0 +1,192 @@
+<div class="container-fluid">
+    <select (ngModelChange)="fillTables($event)" [(ngModel)]="actualTournament">
+        <option *ngFor="let tournament of tournaments" 
+        [ngValue]="tournament">{{tournament.name}} edición {{tournament.edition}}</option>
+    </select>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">{{actualTournament.name}} - Goleadores</h4>
+                    <p class="category">Temporada {{actualTournament.edition}}</p>
+                </div>
+                <div *ngIf="scorers.dataRows.length !=0" class="content table-responsive table-full-width">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>POS</th>
+                                <th>Nombre</th>
+                                <th>Goles</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of scorers.dataRows">
+                                <td>{{row.position}}</td>
+                                <td>{{row.name}}</td>
+                                <td>{{row.quantity}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div *ngIf="scorers.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                    No hay goleadores
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">{{actualTournament.name}} - Asistentes</h4>
+                    <p class="category">Temporada {{actualTournament.edition}}</p>
+                </div>
+                <div *ngIf="assistants.dataRows.length !=0" class="content table-responsive table-full-width">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>POS</th>
+                                <th>Nombre</th>
+                                <th>Asistencias</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of assistants.dataRows">
+                                <td>{{row.position}}</td>
+                                <td>{{row.name}}</td>
+                                <td>{{row.quantity}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+                <div *ngIf="assistants.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                    No hay asistentes
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">{{actualTournament.name}} - Tarjetas Amarillas</h4>
+                        <p class="category">Temporada {{actualTournament.edition}}</p>
+                    </div>
+                    <div *ngIf="yellowCards.dataRows.length !=0" class="content table-responsive table-full-width">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>POS</th>
+                                    <th>Nombre</th>
+                                    <th>Tarjetas Amarillas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of yellowCards.dataRows">
+                                    <td>{{row.position}}</td>
+                                    <td>{{row.name}}</td>
+                                    <td>{{row.quantity}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+    
+                    </div>
+                    <div *ngIf="yellowCards.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                        No hay amarillas
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">{{actualTournament.name}} - Tarjetas Rojas</h4>
+                        <p class="category">Temporada {{actualTournament.edition}}</p>
+                    </div>
+                    <div *ngIf="redCards.dataRows.length !=0" class="content table-responsive table-full-width">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>POS</th>
+                                    <th>Nombre</th>
+                                    <th>Tarjetas Rojas</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of redCards.dataRows">
+                                    <td>{{row.position}}</td>
+                                    <td>{{row.name}}</td>
+                                    <td>{{row.quantity}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+    
+                    </div>
+                    <div *ngIf="redCards.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                        No hay goleadores
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title">{{actualTournament.name}} - Lesiones</h4>
+                            <p class="category">Temporada {{actualTournament.edition}}</p>
+                        </div>
+                        <div *ngIf="injuries.dataRows.length !=0" class="content table-responsive table-full-width">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>POS</th>
+                                        <th>Nombre</th>
+                                        <th>Lesiones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let row of injuries.dataRows">
+                                        <td>{{row.position}}</td>
+                                        <td>{{row.name}}</td>
+                                        <td>{{row.quantity}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+        
+                        </div>
+                        <div *ngIf="injuries.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                            No hay lesiones
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title">{{actualTournament.name}} - MVPs</h4>
+                            <p class="category">Temporada {{actualTournament.edition}}</p>
+                        </div>
+                        <div *ngIf="mvp.dataRows.length !=0" class="content table-responsive table-full-width">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>POS</th>
+                                        <th>Nombre</th>
+                                        <th>MVPs</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let row of mvp.dataRows">
+                                        <td>{{row.position}}</td>
+                                        <td>{{row.name}}</td>
+                                        <td>{{row.quantity}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+        
+                        </div>
+                        <div *ngIf="mvp.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                            No hay MVPs
+                        </div>
+                    </div>
+                </div>
+            </div>
+</div>

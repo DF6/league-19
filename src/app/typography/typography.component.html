@@ -1,9 +1,4 @@
 <div class="container-fluid">
-
-        <!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modalRellenar">
-                Rellenar
-        </button>-->
-
         <div class="row">
             <div class="col-md-12">
                 <div class="card">
@@ -56,9 +51,11 @@
                                     getTournamentById(row.tournament).name == 'Intertoto'') && row.round == 8) ||
                                     (getTournamentById(row.tournament).name == 'Champions' 
                                     && row.round == 12)">Final</td>-->
-                                    <td *ngIf="!row.filling">{{getTeamById(row.local).name}}</td>
+                                    <td *ngIf="!row.filling && getTournamentById(row.tournament).name != 'Nations'">{{getTeamById(row.local).name}}</td>
+                                    <td *ngIf="!row.filling && getTournamentById(row.tournament).name == 'Nations'">{{getTeamById(row.local).nation}}</td>
                                     <td *ngIf="!row.filling">-</td>
-                                    <td *ngIf="!row.filling">{{getTeamById(row.away).name}}</td>
+                                    <td *ngIf="!row.filling && getTournamentById(row.tournament).name != 'Nations'">{{getTeamById(row.away).name}}</td>
+                                    <td *ngIf="!row.filling && getTournamentById(row.tournament).name == 'Nations'">{{getTeamById(row.away).nation}}</td>
                                     <td *ngIf="!row.filling"><a style="cursor:pointer;" (click)="row.filling = true">Rellenar</a></td>
                                     <td *ngIf="row.filling" colspan="6">
                                         <match-filler *ngIf="row.filling" [data]="row" (matchFilled)="getMatchesByTeam(user.teamID)"></match-filler>
