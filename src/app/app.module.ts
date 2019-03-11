@@ -28,6 +28,7 @@ import { StatisticsComponent } from './statistics/statistics.component';
 import { EuropaLeagueComponent } from './europaleague/europaleague.component';
 import { IntertotoComponent } from './intertoto/intertoto.component';
 import { ChampionsComponent } from './champions/champions.component';
+import { NationsComponent } from './nations/nations.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { ChampionsComponent } from './champions/champions.component';
     StatisticsComponent,
     EuropaLeagueComponent,
     IntertotoComponent,
-    ChampionsComponent
+    ChampionsComponent,
+    NationsComponent
   ],
   imports: [
     BrowserModule,

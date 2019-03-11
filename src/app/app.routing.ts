@@ -15,11 +15,12 @@ import { StatisticsComponent } from './statistics/statistics.component';
 import { EuropaLeagueComponent } from './europaleague/europaleague.component';
 import { IntertotoComponent } from './intertoto/intertoto.component';
 import { ChampionsComponent } from './champions/champions.component';
+import { NationsComponent } from './nations/nations.component';
 
 export const AppRoutes: Routes = [
     {
         path: '',
-        redirectTo: 'registro',
+        redirectTo: 'normas',
         pathMatch: 'full',
     },
     {
@@ -84,6 +85,6 @@ export const AppRoutes: Routes = [
     },
     {
         path: 'nations',
-        component: StatisticsComponent
+        component: NationsComponent
     }
 ]
