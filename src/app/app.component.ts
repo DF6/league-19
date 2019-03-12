@@ -22,6 +22,11 @@ export class AppComponent {
     });
     this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'T'}).subscribe( (response) => {
       const teams = response.json() ? response.json().teams : null;
+      teams.forEach( (value) => {
+        while (value.nation.indexOf('/n') != -1) {
+          value.nation = value.nation.replace('/n', 'ñ');
+        }
+      });
       sessionStorage.setItem('teams', JSON.stringify({teams: teams}));
     });
     this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
