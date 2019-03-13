@@ -127,7 +127,7 @@ export class TableComponent implements OnInit{
         let lastEdition = -1;
         for (let i = 0; i < this.tournaments.length; i++) {
             if (this.tournaments[i].name == league && tournament_id == this.tournaments[i].id) {
-                lastEdition = tournament_id;
+                lastEdition = this.tournaments[i].edition;
             }
         }
         return lastEdition;
