@@ -74,10 +74,43 @@ export class TypographyComponent{
     public getTeamById(team) {
         let teamToReturn = null;
         this.teams.forEach( (value) => {
-            if(value.id == team) {
+            if (value.id == team) {
                 teamToReturn = value;
             }
         });
         return teamToReturn;
+    }
+
+    public getRoundName(match) {
+        switch (this.getTournamentById(match.tournament)) {
+            case 'Copa':
+                if (match.round < 3) { return 'Octavos de Final'; }
+                else if (match.round >= 3 && match.round < 5) { return 'Cuartos de Final'; }
+                else if (match.round >= 5 && match.round < 7) { return 'Semifinales'; }
+                else if (match.round == 8) { return 'Tercer y Cuarto Puesto'; }
+                else if (match.round == 9) { return 'Final'; }
+                break;
+            case 'Champions League':
+                if (match.round < 7) { return 'Fase de Grupos'; }
+                else if (match.round >= 7 && match.round < 9) { return 'Cuartos de Final'; }
+                else if (match.round >= 9 && match.round < 11) { return 'Semifinales'; }
+                else if (match.round == 11) { return 'Tercer y Cuarto Puesto'; }
+                else if (match.round == 12) { return 'Final'; }
+                break;
+            case 'Europa League':
+                if (match.round < 3) { return 'Cuartos de Final'; }
+                else if (match.round >= 3 && match.round < 5) { return 'Semifinales'; }
+                else if (match.round == 5) { return 'Tercer y Cuarto Puesto'; }
+                else if (match.round == 6) { return 'Final'; }
+                break;
+            case 'Intertoto':
+                if (match.round < 3) { return 'Semifinales'; }
+                else if (match.round == 3) { return 'Tercer y Cuarto Puesto'; }
+                else if (match.round == 4) { return 'Final'; }
+                break;
+            case 'Supercopa de Clubes':
+            case 'Supercopa Europea': 
+                if (match.round == 1) { return 'Final'; } break;
+        }
     }
 }
