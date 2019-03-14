@@ -16,6 +16,7 @@ import { EuropaLeagueComponent } from './europaleague/europaleague.component';
 import { IntertotoComponent } from './intertoto/intertoto.component';
 import { ChampionsComponent } from './champions/champions.component';
 import { NationsComponent } from './nations/nations.component';
+import { ClubSupercupComponent } from './clubsupercup/clubsupercup.component';
 
 export const AppRoutes: Routes = [
     {
@@ -86,5 +87,9 @@ export const AppRoutes: Routes = [
     {
         path: 'nations',
         component: NationsComponent
+    },
+    {
+        path: 'clubsupercup',
+        component: ClubSupercupComponent
     }
 ]

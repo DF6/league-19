@@ -29,6 +29,7 @@ import { EuropaLeagueComponent } from './europaleague/europaleague.component';
 import { IntertotoComponent } from './intertoto/intertoto.component';
 import { ChampionsComponent } from './champions/champions.component';
 import { NationsComponent } from './nations/nations.component';
+import { ClubSupercupComponent } from './clubsupercup/clubsupercup.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { NationsComponent } from './nations/nations.component';
     EuropaLeagueComponent,
     IntertotoComponent,
     ChampionsComponent,
-    NationsComponent
+    NationsComponent,
+    ClubSupercupComponent
   ],
   imports: [
     BrowserModule,
