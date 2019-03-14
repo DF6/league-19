@@ -35,8 +35,8 @@ export class NationsComponent implements OnInit{
         this.setTableConfig();
         this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'ST'}).subscribe( (response) => {
             this.standingsArray = response.json().standings;
-            const nationsLastEdition = this.getLastEdition('Nations', this.standingsArray[32].tournamentID).toString();
-            this.season = nationsLastEdition;
+            const nationsLastEdition = this.getLastEdition('Nations League', this.standingsArray[32].tournamentID).toString();
+            this.season = this.getTournamentById(nationsLastEdition).edition;
             let groupAStandings = [];
             let groupBStandings = [];
             let groupCStandings = [];
@@ -151,6 +151,7 @@ export class NationsComponent implements OnInit{
                 bStands.push(teamToInsert[0]);
                 position++;
             }
+            position = 1;
             while(groupCStandings.length != 0) {
                 let indexToInsert = -1;
                 let maxPoints = -1;
@@ -162,9 +163,10 @@ export class NationsComponent implements OnInit{
                 });
                 let teamToInsert = groupCStandings.splice(indexToInsert, 1);
                 teamToInsert[0][0] = position;
-                bStands.push(teamToInsert[0]);
+                cStands.push(teamToInsert[0]);
                 position++;
             }
+            position = 1;
             while(groupDStandings.length != 0) {
                 let indexToInsert = -1;
                 let maxPoints = -1;
@@ -176,25 +178,25 @@ export class NationsComponent implements OnInit{
                 });
                 let teamToInsert = groupDStandings.splice(indexToInsert, 1);
                 teamToInsert[0][0] = position;
-                bStands.push(teamToInsert[0]);
+                dStands.push(teamToInsert[0]);
                 position++;
             }
             this.groupA.dataRows = aStands;
             this.groupB.dataRows = bStands;
             this.groupC.dataRows = cStands;
             this.groupD.dataRows = dStands;
-        });
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
-            this.matches = response.json() ? response.json().matches : null;
-            sessionStorage.setItem('matches', JSON.stringify({matches: this.matches}));
-            let nlMatches = [];
-            const nationsLastEdition = this.getLastEdition('Nations', this.standingsArray[32].tournamentID).toString();
-            this.matches.forEach( (value) => {
-                if(value.tournament == nationsLastEdition) {
-                    nlMatches.push(value);
-                }
+            this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
+                this.matches = response.json() ? response.json().matches : null;
+                sessionStorage.setItem('matches', JSON.stringify({matches: this.matches}));
+                let nlMatches = [];
+                const nationsLastEdition = this.getLastEdition('Nations League', this.standingsArray[32].tournamentID).toString();
+                this.matches.forEach( (value) => {
+                    if(value.tournament == nationsLastEdition) {
+                        nlMatches.push(value);
+                    }
+                });
+                this.nationsMatches.dataRows = nlMatches;
             });
-            this.nationsMatches.dataRows = nlMatches;
         });
     }
 
@@ -226,6 +228,16 @@ export class NationsComponent implements OnInit{
             }
         });
         return teamToReturn;
+    }
+
+    public getTournamentById(tournament) {
+        let tournamentToReturn = null;
+        this.tournaments.forEach( (value) => {
+            if (value.id == tournament) {
+                tournamentToReturn = value;
+            }
+        });
+        return tournamentToReturn;
     }
 
     public showSummary(match) {

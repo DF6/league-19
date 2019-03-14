@@ -149,7 +149,7 @@
                     <h4 class="title">Partidos</h4>
                     <p class="category">Liga de Naciones - Temporada {{season}}</p>
                 </div>
-                <div *ngIf="tableData3.dataRows.length != 0" class="content table-responsive table-full-width">
+                <div *ngIf="nationsMatches.dataRows.length != 0" class="content table-responsive table-full-width">
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -161,7 +161,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let row of nationMatches.dataRows">
+                            <tr *ngFor="let row of nationsMatches.dataRows">
                                 <td style="text-align: center;">{{row.round}}</td>
                                 <td style="text-align: center;">{{getTeamById(row.local).nation}}</td>
                                 <td style="text-align: center;"><span *ngIf="row.localGoals != -1">{{row.localGoals}} - {{row.awayGoals}}</span><span *ngIf="row.localGoals == -1">-</span></td>
@@ -171,7 +171,7 @@
                         </tbody>
                     </table>
                 </div>
-                <div *ngIf="tableData3.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                <div *ngIf="nationsMatches.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
                     Partidos no disponibles
                 </div>
             </div>

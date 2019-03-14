@@ -142,6 +142,39 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Partidos</h4>
+                    <p class="category">Champions League - Temporada {{season}}</p>
+                </div>
+                <div *ngIf="uclMatches.dataRows.length != 0" class="content table-responsive table-full-width">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Jornada</th>
+                                <th>Local</th>
+                                <th>Resultado</th>
+                                <th>Visitante</th>
+                                <th>Resumen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of uclMatches.dataRows">
+                                <td style="text-align: center;">{{row.round}}</td>
+                                <td style="text-align: center;">{{getTeamById(row.local).name}}</td>
+                                <td style="text-align: center;"><span *ngIf="row.localGoals != -1">{{row.localGoals}} - {{row.awayGoals}}</span><span *ngIf="row.localGoals == -1">-</span></td>
+                                <td style="text-align: center;">{{getTeamById(row.away).name}}</td>
+                                <td style="text-align: center;"><a *ngIf="row.localGoals != -1" style="cursor:pointer;" (click)="showSummary(row.id)">Resumen</a><span *ngIf="row.localGoals == -1">Por jugar</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div *ngIf="uclMatches.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                    Partidos no disponibles
+                </div>
+            </div>
+        </div>
 
     </div>
 </div>

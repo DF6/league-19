@@ -20,6 +20,7 @@ export class ChampionsComponent implements OnInit{
     public groupB: TableData;
     public groupC: TableData;
     public groupD: TableData;
+    public uclMatches: TableData;
     public tournaments: any[];
     public teams: any[];
     public standingsArray;
@@ -34,8 +35,8 @@ export class ChampionsComponent implements OnInit{
         this.setTableConfig();
         this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'ST'}).subscribe( (response) => {
             this.standingsArray = response.json().standings;
-            const championsLastEdition = this.getLastEdition('Champions', this.standingsArray[16].tournamentID).toString();
-            this.season = championsLastEdition;
+            const championsLastEdition = this.getLastEdition('Champions League', this.standingsArray[16].tournamentID).toString();
+            this.season = this.getTournamentById(championsLastEdition).edition;
             let groupAStandings = [];
             let groupBStandings = [];
             let groupCStandings = [];
@@ -150,6 +151,7 @@ export class ChampionsComponent implements OnInit{
                 bStands.push(teamToInsert[0]);
                 position++;
             }
+            position = 1;
             while(groupCStandings.length != 0) {
                 let indexToInsert = -1;
                 let maxPoints = -1;
@@ -161,9 +163,10 @@ export class ChampionsComponent implements OnInit{
                 });
                 let teamToInsert = groupCStandings.splice(indexToInsert, 1);
                 teamToInsert[0][0] = position;
-                bStands.push(teamToInsert[0]);
+                cStands.push(teamToInsert[0]);
                 position++;
             }
+            position = 1;
             while(groupDStandings.length != 0) {
                 let indexToInsert = -1;
                 let maxPoints = -1;
@@ -175,38 +178,33 @@ export class ChampionsComponent implements OnInit{
                 });
                 let teamToInsert = groupDStandings.splice(indexToInsert, 1);
                 teamToInsert[0][0] = position;
-                bStands.push(teamToInsert[0]);
+                dStands.push(teamToInsert[0]);
                 position++;
             }
             this.groupA.dataRows = aStands;
             this.groupB.dataRows = bStands;
             this.groupC.dataRows = cStands;
             this.groupD.dataRows = dStands;
-        });
-        /*this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
-            this.matches = response.json() ? response.json().matches : null;
-            sessionStorage.setItem('matches', JSON.stringify({matches: this.matches}));
-            let premierMatches = [];
-            let secondMatches = [];
-            const championsLastEdition = this.getLastEdition('Primera', this.standingsArray[0].tournamentID).toString();
-            const secondLastEdition = this.getLastEdition('Segunda', this.standingsArray[8].tournamentID).toString();
-            this.matches.forEach( (value) => {
-                if(value.tournament == championsLastEdition) {
-                    premierMatches.push(value);
-                }else if(value.tournament == secondLastEdition) {
-                    secondMatches.push(value);
-                }
+            this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
+                this.matches = response.json() ? response.json().matches : null;
+                sessionStorage.setItem('matches', JSON.stringify({matches: this.matches}));
+                let championsMatches = [];
+                const championsLastEdition = this.getLastEdition('Champions League', this.standingsArray[16].tournamentID).toString();
+                this.matches.forEach( (value) => {
+                    if(value.tournament == championsLastEdition) {
+                        championsMatches.push(value);
+                    }
+                });
+                this.uclMatches.dataRows = championsMatches;
             });
-            this.tableData3.dataRows = premierMatches;
-            this.tableData4.dataRows = secondMatches;
-        });*/
+        });
     }
 
     private getLastEdition(league, tournament_id) {
         let lastEdition = -1;
         for (let i = 0; i < this.tournaments.length; i++) {
             if (this.tournaments[i].name == league && tournament_id == this.tournaments[i].id) {
-                lastEdition = this.tournaments[i].edition;
+                lastEdition = tournament_id;
             }
         }
         return lastEdition;
@@ -230,6 +228,16 @@ export class ChampionsComponent implements OnInit{
             }
         });
         return teamToReturn;
+    }
+
+    public getTournamentById(tournament) {
+        let tournamentToReturn = null;
+        this.tournaments.forEach( (value) => {
+            if (value.id == tournament) {
+                tournamentToReturn = value;
+            }
+        });
+        return tournamentToReturn;
     }
 
     public showSummary(match) {
@@ -259,10 +267,14 @@ export class ChampionsComponent implements OnInit{
             dataRows: []
         };
         this.groupC = {
-            headerRow: [ 'round', 'local', 'result', 'away', 'summary'],
+            headerRow: [ 'position', 'team', 'round', 'won', 'draw', 'lost', 'goalsFor', 'goalsAgainst', 'goalsDifference', 'points'],
             dataRows: []
         };
         this.groupD = {
+            headerRow: [ 'position', 'team', 'round', 'won', 'draw', 'lost', 'goalsFor', 'goalsAgainst', 'goalsDifference', 'points'],
+            dataRows: []
+        };
+        this.uclMatches = {
             headerRow: [ 'round', 'local', 'result', 'away', 'summary'],
             dataRows: []
         };

@@ -60,7 +60,7 @@ export class TypographyComponent{
         };
     }
 
-    public getTournamentById(id) {
+    public getTournamentById(id):any {
         let tournament = {};
         id = parseInt(id);
         this.tournaments.forEach( (value) => {
@@ -82,7 +82,7 @@ export class TypographyComponent{
     }
 
     public getRoundName(match) {
-        switch (this.getTournamentById(match.tournament)) {
+        switch (this.getTournamentById(match.tournament).name) {
             case 'Copa':
                 if (match.round < 3) { return 'Octavos de Final'; }
                 else if (match.round >= 3 && match.round < 5) { return 'Cuartos de Final'; }

@@ -35,7 +35,7 @@ export class TableComponent implements OnInit{
         this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'ST'}).subscribe( (response) => {
             this.standingsArray = response.json().standings;
             const premierLastEdition = this.getLastEdition('Primera', this.standingsArray[0].tournamentID).toString();
-            this.season = premierLastEdition;
+            this.season = this.getTournamentById(premierLastEdition).edition;
             const secondLastEdition = this.getLastEdition('Segunda', this.standingsArray[8].tournamentID).toString();
             let premierStandings = [];
             let secondStandings = [];
@@ -103,23 +103,24 @@ export class TableComponent implements OnInit{
             }
             this.tableData1.dataRows = pStands;
             this.tableData2.dataRows = sStands;
-        });
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
-            this.matches = response.json() ? response.json().matches : null;
-            sessionStorage.setItem('matches', JSON.stringify({matches: this.matches}));
-            let premierMatches = [];
-            let secondMatches = [];
-            const premierLastEdition = this.getLastEdition('Primera', this.standingsArray[0].tournamentID).toString();
-            const secondLastEdition = this.getLastEdition('Segunda', this.standingsArray[8].tournamentID).toString();
-            this.matches.forEach( (value) => {
-                if(value.tournament == premierLastEdition) {
-                    premierMatches.push(value);
-                }else if(value.tournament == secondLastEdition) {
-                    secondMatches.push(value);
-                }
+            
+            this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
+                this.matches = response.json() ? response.json().matches : null;
+                sessionStorage.setItem('matches', JSON.stringify({matches: this.matches}));
+                let premierMatches = [];
+                let secondMatches = [];
+                const premierLastEdition = this.getLastEdition('Primera', this.standingsArray[0].tournamentID).toString();
+                const secondLastEdition = this.getLastEdition('Segunda', this.standingsArray[8].tournamentID).toString();
+                this.matches.forEach( (value) => {
+                    if(value.tournament == premierLastEdition) {
+                        premierMatches.push(value);
+                    }else if(value.tournament == secondLastEdition) {
+                        secondMatches.push(value);
+                    }
+                });
+                this.tableData3.dataRows = premierMatches;
+                this.tableData4.dataRows = secondMatches;
             });
-            this.tableData3.dataRows = premierMatches;
-            this.tableData4.dataRows = secondMatches;
         });
     }
 
@@ -127,7 +128,7 @@ export class TableComponent implements OnInit{
         let lastEdition = -1;
         for (let i = 0; i < this.tournaments.length; i++) {
             if (this.tournaments[i].name == league && tournament_id == this.tournaments[i].id) {
-                lastEdition = this.tournaments[i].edition;
+                lastEdition = tournament_id;
             }
         }
         return lastEdition;
@@ -151,6 +152,16 @@ export class TableComponent implements OnInit{
             }
         });
         return teamToReturn;
+    }
+
+    public getTournamentById(tournament) {
+        let tournamentToReturn = null;
+        this.tournaments.forEach( (value) => {
+            if (value.id == tournament) {
+                tournamentToReturn = value;
+            }
+        });
+        return tournamentToReturn;
     }
 
     public showSummary(match) {
