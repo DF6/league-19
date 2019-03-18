@@ -68,13 +68,13 @@
                     <div class="content">
                         <ul class="list-unstyled team-members">
                                     <li *ngFor="let player of playersOfMyTeam">
-                                        <div class="row">
+                                        <div class="row" *ngIf="!player.emblem">
                                             <div class="col-xs-1">
                                                 <div class="avatar">
                                                     <img src="assets/img/faces/face-0.jpg" class="img-circle img-no-padding img-responsive">
                                                 </div>
                                             </div>
-                                            <div class="col-xs-5">
+                                            <div class="col-xs-4">
                                                 {{player.name}}
                                                 <br />
                                                 <span><small>{{player.position}}</small></span>
@@ -85,6 +85,33 @@
                                             <div class="col-xs-2">
                                                 {{player.salary}}M€
                                             </div>
+                                            <!--<div class="col-xs-3 text-right">
+                                                <button class="btn btn-sm btn-success btn-icon" ng-click="giveWildCard(player.id)">Liberar</button>
+                                            </div>-->
+                                            <!--<div class="col-xs-3 text-right">
+                                                <button class="btn btn-sm btn-success btn-icon" ng-click="changeSalary(player.id)">Cambiar sueldo</button>
+                                            </div>-->
+                                        </div>
+                                        <div class="row" *ngIf="player.emblem" style="background-color:rgb(255, 212, 160);">
+                                            <div class="col-xs-1">
+                                                <div class="avatar">
+                                                    <img src="assets/img/faces/face-0.jpg" class="img-circle img-no-padding img-responsive">
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-4">
+                                                {{player.name}}
+                                                <br />
+                                                <span><small>{{player.position}}</small></span>
+                                            </div>
+                                            <div class="col-xs-1">
+                                                {{player.overage}}
+                                            </div>
+                                            <div class="col-xs-2">
+                                                {{player.salary}}M€
+                                            </div>
+                                            <!--<div class="col-xs-3 text-right">
+                                                <button class="btn btn-sm btn-success btn-icon" ng-click="giveWildCard(player.id)">Liberar</button>
+                                            </div>-->
                                             <!--<div class="col-xs-3 text-right">
                                                 <button class="btn btn-sm btn-success btn-icon" ng-click="changeSalary(player.id)">Cambiar sueldo</button>
                                             </div>-->

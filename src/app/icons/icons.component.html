@@ -1,5 +1,8 @@
 <div class="container-fluid">
         <div *ngIf="teams" class="row">
+            <div>
+                Nombre <input type="text" [(ngModel)]="filters.name" style="padding: 16px;"/>
+            </div>
             <div *ngFor="let team of teams" class="col-md-12">
                 <div class="card">
                     <div class="header">
@@ -18,12 +21,12 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let row of getPlayersByTeam(team.id)">
-                                    <td>{{row.position}}</td>
-                                    <td>{{row.name}}</td>
-                                    <td>{{row.overage}}</td>
-                                    <td *ngIf="row.salary<10 && !row.buyedThisMarket">{{(row.salary*10)}} M€</td>
-                                    <td *ngIf="row.salary>=10 && !row.buyedThisMarket">INTOCABLE</td>
-                                    <td *ngIf="row.buyedThisMarket">COMPRADO</td>
+                                    <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1">{{row.position}}</td>
+                                    <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1">{{row.name}}</td>
+                                    <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1">{{row.overage}}</td>
+                                    <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.salary<10 && !row.buyedThisMarket">{{(row.salary*10)}} M€</td>
+                                    <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.salary>=10 && !row.buyedThisMarket">INTOCABLE</td>
+                                    <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.buyedThisMarket">COMPRADO</td>
                                 </tr>
                             </tbody>
                         </table>

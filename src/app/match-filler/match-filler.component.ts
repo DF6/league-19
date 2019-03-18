@@ -245,7 +245,7 @@ export class MatchFillerComponent implements OnInit{
         } else {
             this.matchFilled.emit();
         }
-        this.http.post('./CMDataRequesting.php', {type: 'log', user: JSON.parse(sessionStorage.getItem('user')).indexOf, message: 'Partido insertado: ' + this.data.id + ''}).subscribe( () => {
+        this.http.post('./CMDataRequesting.php', {type: 'log', user: JSON.parse(sessionStorage.getItem('user')).id, message: 'Partido insertado: ' + this.data.id + ''}).subscribe( () => {
             console.log('Log insertado');
         });
     }

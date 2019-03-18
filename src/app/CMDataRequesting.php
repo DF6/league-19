@@ -423,7 +423,7 @@
   function insertLog($con, $params)
   {
     $data = array();
-    $query="INSERT INTO log (user, message) values (".$params->user.", '".$params->message."')";
+    $query="INSERT INTO log ('user', 'message') values (".$params->user.", '".$params->message."')";
     $resultado=mysqli_query($con, $query) or die("Error insertando log");
     $data['success'] = true;
     $data['message'] = "Log insertado";

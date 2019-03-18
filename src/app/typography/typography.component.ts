@@ -49,6 +49,13 @@ export class TypographyComponent{
                 finalTableMatches.push(value);
             }
         });
+        for (let i = 0; i < finalTableMatches.length; i++) {
+            if ((this.getTournamentById(finalTableMatches[i].tournament).name == 'Primera' ||
+               this.getTournamentById(finalTableMatches[i].tournament).name == 'Segunda') && finalTableMatches[i].round > 3) {
+                 finalTableMatches.splice(i, 1);
+                 i--;
+            }
+        }
         this.matches = finalTableMatches;
         this.tableData1.dataRows = this.matches;
     }
