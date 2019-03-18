@@ -21,9 +21,9 @@
                                 <tr *ngFor="let row of tableData1.dataRows">
                                     <td *ngIf="!row.filling">{{getTournamentById(row.tournament).name}}</td>
                                     <td *ngIf="!row.filling && 
-                                    getTournamentById(row.tournament).name == 'Primera' ||
+                                    (getTournamentById(row.tournament).name == 'Primera' ||
                                     getTournamentById(row.tournament).name == 'Segunda' ||
-                                    getTournamentById(row.tournament).name == 'Nations League'">{{row.round}}</td>
+                                    getTournamentById(row.tournament).name == 'Nations League')">{{row.round}}</td>
                                     <td *ngIf="!row.filling && getTournamentById(row.tournament).name != 'Primera' &&
                                     getTournamentById(row.tournament).name != 'Segunda' &&
                                     getTournamentById(row.tournament).name != 'Nations League'">{{getRoundName(row)}}</td>

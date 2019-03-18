@@ -3,12 +3,12 @@
         <div class="col-md-6">
             <div class="card" style="padding: 16px;">
                 <h1 style="text-align: right !important;"
-                *ngIf="getTournamentById(data.tournament).name != 'Nations'">
+                *ngIf="getTournamentById(data.tournament).name != 'Nations League'">
                 {{getTeamById(data.local).name}} {{local.score}}</h1>
                 <h1 style="text-align: right !important;"
-                *ngIf="getTournamentById(data.tournament).name == 'Nations'">
-                {{getTeamById(data.local).name}} <input type="number" step="1" min="0" [(ngModel)]="local.score"></h1>
-                <div *ngIf="getTournamentById(data.tournament).name != 'Nations'">
+                *ngIf="getTournamentById(data.tournament).name == 'Nations League'">
+                {{getTeamById(data.local).nation}} <input class="col-md-3" type="number" step="1" min="0" [(ngModel)]="local.score"></h1>
+                <div *ngIf="getTournamentById(data.tournament).name != 'Nations League'">
                     <span style="display:block;">Goles</span>
                     <div>
                         <ul class="heroes">
@@ -88,12 +88,12 @@
         <div class="col-md-6">
             <div class="card" style="padding: 16px;">
                 <h1 style="text-align: right !important;"
-                *ngIf="getTournamentById(data.tournament).name != 'Nations'">
+                *ngIf="getTournamentById(data.tournament).name != 'Nations League'">
                 {{getTeamById(data.away).name}} {{away.score}}</h1>
                 <h1 style="text-align: right !important;"
-                *ngIf="getTournamentById(data.tournament).name == 'Nations'">
-                {{getTeamById(data.away).name}} <input type="number" step="1" min="0" [(ngModel)]="away.score"></h1>
-                <div *ngIf="getTournamentById(data.tournament).name != 'Nations'">
+                *ngIf="getTournamentById(data.tournament).name == 'Nations League'">
+                {{getTeamById(data.away).nation}} <input class="col-md-3" type="number" step="1" min="0" [(ngModel)]="away.score"></h1>
+                <div *ngIf="getTournamentById(data.tournament).name != 'Nations League'">
                     <span style="display:block;">Goles</span>
                     <div>
                         <ul class="heroes">
