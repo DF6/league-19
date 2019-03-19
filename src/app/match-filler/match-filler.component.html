@@ -24,7 +24,7 @@
                     <span style="display:block;">Asistencias</span>
                     <div>
                         <ul class="heroes">
-                            <li *ngFor="let locAssistant of local.assistants">{{getPlayerById(locAssistant).name}}</li>
+                            <li style="list-style: none;" *ngFor="let locAssistant of local.assistants">{{getPlayerById(locAssistant).name}} <i class="ti-close" (click)="removeAssistant(data.local, $index)"></i></li>
                         </ul>
                         <select [(ngModel)]="models.localAssistant">
                             <option *ngFor="let teamPlayer of localPlayers" 
@@ -36,7 +36,7 @@
                     <span style="display:block;">Amarillas</span>
                     <div>
                         <ul class="heroes">
-                            <li *ngFor="let locYellowCard of local.yellowCards">{{getPlayerById(locYellowCard).name}}</li>
+                            <li style="list-style: none;" *ngFor="let locYellowCard of local.yellowCards">{{getPlayerById(locYellowCard).name}} <i class="ti-close" (click)="removeYellowCard(data.local, $index)"></i></li>
                         </ul>
                         <select [(ngModel)]="models.localYellowCard">
                             <option *ngFor="let teamPlayer of localPlayers" 
@@ -48,7 +48,7 @@
                     <span style="display:block;">Rojas</span>
                     <div>
                         <ul class="heroes">
-                            <li *ngFor="let locRedCard of local.redCards">{{getPlayerById(locRedCard).name}}</li>
+                            <li style="list-style: none;" *ngFor="let locRedCard of local.redCards">{{getPlayerById(locRedCard).name}} <i class="ti-close" (click)="removeRedCard(data.local, $index)"></i></li>
                         </ul>
                         <select [(ngModel)]="models.localRedCard">
                             <option *ngFor="let teamPlayer of localPlayers" 
@@ -60,7 +60,7 @@
                     <span style="display:block;">Lesiones</span>
                     <div>
                         <ul class="heroes">
-                            <li *ngFor="let locInjury of local.injuries">{{getPlayerById(locInjury).name}}</li>
+                            <li style="list-style: none;" *ngFor="let locInjury of local.injuries">{{getPlayerById(locInjury).name}} <i class="ti-close" (click)="removeInjury(data.local, $index)"></i></li>
                         </ul>
                         <select [(ngModel)]="models.localinjury">
                             <option *ngFor="let teamPlayer of localPlayers" 
@@ -72,7 +72,7 @@
                     <span style="display:block;">MVP</span>
                     <div>
                         <ul class="heroes">
-                            <li *ngFor="let locMVP of local.mvp">{{getPlayerById(locMVP).name}}</li>
+                            <li style="list-style: none;" *ngFor="let locMVP of local.mvp">{{getPlayerById(locMVP).name}} <i class="ti-close" (click)="removeMVP(data.local, $index)"></i></li>
                         </ul>
                         <select [(ngModel)]="models.localmvp">
                             <option *ngFor="let teamPlayer of localPlayers" 
@@ -97,7 +97,7 @@
                     <span style="display:block;">Goles</span>
                     <div>
                         <ul class="heroes">
-                            <li *ngFor="let awaScorer of away.scorers">{{getPlayerById(awaScorer).name}}</li>
+                            <li style="list-style: none;" *ngFor="let awaScorer of away.scorers">{{getPlayerById(awaScorer).name}} <i class="ti-close" (click)="removeScorer(data.away, $index)"></i></li>
                         </ul>
                         <select [(ngModel)]="models.awayScorer">
                                 <option *ngFor="let teamPlayer of awayPlayers" 
@@ -109,7 +109,7 @@
                         <span style="display:block;">Asistencias</span>
                         <div>
                             <ul class="heroes">
-                            <li *ngFor="let awaAssistant of away.assistants">{{getPlayerById(awaAssistant).name}}</li>
+                            <li style="list-style: none;" *ngFor="let awaAssistant of away.assistants">{{getPlayerById(awaAssistant).name}} <i class="ti-close" (click)="removeAssistant(data.away, $index)"></i></li>
                         </ul>
                             <select [(ngModel)]="models.awayAssistant">
                                 <option *ngFor="let teamPlayer of awayPlayers" 
@@ -121,7 +121,7 @@
                         <span style="display:block;">Amarillas</span>
                         <div>
                             <ul class="heroes">
-                            <li *ngFor="let awaYellowCard of away.yellowCards">{{getPlayerById(awaYellowCard).name}}</li>
+                            <li style="list-style: none;" *ngFor="let awaYellowCard of away.yellowCards">{{getPlayerById(awaYellowCard).name}} <i class="ti-close" (click)="removeYellowCard(data.away, $index)"></i></li>
                         </ul>
                             <select [(ngModel)]="models.awayYellowCard">
                                 <option *ngFor="let teamPlayer of awayPlayers" 
@@ -133,7 +133,7 @@
                         <span style="display:block;">Rojas</span>
                         <div>
                             <ul class="heroes">
-                            <li *ngFor="let awaRedCards of away.redCards">{{getPlayerById(awaRedCards).name}}</li>
+                            <li style="list-style: none;" *ngFor="let awaRedCards of away.redCards">{{getPlayerById(awaRedCards).name}} <i class="ti-close" (click)="removeRedCard(data.away, $index)"></i></li>
                         </ul>
                             <select [(ngModel)]="models.awayRedCard">
                                 <option *ngFor="let teamPlayer of awayPlayers" 
@@ -145,7 +145,7 @@
                         <span style="display:block;">Lesiones</span>
                         <div>
                             <ul class="heroes">
-                            <li *ngFor="let awaInjury of away.injuries">{{getPlayerById(awaInjury).name}}</li>
+                            <li style="list-style: none;" *ngFor="let awaInjury of away.injuries">{{getPlayerById(awaInjury).name}} <i class="ti-close" (click)="removeInjury(data.away, $index)"></i></li>
                         </ul>
                             <select [(ngModel)]="models.awayinjury">
                                 <option *ngFor="let teamPlayer of awayPlayers" 
@@ -157,7 +157,7 @@
                     <span style="display:block;">MVP</span>
                         <div>
                             <ul class="heroes">
-                            <li *ngFor="let awaMVP of away.mvp">{{getPlayerById(awaMVP).name}}</li>
+                            <li style="list-style: none;" *ngFor="let awaMVP of away.mvp">{{getPlayerById(awaMVP).name}} <i class="ti-close" (click)="removeMVP(data.away, $index)"></i></li>
                         </ul>
                             <select [(ngModel)]="models.awaymvp">
                                 <option *ngFor="let teamPlayer of awayPlayers" 

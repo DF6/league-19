@@ -7,7 +7,7 @@
                     </div>
                     <div class="content">
                         <div class="author">
-                          <img class="avatar border-white" src="{{user.team.imageRoute}}" alt="..."/>
+                          <img class="avatar border-white" src="" alt="..."/><!--{{user.team.imageRoute}}-->
                           <h4 class="title" *ngIf="user">{{user.name}}<br />
                           </h4>
                         </div>
@@ -60,7 +60,41 @@
                     </div>
                 </div>
             </div>
+            </div>
             <div class="col-lg-8 col-md-7">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Datos de usuarios</h4>
+                    </div>
+                    <div class="content">
+                        
+                            
+                        <div *ngIf="usersTable.dataRows.length !=0" class="content table-responsive table-full-width">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Nombre</th>
+                                        <th>Equipo</th>
+                                        <th>Nacion</th>
+                                        <th>PSNID</th>
+                                        <th>Twitch</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let row of usersTable.dataRows">
+                                        <td>{{row.name}}</td>
+                                        <td>{{getTeamById(row.teamID).name}}</td>
+                                        <td>{{getTeamById(row.teamID).nation}}</td>
+                                        <td>{{row.psnID}}</td>
+                                        <td *ngIf="row.twitch"><a href="http://www.{{row.twitch}}" target="_blank"><i class="ti-sharethis"></i></a></td>
+                                        <td *ngIf="!row.twitch">N/D</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+        
+                        </div>
+                        </div>
+                    </div>
             <div *ngIf="playersOfMyTeam" class="card">
                     <div class="header">
                         <h4 *ngIf="players" class="title">Mi plantilla - {{getPlayersByTeam(user.teamID).length}} jugadores</h4>
