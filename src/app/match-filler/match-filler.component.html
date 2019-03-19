@@ -12,7 +12,7 @@
                     <span style="display:block;">Goles</span>
                     <div>
                         <ul class="heroes">
-                            <li *ngFor="let locScore of local.scorers">{{getPlayerById(locScore).name}}</li>
+                            <li style="list-style: none;" *ngFor="let locScore of local.scorers">{{getPlayerById(locScore).name}} <i class="ti-close" (click)="removeScorer(data.local, $index)"></i></li>
                         </ul>
                         <select [(ngModel)]="models.localScorer">
                             <option *ngFor="let teamPlayer of localPlayers" 

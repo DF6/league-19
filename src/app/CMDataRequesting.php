@@ -513,7 +513,10 @@
         $pass=utf8_decode($row['pass']);
         $email=utf8_decode($row['email']);
         $teamID=$row['team_id'];
-        $users[] = array('id'=> $id, 'teamID'=> $teamID, 'user'=> $user, 'pass'=> $pass, 'email'=> $email);
+        $twitch=utf8_decode($row['twitch']);
+        $name=utf8_decode($row['complete_name']);
+        $psnID=utf8_decode($row['psn_id']);
+        $users[] = array('id'=> $id, 'teamID'=> $teamID, 'user'=> $user, 'pass'=> $pass, 'email'=> $email, 'name'=> $name, 'twitch'=> $twitch, 'psnID'=> $psnID);
     }
     $data['users']=$users;
     $data['success'] = true;
@@ -562,6 +565,8 @@
         $position=utf8_decode($row['position']);
         $overage=$row['overage'];
         $buyedThisMarket=$row['buyed_this_market'];
+        $emblem=$row['emblem'];
+        $cedido=$row['cedido'];
         $players[] = array('id'=> $id, 'teamID'=> $teamID, 'name'=> $name, 'salary'=> $salary, 'position'=> $position, 'overage' => $overage, 'buyedThisMarket'=> $buyedThisMarket);
     }
     $data['players']=$players;
