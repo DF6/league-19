@@ -1,0 +1,47 @@
+<div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Partidos pendientes - {{tableData1.dataRows.length}}</h4>
+                    </div>
+                    <div *ngIf="tableData1.dataRows.length !=0" class="content table-responsive table-full-width">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Torneo</th>
+                                    <th>Ronda</th>
+                                    <th>Local</th>
+                                    <th></th>
+                                    <th>Visitante</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of tableData1.dataRows">
+                                    <td *ngIf="!row.filling">{{getTournamentById(row.tournament).name}}</td>
+                                    <td *ngIf="!row.filling && 
+                                    (getTournamentById(row.tournament).name == 'Primera' ||
+                                    getTournamentById(row.tournament).name == 'Segunda' ||
+                                    getTournamentById(row.tournament).name == 'Nations League')">{{row.round}}</td>
+                                    <td *ngIf="!row.filling && getTournamentById(row.tournament).name != 'Primera' &&
+                                    getTournamentById(row.tournament).name != 'Segunda' &&
+                                    getTournamentById(row.tournament).name != 'Nations League'">{{getRoundName(row)}}</td>
+                                    <td *ngIf="!row.filling && getTournamentById(row.tournament).name != 'Nations League'">{{getTeamById(row.local).name}}</td>
+                                    <td *ngIf="!row.filling && getTournamentById(row.tournament).name == 'Nations League'">{{getTeamById(row.local).nation}}</td>
+                                    <td *ngIf="!row.filling">-</td>
+                                    <td *ngIf="!row.filling && getTournamentById(row.tournament).name != 'Nations League'">{{getTeamById(row.away).name}}</td>
+                                    <td *ngIf="!row.filling && getTournamentById(row.tournament).name == 'Nations League'">{{getTeamById(row.away).nation}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+    
+                    </div>
+                    <div *ngIf="tableData1.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                        Partidos no disponibles
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+

@@ -17,6 +17,7 @@ import { IntertotoComponent } from './intertoto/intertoto.component';
 import { ChampionsComponent } from './champions/champions.component';
 import { NationsComponent } from './nations/nations.component';
 import { ClubSupercupComponent } from './clubsupercup/clubsupercup.component';
+import { AdminMatchesComponent } from './adminmatches/adminmatches.component';
 
 export const AppRoutes: Routes = [
     {
@@ -39,6 +40,10 @@ export const AppRoutes: Routes = [
     {
         path: 'partidospendientes',
         component: TypographyComponent
+    },
+    {
+        path: 'partidospendientestotales',
+        component: AdminMatchesComponent
     },
     {
         path: 'plantillas',

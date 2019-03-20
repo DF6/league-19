@@ -136,6 +136,18 @@ export class NationsComponent implements OnInit{
                 aStands.push(teamToInsert[0]);
                 position++;
             }
+            let aux = null;
+            for (let i = 0; i < aStands.length; i++) {
+                for (let j = 0; j < aStands.length - 1 - i; j++) {
+                    if (aStands[j][9] == aStands[j+1][9] && aStands[j][8] < aStands[j+1][8]) {
+                        aStands[j][0]++;
+                        aStands[j+1][0]--;
+                        aux = aStands[j];
+                        aStands[j] = aStands[j+1];
+                        aStands[j+1] = aux;
+                    }
+                }
+            }
             position = 1;
             while(groupBStandings.length != 0) {
                 let indexToInsert = -1;
@@ -150,6 +162,17 @@ export class NationsComponent implements OnInit{
                 teamToInsert[0][0] = position;
                 bStands.push(teamToInsert[0]);
                 position++;
+            }
+            for (let i = 0; i < bStands.length; i++) {
+                for (let j = 0; j < bStands.length - 1 - i; j++) {
+                    if (bStands[j][9] == bStands[j+1][9] && bStands[j][8] < bStands[j+1][8]) {
+                        bStands[j][0]++;
+                        bStands[j+1][0]--;
+                        aux = bStands[j];
+                        bStands[j] = bStands[j+1];
+                        bStands[j+1] = aux;
+                    }
+                }
             }
             position = 1;
             while(groupCStandings.length != 0) {
@@ -166,6 +189,17 @@ export class NationsComponent implements OnInit{
                 cStands.push(teamToInsert[0]);
                 position++;
             }
+            for (let i = 0; i < cStands.length; i++) {
+                for (let j = 0; j < cStands.length - 1 - i; j++) {
+                    if (cStands[j][9] == cStands[j+1][9] && cStands[j][8] < cStands[j+1][8]) {
+                        cStands[j][0]++;
+                        cStands[j+1][0]--;
+                        aux = cStands[j];
+                        cStands[j] = cStands[j+1];
+                        cStands[j+1] = aux;
+                    }
+                }
+            }
             position = 1;
             while(groupDStandings.length != 0) {
                 let indexToInsert = -1;
@@ -180,6 +214,17 @@ export class NationsComponent implements OnInit{
                 teamToInsert[0][0] = position;
                 dStands.push(teamToInsert[0]);
                 position++;
+            }
+            for (let i = 0; i < dStands.length; i++) {
+                for (let j = 0; j < dStands.length - 1 - i; j++) {
+                    if (dStands[j][9] == dStands[j+1][9] && dStands[j][8] < dStands[j+1][8]) {
+                        dStands[j][0]++;
+                        dStands[j+1][0]--;
+                        aux = dStands[j];
+                        dStands[j] = dStands[j+1];
+                        dStands[j+1] = aux;
+                    }
+                }
             }
             this.groupA.dataRows = aStands;
             this.groupB.dataRows = bStands;

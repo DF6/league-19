@@ -119,12 +119,12 @@ export class StatisticsComponent implements OnInit{
     private updateStandings(action, data) {
         let updated = false;
         data.forEach( (value) => {
-            if (value.playerID == action.player) {
+            if (value.playerID == action.player && value.playerID > 0) {
                 value.quantity += 1;
                 updated = true;
             }
         });
-        if (!updated) {
+        if (!updated && action.player > 0) {
             data.push({position: -1, playerID: action.player, name: this.getPlayerById(action.player).name, quantity: 1});
         }
         return data;

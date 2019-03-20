@@ -567,7 +567,7 @@
         $buyedThisMarket=$row['buyed_this_market'];
         $emblem=$row['emblem'];
         $cedido=$row['cedido'];
-        $players[] = array('id'=> $id, 'teamID'=> $teamID, 'name'=> $name, 'salary'=> $salary, 'position'=> $position, 'overage' => $overage, 'buyedThisMarket'=> $buyedThisMarket);
+        $players[] = array('id'=> $id, 'teamID'=> $teamID, 'name'=> $name, 'salary'=> $salary, 'position'=> $position, 'overage' => $overage, 'buyedThisMarket'=> $buyedThisMarket, 'emblem'=>$emblem, 'cedido'=>$cedido);
     }
     $data['players']=$players;
     $data['success'] = true;

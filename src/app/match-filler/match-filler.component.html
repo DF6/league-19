@@ -17,7 +17,8 @@
                         <select [(ngModel)]="models.localScorer">
                             <option *ngFor="let teamPlayer of localPlayers" 
                             [ngValue]="teamPlayer.id">{{teamPlayer.name}}</option>
-                            <option [ngValue]="0">No lo sé</option>
+                            <option [ngValue]="0">Gol en Propia Puerta</option>
+                            <option [ngValue]="-1">No lo sé</option>
                         </select>
                     </div>
                     <button (click)="addScorer(data.local)" style="margin-top: 4px;">Añadir</button>
@@ -29,7 +30,7 @@
                         <select [(ngModel)]="models.localAssistant">
                             <option *ngFor="let teamPlayer of localPlayers" 
                             [ngValue]="teamPlayer.id">{{teamPlayer.name}}</option>
-                            <option [ngValue]="0">No lo sé</option>
+                            <option [ngValue]="-1">No lo sé</option>
                         </select>
                     </div>
                     <button (click)="addAssistant(data.local)" style="margin-top: 4px;">Añadir</button>
@@ -41,7 +42,7 @@
                         <select [(ngModel)]="models.localYellowCard">
                             <option *ngFor="let teamPlayer of localPlayers" 
                             [ngValue]="teamPlayer.id">{{teamPlayer.name}}</option>
-                            <option [ngValue]="0">No lo sé</option>
+                            <option [ngValue]="-1">No lo sé</option>
                         </select>
                     </div>
                     <button (click)="addYellowCard(data.local)" style="margin-top: 4px;">Añadir</button>
@@ -53,7 +54,7 @@
                         <select [(ngModel)]="models.localRedCard">
                             <option *ngFor="let teamPlayer of localPlayers" 
                             [ngValue]="teamPlayer.id">{{teamPlayer.name}}</option>
-                            <option [ngValue]="0">No lo sé</option>
+                            <option [ngValue]="-1">No lo sé</option>
                         </select>
                     </div>
                     <button (click)="addRedCard(data.local)" style="margin-top: 4px;">Añadir</button>
@@ -65,7 +66,7 @@
                         <select [(ngModel)]="models.localinjury">
                             <option *ngFor="let teamPlayer of localPlayers" 
                             [ngValue]="teamPlayer.id">{{teamPlayer.name}}</option>
-                            <option [ngValue]="0">No lo sé</option>
+                            <option [ngValue]="-1">No lo sé</option>
                         </select>
                     </div>
                     <button (click)="addInjury(data.local)" style="margin-top: 4px;">Añadir</button>
@@ -77,7 +78,7 @@
                         <select [(ngModel)]="models.localmvp">
                             <option *ngFor="let teamPlayer of localPlayers" 
                             [ngValue]="teamPlayer.id">{{teamPlayer.name}}</option>
-                            <option [ngValue]="0">No lo sé</option>
+                            <option [ngValue]="-1">No lo sé</option>
                         </select>
                     </div>
                     <button (click)="addMVP(data.local)" style="margin-top: 4px;">Añadir</button>
@@ -102,7 +103,8 @@
                         <select [(ngModel)]="models.awayScorer">
                                 <option *ngFor="let teamPlayer of awayPlayers" 
                                 [ngValue]="teamPlayer.id">{{teamPlayer.name}}</option>
-                                <option [ngValue]="0">No lo sé</option>
+                                <option [ngValue]="0">Gol en Propia Puerta</option>
+                                <option [ngValue]="-1">No lo sé</option>
                         </select>
                         </div>
                         <button (click)="addScorer(data.away)" style="margin-top: 4px;">Añadir</button>
@@ -114,7 +116,7 @@
                             <select [(ngModel)]="models.awayAssistant">
                                 <option *ngFor="let teamPlayer of awayPlayers" 
                                 [ngValue]="teamPlayer.id">{{teamPlayer.name}}</option>
-                                <option [ngValue]="0">No lo sé</option>
+                                <option [ngValue]="-1">No lo sé</option>
                             </select>
                         </div>
                         <button (click)="addAssistant(data.away)" style="margin-top: 4px;">Añadir</button>
@@ -126,7 +128,7 @@
                             <select [(ngModel)]="models.awayYellowCard">
                                 <option *ngFor="let teamPlayer of awayPlayers" 
                                 [ngValue]="teamPlayer.id">{{teamPlayer.name}}</option>
-                                <option [ngValue]="0">No lo sé</option>
+                                <option [ngValue]="-1">No lo sé</option>
                             </select>
                         </div>
                         <button (click)="addYellowCard(data.away)" style="margin-top: 4px;">Añadir</button>
@@ -138,7 +140,7 @@
                             <select [(ngModel)]="models.awayRedCard">
                                 <option *ngFor="let teamPlayer of awayPlayers" 
                                 [ngValue]="teamPlayer.id">{{teamPlayer.name}}</option>
-                                <option [ngValue]="0">No lo sé</option>
+                                <option [ngValue]="-1">No lo sé</option>
                             </select>
                         </div>
                         <button (click)="addRedCard(data.away)" style="margin-top: 4px;">Añadir</button>
@@ -150,7 +152,7 @@
                             <select [(ngModel)]="models.awayinjury">
                                 <option *ngFor="let teamPlayer of awayPlayers" 
                                 [ngValue]="teamPlayer.id">{{teamPlayer.name}}</option>
-                                <option [ngValue]="0">No lo sé</option>
+                                <option [ngValue]="-1">No lo sé</option>
                             </select>
                         </div>
                         <button (click)="addInjury(data.away)" style="margin-top: 4px;">Añadir</button>
@@ -162,7 +164,7 @@
                             <select [(ngModel)]="models.awaymvp">
                                 <option *ngFor="let teamPlayer of awayPlayers" 
                                 [ngValue]="teamPlayer.id">{{teamPlayer.name}}</option>
-                                <option [ngValue]="0">No lo sé</option>
+                                <option [ngValue]="-1">No lo sé</option>
                             </select>
                         </div>
                         <button (click)="addMVP(data.away)" style="margin-top: 4px;">Añadir</button>

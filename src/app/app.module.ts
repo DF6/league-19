@@ -30,6 +30,7 @@ import { IntertotoComponent } from './intertoto/intertoto.component';
 import { ChampionsComponent } from './champions/champions.component';
 import { NationsComponent } from './nations/nations.component';
 import { ClubSupercupComponent } from './clubsupercup/clubsupercup.component';
+import { AdminMatchesComponent } from './adminmatches/adminmatches.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { ClubSupercupComponent } from './clubsupercup/clubsupercup.component';
     IntertotoComponent,
     ChampionsComponent,
     NationsComponent,
-    ClubSupercupComponent
+    ClubSupercupComponent,
+    AdminMatchesComponent
   ],
   imports: [
     BrowserModule,

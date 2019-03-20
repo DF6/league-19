@@ -42,41 +42,31 @@ export class TableComponent implements OnInit{
             let pStands = [];
             let sStands = [];
             for (let i = 0; i < this.standingsArray.length; i++) {
+                let objectToPush = [
+                    0,
+                    this.getTeamById(parseInt(this.standingsArray[i].team)).name,
+                    parseInt(this.standingsArray[i].round),
+                    parseInt(this.standingsArray[i].won),
+                    parseInt(this.standingsArray[i].draw),
+                    parseInt(this.standingsArray[i].lost),
+                    parseInt(this.standingsArray[i].goalsFor),
+                    parseInt(this.standingsArray[i].goalsAgainst),
+                    parseInt(this.standingsArray[i].goalsFor) - parseInt(this.standingsArray[i].goalsAgainst),
+                    parseInt(this.standingsArray[i].points)
+                ];
                 if (this.standingsArray[i].tournamentID == premierLastEdition) {
-                    premierStandings.push([
-                        0,
-                        this.getTeamById(parseInt(this.standingsArray[i].team)).name,
-                        parseInt(this.standingsArray[i].round),
-                        parseInt(this.standingsArray[i].won),
-                        parseInt(this.standingsArray[i].draw),
-                        parseInt(this.standingsArray[i].lost),
-                        parseInt(this.standingsArray[i].goalsFor),
-                        parseInt(this.standingsArray[i].goalsAgainst),
-                        parseInt(this.standingsArray[i].goalsFor) - parseInt(this.standingsArray[i].goalsAgainst),
-                        parseInt(this.standingsArray[i].points)
-                    ]);
+                    premierStandings.push(objectToPush);
                 }else if (this.standingsArray[i].tournamentID == secondLastEdition) {
-                    secondStandings.push([
-                        0,
-                        this.getTeamById(parseInt(this.standingsArray[i].team)).name,
-                        parseInt(this.standingsArray[i].round),
-                        parseInt(this.standingsArray[i].won),
-                        parseInt(this.standingsArray[i].draw),
-                        parseInt(this.standingsArray[i].lost),
-                        parseInt(this.standingsArray[i].goalsFor),
-                        parseInt(this.standingsArray[i].goalsAgainst),
-                        parseInt(this.standingsArray[i].goalsFor) - parseInt(this.standingsArray[i].goalsAgainst),
-                        parseInt(this.standingsArray[i].points)
-                    ]);
+                    secondStandings.push(objectToPush);
                 }
             }
 
             let position = 1;
-            while(premierStandings.length != 0) {
+            while (premierStandings.length != 0) {
                 let indexToInsert = -1;
                 let maxPoints = -1;
                 premierStandings.forEach( (value, key) => {
-                    if(value[9] > maxPoints) {
+                    if (value[9] > maxPoints) {
                         indexToInsert = key;
                         maxPoints = value[9];
                     }
@@ -86,12 +76,24 @@ export class TableComponent implements OnInit{
                 pStands.push(teamToInsert[0]);
                 position++;
             }
+            let aux = null;
+            for (let i = 0; i < pStands.length; i++) {
+                for (let j = 0; j < pStands.length - 1 - i; j++) {
+                    if (pStands[j][9] == pStands[j+1][9] && pStands[j][8] < pStands[j+1][8]) {
+                        pStands[j][0]++;
+                        pStands[j+1][0]--;
+                        aux = pStands[j];
+                        pStands[j] = pStands[j+1];
+                        pStands[j+1] = aux;
+                    }
+                }
+            }
             position = 1;
-            while(secondStandings.length != 0) {
+            while (secondStandings.length != 0) {
                 let indexToInsert = -1;
                 let maxPoints = -1;
                 secondStandings.forEach( (value, key) => {
-                    if(value[9] > maxPoints) {
+                    if (value[9] > maxPoints) {
                         indexToInsert = key;
                         maxPoints = value[9];
                     }
@@ -101,9 +103,20 @@ export class TableComponent implements OnInit{
                 sStands.push(teamToInsert[0]);
                 position++;
             }
+            for (let i = 0; i < sStands.length; i++) {
+                for (let j = 0; j < sStands.length - 1 - i; j++) {
+                    if (sStands[j][9] == sStands[j+1][9] && sStands[j][8] < sStands[j+1][8]) {
+                        sStands[j][0]++;
+                        sStands[j+1][0]--;
+                        aux = sStands[j];
+                        sStands[j] = sStands[j+1];
+                        sStands[j+1] = aux;
+                    }
+                }
+            }
             this.tableData1.dataRows = pStands;
             this.tableData2.dataRows = sStands;
-            
+
             this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
                 this.matches = response.json() ? response.json().matches : null;
                 sessionStorage.setItem('matches', JSON.stringify({matches: this.matches}));

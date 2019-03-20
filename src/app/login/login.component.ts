@@ -27,9 +27,18 @@ export class LoginComponent{
         let userExists = false;
         let passMatch = false;
         this.users.forEach( (value) => {
-            if(value.user.toLowerCase() == this.user.toLowerCase()) {
-                if(value.pass.toLowerCase() == this.pass.toLowerCase()) {
-                    sessionStorage.setItem('user', JSON.stringify({id: value.id, teamID: value.teamID, user: value.user, pass: value.pass, email: value.email}));
+            if (value.user.toLowerCase() == this.user.toLowerCase()) {
+                if (value.pass.toLowerCase() == this.pass.toLowerCase()) {
+                    sessionStorage.setItem('user', JSON.stringify({
+                        id: value.id,
+                        teamID: value.teamID,
+                        user: value.user,
+                        pass: value.pass,
+                        email: value.email,
+                        name: value.name,
+                        psnID: value.psnID,
+                        twitch: value.twitch
+                    }));
                     passMatch = true;
                     this.sidebarService.logChange();
                     alert('Bienvenido ' + value.user);

@@ -3,12 +3,15 @@
             <div class="col-lg-4 col-md-5">
                 <div class="card card-user">
                     <div class="image">
-                        <img src="assets/img/background.jpg" alt="..."/>
+                        <img src="assets/img/background.jpg"/>
                     </div>
                     <div class="content">
                         <div class="author">
-                          <img class="avatar border-white" src="" alt="..."/><!--{{user.team.imageRoute}}-->
+                          <img class="avatar border-black" src="{{getTeamById(user.teamID).teamImage}}"/>   
                           <h4 class="title" *ngIf="user">{{user.name}}<br />
+                            {{getTeamById(user.teamID).name}}<br/>
+                            {{user.psnID}}<br/>
+                            <a href="http://www.{{user.twitch}}" target="_blank"><i class="ti-sharethis"></i></a>
                           </h4>
                         </div>
                     </div>
@@ -60,7 +63,6 @@
                     </div>
                 </div>
             </div>
-            </div>
             <div class="col-lg-8 col-md-7">
                 <div class="card">
                     <div class="header">
@@ -68,7 +70,6 @@
                     </div>
                     <div class="content">
                         
-                            
                         <div *ngIf="usersTable.dataRows.length !=0" class="content table-responsive table-full-width">
                             <table class="table table-striped">
                                 <thead>
@@ -102,7 +103,7 @@
                     <div class="content">
                         <ul class="list-unstyled team-members">
                                     <li *ngFor="let player of playersOfMyTeam">
-                                        <div class="row" *ngIf="!player.emblem">
+                                        <div class="row" *ngIf="player.emblem == '0'">
                                             <div class="col-xs-1">
                                                 <div class="avatar">
                                                     <img src="assets/img/faces/face-0.jpg" class="img-circle img-no-padding img-responsive">
@@ -126,7 +127,7 @@
                                                 <button class="btn btn-sm btn-success btn-icon" ng-click="changeSalary(player.id)">Cambiar sueldo</button>
                                             </div>-->
                                         </div>
-                                        <div class="row" *ngIf="player.emblem" style="background-color:rgb(255, 212, 160);">
+                                        <div class="row" *ngIf="player.emblem == '1'" style="background-color:rgb(255, 212, 160);">
                                             <div class="col-xs-1">
                                                 <div class="avatar">
                                                     <img src="assets/img/faces/face-0.jpg" class="img-circle img-no-padding img-responsive">
@@ -157,5 +158,6 @@
                 </div>
 
 
+            </div>
         </div>
     </div>
