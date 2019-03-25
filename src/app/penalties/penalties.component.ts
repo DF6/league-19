@@ -44,7 +44,7 @@ export class PenaltiesComponent implements OnInit{
                                 if(this.updateYellowCount(value)) {
                                     let penalty = this.getPenalty(value);
                                     penalty.forEach( (value) => {
-                                        if (value.round > 3 && value.round < 8) {
+                                        if (this.roundValid(value)) {
                                             penalties.push(value);
                                         }
                                     });
@@ -54,7 +54,7 @@ export class PenaltiesComponent implements OnInit{
                         case 'I':
                                 let penalty = this.getPenalty(value);
                                 penalty.forEach( (value) => {
-                                    if (value.round > 3 && value.round < 8) {
+                                    if (this.roundValid(value)) {
                                         penalties.push(value);
                                     }
                                 });
@@ -67,15 +67,43 @@ export class PenaltiesComponent implements OnInit{
         });
     }
 
+    private roundValid(penalty) {
+        let ret = false;
+
+        switch (penalty.tournament) {
+                case 'Primera':
+                case 'Segunda':
+                    ret = (penalty.round > 3 && penalty.round < 8);
+                    break;
+                case 'Copa':
+                    ret = (penalty.round > 2 && penalty.round < 5);
+                    break;
+                case 'Champions League':
+                    ret = (penalty.round > 6 && penalty.round < 9);
+                    break;
+                case 'Europa League':
+                    ret = (penalty.round > 0);
+                    break;
+                case 'Intertoto':
+                    ret = (penalty.round > 0);
+                    break;
+                case 'Supercopa de Clubes':
+                case 'Supercopa de Europa':
+                    break;
+        }
+
+        return ret;
+    }
+
     
     private updateYellowCount(action) {
         let updated = false;
         let isPenalty = false;
         this.yellowCardsCount.forEach( (value) => {
-            if (value.playerID == action.player && value.playerID > 0) {
+            if (value.tournament == this.getTournamentByMatch(action.matchID) && value.playerID == action.player && value.playerID > 0) {
                 value.quantity += 1;
                 updated = true;
-                if(value.quantity % 2 == 0) {
+                if (value.quantity % 2 == 0) {
                     isPenalty = true;
                 }
             }
@@ -108,35 +136,68 @@ export class PenaltiesComponent implements OnInit{
         let roundTo = 0;
         if ((tournamentName == 'Primera' || tournamentName == 'Segunda') && parseInt(this.getMatchById(action.matchID).round) == 4) {
             roundTo = 8;
-        } else if (tournamentName != 'Primera' && tournamentName != 'Segunda' && parseInt(this.getMatchById(action.matchID).round) % 2 != 0) {
+        } else if (tournamentName == 'Champions League' && parseInt(this.getMatchById(action.matchID).round) < 7) {
+            roundTo = 7;
+        }else if (tournamentName != 'Primera' && tournamentName != 'Segunda' && parseInt(this.getMatchById(action.matchID).round) % 2 != 0) {
             roundTo = parseInt(this.getMatchById(action.matchID).round) + 2;
         } else {
             roundTo = parseInt(this.getMatchById(action.matchID).round) + amountTo;
         }
         switch (action.type) {
             case 'Y': 
-                    return [{ teamFor: this.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo), player: action.player, round: roundTo, cause: 'Amarillas'}];
+                    return this.correctPenalty([{ tournament: tournamentName, teamFor: this.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo), player: action.player, round: roundTo, cause: 'Amarillas'}]);
             case 'R': 
-                    return [{ teamFor: this.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo), player: action.player, round: roundTo, cause: 'Roja'},
-                            { teamFor: this.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo + 1), player: action.player, round: roundTo + 1, cause: 'Roja'}];
+                    return this.correctPenalty([{ tournament: tournamentName, teamFor: this.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo), player: action.player, round: roundTo, cause: 'Roja'},
+                            { tournament: tournamentName, teamFor: this.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo + 1), player: action.player, round: roundTo + 1, cause: 'Roja'}]);
             case 'I': 
-                    return [{ teamFor: this.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo), player: action.player, round: roundTo, cause: 'Lesión'}];
+                    return this.correctPenalty([{ tournament: tournamentName, teamFor: this.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo), player: action.player, round: roundTo, cause: 'Lesión'}]);
         }
+    }
+
+    private getLowerTournament(tournament) {
+        switch (tournament) {
+            case 'Champions League': return 'Europa League';
+            case 'Europa League': return 'Intertoto';
+            case 'Intertoto':
+            case 'Copa':
+                return 'NO APLICA';
+        }
+    }
+
+    private correctPenalty(actions) {
+        for (let i = 0; i < actions.length; i++) {
+            if (actions[i].teamAgainst == -1) {
+                actions[i].tournament = this.getLowerTournament(actions[i].tournament);
+                if (actions[i].tournament == 'NO APLICA') {
+                    actions.splice(i, 1);
+                    i--;
+                } else {
+                    actions[i].teamAgainst == this.getRival(actions[i], 1);
+                    actions[i].round = 1;
+                }
+            }
+        }
+        return actions;
     }
 
     private getRival(action, round) {
         let teamFor = this.getPlayerById(action.player).teamID;
         let tournament = this.getTournamentByMatch(action.matchID);
         let teamToReturn = 0;
+        let passRound = -1;
         this.matches.forEach( (value) => {
             if (value.tournament == tournament && value.round == round) {
-                if(value.local == teamFor) {
+                if (passRound == -1) { passRound = 0; }
+                if (value.local == teamFor) {
                     teamToReturn = value.away;
+                    passRound = 1;
                 } else if(value.away == teamFor) {
                     teamToReturn = value.local;
+                    passRound = 1;
                 }
             }
         });
+        if (passRound == 0) { teamToReturn = -1; }
         return teamToReturn;
     }
 
@@ -197,36 +258,39 @@ export class PenaltiesComponent implements OnInit{
         };
     }
 
-    public getRoundName(match) {
-        switch (this.getTournamentById(match.tournament).name) {
+    public getRoundName(tournament, round) {
+        switch (tournament) {
+            case 'Primera':
+            case 'Segunda':
+                return round;
             case 'Copa':
-                if (match.round < 3) { return 'Octavos de Final'; }
-                else if (match.round >= 3 && match.round < 5) { return 'Cuartos de Final'; }
-                else if (match.round >= 5 && match.round < 7) { return 'Semifinales'; }
-                else if (match.round == 8) { return 'Tercer y Cuarto Puesto'; }
-                else if (match.round == 9) { return 'Final'; }
+                if (round < 3) { return 'Octavos de Final'; }
+                else if (round >= 3 && round < 5) { return 'Cuartos de Final'; }
+                else if (round >= 5 && round < 7) { return 'Semifinales'; }
+                else if (round == 8) { return 'Tercer y Cuarto Puesto'; }
+                else if (round == 9) { return 'Final'; }
                 break;
             case 'Champions League':
-                if (match.round < 7) { return 'Fase de Grupos'; }
-                else if (match.round >= 7 && match.round < 9) { return 'Cuartos de Final'; }
-                else if (match.round >= 9 && match.round < 11) { return 'Semifinales'; }
-                else if (match.round == 11) { return 'Tercer y Cuarto Puesto'; }
-                else if (match.round == 12) { return 'Final'; }
+                if (round < 7) { return 'Fase de Grupos'; }
+                else if (round >= 7 && round < 9) { return 'Cuartos de Final'; }
+                else if (round >= 9 && round < 11) { return 'Semifinales'; }
+                else if (round == 11) { return 'Tercer y Cuarto Puesto'; }
+                else if (round == 12) { return 'Final'; }
                 break;
             case 'Europa League':
-                if (match.round < 3) { return 'Cuartos de Final'; }
-                else if (match.round >= 3 && match.round < 5) { return 'Semifinales'; }
-                else if (match.round == 5) { return 'Tercer y Cuarto Puesto'; }
-                else if (match.round == 6) { return 'Final'; }
+                if (round < 3) { return 'Cuartos de Final'; }
+                else if (round >= 3 && round < 5) { return 'Semifinales'; }
+                else if (round == 5) { return 'Tercer y Cuarto Puesto'; }
+                else if (round == 6) { return 'Final'; }
                 break;
             case 'Intertoto':
-                if (match.round < 3) { return 'Semifinales'; }
-                else if (match.round == 3) { return 'Tercer y Cuarto Puesto'; }
-                else if (match.round == 4) { return 'Final'; }
+                if (round < 3) { return 'Semifinales'; }
+                else if (round == 3) { return 'Tercer y Cuarto Puesto'; }
+                else if (round == 4) { return 'Final'; }
                 break;
             case 'Supercopa de Clubes':
             case 'Supercopa Europea': 
-                if (match.round == 1) { return 'Final'; } break;
+                if (round == 1) { return 'Final'; } break;
         }
     }
 }

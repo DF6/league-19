@@ -9,6 +9,7 @@
                     <table class="table table-hover">
                         <thead>
                             <tr>
+                                <th>Torneo</th>
                                 <th>Equipo</th>
                                 <th>Jugador</th>
                                 <th>Causa</th>
@@ -18,10 +19,11 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let row of tableData1.dataRows">
+                                <td>{{row.tournament}}</td>
                                 <td>{{getTeamById(row.teamFor).name}}</td>
                                 <td>{{getPlayerById(row.player).name}}</td>
                                 <td>{{row.cause}}</td>
-                                <td>{{getRoundName(row.round)}}</td>
+                                <td>{{getRoundName(row.tournament, row.round)}}</td>
                                 <td *ngIf="row.teamAgainst == 0">Por determinar</td>
                                 <td *ngIf="row.teamAgainst != 0">{{getTeamById(row.teamAgainst).name}}</td>
                             </tr>

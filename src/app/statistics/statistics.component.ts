@@ -125,7 +125,7 @@ export class StatisticsComponent implements OnInit{
             }
         });
         if (!updated && action.player > 0) {
-            data.push({position: -1, playerID: action.player, name: this.getPlayerById(action.player).name, quantity: 1});
+            data.push({position: -1, team: this.getTeamById(this.getPlayerById(action.player).teamID).shortName, playerID: action.player, name: this.getPlayerById(action.player).name, quantity: 1});
         }
         return data;
     }

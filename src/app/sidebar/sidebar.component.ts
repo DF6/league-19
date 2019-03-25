@@ -21,6 +21,7 @@ export const ROUTES: RouteInfo[] = [
     // { path: 'intertoto', title: 'Intertoto', icon: 'ti-bell', class: '' },
     { path: 'nations', title: 'Liga de Naciones', icon: 'ti-flag-alt-2', class: '' },
     { path: 'estadisticas', title: 'Estadisticas', icon:'ti-text', class: '' },
+    { path: 'sanciones', title: 'Sanciones', icon: 'ti-wheelchair', class: '' },
     { path: 'partidospendientes', title: 'Partidos Pendientes', icon:'ti-text', class: '' },
     { path: 'usuario', title: 'Perfil', icon: 'ti-user', class: '' },
     { path: 'plantillas', title: 'Plantillas', icon: 'ti-pencil-alt2', class: '' },
