@@ -74,7 +74,7 @@ export class UserComponent{
     private giveActiveUsers() {
         let finalUsers = [];
         this.users.forEach( (value) => {
-            if(value.user != 'admin' && value.user != 'prueba') {
+            if(value.user != 'admin' && value.user != 'prueba' && finalUsers.length < 16) {
                 finalUsers.push(value);
             }
         });

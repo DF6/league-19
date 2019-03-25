@@ -18,6 +18,7 @@ import { ChampionsComponent } from './champions/champions.component';
 import { NationsComponent } from './nations/nations.component';
 import { ClubSupercupComponent } from './clubsupercup/clubsupercup.component';
 import { AdminMatchesComponent } from './adminmatches/adminmatches.component';
+import { PenaltiesComponent } from './penalties/penalties.component';
 
 export const AppRoutes: Routes = [
     {
@@ -96,5 +97,9 @@ export const AppRoutes: Routes = [
     {
         path: 'clubsupercup',
         component: ClubSupercupComponent
+    },
+    {
+        path: 'sanciones',
+        component: PenaltiesComponent
     }
 ]
