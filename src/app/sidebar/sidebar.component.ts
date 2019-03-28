@@ -17,7 +17,7 @@ export const ROUTES: RouteInfo[] = [
     { path: 'copa', title: 'Copa', icon: 'ti-vector', class: '' },
     { path: 'champions', title: 'Champions', icon: 'ti-cup', class: '' },
     { path: 'clubsupercup', title: 'Supercopa de Clubes', icon: 'ti-crown', class: '' },
-    // { path: 'el', title: 'Europa League', icon: 'ti-bell', class: '' },
+    { path: 'el', title: 'Europa League', icon: 'ti-bell', class: '' },
     // { path: 'intertoto', title: 'Intertoto', icon: 'ti-bell', class: '' },
     { path: 'nations', title: 'Liga de Naciones', icon: 'ti-flag-alt-2', class: '' },
     { path: 'estadisticas', title: 'Estadisticas', icon:'ti-text', class: '' },

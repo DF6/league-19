@@ -26,6 +26,7 @@ export class ChampionsComponent implements OnInit{
     public standingsArray;
     public season;
     public matches;
+    public KOMatches;
 
     constructor(private http: Http){}
 
@@ -241,6 +242,7 @@ export class ChampionsComponent implements OnInit{
                     }
                 });
                 this.uclMatches.dataRows = championsMatches;
+                this.KOMatches = championsMatches;
             });
         });
     }

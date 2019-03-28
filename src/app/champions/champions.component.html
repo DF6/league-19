@@ -1,104 +1,104 @@
 <div class="container-fluid">
         <div class="row">
-                <div class="col-md-4" *ngIf="matches && matches.length < 57 && matches.length > 48">
+                <div class="col-md-4" *ngIf="KOMatches && KOMatches.length < 57 && KOMatches.length > 48">
                     <h3>Cuartos de final</h3>
                     <table style="margin-top: 30px;min-width:16.6%;min-height:14.65%;border-radius: 10%;background-color: #ccc5b9;" class="table table-hover">
                             <tbody>
                                 <tr>
-                                    <td style="border-right: 1px solid #000;">{{getTeamById(matches[48].local).name}}</td>
-                                    <td style="border-right: 1px solid #000;" *ngIf="matches[48].localGoals != -1">{{matches[48].localGoals}}</td>
-                                    <td *ngIf="matches[52].awayGoals != -1">{{matches[52].awayGoals}}</td>
+                                    <td style="border-right: 1px solid #000;">{{getTeamById(KOMatches[48].local).name}}</td>
+                                    <td style="border-right: 1px solid #000;" *ngIf="KOMatches[48].localGoals != -1">{{KOMatches[48].localGoals}}</td>
+                                    <td *ngIf="KOMatches[52].awayGoals != -1">{{KOMatches[52].awayGoals}}</td>
                                 </tr>
                                 <tr>
-                                    <td style="border-right: 1px solid #000;">{{getTeamById(matches[48].away).name}}</td>
-                                    <td style="border-right: 1px solid #000;" *ngIf="matches[48].awayGoals != -1">{{matches[48].awayGoals}}</td>
-                                    <td *ngIf="matches[52].localGoals != -1">{{matches[52].localGoals}}</td>
+                                    <td style="border-right: 1px solid #000;">{{getTeamById(KOMatches[48].away).name}}</td>
+                                    <td style="border-right: 1px solid #000;" *ngIf="KOMatches[48].awayGoals != -1">{{KOMatches[48].awayGoals}}</td>
+                                    <td *ngIf="KOMatches[52].localGoals != -1">{{KOMatches[52].localGoals}}</td>
                                 </tr>
                             </tbody>
                         </table><table style="margin-top: 30px;min-width:16.6%;min-height:14.65%;border-radius: 10%;background-color: #ccc5b9;" class="table table-hover">
                                 <tbody>
                                     <tr>
-                                        <td style="border-right: 1px solid #000;">{{getTeamById(matches[49].local).name}}</td>
-                                        <td style="border-right: 1px solid #000;" *ngIf="matches[49].localGoals != -1">{{matches[49].localGoals}}</td>
-                                        <td *ngIf="matches[53].awayGoals != -1">{{matches[53].awayGoals}}</td>
+                                        <td style="border-right: 1px solid #000;">{{getTeamById(KOMatches[49].local).name}}</td>
+                                        <td style="border-right: 1px solid #000;" *ngIf="KOMatches[49].localGoals != -1">{{KOMatches[49].localGoals}}</td>
+                                        <td *ngIf="KOMatches[53].awayGoals != -1">{{KOMatches[53].awayGoals}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="border-right: 1px solid #000;">{{getTeamById(matches[49].away).name}}</td>
-                                        <td style="border-right: 1px solid #000;" *ngIf="matches[49].awayGoals != -1">{{matches[49].awayGoals}}</td>
-                                        <td *ngIf="matches[53].localGoals != -1">{{matches[53].localGoals}}</td>
+                                        <td style="border-right: 1px solid #000;">{{getTeamById(KOMatches[49].away).name}}</td>
+                                        <td style="border-right: 1px solid #000;" *ngIf="KOMatches[49].awayGoals != -1">{{KOMatches[49].awayGoals}}</td>
+                                        <td *ngIf="KOMatches[53].localGoals != -1">{{KOMatches[53].localGoals}}</td>
                                     </tr>
                                 </tbody>
                             </table><table style="margin-top: 30px;min-width:16.6%;min-height:14.65%;border-radius: 10%;background-color: #ccc5b9;" class="table table-hover">
                                     <tbody>
                                         <tr>
-                                            <td style="border-right: 1px solid #000;">{{getTeamById(matches[50].local).name}}</td>
-                                            <td style="border-right: 1px solid #000;" *ngIf="matches[50].localGoals != -1">{{matches[50].localGoals}}</td>
-                                            <td *ngIf="matches[54].awayGoals != -1">{{matches[54].awayGoals}}</td>
+                                            <td style="border-right: 1px solid #000;">{{getTeamById(KOMatches[50].local).name}}</td>
+                                            <td style="border-right: 1px solid #000;" *ngIf="KOMatches[50].localGoals != -1">{{KOMatches[50].localGoals}}</td>
+                                            <td *ngIf="KOMatches[54].awayGoals != -1">{{KOMatches[54].awayGoals}}</td>
                                         </tr>
                                         <tr>
-                                            <td style="border-right: 1px solid #000;">{{getTeamById(matches[50].away).name}}</td>
-                                            <td style="border-right: 1px solid #000;" *ngIf="matches[50].awayGoals != -1">{{matches[50].awayGoals}}</td>
-                                            <td *ngIf="matches[54].localGoals != -1">{{matches[54].localGoals}}</td>
+                                            <td style="border-right: 1px solid #000;">{{getTeamById(KOMatches[50].away).name}}</td>
+                                            <td style="border-right: 1px solid #000;" *ngIf="KOMatches[50].awayGoals != -1">{{KOMatches[50].awayGoals}}</td>
+                                            <td *ngIf="KOMatches[54].localGoals != -1">{{KOMatches[54].localGoals}}</td>
                                         </tr>
                                     </tbody>
                                 </table>
                                 <table style="margin-top: 30px;min-width:16.6%;min-height:14.65%;border-radius: 10%;background-color: #ccc5b9;" class="table table-hover">
                                         <tbody>
                                             <tr>
-                                                <td style="border-right: 1px solid #000;">{{getTeamById(matches[51].local).name}}</td>
-                                                <td style="border-right: 1px solid #000;" *ngIf="matches[51].localGoals != -1">{{matches[51].localGoals}}</td>
-                                                <td *ngIf="matches[55].awayGoals != -1">{{matches[55].awayGoals}}</td>
+                                                <td style="border-right: 1px solid #000;">{{getTeamById(KOMatches[51].local).name}}</td>
+                                                <td style="border-right: 1px solid #000;" *ngIf="KOMatches[51].localGoals != -1">{{KOMatches[51].localGoals}}</td>
+                                                <td *ngIf="KOMatches[55].awayGoals != -1">{{KOMatches[55].awayGoals}}</td>
                                             </tr>
                                             <tr>
-                                                <td style="border-right: 1px solid #000;">{{getTeamById(matches[51].away).name}}</td>
-                                                <td style="border-right: 1px solid #000;" *ngIf="matches[51].awayGoals != -1">{{matches[51].awayGoals}}</td>
-                                                <td *ngIf="matches[55].localGoals != -1">{{matches[55].localGoals}}</td>
+                                                <td style="border-right: 1px solid #000;">{{getTeamById(KOMatches[51].away).name}}</td>
+                                                <td style="border-right: 1px solid #000;" *ngIf="KOMatches[51].awayGoals != -1">{{KOMatches[51].awayGoals}}</td>
+                                                <td *ngIf="KOMatches[55].localGoals != -1">{{KOMatches[55].localGoals}}</td>
                                             </tr>
                                         </tbody>
                                     </table>
                 </div>
-                <div class="col-md-4" *ngIf="matches && matches.length < 61 && matches.length > 56">
+                <div class="col-md-4" *ngIf="KOMatches && KOMatches.length < 61 && KOMatches.length > 56">
                     <h3>Semifinales</h3>
                     <table style="margin-top: 60px;min-width:16.6%;min-height:14.65%;border-radius: 10%;background-color: #ccc5b9;" class="table table-hover">
                             <tbody>
                                 <tr>
-                                    <td style="border-right: 1px solid #000;">{{getTeamById(matches[56].local).name}}</td>
-                                    <td style="border-right: 1px solid #000;" *ngIf="matches[56].localGoals != -1">{{matches[56].localGoals}}</td>
-                                    <td *ngIf="matches[58].awayGoals != -1">{{matches[58].awayGoals}}</td>
+                                    <td style="border-right: 1px solid #000;">{{getTeamById(KOMatches[56].local).name}}</td>
+                                    <td style="border-right: 1px solid #000;" *ngIf="KOMatches[56].localGoals != -1">{{KOMatches[56].localGoals}}</td>
+                                    <td *ngIf="KOMatches[58].awayGoals != -1">{{KOMatches[58].awayGoals}}</td>
                                 </tr>
                                 <tr>
-                                    <td style="border-right: 1px solid #000;">{{getTeamById(matches[56].away).name}}</td>
-                                    <td style="border-right: 1px solid #000;" *ngIf="matches[56].awayGoals != -1">{{matches[56].awayGoals}}</td>
-                                    <td *ngIf="matches[58].localGoals != -1">{{matches[58].localGoals}}</td>
+                                    <td style="border-right: 1px solid #000;">{{getTeamById(KOMatches[56].away).name}}</td>
+                                    <td style="border-right: 1px solid #000;" *ngIf="KOMatches[56].awayGoals != -1">{{KOMatches[56].awayGoals}}</td>
+                                    <td *ngIf="KOMatches[58].localGoals != -1">{{KOMatches[58].localGoals}}</td>
                                 </tr>
                             </tbody>
                         </table>
                         <table style="margin-top: 60px;min-width:16.6%;min-height:14.65%;border-radius: 10%;background-color: #ccc5b9;" class="table table-hover">
                                 <tbody>
                                     <tr>
-                                        <td style="border-right: 1px solid #000;">{{getTeamById(matches[57].local).name}}</td>
-                                        <td style="border-right: 1px solid #000;" *ngIf="matches[57].localGoals != -1">{{matches[57].localGoals}}</td>
-                                        <td *ngIf="matches[59].awayGoals != -1">{{matches[59].awayGoals}}</td>
+                                        <td style="border-right: 1px solid #000;">{{getTeamById(KOMatches[57].local).name}}</td>
+                                        <td style="border-right: 1px solid #000;" *ngIf="KOMatches[57].localGoals != -1">{{KOMatches[57].localGoals}}</td>
+                                        <td *ngIf="KOMatches[59].awayGoals != -1">{{KOMatches[59].awayGoals}}</td>
                                     </tr>
                                     <tr>
-                                        <td style="border-right: 1px solid #000;">{{getTeamById(matches[57].away).name}}</td>
-                                        <td style="border-right: 1px solid #000;" *ngIf="matches[57].awayGoals != -1">{{matches[57].awayGoals}}</td>
-                                        <td *ngIf="matches[59].localGoals != -1">{{matches[59].localGoals}}</td>
+                                        <td style="border-right: 1px solid #000;">{{getTeamById(KOMatches[57].away).name}}</td>
+                                        <td style="border-right: 1px solid #000;" *ngIf="KOMatches[57].awayGoals != -1">{{KOMatches[57].awayGoals}}</td>
+                                        <td *ngIf="KOMatches[59].localGoals != -1">{{KOMatches[59].localGoals}}</td>
                                     </tr>
                                 </tbody>
                             </table>
                 </div>
-                <div class="col-md-4" *ngIf="matches && matches.length < 60">
+                <div class="col-md-4" *ngIf="KOMatches && KOMatches.length > 60">
                     <h3>Final</h3>
                     <table style="margin-top: 15px;min-width:16.6%;min-height:14.65%;border-radius: 10%;background-color: #ccc5b9;" class="table table-hover">
                             <tbody>
                                 <tr>
-                                    <td style="border-right: 1px solid #000;">{{getTeamById(matches[60].local).name}}</td>
-                                    <td style="border-right: 1px solid #000;" *ngIf="matches[60].localGoals != -1">{{matches[60].localGoals}}</td>
+                                    <td style="border-right: 1px solid #000;">{{getTeamById(KOMatches[60].local).name}}</td>
+                                    <td style="border-right: 1px solid #000;" *ngIf="KOMatches[60].localGoals != -1">{{KOMatches[60].localGoals}}</td>
                                 </tr>
                                 <tr>
-                                    <td style="border-right: 1px solid #000;">{{getTeamById(matches[60].away).name}}</td>
-                                    <td style="border-right: 1px solid #000;" *ngIf="matches[60].awayGoals != -1">{{matches[60].awayGoals}}</td>
+                                    <td style="border-right: 1px solid #000;">{{getTeamById(KOMatches[60].away).name}}</td>
+                                    <td style="border-right: 1px solid #000;" *ngIf="KOMatches[60].awayGoals != -1">{{KOMatches[60].awayGoals}}</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -106,17 +106,17 @@
                     <table style="margin-top: 15px;min-width:16.6%;min-height:14.65%;border-radius: 10%;background-color: #ccc5b9;" class="table table-hover">
                             <tbody>
                                 <tr>
-                                    <td style="border-right: 1px solid #000;">{{getTeamById(matches[61].local).name}}</td>
-                                    <td style="border-right: 1px solid #000;" *ngIf="matches[61].localGoals != -1">{{matches[61].localGoals}}</td>
+                                    <td style="border-right: 1px solid #000;">{{getTeamById(KOMatches[61].local).name}}</td>
+                                    <td style="border-right: 1px solid #000;" *ngIf="KOMatches[61].localGoals != -1">{{KOMatches[61].localGoals}}</td>
                                 </tr>
                                 <tr>
-                                    <td style="border-right: 1px solid #000;">{{getTeamById(matches[61].away).name}}</td>
-                                    <td style="border-right: 1px solid #000;" *ngIf="matches[61].awayGoals != -1">{{matches[61].awayGoals}}</td>
+                                    <td style="border-right: 1px solid #000;">{{getTeamById(KOMatches[61].away).name}}</td>
+                                    <td style="border-right: 1px solid #000;" *ngIf="KOMatches[61].awayGoals != -1">{{KOMatches[61].awayGoals}}</td>
                                 </tr>
                             </tbody>
                         </table>
                 </div>
-                <div *ngIf="!matches" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                <div *ngIf="!KOMatches" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
                     Partidos no disponibles
                 </div>
             </div>

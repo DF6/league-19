@@ -172,7 +172,7 @@ export class PenaltiesComponent implements OnInit{
                     actions.splice(i, 1);
                     i--;
                 } else {
-                    actions[i].teamAgainst == this.getRival(actions[i], 1);
+                    actions[i].teamAgainst = this.getRival(actions[i], 1);
                     actions[i].round = 1;
                 }
             }
@@ -180,9 +180,22 @@ export class PenaltiesComponent implements OnInit{
         return actions;
     }
 
+    private getLastEdition(league) {
+        let lastEdition = -1;
+        for (let i = 0; i < this.tournaments.length; i++) {
+            if (this.tournaments[i].name == league) {
+                lastEdition = this.tournaments[i].id;
+            }
+        }
+        return lastEdition;
+    }
+
     private getRival(action, round) {
         let teamFor = this.getPlayerById(action.player).teamID;
         let tournament = this.getTournamentByMatch(action.matchID);
+        if (tournament == null) {
+            tournament = this.getLastEdition(action.tournament);
+        }
         let teamToReturn = 0;
         let passRound = -1;
         this.matches.forEach( (value) => {
