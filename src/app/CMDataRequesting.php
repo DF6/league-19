@@ -68,6 +68,9 @@
    }else{
     switch($type)
     {
+       case "login":
+          validateLogin($link, $params);
+            break;
        case "solEqu":
           requestTeam($link, $params);
             break;
@@ -498,6 +501,29 @@
     if($number<10){$number="0"+$number;}
     return $number;
   }
+
+  function validateLogin($con, $params) {
+    $data = array();
+    $data['success'] = false;
+  	$data['message'] = "No existe usuario";
+    $query="SELECT * from users";
+    $resultado=mysqli_query($con, $query) or die("Error recuperando usuarios");
+	
+    $users=array();
+    while($row = mysqli_fetch_array($resultado))
+    {
+        $id=$row['id'];
+        if (strtolower($params->user) == strtolower(utf8_decode($row['user']))) {
+  	      $data['message'] = "Contraseña incorrecta";
+          if(strtolower($params->pass) == strtolower(utf8_decode($row['pass']))) {
+            $data['success'] = true;
+  	        $data['message'] = "Bienvenido " . $params->user;
+          }
+        }
+    }
+	  echo json_encode($data);
+  	exit;
+  }
   
   function obtainUsers($con)
   {
@@ -510,13 +536,12 @@
     {
         $id=$row['id'];
         $user=utf8_decode($row['user']);
-        $pass=utf8_decode($row['pass']);
         $email=utf8_decode($row['email']);
         $teamID=$row['team_id'];
         $twitch=utf8_decode($row['twitch']);
         $name=utf8_decode($row['complete_name']);
         $psnID=utf8_decode($row['psn_id']);
-        $users[] = array('id'=> $id, 'teamID'=> $teamID, 'user'=> $user, 'pass'=> $pass, 'email'=> $email, 'name'=> $name, 'twitch'=> $twitch, 'psnID'=> $psnID);
+        $users[] = array('id'=> $id, 'teamID'=> $teamID, 'user'=> $user, 'email'=> $email, 'name'=> $name, 'twitch'=> $twitch, 'psnID'=> $psnID);
     }
     $data['users']=$users;
     $data['success'] = true;

@@ -24,35 +24,28 @@ export class LoginComponent{
     }
 
     public login() {
-        let userExists = false;
-        let passMatch = false;
-        this.users.forEach( (value) => {
-            if (value.user.toLowerCase() == this.user.toLowerCase()) {
-                if (value.pass.toLowerCase() == this.pass.toLowerCase()) {
-                    sessionStorage.setItem('user', JSON.stringify({
-                        id: value.id,
-                        teamID: value.teamID,
-                        user: value.user,
-                        pass: value.pass,
-                        email: value.email,
-                        name: value.name,
-                        psnID: value.psnID,
-                        twitch: value.twitch
-                    }));
-                    passMatch = true;
-                    this.sidebarService.logChange();
-                    alert('Bienvenido ' + value.user);
-                    this.disableInputs = true;
-                    this.router.navigateByUrl('normas');
-                } 
-                userExists = true;
+        this.http.post('./CMDataRequesting.php', {type: 'login', user: this.user, pass: this.pass}).subscribe( (response) => {
+            if (response.json().success) {
+                this.users.forEach( (value) => {
+                    if (value.user.toLowerCase() == this.user.toLowerCase()) {
+                        sessionStorage.setItem('user', JSON.stringify({
+                            id: value.id,
+                            teamID: value.teamID,
+                            user: value.user,
+                            email: value.email,
+                            name: value.name,
+                            psnID: value.psnID,
+                            twitch: value.twitch
+                        }));
+                        this.sidebarService.logChange();
+                        alert(response.json().message);
+                        this.disableInputs = true;
+                        this.router.navigateByUrl('normas');
+                    }
+                });
+            } else {
+                alert(response.json().message);
             }
         });
-        if(userExists && !passMatch) {
-            alert('La contraseña es incorrecta');
-        }
-        if(!userExists) {
-            alert('El usuario no existe');
-        }
     }
 }
