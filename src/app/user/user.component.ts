@@ -22,24 +22,39 @@ export class UserComponent{
     public playersOfMyTeam;
     public pass;
     public pass2;
+    public constants;
+    public totalSalaries;
 
     constructor(private http: Http) {
         this.user = JSON.parse(sessionStorage.getItem('user'));
         this.users = JSON.parse(sessionStorage.getItem('users')).users;
         this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
-        this.players = JSON.parse(sessionStorage.getItem('players')).players;
-        this.playersOfMyTeam = this.getPlayersByTeam(this.user.teamID);
-        this.setTableConfig();
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
+                this.constants = response.json().constants[0];
+                this.getPlayersByTeam(this.user.teamID);
+                this.setTableConfig();
+        });
     }
 
-    public getPlayersByTeam(team) {
+    public getPlayersByTeam(team): any {
         let playersOfTheTeam = [];
-        this.players.forEach( (value, key) =>{
-            if(value.teamID == team) {
-                playersOfTheTeam.push(value);
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
+            this.players = response.json().players;
+            this.players.forEach( (value) => {
+                while (value.name.indexOf('/n') != -1) {
+                  value.name = value.name.replace('/n', 'ñ');
+                }
+            });
+            this.players.forEach( (value) =>{
+                if(value.teamID == team) {
+                    playersOfTheTeam.push(value);
+                }
+            });
+            this.playersOfMyTeam = playersOfTheTeam;
+            if(!this.totalSalaries) {
+                this.getTotalSalariesByTeam();
             }
         });
-        return playersOfTheTeam;
     }
 
     public getTeamById(team) {
@@ -52,6 +67,16 @@ export class UserComponent{
         return teamToReturn;
     }
 
+    public getPlayerById(player) {
+        let playerToReturn = null;
+        this.players.forEach( (value) => {
+            if(value.id == player) {
+                playerToReturn = value;
+            }
+        });
+        return playerToReturn;
+    }
+
     public changePass() {
         if(this.pass != this.pass2) {
             alert('Las contraseñas no coinciden');
@@ -62,13 +87,13 @@ export class UserComponent{
         }
     }
     
-    public getTotalSalariesByTeam(team) {
-        let playerToBe = this.getPlayersByTeam(team);
+    public getTotalSalariesByTeam() {
+        let playerToBe = this.playersOfMyTeam;
         let total = 0;
         playerToBe.forEach( (value) => {
             total += parseFloat(value.salary);
         });
-        return total;
+        this.totalSalaries = total;
     }
 
     private giveActiveUsers() {
@@ -79,6 +104,17 @@ export class UserComponent{
             }
         });
         return finalUsers;
+    }
+
+    public giveWildCard(player) {
+        if(confirm('¿Liberar a ' + this.getPlayerById(player).name + '?')) {
+            this.http.post('./CMDataRequesting.php', {type: 'disPla', player: player, market: this.constants.marketEdition}).subscribe( (response) => {
+                if(response.json().success) {
+                    this.playersOfMyTeam = this.getPlayersByTeam(this.user.teamID);
+                }
+                alert(response.json().message);
+            });
+        }
     }
 
     private setTableConfig() {

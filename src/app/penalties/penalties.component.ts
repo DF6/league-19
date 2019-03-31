@@ -30,39 +30,46 @@ export class PenaltiesComponent implements OnInit{
     ngOnInit() {
         this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
         this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
-        this.players = JSON.parse(sessionStorage.getItem('players')).players;
-        this.setTableConfig();
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'A'}).subscribe( (response) => {
-            this.actions = response.json().actions;
-            this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
-                this.matches = response.json().matches;
-                let penalties = [];
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
+            this.players = response.json().players;
+            this.players.forEach( (value) => {
+                while (value.name.indexOf('/n') != -1) {
+                  value.name = value.name.replace('/n', 'ñ');
+                }
+              });
+            this.setTableConfig();
+            this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'A'}).subscribe( (response) => {
+                this.actions = response.json().actions;
+                this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
+                    this.matches = response.json().matches;
+                    let penalties = [];
 
-                this.actions.forEach( (value) => {
-                    switch(value.type) {
-                        case 'Y':
-                                if(this.updateYellowCount(value)) {
+                    this.actions.forEach( (value) => {
+                        switch(value.type) {
+                            case 'Y':
+                                    if(this.updateYellowCount(value)) {
+                                        let penalty = this.getPenalty(value);
+                                        penalty.forEach( (value) => {
+                                            if (this.roundValid(value)) {
+                                                penalties.push(value);
+                                            }
+                                        });
+                                    }
+                                    break;
+                            case 'R':
+                            case 'I':
                                     let penalty = this.getPenalty(value);
                                     penalty.forEach( (value) => {
                                         if (this.roundValid(value)) {
                                             penalties.push(value);
                                         }
                                     });
-                                }
-                                break;
-                        case 'R':
-                        case 'I':
-                                let penalty = this.getPenalty(value);
-                                penalty.forEach( (value) => {
-                                    if (this.roundValid(value)) {
-                                        penalties.push(value);
-                                    }
-                                });
-                                break;
-                    }
-                });
+                                    break;
+                        }
+                    });
 
-                this.tableData1.dataRows = penalties;
+                    this.tableData1.dataRows = penalties;
+                });
             });
         });
     }

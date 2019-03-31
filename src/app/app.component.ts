@@ -29,14 +29,5 @@ export class AppComponent {
       });
       sessionStorage.setItem('teams', JSON.stringify({teams: teams}));
     });
-    this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
-      const players = response.json() ? response.json().players : null;
-      players.forEach( (value) => {
-        while (value.name.indexOf('/n') != -1) {
-          value.name = value.name.replace('/n', 'ñ');
-        }
-      });
-      sessionStorage.setItem('players', JSON.stringify({players: players}));
-    });
   }
 }

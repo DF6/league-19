@@ -233,7 +233,6 @@ export class ChampionsComponent implements OnInit{
             this.groupD.dataRows = dStands;
             this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
                 this.matches = response.json() ? response.json().matches : null;
-                sessionStorage.setItem('matches', JSON.stringify({matches: this.matches}));
                 let championsMatches = [];
                 const championsLastEdition = this.getLastEdition('Champions League', this.standingsArray[16].tournamentID).toString();
                 this.matches.forEach( (value) => {

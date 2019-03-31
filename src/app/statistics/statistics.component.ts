@@ -35,16 +35,24 @@ export class StatisticsComponent implements OnInit{
     ngOnInit() {
         this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
         this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
-        this.players = JSON.parse(sessionStorage.getItem('players')).players;
-        this.actualTournament = this.tournaments[0];
-        this.setTableConfig();
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
-            this.matches = response.json().matches;
-            this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'A'}).subscribe( (response) => {
-                this.actionsArray = response.json().actions;
-                this.fillTables();
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
+            this.players = response.json().players;
+            this.players.forEach( (value) => {
+                while (value.name.indexOf('/n') != -1) {
+                  value.name = value.name.replace('/n', 'ñ');
+                }
+            });
+            this.actualTournament = this.tournaments[0];
+            this.setTableConfig();
+            this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
+                this.matches = response.json().matches;
+                this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'A'}).subscribe( (response) => {
+                    this.actionsArray = response.json().actions;
+                    this.fillTables();
+                });
             });
         });
+        
     }
 
     private fillTables(e?) {

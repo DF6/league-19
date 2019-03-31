@@ -197,7 +197,7 @@
     $data = array();
     $query="UPDATE players SET team_id=0, salary=0.1 where id=" . $params->player;
     $resultado=mysqli_query($con, $query) or die("Error liberando jugador");
-    $query2="INSERT INTO signins (player,buyer_team,amount,type,market,accepted) values (".$params->player.", 0, 0, 'D', ".$params->market.", true)";
+    $query2="INSERT INTO signins (player,buyer_team,amount,signin_type,market,accepted) values (".$params->player.", 0, 0, 'D', ".$params->market.", true)";
     $resultado2=mysqli_query($con, $query2) or die("Error insertando fichaje");
     $data['success'] = true;
     $data['message'] = "Jugador liberado";
@@ -316,12 +316,32 @@
   function signWildCard($con, $params)
   {
     $data = array();
-    $query="UPDATE players SET team_id=". $params->team ." where id=" . $params->player;
-    $resultado=mysqli_query($con, $query) or die("Error contratando jugador");
-    $query2="INSERT INTO signins (player,buyer_team,amount,type,market,accepted) values (".$params->player.",".$params->team.", 0, 'W', ".$params->market.", true)";
-    $resultado2=mysqli_query($con, $query2) or die("Error insertando fichaje");
     $data['success'] = true;
-    $data['message'] = "Jugador contratado";
+    $data['message'] = 'Jugador contratado';
+    $consult = "SELECT * from constants";
+    $consultResult = mysqli_query($con, $consult) or die("Error comprobando constantes");
+    while($row2 = mysqli_fetch_array($consultResult)) {
+      if($row2['market_opened'] == 0) {
+        $data['success'] = false;
+        $data['message'] = 'El mercado no está abierto';
+      }
+    }
+    $consult2 = "SELECT * from players where id=" . $params->player;
+    $consult2Result = mysqli_query($con, $consult2) or die("Error comprobando jugador");
+    while($row = mysqli_fetch_array($consult2Result))
+    {
+        $id=$row['id'];
+        if ($row['team_id'] != 0) {
+          $data['success'] = false;
+          $data['message'] = 'Jugador no disponible: ya ha sido contratado';
+        }
+    }
+    if($data['success'] == true) {
+      $query="UPDATE players SET team_id=". $params->team .", buyed_this_market=1 where id=" . $params->player;
+      $resultado=mysqli_query($con, $query) or die("Error contratando jugador");
+      $query2="INSERT INTO signins (player,buyer_team,amount,signin_type,market,accepted) values (".$params->player.",".$params->team.", 0, 'W', ".$params->market.", true)";
+      $resultado2=mysqli_query($con, $query2) or die("Error insertando fichaje");
+    }
     echo json_encode($data);
     exit;
   }

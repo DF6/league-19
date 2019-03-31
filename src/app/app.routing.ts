@@ -19,6 +19,7 @@ import { NationsComponent } from './nations/nations.component';
 import { ClubSupercupComponent } from './clubsupercup/clubsupercup.component';
 import { AdminMatchesComponent } from './adminmatches/adminmatches.component';
 import { PenaltiesComponent } from './penalties/penalties.component';
+import { FreePlayersComponent } from './freeplayers/freeplayers.component';
 
 export const AppRoutes: Routes = [
     {
@@ -101,5 +102,9 @@ export const AppRoutes: Routes = [
     {
         path: 'sanciones',
         component: PenaltiesComponent
+    },
+    {
+        path: 'jugadoreslibres',
+        component: FreePlayersComponent
     }
 ]

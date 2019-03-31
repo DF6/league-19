@@ -32,6 +32,7 @@ import { NationsComponent } from './nations/nations.component';
 import { ClubSupercupComponent } from './clubsupercup/clubsupercup.component';
 import { AdminMatchesComponent } from './adminmatches/adminmatches.component';
 import { PenaltiesComponent } from './penalties/penalties.component';
+import { FreePlayersComponent } from './freeplayers/freeplayers.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { PenaltiesComponent } from './penalties/penalties.component';
     NationsComponent,
     ClubSupercupComponent,
     AdminMatchesComponent,
-    PenaltiesComponent
+    PenaltiesComponent,
+    FreePlayersComponent
   ],
   imports: [
     BrowserModule,

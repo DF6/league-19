@@ -70,9 +70,16 @@ export class MatchFillerComponent implements OnInit{
     ngOnInit() {
         this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
         this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
-        this.players = JSON.parse(sessionStorage.getItem('players')).players;
-        this.localPlayers = this.getPlayersByTeam(this.data.local);
-        this.awayPlayers = this.getPlayersByTeam(this.data.away);
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
+            this.players = response.json().players;
+            this.players.forEach( (value) => {
+                while (value.name.indexOf('/n') != -1) {
+                  value.name = value.name.replace('/n', 'ñ');
+                }
+            });
+            this.localPlayers = this.getPlayersByTeam(this.data.local);
+            this.awayPlayers = this.getPlayersByTeam(this.data.away);
+        });
     }
 
     public addScorer(team) {

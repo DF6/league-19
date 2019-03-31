@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Http } from '@angular/http';
 
 @Component({
     selector: 'icons-cmp',
@@ -12,17 +13,25 @@ export class IconsComponent{
     public players;
     public filters;
 
-    constructor() {
-        this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
-        this.players = JSON.parse(sessionStorage.getItem('players')).players;
-        this.filters = {
-            name: '',
-            position: '',
-            overageMin: 0,
-            overageMax: 99,
-            loan: false,
-            emblem: false
-        };
+    constructor(private http: Http) {
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
+            this.players = response.json().players;
+            this.players.forEach( (value) => {
+                while (value.name.indexOf('/n') != -1) {
+                  value.name = value.name.replace('/n', 'ñ');
+                }
+              });
+              sessionStorage.setItem('players', JSON.stringify({players: this.players}));
+              this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
+              this.filters = {
+                  name: '',
+                  position: '',
+                  overageMin: 0,
+                  overageMax: 99,
+                  loan: false,
+                  emblem: false
+              };
+        });
     }
 
     public filterTable() {
