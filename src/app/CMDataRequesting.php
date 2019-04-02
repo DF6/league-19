@@ -369,10 +369,25 @@
   function raiseAuction($con, $params)
   {
     $data = array();
-    $query="UPDATE signins SET buyer_team=". $params->newTeam .", amount=amount+".$params->amount." where id=" . $params->id;
-    $resultado=mysqli_query($con, $query) or die("Error incrementando puja");
-    $data['success'] = true;
-    $data['message'] = "Puja incrementada";
+    $consult = "SELECT * from signins where id=" . $params->id;
+    $result = mysqli_query($con, $consult) or die("Error comparando fechas");
+    for($row = mysqli_fetch_array($result)) {
+      $fecha_limite = strtotime($row['limit_date']);
+      $amount = $row['amount'];
+    }
+    $fecha_actual = strtotime(date("d-m-Y H:i:00",time()));
+    if($fecha_actual > $fecha_limite || ) {
+      $data['success'] = false;
+      $data['message'] = "Puja acabada";
+    } else if($amount >= $params->amount) {
+      $data['success'] = false;
+      $data['message'] = "La puja ha sido aumentada POR OTRO JUGADOR ANTES";
+    } else {
+      $query="UPDATE signins SET buyer_team=". $params->newTeam .", amount=".$params->amount." where id=" . $params->id;
+      $resultado=mysqli_query($con, $query) or die("Error incrementando puja");
+      $data['success'] = true;
+      $data['message'] = "Puja incrementada";
+    }
     echo json_encode($data);
     exit;
   }

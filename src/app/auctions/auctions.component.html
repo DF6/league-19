@@ -3,8 +3,11 @@
         <div class="col-md-12">
             <div class="card" *ngIf="tableData1">
                 <div class="header">
-                    <h4 class="title">Jugadores Libres</h4>
+                    <h4 class="title">Subastas</h4>
                     <p class="category">Total - {{tableData1.dataRows.length}}</p>
+                    <span 
+                        style="font-weight: bold; padding: 8px;border: 2pt solid black; background-color: #ccc; border-radius: 5px;" 
+                        (click)="newAuction()">Nueva</span>
                 </div>
                 <div *ngIf="tableData1.dataRows.length !=0" class="content table-responsive table-full-width">
                     <table class="table table-hover">
@@ -13,7 +16,11 @@
                                 <th>Nombre</th>
                                 <th>Posición</th>
                                 <th>Media</th>
-                                <th>Contratar</th>
+                                <th>Coste</th>
+                                <th>Ganador</th>
+                                <th>Estado</th>
+                                <th>Tiempo</th>
+                                <th>Pujar</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -21,7 +28,14 @@
                                 <td>{{row.name}}</td>
                                 <td>{{row.position}}</td>
                                 <td>{{row.overage}}</td>
-                                <td><a style="cursor:pointer;" (click)="hireFreePlayer(row.id)">Contratar</a></td>
+                                <td>{{row.team}}</td>
+                                <td>{{row.amount}}</td>
+                                <td *ngIf="row.state == 0">ABIERTA</td>
+                                <td *ngIf="row.state == 1" colspan="3">CERRADA</td>
+                                <td *ngIf="row.state == 0">{{updateTime(row.time)}}</td>
+                                <td *ngIf="row.state == 0"><input type="number" [(ngModel)]="amountsRaised[$index]" min="{{row.amount}}" max="100" step="1" onkeydown="return false">
+                                <a style="cursor:pointer;" (click)="raiseAuction(row.id, $index)">Pujar</a></td>
+                                <td> *ngIf="</td>
                             </tr>
                         </tbody>
                     </table>
