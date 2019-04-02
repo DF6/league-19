@@ -696,11 +696,11 @@
         $player=$row['player'];
         $buyerTeam=$row['buyer_team'];
         $amount=$row['amount'];
-        $type=utf8_decode($row['type']);
+        $type=utf8_decode($row['signin_type']);
         $market=$row['market'];
         $accepted=$row['accepted'];
-        $limitDate='';
-        $signins[] = array('id'=> $id, 'amount'=> $amount, 'player'=> $player, 'buyerTeam'=> $buyerTeam, 'type'=> $type, 'market'=> $market, 'accepted'=> $accepted, 'limitDate'=> $limitDate);
+        $limitDate=$row['limit_date'];
+        $signins[] = array('id'=> $id, 'amount'=> $amount, 'player'=> $player, 'buyerTeam'=> $buyerTeam, 'signinType'=> $type, 'market'=> $market, 'accepted'=> $accepted, 'limitDate'=> $limitDate);
     }
     $data['signins']=$signins;
     $data['success'] = true;

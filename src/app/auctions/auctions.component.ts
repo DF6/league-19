@@ -54,9 +54,10 @@ export class AuctionsComponent implements OnInit{
                             team: value.buyerTeam,
                             amount: value.amount,
                             state: value.accepted,
-                            time: this.getFormattedTime(value.limitDate)};
+                            time: value.limitDate};
                         this.amountsRaised.push(auction.amount);
                         auctionedPlayers.push(auction);
+                        auctionedPlayers[auctionedPlayers.length - 1].time = this.getFormattedTime(auctionedPlayers[auctionedPlayers.length - 1]);
                     }
                 });
                 this.tableData1.dataRows = auctionedPlayers;
@@ -84,12 +85,22 @@ export class AuctionsComponent implements OnInit{
         return playerToReturn;
     }
 
-    public getFormattedTime(date) {
+    public getFormattedTime(auction) {
+        const countDownDate = new Date(auction.time).getTime();
 
-    }
+        let x = setInterval(function() {
+          const distance = countDownDate - new Date().getTime();
+          const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-    public updateTime(time) {
+          auction.time = hours + ':' + minutes + ':' + seconds;
 
+          if (distance < 0) {
+            clearInterval(x);
+            auction.state = 1;
+          }
+        }, 1000);
     }
 
     private setTableConfig() {

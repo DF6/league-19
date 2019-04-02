@@ -20,6 +20,7 @@ import { ClubSupercupComponent } from './clubsupercup/clubsupercup.component';
 import { AdminMatchesComponent } from './adminmatches/adminmatches.component';
 import { PenaltiesComponent } from './penalties/penalties.component';
 import { FreePlayersComponent } from './freeplayers/freeplayers.component';
+import { AuctionsComponent } from './auctions/auctions.component';
 
 export const AppRoutes: Routes = [
     {
@@ -106,5 +107,9 @@ export const AppRoutes: Routes = [
     {
         path: 'jugadoreslibres',
         component: FreePlayersComponent
+    },
+    {
+        path: 'subastas',
+        component: AuctionsComponent
     }
 ]

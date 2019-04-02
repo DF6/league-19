@@ -6,7 +6,7 @@
                     <h4 class="title">Subastas</h4>
                     <p class="category">Total - {{tableData1.dataRows.length}}</p>
                     <span 
-                        style="font-weight: bold; padding: 8px;border: 2pt solid black; background-color: #ccc; border-radius: 5px;" 
+                        style="float:right;font-weight: bold; padding: 8px;border: 2pt solid black; background-color: #ccc; border-radius: 5px;" 
                         (click)="newAuction()">Nueva</span>
                 </div>
                 <div *ngIf="tableData1.dataRows.length !=0" class="content table-responsive table-full-width">
@@ -32,7 +32,7 @@
                                 <td>{{row.amount}}</td>
                                 <td *ngIf="row.state == 0">ABIERTA</td>
                                 <td *ngIf="row.state == 1" colspan="3">CERRADA</td>
-                                <td *ngIf="row.state == 0">{{updateTime(row.time)}}</td>
+                                <td *ngIf="row.state == 0">{{row.time}}</td>
                                 <td *ngIf="row.state == 0"><input type="number" [(ngModel)]="amountsRaised[$index]" min="{{row.amount}}" max="100" step="1" onkeydown="return false">
                                 <a style="cursor:pointer;" (click)="raiseAuction(row.id, $index)">Pujar</a></td>
                                 <td> *ngIf="</td>

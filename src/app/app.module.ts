@@ -33,6 +33,7 @@ import { ClubSupercupComponent } from './clubsupercup/clubsupercup.component';
 import { AdminMatchesComponent } from './adminmatches/adminmatches.component';
 import { PenaltiesComponent } from './penalties/penalties.component';
 import { FreePlayersComponent } from './freeplayers/freeplayers.component';
+import { AuctionsComponent } from './auctions/auctions.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { FreePlayersComponent } from './freeplayers/freeplayers.component';
     ClubSupercupComponent,
     AdminMatchesComponent,
     PenaltiesComponent,
-    FreePlayersComponent
+    FreePlayersComponent,
+    AuctionsComponent
   ],
   imports: [
     BrowserModule,
