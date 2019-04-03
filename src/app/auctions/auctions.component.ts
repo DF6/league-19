@@ -24,6 +24,13 @@ export class AuctionsComponent implements OnInit{
     public teams;
     public constants;
     public amountsRaised = [];
+    public new = false;
+    public newPlayer = {
+        name: '',
+        position: '',
+        overage: 40,
+        amount: 0
+    };
 
     constructor(private http: Http){}
 
@@ -66,13 +73,34 @@ export class AuctionsComponent implements OnInit{
     }
 
     public raiseAuction(auctionID, index) {
-        this.http.post('./CMDataRequesting.php', {type: 'conLib', newTeam: this.user.teamID, id: auctionID, amount: this.amountsRaised[index]}).subscribe( (response) => {
+        this.http.post('./CMDataRequesting.php', {type: 'pujSub', newTeam: this.user.teamID, id: auctionID, amount: this.amountsRaised[index]}).subscribe( (response) => {
             if(response.json().success) {
                 this.setTable();
             } else {
                 alert(response.json().message);
             }
         });
+    }
+
+    public addPlayerToAuction() {
+        if(confirm("¿Seguro?")) {
+            let date = new Date();
+            date.setHours(date.getHours() + 12);
+            let formattedDate = this.addZero(date.getDate()) + "/" + (this.addZero(date.getMonth()+1)) + "/" + this.addZero(date.getFullYear()) + " " + this.addZero(date.getHours()) + ":" + this.addZero(date.getMinutes()) + ":" + this.addZero(date.getSeconds());
+            this.http.post('./CMDataRequesting.php', {type: 'nueSub', playerName: this.newPlayer.name, position: this.newPlayer.position, amount: this.newPlayer.amount, overage: this.newPlayer.overage, buyerTeam: this.user.teamID, market: this.constants.marketEdition, limitDate: formattedDate}).subscribe( (response) => {
+                if(response.json().success) {
+                    this.setTable();
+                    this.new = false;
+                    this.newPlayer = {
+                        name: '',
+                        position: '',
+                        overage: 40,
+                        amount: 0
+                    };
+                }
+                alert(response.json().message);
+            });
+        }
     }
 
     public getPlayerById(player) {
@@ -85,22 +113,55 @@ export class AuctionsComponent implements OnInit{
         return playerToReturn;
     }
 
+    public getTeamById(team) {
+        let teamToReturn = null;
+        this.teams.forEach( (value) => {
+            if (value.id == team) {
+                teamToReturn = value;
+            }
+        });
+        return teamToReturn;
+    }
+
+    public setAmount() {
+        if(!this.newPlayer.overage || this.newPlayer.overage == null || this.newPlayer.overage == undefined) {
+            this.newPlayer.amount = 0;
+        } else {
+            if(this.newPlayer.overage < 71) {
+                this.newPlayer.amount = 2;
+            } else if(this.newPlayer.overage >= 71 && this.newPlayer.overage < 76) {
+                this.newPlayer.amount = 3;
+            } else if(this.newPlayer.overage >= 76 && this.newPlayer.overage < 80) {
+                this.newPlayer.amount = 5;
+            } else if(this.newPlayer.overage >= 81 && this.newPlayer.overage < 86) {
+                this.newPlayer.amount = 10;
+            } else if(this.newPlayer.overage >= 86) {
+                this.newPlayer.amount = 15;
+            }
+        }
+    }
+
     public getFormattedTime(auction) {
         const countDownDate = new Date(auction.time).getTime();
 
-        let x = setInterval(function() {
+        let x = setInterval(() => {
           const distance = countDownDate - new Date().getTime();
           const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
           const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
           const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-          auction.time = hours + ':' + minutes + ':' + seconds;
+          auction.time = this.addZero(hours) + ':' + this.addZero(minutes) + ':' + this.addZero(seconds);
 
           if (distance < 0) {
             clearInterval(x);
             auction.state = 1;
           }
         }, 1000);
+    }
+
+    private addZero(number) {
+        if(number<10){number="0"+number;}
+        return number;
     }
 
     private setTableConfig() {

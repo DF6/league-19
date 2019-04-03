@@ -349,19 +349,23 @@
   function newAuction($con, $params)
   {
     $data = array();
-    $query="INSERT INTO players (name,salary,team_id,position) values ('".$params->playerName."', 0.1, -1, '".$params->position."')";
-    $resultado=mysqli_query($con, $query) or die("Error insertando jugador");
-    $query2="INSERT INTO signins (player,buyer_team,amount,type,market,accepted) values (".mysqli_insert_id($con).",".$params->buyerTeam.", ".$params->amount.", 'S', ".$params->market.", false)";
-    $resultado2=mysqli_query($con, $query2) or die("Error insertando subasta");
-    $idResult=mysqli_insert_id($con);
-    $fecha_hora_actual = date('Y-m-d H:i:s');
-    $nuevafecha = strtotime ('+14 hour', strtotime($fecha_hora_actual)) ;
-    $fecha = date_create();
-    date_timestamp_set($fecha, $nuevafecha);
-    $query3="INSERT INTO calendar (type, affected_id, limit_date) values ('S',".$idResult.",'".date_format($fecha, 'Y-m-d H:i:s')."')";
-    $resultado3=mysqli_query($con, $query3) or die("Error insertando calendario");
     $data['success'] = true;
     $data['message'] = "Subasta creada";
+    $consult = "SELECT * from players";
+    $consultResult = mysqli_query($con, $consult) or die("Error consultando nuevo jugador");
+    while($row = mysqli_fetch_array($consultResult)) {
+      if(strtolower($row['name']) == strtolower($params->playerName)) {
+        $data['success'] = false;
+        $data['message'] = "El jugador ya existe";
+      }
+    }
+    if ($data['success'] == true) {
+      $query="INSERT INTO players (name,team_id,position,overage) values ('".$params->playerName."', -1, '".$params->position."', " . $params->overage . ")";
+      $resultado=mysqli_query($con, $query) or die("Error insertando jugador");
+      $query2="INSERT INTO signins (player,buyer_team,amount,signin_type,market,accepted,limit_date) values (".mysqli_insert_id($con).",".$params->buyerTeam.", ".$params->amount.", 'A', ".$params->market.", false, DATE_ADD(NOW(), INTERVAL 14 HOUR))";
+      $resultado2=mysqli_query($con, $query2) or die("Error insertando subasta");
+      $idResult=mysqli_insert_id($con);
+    }
     echo json_encode($data);
     exit;
   }
@@ -371,12 +375,12 @@
     $data = array();
     $consult = "SELECT * from signins where id=" . $params->id;
     $result = mysqli_query($con, $consult) or die("Error comparando fechas");
-    for($row = mysqli_fetch_array($result)) {
+    while($row = mysqli_fetch_array($result)) {
       $fecha_limite = strtotime($row['limit_date']);
       $amount = $row['amount'];
     }
-    $fecha_actual = strtotime(date("d-m-Y H:i:00",time()));
-    if($fecha_actual > $fecha_limite || ) {
+    $fecha_actual = strtotime(date("d-m-Y H:i:00", time()));
+    if($fecha_actual > $fecha_limite) {
       $data['success'] = false;
       $data['message'] = "Puja acabada";
     } else if($amount >= $params->amount) {

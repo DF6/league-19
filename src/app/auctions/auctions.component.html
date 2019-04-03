@@ -5,9 +5,9 @@
                 <div class="header">
                     <h4 class="title">Subastas</h4>
                     <p class="category">Total - {{tableData1.dataRows.length}}</p>
-                    <span 
+                    <span *ngIf="!new"
                         style="float:right;font-weight: bold; padding: 8px;border: 2pt solid black; background-color: #ccc; border-radius: 5px;" 
-                        (click)="newAuction()">Nueva</span>
+                        (click)="new = true">Nueva</span>
                 </div>
                 <div *ngIf="tableData1.dataRows.length !=0" class="content table-responsive table-full-width">
                     <table class="table table-hover">
@@ -24,18 +24,27 @@
                             </tr>
                         </thead>
                         <tbody>
+                            <tr *ngIf="new">
+                                <td colspan="8">
+                                    Nombre <input type="text" [(ngModel)]="newPlayer.name">
+                                    Posición <input type="text" [(ngModel)]="newPlayer.position" maxlength="3">
+                                    Media <input type="number" (change)="setAmount()" [(ngModel)]="newPlayer.overage" min="40" max="99" step="1">
+                                    Coste inicial<input type="number" [(ngModel)]="newPlayer.amount" readonly>M€
+                                    <a style="cursor:pointer;" (click)="addPlayerToAuction()">Abrir puja</a>
+                                </td>
+                            </tr>
                             <tr *ngFor="let row of tableData1.dataRows">
                                 <td>{{row.name}}</td>
                                 <td>{{row.position}}</td>
                                 <td>{{row.overage}}</td>
-                                <td>{{row.team}}</td>
-                                <td>{{row.amount}}</td>
-                                <td *ngIf="row.state == 0">ABIERTA</td>
-                                <td *ngIf="row.state == 1" colspan="3">CERRADA</td>
+                                <td>{{row.amount}}M€</td>
+                                <td>{{getTeamById(row.team).name}}</td>
+                                <td *ngIf="row.state == 0" style="color: green;font-weight: bold;">ABIERTA</td>
+                                <td *ngIf="row.state == 1" style="color: red;font-weight: bold;">CERRADA</td>
                                 <td *ngIf="row.state == 0">{{row.time}}</td>
+                                <td *ngIf="row.state == 1" colspan="2">00:00:00</td>
                                 <td *ngIf="row.state == 0"><input type="number" [(ngModel)]="amountsRaised[$index]" min="{{row.amount}}" max="100" step="1" onkeydown="return false">
                                 <a style="cursor:pointer;" (click)="raiseAuction(row.id, $index)">Pujar</a></td>
-                                <td> *ngIf="</td>
                             </tr>
                         </tbody>
                     </table>
