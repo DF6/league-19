@@ -21,6 +21,7 @@ import { AdminMatchesComponent } from './adminmatches/adminmatches.component';
 import { PenaltiesComponent } from './penalties/penalties.component';
 import { FreePlayersComponent } from './freeplayers/freeplayers.component';
 import { AuctionsComponent } from './auctions/auctions.component';
+import { MarketComponent } from './market/market.component';
 
 export const AppRoutes: Routes = [
     {
@@ -111,5 +112,9 @@ export const AppRoutes: Routes = [
     {
         path: 'subastas',
         component: AuctionsComponent
+    },
+    {
+        path: 'mercado',
+        component: MarketComponent
     }
 ]
