@@ -23,12 +23,14 @@ export class MarketComponent implements OnInit{
     public user;
     public teams;
     public constants;
+    public edition;
 
     constructor(private http: Http){}
 
     ngOnInit() {
         this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
             this.constants = response.json().constants[0];
+            this.edition = this.constants.marketEdition;
             this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
             this.setTableConfig();
             this.setTable();
@@ -46,8 +48,8 @@ export class MarketComponent implements OnInit{
                     if (value.market == this.constants.marketEdition && value.accepted) {
                         let player = this.getPlayerById(value.player);
                         let type = '';
-                        let oldTeam = '';
-                        switch(value.type) {
+                        let oldTeam = '-';
+                        switch(value.signinType) {
                             case 'A': type = 'Subasta'; oldTeam = 'Subasta'; break;
                             case 'G': type = 'Acuerdo'; oldTeam = this.getTeamById(value.oldTeam).name; break;
                             case 'F': type = 'Cláusula'; oldTeam = this.getTeamById(value.oldTeam).name; break;
@@ -58,9 +60,9 @@ export class MarketComponent implements OnInit{
                             position: player.position,
                             overage: player.overage,
                             type: type,
-                            amount: value.amount,
+                            amount: value.amount + 'M€',
                             oldTeam: oldTeam,
-                            newTeam: this.getTeamById(value.buyerTeam)};
+                            newTeam: this.getTeamById(value.buyerTeam).name};
                         marketResume.push(auction);
                     }
                 });

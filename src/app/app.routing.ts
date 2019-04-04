@@ -54,10 +54,6 @@ export const AppRoutes: Routes = [
         component: IconsComponent
     },
     {
-        path: 'mercado',
-        component: MapsComponent
-    },
-    {
         path: 'copa',
         component: NotificationsComponent
     },
