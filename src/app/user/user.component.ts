@@ -24,6 +24,7 @@ export class UserComponent{
     public pass2;
     public constants;
     public totalSalaries;
+    public salaryMode = false;
 
     constructor(private http: Http) {
         this.user = JSON.parse(sessionStorage.getItem('user'));
@@ -34,6 +35,10 @@ export class UserComponent{
                 this.getPlayersByTeam(this.user.teamID);
                 this.setTableConfig();
         });
+    }
+
+    public getSalaries() {
+        
     }
 
     public getPlayersByTeam(team): any {

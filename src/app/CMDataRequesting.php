@@ -219,16 +219,53 @@
   function forceSign($con, $params)
   {
     $data = array();
-    $query="UPDATE players SET team_id=".$params->buyerTeam." where id=".$params->player."";
-    $resultado=mysqli_query($con, $query) or die("Error realizando cláusula");
-    $query2="INSERT INTO signins (player,buyer_team,amount,type,market,accepted) values (".$params->player.",".$params->buyerTeam.",".$params->amount.", 'C', ".$params->market.", true)";
-    $resultado2=mysqli_query($con, $query2) or die("Error insertando fichaje");
-    $query3="UPDATE teams SET budget=budget-" . $params->amount . " where id=". $params->buyerTeam."";
-    $resultado3=mysqli_query($con, $query3) or die("Error actualizando presupuesto1");
-    $query4="UPDATE teams SET budget=budget+" . $params->amount . " where id=". $params->oldTeam."";
-    $resultado4=mysqli_query($con, $query4) or die("Error actualizando presupuesto2");
     $data['success'] = true;
     $data['message'] = "Cláusula realizada";
+    $consult="SELECT * from teams where id=" . $params->buyerTeam;
+    $consultResult=mysqli_query($con, $consult) or die("Error consultando cláusulas");
+    while($row = mysqli_fetch_array($consultResult)) {
+      if($row['forced_signins_available'] == 0) {
+        $data['success'] = false;
+        $data['message'] = "No te quedan cláusulas";
+      }
+    }
+    $consult2="SELECT * from players where id=" . $params->player;
+    $consult2Result=mysqli_query($con, $consult2) or die("Error consultando jugador");
+    while($row2 = mysqli_fetch_array($consult2Result) {
+      if($row2['buyed_this_market'] == 1) {
+        $data['success'] = false;
+        $data['message'] = "Jugador ya comprado este mercado";
+      }
+    }
+    $consult3="SELECT * from constants";
+    $consult3Result=mysqli_query($con, $consult3) or die("Error consultando mercado");
+    while($row3 = mysqli_fetch_array($consult3Result)) {
+      $marketEdition = $row['market_edition'];
+      if($row3['market_opened'] == 0 || $row['forced_signins_opened'] == 0) {
+        $data['success'] = false;
+        $data['message'] = "Cláusulas cerradas";
+      }
+    }
+    $consult4="SELECT * from signins where market_edition=" . $marketEdition . " and old_team = " . $params->oldTeam . " and signin_type='F'";
+    $consult4Result=mysqli_query($con, $consult4) or die("Error consultando mercado2");
+    $cont = 0;
+    while($row4 = mysqli_fetch_array($consult4Result)) {
+      $cont++;
+    }
+    if($cont == 3) {
+      $data['success'] = false;
+      $data['message'] = "El equipo recibió todas sus cláusulas";
+    }
+    if($data['success'] == true) {
+      $query="UPDATE players SET team_id=".$params->buyerTeam." where id=".$params->player."";
+      $resultado=mysqli_query($con, $query) or die("Error realizando cláusula");
+      $query2="INSERT INTO signins (player,old_team,buyer_team,amount,signin_type,market,accepted) values (".$params->player.", " . $params->oldTeam . ", ".$params->buyerTeam.",".$params->amount.", 'F', ".$params->market.", true)";
+      $resultado2=mysqli_query($con, $query2) or die("Error insertando fichaje");
+      $query3="UPDATE teams SET budget=budget-" . $params->amount . " where id=". $params->buyerTeam."";
+      $resultado3=mysqli_query($con, $query3) or die("Error actualizando presupuesto1");
+      $query4="UPDATE teams SET budget=budget+" . $params->amount . " where id=". $params->oldTeam."";
+      $resultado4=mysqli_query($con, $query4) or die("Error actualizando presupuesto2");
+    }
     echo json_encode($data);
     exit;
   }
@@ -359,6 +396,22 @@
         $data['message'] = "El jugador ya existe";
       }
     }
+    $consult2 = "SELECT * from teams where id=" . $params->buyerTeam;
+    $consult2Result = mysqli_query($con, $consult2) or die("Error consultando subastas");
+    while($row2 = mysqli_fetch_array($consult2Result)) {
+      if($row2['auctions_available'] == 0) {
+        $data['success'] = false;
+        $data['message'] = "Máximo de subastas alcanzado";
+      }
+    }
+    $consult3 = "SELECT * from constants";
+    $consult3Result = mysqli_query($con, $consult3) or die("Error consultando mercado");
+    while($row3 = mysqli_fetch_array($consult3Result)) {
+      if($row3['auctions_opened'] == 0) {
+        $data['success'] = false;
+        $data['message'] = "Subastas cerradas";
+      }
+    }
     if ($data['success'] == true) {
       $query="INSERT INTO players (name,team_id,position,overage) values ('".$params->playerName."', -1, '".$params->position."', " . $params->overage . ")";
       $resultado=mysqli_query($con, $query) or die("Error insertando jugador");
@@ -373,11 +426,29 @@
   function raiseAuction($con, $params)
   {
     $data = array();
+    $data['success'] = true;
+    $data['message'] = "Puja incrementada";
     $consult = "SELECT * from signins where id=" . $params->id;
     $result = mysqli_query($con, $consult) or die("Error comparando fechas");
     while($row = mysqli_fetch_array($result)) {
       $fecha_limite = strtotime($row['limit_date']);
       $amount = $row['amount'];
+    }
+    $consult2 = "SELECT * from teams where id=" . $params->newTeam;
+    $consult2Result = mysqli_query($con, $consult2) or die("Error consultando nuevo jugador");
+    while($row2 = mysqli_fetch_array($consult2Result)) {
+      if($row2['auctions_available'] == 0) {
+        $data['success'] = false;
+        $data['message'] = "Máximo de subastas alcanzado";
+      }
+    }
+    $consult3 = "SELECT * from constants";
+    $consult3Result = mysqli_query($con, $consult3) or die("Error consultando mercado");
+    while($row3 = mysqli_fetch_array($consult3Result)) {
+      if($row3['market_opened'] == 0) {
+        $data['success'] = false;
+        $data['message'] = "Subastas cerradas";
+      }
     }
     $fecha_actual = strtotime(date("d-m-Y H:i:00", time()));
     if($fecha_actual > $fecha_limite) {
@@ -387,10 +458,10 @@
       $data['success'] = false;
       $data['message'] = "La puja ha sido aumentada POR OTRO JUGADOR ANTES";
     } else {
-      $query="UPDATE signins SET buyer_team=". $params->newTeam .", amount=".$params->amount." where id=" . $params->id;
-      $resultado=mysqli_query($con, $query) or die("Error incrementando puja");
-      $data['success'] = true;
-      $data['message'] = "Puja incrementada";
+      if($data['success'] == true) {
+        $query="UPDATE signins SET buyer_team=". $params->newTeam .", amount=".$params->amount." where id=" . $params->id;
+        $resultado=mysqli_query($con, $query) or die("Error incrementando puja");
+      }
     }
     echo json_encode($data);
     exit;
@@ -604,7 +675,10 @@
         $budget=$row['budget'];
         $teamImage=$row['image_route'];
         $nation=utf8_decode($row['nation']);
-        $teams[] = array('id'=> $id, 'name'=> $name, 'shortName'=> $shortName, 'budget'=> $budget, 'teamImage'=> $teamImage, 'nation'=> $nation);
+        $auctions=$row['auctions_available'];
+        $forcedSigninsAvailable=$row['forced_signins_available'];
+        $untouchables=$row['untouchables'];
+        $teams[] = array('id'=> $id, 'name'=> $name, 'shortName'=> $shortName, 'budget'=> $budget, 'teamImage'=> $teamImage, 'nation'=> $nation, 'auctionsLeft'=> $auctions, 'forcedSigninsAvailable'=> $forcedSigninsAvailable, 'untouchables'=> $untouchables);
     }
     $data['teams']=$teams;
     $data['success'] = true;
@@ -855,14 +929,12 @@
     $constants=array();
     while($row = mysqli_fetch_array($resultado))
     {
-        $untouchables=$row['untouchables'];
-        $forcedSignins=$row['forced_signins'];
         $marketEdition=$row['market_edition'];
         $marketOpened=$row['market_opened'];
         $forcedSigninsOpened=$row['forced_signins_opened'];
+        $auctionsOpened=$row['auctions_opened'];
         $intervalActual=$row['interval_actual'];
-        $actualPosition=$row['actual_position'];
-        $constants[] = array('untouchables'=> $untouchables, 'forcedSignins'=> $forcedSignins, 'marketEdition'=> $marketEdition, 'marketOpened'=> $marketOpened, 'forcedSigninsOpened'=> $forcedSigninsOpened, 'intervalActual'=> $intervalActual, 'actualPosition'=> $actualPosition);
+        $constants[] = array('marketEdition'=> $marketEdition, 'marketOpened'=> $marketOpened, 'forcedSigninsOpened'=> $forcedSigninsOpened, 'auctionsOpened'=> $auctionsOpened, 'intervalActual'=> $intervalActual);
     }
     $data['constants']=$constants;
     $data['success'] = true;

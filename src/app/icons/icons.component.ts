@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Http } from '@angular/http';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'icons-cmp',
@@ -13,7 +14,7 @@ export class IconsComponent{
     public players;
     public filters;
 
-    constructor(private http: Http) {
+    constructor(private http: Http, private router: Router) {
         this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
             this.players = response.json().players;
             this.players.forEach( (value) => {
@@ -31,6 +32,15 @@ export class IconsComponent{
                   loan: false,
                   emblem: false
               };
+        });
+    }
+
+    public forceSignin(player) {
+        this.http.post('./CMDataRequesting.php', {type: 'claJug', dataType: 'P'}).subscribe( (response) => {
+            alert(response.json().message);
+            if(response.json().success) {
+                this.router.navigateByUrl('usuario');
+            }
         });
     }
 
