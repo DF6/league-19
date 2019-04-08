@@ -25,6 +25,7 @@ export class TableComponent implements OnInit{
     public standingsArray;
     public season;
     public matches;
+    public playoffMatches;
 
     constructor(private http: Http){}
 
@@ -122,17 +123,23 @@ export class TableComponent implements OnInit{
                 sessionStorage.setItem('matches', JSON.stringify({matches: this.matches}));
                 let premierMatches = [];
                 let secondMatches = [];
+                let poMatches = [];
                 const premierLastEdition = this.getLastEdition('Primera', this.standingsArray[0].tournamentID).toString();
                 const secondLastEdition = this.getLastEdition('Segunda', this.standingsArray[8].tournamentID).toString();
                 this.matches.forEach( (value) => {
                     if(value.tournament == premierLastEdition) {
                         premierMatches.push(value);
                     }else if(value.tournament == secondLastEdition) {
-                        secondMatches.push(value);
+                        if(value.round > 14) {
+                            poMatches.push(value);
+                        } else {
+                            secondMatches.push(value);
+                        }
                     }
                 });
                 this.tableData3.dataRows = premierMatches;
                 this.tableData4.dataRows = secondMatches;
+                if( poMatches.length > 0) { this.playoffMatches = poMatches; }
             });
         });
     }

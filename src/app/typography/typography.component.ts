@@ -51,7 +51,7 @@ export class TypographyComponent{
         });
         for (let i = 0; i < finalTableMatches.length; i++) {
             if ((this.getTournamentById(finalTableMatches[i].tournament).name == 'Primera' ||
-               this.getTournamentById(finalTableMatches[i].tournament).name == 'Segunda') && finalTableMatches[i].round > 7) {
+               this.getTournamentById(finalTableMatches[i].tournament).name == 'Segunda') && finalTableMatches[i].round > 10) {
                  finalTableMatches.splice(i, 1);
                  i--;
             }

@@ -24,9 +24,9 @@
                                     <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1">{{row.position}}</td>
                                     <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1">{{row.name}}</td>
                                     <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1">{{row.overage}}</td>
-                                    <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.salary<10 && !row.buyedThisMarket">{{(row.salary*10)}} M€</td>
-                                    <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.salary>=10 && !row.buyedThisMarket">INTOCABLE</td>
-                                    <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.buyedThisMarket">COMPRADO</td>
+                                    <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.salary<10 && row.buyedThisMarket == '0'">{{(row.salary*10)}} M€ - <a style="cursor:pointer;" (click)="forceSignin(row)">Clausulazo</a> - <a style="cursor:pointer;" (click)="setOfferFiller(row)">Oferta</a></td>
+                                    <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.salary>=10 && row.buyedThisMarket == '0'">INTOCABLE</td>
+                                    <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.buyedThisMarket == '1'">COMPRADO</td>
                                 </tr>
                             </tbody>
                         </table>

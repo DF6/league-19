@@ -36,6 +36,57 @@
             </div>
         </div>
 
+        <div class="col-md-12" *ngIf="playoffMatches">
+            <div class="col-md-6">
+                <h3>Semifinales Play-off</h3>
+                <table style="margin-top: 60px;min-width:16.6%;min-height:14.65%;border-radius: 10%;background-color: #ccc5b9;" class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <td style="border-right: 1px solid #000;">{{getTeamById(playoffMatches[0].local).name}}</td>
+                                <td style="border-right: 1px solid #000;" *ngIf="playoffMatches[0].localGoals != -1">{{playoffMatches[0].localGoals}}</td>
+                                <td *ngIf="playoffMatches[2].awayGoals != -1">{{playoffMatches[2].awayGoals}}</td>
+                            </tr>
+                            <tr>
+                                <td style="border-right: 1px solid #000;">{{getTeamById(playoffMatches[0].away).name}}</td>
+                                <td style="border-right: 1px solid #000;" *ngIf="playoffMatches[0].awayGoals != -1">{{playoffMatches[0].awayGoals}}</td>
+                                <td *ngIf="playoffMatches[2].localGoals != -1">{{playoffMatches[2].localGoals}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table style="margin-top: 60px;min-width:16.6%;min-height:14.65%;border-radius: 10%;background-color: #ccc5b9;" class="table table-hover">
+                            <tbody>
+                                <tr>
+                                    <td style="border-right: 1px solid #000;">{{getTeamById(playoffMatches[1].local).name}}</td>
+                                    <td style="border-right: 1px solid #000;" *ngIf="playoffMatches[1].localGoals != -1">{{playoffMatches[1].localGoals}}</td>
+                                    <td *ngIf="playoffMatches[3].awayGoals != -1">{{playoffMatches[3].awayGoals}}</td>
+                                </tr>
+                                <tr>
+                                    <td style="border-right: 1px solid #000;">{{getTeamById(playoffMatches[1].away).name}}</td>
+                                    <td style="border-right: 1px solid #000;" *ngIf="playoffMatches[1].awayGoals != -1">{{playoffMatches[1].awayGoals}}</td>
+                                    <td *ngIf="playoffMatches[3].localGoals != -1">{{playoffMatches[3].localGoals}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+            </div>
+            <div class="col-md-6" *ngIf="playoffMatches && playoffMatches.length > 4">
+                <h3>Final Play-off</h3>
+                <table style="margin-top: 15px;min-width:16.6%;min-height:14.65%;border-radius: 10%;background-color: #ccc5b9;" class="table table-hover">
+                        <tbody>
+                            <tr>
+                                <td style="border-right: 1px solid #000;">{{getTeamById(playoffMatches[4].local).name}}</td>
+                                <td style="border-right: 1px solid #000;" *ngIf="playoffMatches[4].localGoals != -1">{{playoffMatches[4].localGoals}}</td>
+                                <td *ngIf="playoffMatches[5].awayGoals != -1">{{playoffMatches[5].awayGoals}}</td>
+                            </tr>
+                            <tr>
+                                <td style="border-right: 1px solid #000;">{{getTeamById(playoffMatches[4].away).name}}</td>
+                                <td style="border-right: 1px solid #000;" *ngIf="playoffMatches[4].awayGoals != -1">{{playoffMatches[4].awayGoals}}</td>
+                                <td *ngIf="playoffMatches[5].localGoals != -1">{{playoffMatches[5].localGoals}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </div>
+        </div>
+
         <div class="col-md-12">
             <div class="card">
                 <div class="header">

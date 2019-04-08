@@ -50,8 +50,36 @@
                     </table>
 
                 </div>
-                <div *ngIf="tableData1.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                <div *ngIf="tableData1.dataRows.length == 0 && !new" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
                     Lista no disponible
+                </div>
+                <div *ngIf="tableData1.dataRows.length ==0 && new" class="content table-responsive table-full-width">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Nombre</th>
+                                <th>Posición</th>
+                                <th>Media</th>
+                                <th>Coste</th>
+                                <th>Ganador</th>
+                                <th>Estado</th>
+                                <th>Tiempo</th>
+                                <th>Pujar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngIf="new">
+                                <td colspan="8">
+                                    Nombre <input type="text" [(ngModel)]="newPlayer.name">
+                                    Posición <input type="text" [(ngModel)]="newPlayer.position" maxlength="3">
+                                    Media <input type="number" (change)="setAmount()" [(ngModel)]="newPlayer.overage" min="40" max="99" step="1">
+                                    Coste inicial<input type="number" [(ngModel)]="newPlayer.amount" readonly>M€
+                                    <a style="cursor:pointer;" (click)="addPlayerToAuction()">Abrir puja</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
                 </div>
             </div>
         </div>

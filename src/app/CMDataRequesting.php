@@ -231,7 +231,7 @@
     }
     $consult2="SELECT * from players where id=" . $params->player;
     $consult2Result=mysqli_query($con, $consult2) or die("Error consultando jugador");
-    while($row2 = mysqli_fetch_array($consult2Result) {
+    while($row2 = mysqli_fetch_array($consult2Result)) {
       if($row2['buyed_this_market'] == 1) {
         $data['success'] = false;
         $data['message'] = "Jugador ya comprado este mercado";
@@ -240,13 +240,12 @@
     $consult3="SELECT * from constants";
     $consult3Result=mysqli_query($con, $consult3) or die("Error consultando mercado");
     while($row3 = mysqli_fetch_array($consult3Result)) {
-      $marketEdition = $row['market_edition'];
-      if($row3['market_opened'] == 0 || $row['forced_signins_opened'] == 0) {
+      if($row3['market_opened'] == 0 || $row3['forced_signins_opened'] == 0) {
         $data['success'] = false;
         $data['message'] = "Cláusulas cerradas";
       }
     }
-    $consult4="SELECT * from signins where market_edition=" . $marketEdition . " and old_team = " . $params->oldTeam . " and signin_type='F'";
+    $consult4="SELECT * from signins where market=" . $params->market . " and old_team=" . $params->oldTeam . " and signin_type='F'";
     $consult4Result=mysqli_query($con, $consult4) or die("Error consultando mercado2");
     $cont = 0;
     while($row4 = mysqli_fetch_array($consult4Result)) {
@@ -257,13 +256,13 @@
       $data['message'] = "El equipo recibió todas sus cláusulas";
     }
     if($data['success'] == true) {
-      $query="UPDATE players SET team_id=".$params->buyerTeam." where id=".$params->player."";
+      $query="UPDATE players SET team_id=".$params->buyerTeam.", buyed_this_market=1 where id=".$params->player;
       $resultado=mysqli_query($con, $query) or die("Error realizando cláusula");
       $query2="INSERT INTO signins (player,old_team,buyer_team,amount,signin_type,market,accepted) values (".$params->player.", " . $params->oldTeam . ", ".$params->buyerTeam.",".$params->amount.", 'F', ".$params->market.", true)";
       $resultado2=mysqli_query($con, $query2) or die("Error insertando fichaje");
-      $query3="UPDATE teams SET budget=budget-" . $params->amount . " where id=". $params->buyerTeam."";
+      $query3="UPDATE teams SET budget=budget-" . $params->amount . ", forced_signins_available=forced_signins_available-1 where id=". $params->buyerTeam;
       $resultado3=mysqli_query($con, $query3) or die("Error actualizando presupuesto1");
-      $query4="UPDATE teams SET budget=budget+" . $params->amount . " where id=". $params->oldTeam."";
+      $query4="UPDATE teams SET budget=budget+" . $params->amount . " where id=". $params->oldTeam;
       $resultado4=mysqli_query($con, $query4) or die("Error actualizando presupuesto2");
     }
     echo json_encode($data);
@@ -587,24 +586,6 @@
     echo json_encode($data);
   	exit;
   }
-  /*
-  function subirDocumento($con)
-  {
-	if( $_FILES['archivo']['type']=='application/pdf')
-    {
-		$cadu='';
-		if($_POST['caducidad']!='')
-		{
-			$cadu=date('d/m/Y', strtotime("+".$_POST['caducidad']." days"));
-		}
-        $origen = $_FILES['archivo']['tmp_name'];
-        $destino = 'docspdf/ID'.$_POST['id'].'-'.$_POST['usuario'].'-'.$_POST['documento'].".pdf";
-        move_uploaded_file($origen, $destino);
-		$query="UPDATE documentosfra SET modificado=1,enlace='".$destino."', fecha_caducidad='".$cadu."' where id=".$_POST['id']."";
-		$resultado=mysqli_query($con, $query) or die("Error en la base de datos" . mysql_error());
-    }
-	echo "<script language='javascript'>window.location='index.html'</script>;";
-  }*/
   
   function addZero($number)
   {

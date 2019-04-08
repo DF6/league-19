@@ -45,7 +45,7 @@ export class MarketComponent implements OnInit{
                 this.players = response.json().players;
                 let marketResume = [];
                 this.signins.forEach( (value) => {
-                    if (value.market == this.constants.marketEdition && value.accepted) {
+                    if (value.market == this.constants.marketEdition && value.accepted == '1') {
                         let player = this.getPlayerById(value.player);
                         let type = '';
                         let oldTeam = '-';

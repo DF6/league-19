@@ -87,7 +87,7 @@ export class AuctionsComponent implements OnInit{
             let date = new Date();
             date.setHours(date.getHours() + 12);
             let formattedDate = this.addZero(date.getDate()) + "/" + (this.addZero(date.getMonth()+1)) + "/" + this.addZero(date.getFullYear()) + " " + this.addZero(date.getHours()) + ":" + this.addZero(date.getMinutes()) + ":" + this.addZero(date.getSeconds());
-            this.http.post('./CMDataRequesting.php', {type: 'nueSub', playerName: this.newPlayer.name, position: this.newPlayer.position, amount: this.newPlayer.amount, overage: this.newPlayer.overage, buyerTeam: this.user.teamID, market: this.constants.marketEdition, limitDate: formattedDate}).subscribe( (response) => {
+            this.http.post('./CMDataRequesting.php', {type: 'nueSub', playerName: this.newPlayer.name, position: this.newPlayer.position.toUpperCase(), amount: this.newPlayer.amount, overage: this.newPlayer.overage, buyerTeam: this.user.teamID, market: this.constants.marketEdition, limitDate: formattedDate}).subscribe( (response) => {
                 if(response.json().success) {
                     this.setTable();
                     this.new = false;

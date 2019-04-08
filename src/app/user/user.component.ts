@@ -25,6 +25,7 @@ export class UserComponent{
     public constants;
     public totalSalaries;
     public salaryMode = false;
+    public salaries = [];
 
     constructor(private http: Http) {
         this.user = JSON.parse(sessionStorage.getItem('user'));
@@ -37,7 +38,7 @@ export class UserComponent{
         });
     }
 
-    public getSalaries() {
+    public setSalaries() {
         
     }
 
@@ -52,6 +53,7 @@ export class UserComponent{
             });
             this.players.forEach( (value) =>{
                 if(value.teamID == team) {
+                    this.salaries.push(value.salary);
                     playersOfTheTeam.push(value);
                 }
             });
