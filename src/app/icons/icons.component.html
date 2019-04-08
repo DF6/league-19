@@ -24,9 +24,12 @@
                                     <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1">{{row.position}}</td>
                                     <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1">{{row.name}}</td>
                                     <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1">{{row.overage}}</td>
-                                    <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.salary<10 && row.buyedThisMarket == '0'">{{(row.salary*10)}} M€ - <a style="cursor:pointer;" (click)="forceSignin(row)">Clausulazo</a> - <a style="cursor:pointer;" (click)="setOfferFiller(row)">Oferta</a></td>
+                                    <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.salary<10 && row.buyedThisMarket == '0'">{{(row.salary*10)}} M€ <span *ngIf="user.teamID != team.id">-</span> <a style="cursor:pointer;" (click)="forceSignin(row)" *ngIf="user.teamID != team.id">Clausulazo</a> <span *ngIf="user.teamID != team.id">-</span> <a style="cursor:pointer;" (click)="row.filling = true" *ngIf="user.teamID != team.id">Oferta</a></td>
                                     <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.salary>=10 && row.buyedThisMarket == '0'">INTOCABLE</td>
                                     <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.buyedThisMarket == '1'">COMPRADO</td>
+                                    <td *ngIf="row.filling" colspan="6">
+                                        <offer-filler *ngIf="row.filling" [player]="row" (offerFilled)="setOffer(offer)"></offer-filler>
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>

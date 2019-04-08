@@ -208,10 +208,34 @@
   function saveSalary($con, $params)
   {
     $data = array();
-    $query="UPDATE players SET salary=".$params->salary." where id=".$params->player."";
-    $resultado=mysqli_query($con, $query) or die("Error actualizando salario");
     $data['success'] = true;
     $data['message'] = "Salario actualizado";
+    $consult = "SELECT * from players where team_id=" . $params->team;
+    $consultResult = mysqli_query($con, $consult) or die ("Error consultando salarios");
+    $salaries = 0;
+    $untouchables = 0;
+    while($row = mysqli_fetch_array($consultResult)) {
+      $salaries = $salaries + $row['salary'];
+      if($row['salary'] == 10) {
+        $untouchables++;
+      }
+    }
+    $consult2 = "SELECT * from teams where id=" . $params->team;
+    $consult2Result = mysqli_query($con, $consult2) or die ("Error consult2ando salarios");
+    $untouchablesOfTeam = 0;
+    while($row2 = mysqli_fetch_array($consult2Result)) {
+      $untouchablesOfTeam = $row2['untouchables'];
+    }
+    if(($salaries + $params->salary) > 100) {
+      $data['success'] = false;
+      $data['message'] = "Límite de sueldos alcanzado";
+    } else if ($untouchables == $untouchablesOfTeam && $params->salary == 10) {
+      $data['success'] = false;
+      $data['message'] = "Ya tienes el máximo de intocables";
+    } else {
+      $query="UPDATE players SET salary=".$params->salary." where id=".$params->player;
+      $resultado=mysqli_query($con, $query) or die("Error actualizando salario");
+    }
     echo json_encode($data);
     exit;
   }
@@ -272,16 +296,19 @@
   function doOffer($con, $params)
   {
     $data = array();
-    if(strcmp($params->signinType, 'T')==0)
-    {
-      $query2="INSERT INTO signins (player,buyer_team,amount,type,market,accepted) values (".$params->player.",".$params->offerTeam.", 0, 'T', ".$params->market.", false)";
-    }else{
-      $query2="INSERT INTO signins (player,buyer_team,amount,type,market,accepted) values (".$params->player.",".$params->offerTeam.",".$params->amount.", 'F', ".$params->market.", false)";
-    }
-    $resultado2=mysqli_query($con, $query2) or die("Error insertando fichaje");
-    $data['signinID'] = mysqli_insert_id($con);
     $data['success'] = true;
     $data['message'] = "Oferta realizada";
+    $consult = "SELECT from players where id=" . $params->player;
+    $consultResult = mysqli_query($con, $consult) or die("Error consultando jugador");
+    while($row = mysqli_fetch_array($consultResult)) {
+      if($row['buyed_this_market'] == 1) {
+        $data['success'] = false;
+        $data['message'] = "El jugador ya fue comprado por otro equipo antes";
+      }
+    }
+    $query2="INSERT INTO signins (player,old_team, buyer_team,amount,type,market,accepted) values (".$params->player."," . $params->oldTeam . ", ".$params->newTeam.", ". $params->amount .", 'G', ".$params->market.", false)";
+    $resultado2=mysqli_query($con, $query2) or die("Error insertando fichaje");
+    $data['signinID'] = mysqli_insert_id($con);
     echo json_encode($data);
     exit;
   }

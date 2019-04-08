@@ -35,6 +35,7 @@ import { PenaltiesComponent } from './penalties/penalties.component';
 import { FreePlayersComponent } from './freeplayers/freeplayers.component';
 import { AuctionsComponent } from './auctions/auctions.component';
 import { MarketComponent } from './market/market.component';
+import { OfferFillerModule } from './offer-filler/offer-filler.module';
 
 @NgModule({
   declarations: [
@@ -72,6 +73,7 @@ import { MarketComponent } from './market/market.component';
     FooterModule,
     FixedPluginModule,
     MatchFillerModule,
+    OfferFillerModule,
     NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=YOUR_KEY_HERE'})
 
   ],

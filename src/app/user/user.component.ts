@@ -25,7 +25,7 @@ export class UserComponent{
     public constants;
     public totalSalaries;
     public salaryMode = false;
-    public salaries = [];
+    // public salaries = [];
 
     constructor(private http: Http) {
         this.user = JSON.parse(sessionStorage.getItem('user'));
@@ -38,8 +38,15 @@ export class UserComponent{
         });
     }
 
-    public setSalaries() {
-        
+    public setSalary(player) {
+        this.http.post('./CMDataRequesting.php', {type: 'guaSal', player: player.id, salary: (player.newSalary/10), team: player.teamID}).subscribe( (response) => {
+            alert(response.json().message);
+            if(response.json().success) {
+                player.salaryMode = false;
+                this.getPlayersByTeam(this.user.teamID);
+                this.getTotalSalariesByTeam();
+            }
+        });
     }
 
     public getPlayersByTeam(team): any {
@@ -53,7 +60,9 @@ export class UserComponent{
             });
             this.players.forEach( (value) =>{
                 if(value.teamID == team) {
-                    this.salaries.push(value.salary);
+                    // this.salaries.push(value.salary);
+                    value.newSalary = value.salary*10;
+                    value.salaryMode = false;
                     playersOfTheTeam.push(value);
                 }
             });
@@ -100,7 +109,7 @@ export class UserComponent{
         playerToBe.forEach( (value) => {
             total += parseFloat(value.salary);
         });
-        this.totalSalaries = total;
+        this.totalSalaries = Math.round(total * 100) / 100;
     }
 
     private giveActiveUsers() {

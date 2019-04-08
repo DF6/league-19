@@ -64,7 +64,7 @@ export class IconsComponent{
         let playersOfTheTeam = [];
         this.players.forEach( (value, key) =>{
             if(value.teamID == team) {
-                value.salary = parseInt(value.salary);
+                value.filling = false;
                 playersOfTheTeam.push(value);
             }
         });
