@@ -28,7 +28,7 @@
                                     <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.salary>=10 && row.buyedThisMarket == '0'">INTOCABLE</td>
                                     <td *ngIf="row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.buyedThisMarket == '1'">COMPRADO</td>
                                     <td *ngIf="row.filling" colspan="6">
-                                        <offer-filler *ngIf="row.filling" [player]="row" (offerFilled)="setOffer(offer)"></offer-filler>
+                                        <offer-filler *ngIf="row.filling" [player]="row" (offered)="setOffer($event, row)"></offer-filler>
                                     </td>
                                 </tr>
                             </tbody>

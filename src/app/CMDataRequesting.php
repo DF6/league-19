@@ -308,7 +308,6 @@
     }
     $query2="INSERT INTO signins (player,old_team, buyer_team,amount,type,market,accepted) values (".$params->player."," . $params->oldTeam . ", ".$params->newTeam.", ". $params->amount .", 'G', ".$params->market.", false)";
     $resultado2=mysqli_query($con, $query2) or die("Error insertando fichaje");
-    $data['signinID'] = mysqli_insert_id($con);
     echo json_encode($data);
     exit;
   }

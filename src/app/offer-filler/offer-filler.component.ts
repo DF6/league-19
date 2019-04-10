@@ -30,27 +30,41 @@ export class OfferFillerComponent implements OnInit{
     public players;
     public playerSelected;
     public amount;
+    public user;
+    public constants;
 
     constructor(private http: Http){
     }
 
     ngOnInit() {
         this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
-            this.players = response.json().players;
-            this.players.forEach( (value) => {
-                while (value.name.indexOf('/n') != -1) {
-                  value.name = value.name.replace('/n', 'ñ');
-                }
+        this.user = JSON.parse(sessionStorage.getItem('user'));
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
+            this.constants = response.json().constants[0];
+            this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
+                this.players = response.json().players;
+                this.players.forEach( (value) => {
+                    while (value.name.indexOf('/n') != -1) {
+                    value.name = value.name.replace('/n', 'ñ');
+                    }
+                });
             });
         });
     }
 
-    public sendMatchInfo() {
-        this.http.post('./CMDataRequesting.php', {type: 'setRes', localGoals: this.local.score, awayGoals: this.away.score, matchID: this.data.id}).subscribe( () => {
-            // this.http.post('./CMDataRequesting.php', {type: 'updSta', points: local.points, won: local.won, draw: local.draw, lost: local.lost, goalsFor: this.local.score, goalsAgainst: this.away.score, tournamentID: this.data.tournament, team: this.data.local}).subscribe( () => {});
+    public sendOffer() {
+        this.http.post('./CMDataRequesting.php', {type: 'hacOfe', player: this.player.id, oldTeam: this.player.teamID, newTeam: this.user.teamID, amount: this.amount, market: this.constants.marketEdition}).subscribe( (response) => {
+            alert(response.json().message);
+            if(response.json().success && this.offer.players.length > 0) {
+                this.offer.players.forEach( (value) => {
+                    // Llamada múltiple
+                });
+            }
+            this.offered.emit(response.json().success);
         });
     }
+
+    // Métodos para manejar el formulario
 
     public getTeamById(team) {
         let teamToReturn = null;

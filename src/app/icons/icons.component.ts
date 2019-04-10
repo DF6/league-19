@@ -41,6 +41,13 @@ export class IconsComponent{
         });
     }
 
+    public setOffer(success, player) {
+        player.filling = false;
+        if(success) {
+            this.router.navigateByUrl('user');
+        }
+    }
+    
     public forceSignin(player) {
         this.http.post('./CMDataRequesting.php', {type: 'claJug', player: player.id, oldTeam: player.teamID, buyerTeam: this.user.teamID, amount: (player.salary*10), market: this.constants.marketEdition}).subscribe( (response) => {
             alert(response.json().message);
