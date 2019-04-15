@@ -52,6 +52,7 @@ export class MarketComponent implements OnInit{
                         switch(value.signinType) {
                             case 'A': type = 'Subasta'; oldTeam = 'Subasta'; break;
                             case 'G': type = 'Acuerdo'; oldTeam = this.getTeamById(value.oldTeam).name; break;
+                            case 'C': type = 'Cesión'; oldTeam = this.getTeamById(value.oldTeam).name; break;
                             case 'F': type = 'Cláusula'; oldTeam = this.getTeamById(value.oldTeam).name; break;
                             case 'W': type = 'Libre'; oldTeam = 'Libre'; break;
                         }

@@ -62,6 +62,9 @@
         case "ORDER":
           obtainTeamOrder($link);
           break;
+        case "PARTNERS":
+          obtainPartners($link);
+          break;
         default:
           invalidRequest();
      }
@@ -124,6 +127,12 @@
             break;
        case "insTou":
           insertTournament($link, $params);
+            break;
+       case "hacEmb":
+          makeEmblem($link, $params);
+            break;
+       case "firPat":
+          setPartner($link, $params);
             break;
        case "setRes":
           setMatchResult($link, $params);
@@ -298,7 +307,7 @@
     $data = array();
     $data['success'] = true;
     $data['message'] = "Oferta realizada";
-    $consult = "SELECT from players where id=" . $params->player;
+    $consult = "SELECT * from players where id=" . $params->player;
     $consultResult = mysqli_query($con, $consult) or die("Error consultando jugador");
     while($row = mysqli_fetch_array($consultResult)) {
       if($row['buyed_this_market'] == 1) {
@@ -306,8 +315,19 @@
         $data['message'] = "El jugador ya fue comprado por otro equipo antes";
       }
     }
-    $query2="INSERT INTO signins (player,old_team, buyer_team,amount,type,market,accepted) values (".$params->player."," . $params->oldTeam . ", ".$params->newTeam.", ". $params->amount .", 'G', ".$params->market.", false)";
-    $resultado2=mysqli_query($con, $query2) or die("Error insertando fichaje");
+    $consult2 = "SELECT * from constants";
+    $consult2Result = mysqli_query($con, $consult2) or die("Error consult2ando constantes");
+    while($row = mysqli_fetch_array($consult2Result)) {
+      if($row['market_opened'] == 0) {
+        $data['success'] = false;
+        $data['message'] = "Mercado cerrado";
+      }
+    }
+    if($data['success'] == true) {
+      $query2="INSERT INTO signins (player,old_team, buyer_team,amount,signin_type,market,accepted) values (".$params->player."," . $params->oldTeam . ", ".$params->newTeam.", ". $params->amount .", $params->signinType, ".$params->market.", false)";
+      $resultado2=mysqli_query($con, $query2) or die("Error insertando fichaje");
+      $data['id']=mysqli_insert_id($con);
+    }
     echo json_encode($data);
     exit;
   }
@@ -326,7 +346,7 @@
   function acceptOffer($con, $params)
   {
     $data = array();
-    $query="UPDATE players SET team_id=".$params->newTeam." where id=".$params->player."";
+    $query="UPDATE players SET buyed_this_market=1, team_id=".$params->newTeam." where id=".$params->player."";
     $resultado=mysqli_query($con, $query) or die("Error realizando fichaje");
     $query2="UPDATE signins SET accepted=1 where id=". $params->id."";
     $resultado2=mysqli_query($con, $query2) or die("Error actualizando fichaje");
@@ -358,6 +378,30 @@
     $resultado=mysqli_query($con, $query) or die("Error transfiriendo cambio");
     $data['success'] = true;
     $data['message'] = "Jugador transferido";
+    echo json_encode($data);
+    exit;
+  }
+
+  function makeEmblem($con, $params)
+  {
+    $data = array();
+    $query="UPDATE players SET emblem=0 where team_id=".$params->team;
+    $resultado=mysqli_query($con, $query) or die("Error quitando emblema");
+    $query2="UPDATE players SET emblem=1 where id=".$params->player;
+    $resultado2=mysqli_query($con, $query2) or die("Error poniendo emblema");
+    $data['success'] = true;
+    $data['message'] = "Nuevo emblema";
+    echo json_encode($data);
+    exit;
+  }
+
+  function setPartner($con, $params)
+  {
+    $data = array();
+    $query="UPDATE partners SET partner=".$params->partner." where team=".$params->team;
+    $resultado=mysqli_query($con, $query) or die("Error de patrocinador");
+    $data['success'] = true;
+    $data['message'] = "Nuevo patrocinador";
     echo json_encode($data);
     exit;
   }
@@ -741,6 +785,26 @@
         $matches[] = array('id'=> $id, 'tournament'=> $tournament, 'round'=> $round, 'local'=> $local, 'away'=> $away, 'localGoals'=> $localGoals, 'awayGoals'=> $awayGoals, 'limitDate'=> $limitDate);
     }
     $data['matches']=$matches;
+    $data['success'] = true;
+    $data['message'] = "Datos recogidos";
+    echo json_encode($data);
+    exit;
+  }
+  
+  function obtainPartners($con)
+  {
+    $data = array();
+    $query="SELECT * from partners";
+    $resultado=mysqli_query($con, $query) or die("Error recuperando patrocinadores");
+  
+    $partners=array();
+    while($row = mysqli_fetch_array($resultado))
+    {
+        $team=$row['team'];
+        $partner=$row['partner'];
+        $partners[] = array('team'=> $team, 'partner'=> $partner);
+    }
+    $data['partners']=$partners;
     $data['success'] = true;
     $data['message'] = "Datos recogidos";
     echo json_encode($data);

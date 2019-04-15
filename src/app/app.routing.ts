@@ -22,6 +22,8 @@ import { PenaltiesComponent } from './penalties/penalties.component';
 import { FreePlayersComponent } from './freeplayers/freeplayers.component';
 import { AuctionsComponent } from './auctions/auctions.component';
 import { MarketComponent } from './market/market.component';
+import { PartnersComponent } from './partners/partners.component';
+import { OfferComponent } from './offer/offer.component';
 
 export const AppRoutes: Routes = [
     {
@@ -112,5 +114,13 @@ export const AppRoutes: Routes = [
     {
         path: 'mercado',
         component: MarketComponent
+    },
+    {
+        path: 'patrocinadores',
+        component: PartnersComponent
+    },
+    {
+        path: 'offer',
+        component: OfferComponent
     }
 ]

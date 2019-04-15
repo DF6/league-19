@@ -25,7 +25,8 @@ export class UserComponent{
     public constants;
     public totalSalaries;
     public salaryMode = false;
-    // public salaries = [];
+    public signins;
+    public playerChangeSignins;
 
     constructor(private http: Http) {
         this.user = JSON.parse(sessionStorage.getItem('user'));
@@ -35,6 +36,10 @@ export class UserComponent{
                 this.constants = response.json().constants[0];
                 this.getPlayersByTeam(this.user.teamID);
                 this.setTableConfig();
+                this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
+                    this.signins = response.json().signins;
+                    this.setOffersOfMyTeam();
+                });
         });
     }
 
@@ -47,6 +52,36 @@ export class UserComponent{
                 this.getTotalSalariesByTeam();
             }
         });
+    }
+
+    public setEmblem(player) {
+        this.http.post('./CMDataRequesting.php', {type: 'hacEmb', player: player, team: this.user.teamID}).subscribe( (response) => {
+            alert(response.json().message);
+            if(response.json().success) {
+                this.getPlayersByTeam(this.user.teamID);
+            }
+        });
+    }
+
+    public setOffersOfMyTeam() {
+        let myOffers = [];
+        this.signins.forEach( (value) => {
+            if (value.market == this.constants.marketEdition && (value.signinType == 'G' || value.signinType == 'C') && value.accepted == 0) {
+                value.playersOffered = [];
+                this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'PCS'}).subscribe( (response) => {
+                    this.playerChangeSignins = response.json().playerChangeSignins;
+                    this.playerChangeSignins.forEach( (value2) => {
+                        if(value2.signinID == value.id) {
+                            value.playersOffered.push(value2);
+                        }
+                    });
+                    myOffers.push(value);
+                });
+            }
+        });
+        if(myOffers.length != 0) {
+            this.setOffersTable(myOffers);
+        }
     }
 
     public getPlayersByTeam(team): any {
@@ -107,7 +142,9 @@ export class UserComponent{
         let playerToBe = this.playersOfMyTeam;
         let total = 0;
         playerToBe.forEach( (value) => {
-            total += parseFloat(value.salary);
+            if(value.cedido == 0) {
+                total += parseFloat(value.salary);
+            }
         });
         this.totalSalaries = Math.round(total * 100) / 100;
     }
@@ -137,6 +174,13 @@ export class UserComponent{
         this.usersTable = {
             headerRow: [ 'name', 'team', 'nation', 'psnID', 'twitch'],
             dataRows: this.giveActiveUsers()
+        };
+    }
+
+    private setOffersTable(data) {
+        this.usersTable = {
+            headerRow: [ 'type', 'player', 'team', 'amount', 'players', 'actions'],
+            dataRows: data
         };
     }
 }

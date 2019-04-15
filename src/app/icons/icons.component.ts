@@ -41,11 +41,9 @@ export class IconsComponent{
         });
     }
 
-    public setOffer(success, player) {
-        player.filling = false;
-        if(success) {
-            this.router.navigateByUrl('user');
-        }
+    public setOfferToRedirect(player) {
+        sessionStorage.setItem('playerToOffer', JSON.stringify(player));
+        this.router.navigateByUrl('offer');
     }
     
     public forceSignin(player) {

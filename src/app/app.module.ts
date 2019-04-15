@@ -36,6 +36,8 @@ import { FreePlayersComponent } from './freeplayers/freeplayers.component';
 import { AuctionsComponent } from './auctions/auctions.component';
 import { MarketComponent } from './market/market.component';
 import { OfferFillerModule } from './offer-filler/offer-filler.module';
+import { PartnersComponent } from './partners/partners.component';
+import { OfferComponent } from './offer/offer.component';
 
 @NgModule({
   declarations: [
@@ -61,7 +63,9 @@ import { OfferFillerModule } from './offer-filler/offer-filler.module';
     PenaltiesComponent,
     FreePlayersComponent,
     AuctionsComponent,
-    MarketComponent
+    MarketComponent,
+    PartnersComponent,
+    OfferComponent
   ],
   imports: [
     BrowserModule,

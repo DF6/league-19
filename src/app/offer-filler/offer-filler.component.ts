@@ -6,6 +6,7 @@ export interface OfferData {
     oldTeam: any;
     buyerTeam: any;
     amount: any;
+    signinType: any;
     players: PlayerOfferedData[];
 }
 
@@ -28,10 +29,10 @@ export class OfferFillerComponent implements OnInit{
     public offer: OfferData;
     public teams;
     public players;
-    public playerSelected;
-    public amount;
     public user;
     public constants;
+    public playersOfMyTeam;
+    public pcsToAdd;
 
     constructor(private http: Http){
     }
@@ -48,23 +49,44 @@ export class OfferFillerComponent implements OnInit{
                     value.name = value.name.replace('/n', 'ñ');
                     }
                 });
+                this.offer = {
+                    player: this.player.id,
+                    oldTeam: this.player.teamID,
+                    buyerTeam: this.user.teamID,
+                    signinType: 'G',
+                    amount: 1,
+                    players: []
+                };
+                this.getPlayersByTeam(this.user.teamID);
             });
         });
     }
 
     public sendOffer() {
-        this.http.post('./CMDataRequesting.php', {type: 'hacOfe', player: this.player.id, oldTeam: this.player.teamID, newTeam: this.user.teamID, amount: this.amount, market: this.constants.marketEdition}).subscribe( (response) => {
+        this.http.post('./CMDataRequesting.php', {type: 'hacOfe', signinType: this.offer.signinType, player: this.offer.player, oldTeam: this.offer.oldTeam, newTeam: this.offer.buyerTeam, amount: this.offer.amount, market: this.constants.marketEdition}).subscribe( (response) => {
             alert(response.json().message);
             if(response.json().success && this.offer.players.length > 0) {
                 this.offer.players.forEach( (value) => {
-                    // Llamada múltiple
+                    this.http.post('./CMDataRequesting.php', {type: 'ofeJug', player: value.player, offerTeam: value.newTeam, originTeam: value.originTeam, signin: response.json().id}).subscribe( (response) => {
+                        alert(response.json().message);
+                    });
                 });
             }
             this.offered.emit(response.json().success);
         });
     }
 
-    // Métodos para manejar el formulario
+    public addPCS() {
+        this.offer.players.push({
+            player: this.pcsToAdd,
+            originTeam: this.offer.buyerTeam,
+            newTeam: this.offer.oldTeam
+        });
+    }
+
+    public removePCS(position) {
+        this.offer.players.splice(position, 1);
+    }
 
     public getTeamById(team) {
         let teamToReturn = null;
@@ -89,10 +111,10 @@ export class OfferFillerComponent implements OnInit{
     public getPlayersByTeam(team) {
         let playersToReturn = [];
         this.players.forEach( (value) => {
-            if (value.teamID == team) {
+            if (value.teamID == team && value.cedido == 0) {
                 playersToReturn.push(value);
             }
         });
-        return playersToReturn;
+        this.playersOfMyTeam = playersToReturn;
     }
 }
