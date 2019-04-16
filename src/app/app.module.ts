@@ -38,6 +38,7 @@ import { MarketComponent } from './market/market.component';
 import { OfferFillerModule } from './offer-filler/offer-filler.module';
 import { PartnersComponent } from './partners/partners.component';
 import { OfferComponent } from './offer/offer.component';
+import { EuropeSupercupComponent } from './europesupercup/europesupercup.component';
 
 @NgModule({
   declarations: [
@@ -65,7 +66,8 @@ import { OfferComponent } from './offer/offer.component';
     AuctionsComponent,
     MarketComponent,
     PartnersComponent,
-    OfferComponent
+    OfferComponent,
+    EuropeSupercupComponent
   ],
   imports: [
     BrowserModule,

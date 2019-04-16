@@ -62,47 +62,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="card" *ngIf="offersTable">
-                    <div class="header">
-                        <h4 class="title">Ofertas de Acuerdos</h4>
-                    </div>
-                    <div class="content">
-                        
-                        <div *ngIf="offersTable.dataRows.length !=0" class="content table-responsive table-full-width">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>Tipo</th>
-                                        <th>Jugador</th>
-                                        <th>Equipo</th>
-                                        <th>Oferta</th>
-                                        <th>Jugadores</th>
-                                        <th>Qué hacer</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let row of offersTable.dataRows">
-                                        <td>{{row.signinType}}</td>
-                                        <td>{{getPlayerById(row.player).name}}</td>
-                                        <td>{{getTeamById(row.buyerTeam).name}}</td>
-                                        <td>{{row.amount}}</td>
-                                        <td *ngIf="row.playersOffered.length != 0">
-                                            <div *ngFor="let plOf of row.playersOffered">
-                                                <span *ngIf="$index != row.playersOffered.length - 1">{{getPlayerById(plOf.player).name}}, </span>
-                                                <span *ngIf="$index == row.playersOffered.length - 1">{{getPlayerById(plOf.player).name}}</span>
-                                            </div>
-                                        </td>
-                                        <td *ngIf="row.playersOffered.length == 0">NO</td>
-                                        <td>
-                                            <a style="cursor:pointer;" (click)="resolveOffer(row, true)">Aceptar</a> - 
-                                            <a style="cursor:pointer;" (click)="resolveOffer(row, false)">Rechazar</a>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        </div>
-                    </div>
             </div>
             <div class="col-lg-8 col-md-7">
                 <div class="card" *ngIf="usersTable">
@@ -139,6 +98,48 @@
                     </div>
             </div>
             <div class="col-lg-12 col-md-12">
+                
+                    <div class="card" *ngIf="offersTable">
+                            <div class="header">
+                                <h4 class="title">Ofertas de Acuerdos</h4>
+                            </div>
+                            <div class="content">
+                                
+                                <div *ngIf="offersTable.dataRows.length !=0" class="content table-responsive table-full-width">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Tipo</th>
+                                                <th>Jugador</th>
+                                                <th>Equipo</th>
+                                                <th>Oferta</th>
+                                                <th>Jugadores</th>
+                                                <th>Qué hacer</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr *ngFor="let row of offersTable.dataRows">
+                                                <td>{{getType(row.signinType)}}</td>
+                                                <td>{{getPlayerById(row.player).name}}</td>
+                                                <td>{{getTeamById(row.buyerTeam).name}}</td>
+                                                <td>{{row.amount}}</td>
+                                                <td *ngIf="row.playersOffered.length != 0">
+                                                    <div *ngFor="let plOf of row.playersOffered">
+                                                        <span *ngIf="$index != row.playersOffered.length - 1">{{getPlayerById(plOf.player).name}}, </span>
+                                                        <span *ngIf="$index == row.playersOffered.length - 1">{{getPlayerById(plOf.player).name}}</span>
+                                                    </div>
+                                                </td>
+                                                <td *ngIf="row.playersOffered.length == 0">NO</td>
+                                                <td>
+                                                    <a style="cursor:pointer;" (click)="resolveOffer(row, true)">Aceptar</a> - 
+                                                    <a style="cursor:pointer;" (click)="resolveOffer(row, false)">Rechazar</a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                </div>
+                            </div>
             <div *ngIf="playersOfMyTeam" class="card">
                 <div class="header">
                     <h4 *ngIf="players" class="title">Mi plantilla - {{playersOfMyTeam.length}} jugadores</h4>

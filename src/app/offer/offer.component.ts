@@ -18,7 +18,7 @@ export class OfferComponent{
     }
 
     public setOffer(ev) {
-        if(!ev) {
+        if(ev) {
             this.router.navigateByUrl('plantillas');
         }
     }

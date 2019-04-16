@@ -324,7 +324,7 @@
       }
     }
     if($data['success'] == true) {
-      $query2="INSERT INTO signins (player,old_team, buyer_team,amount,signin_type,market,accepted) values (".$params->player."," . $params->oldTeam . ", ".$params->newTeam.", ". $params->amount .", $params->signinType, ".$params->market.", false)";
+      $query2="INSERT INTO signins (player,old_team, buyer_team,amount,signin_type,market,accepted) values (".$params->player."," . $params->oldTeam . ", ".$params->newTeam.", ". $params->amount .", '" . $params->signinType . "', ".$params->market.", false)";
       $resultado2=mysqli_query($con, $query2) or die("Error insertando fichaje");
       $data['id']=mysqli_insert_id($con);
     }
@@ -346,16 +346,38 @@
   function acceptOffer($con, $params)
   {
     $data = array();
-    $query="UPDATE players SET buyed_this_market=1, team_id=".$params->newTeam." where id=".$params->player."";
-    $resultado=mysqli_query($con, $query) or die("Error realizando fichaje");
-    $query2="UPDATE signins SET accepted=1 where id=". $params->id."";
-    $resultado2=mysqli_query($con, $query2) or die("Error actualizando fichaje");
-    $query3="UPDATE teams SET budget=budget-" . $params->amount . " where id=". $params->newTeam."";
-    $resultado3=mysqli_query($con, $query3) or die("Error actualizando presupuesto1");
-    $query4="UPDATE teams SET budget=budget+" . $params->amount . " where id=". $params->oldTeam."";
-    $resultado4=mysqli_query($con, $query4) or die("Error actualizando presupuesto2");
     $data['success'] = true;
     $data['message'] = "Oferta aceptada";
+    $consult = "SELECT * from players where id=" . $params->player;
+    $consultResult = mysqli_query($con, $consult) or die("Error consultando jugador");
+    while($row = mysqli_fetch_array($consultResult)) {
+      if($row['buyed_this_market'] == 1) {
+        $data['success'] = false;
+        $data['message'] = "El jugador ya fue comprado por otro equipo antes";
+      }
+    }
+    $consult2 = "SELECT * from constants";
+    $consult2Result = mysqli_query($con, $consult2) or die("Error consult2ando constantes");
+    while($row = mysqli_fetch_array($consult2Result)) {
+      if($row['market_opened'] == 0) {
+        $data['success'] = false;
+        $data['message'] = "Mercado cerrado";
+      }
+    }
+    if($data['success'] == true) {
+      $query="UPDATE players SET buyed_this_market=1, team_id=".$params->newTeam." where id=".$params->player;
+      $resultado=mysqli_query($con, $query) or die("Error realizando fichaje");
+      $query2="UPDATE signins SET accepted=1 where id=". $params->id;
+      $resultado2=mysqli_query($con, $query2) or die("Error actualizando fichaje");
+      $query3="UPDATE teams SET budget=budget-" . $params->amount . " where id=". $params->newTeam;
+      $resultado3=mysqli_query($con, $query3) or die("Error actualizando presupuesto1");
+      $query4="UPDATE teams SET budget=budget+" . $params->amount . " where id=". $params->oldTeam;
+      $resultado4=mysqli_query($con, $query4) or die("Error actualizando presupuesto2");
+      if($params->signinType == "C") {
+        $query5="UPDATE players SET cedido=".$params->oldTeam." where id=".$params->player;
+        $resultado5=mysqli_query($con, $query5) or die("Error realizando fichaje");
+      }
+    }
     echo json_encode($data);
     exit;
   }
@@ -363,8 +385,10 @@
   function rejectOffer($con, $params)
   {
     $data = array();
-    $query="DELETE FROM signins where id=".$params->id."";
+    $query="DELETE FROM signins where id=".$params->id;
     $resultado=mysqli_query($con, $query) or die("Error rechazando oferta");
+    $query2="DELETE FROM player_change_signins where signin_id=".$params->id;
+    $resultado2=mysqli_query($con, $query2) or die("Error rechazando oferta");
     $data['success'] = true;
     $data['message'] = "Oferta rechazada";
     echo json_encode($data);
@@ -374,10 +398,34 @@
   function transferPlayerOffered($con, $params)
   {
     $data = array();
-    $query="UPDATE players SET team_id=".$params->newTeam." where id=".$params->player."";
-    $resultado=mysqli_query($con, $query) or die("Error transfiriendo cambio");
     $data['success'] = true;
     $data['message'] = "Jugador transferido";
+    $consult = "SELECT * from players where id=" . $params->player;
+    $consultResult = mysqli_query($con, $consult) or die("Error consultando jugador");
+    while($row = mysqli_fetch_array($consultResult)) {
+      if($row['buyed_this_market'] == 1) {
+        $data['success'] = false;
+        $data['message'] = "El jugador ya fue comprado por otro equipo antes";
+      }
+    }
+    $consult2 = "SELECT * from constants";
+    $consult2Result = mysqli_query($con, $consult2) or die("Error consult2ando constantes");
+    while($row = mysqli_fetch_array($consult2Result)) {
+      if($row['market_opened'] == 0) {
+        $data['success'] = false;
+        $data['message'] = "Mercado cerrado";
+      }
+    }
+    if($data['success'] == true) {
+      $query="UPDATE players SET buyed_this_market=1, team_id=".$params->newTeam." where id=".$params->player."";
+      $resultado=mysqli_query($con, $query) or die("Error transfiriendo cambio");
+      $query2="INSERT INTO signins (player,old_team, buyer_team,amount,signin_type,market,accepted) values (".$params->player."," . $params->oldTeam . ", ".$params->newTeam.", 0, '" . $params->signinType . "', ".$params->market.", true)";
+      $resultado2=mysqli_query($con, $query2) or die("Error insertando fichaje");
+      if($params->signinType == "C") {
+        $query5="UPDATE players SET cedido=".$params->oldTeam." where id=".$params->player;
+        $resultado5=mysqli_query($con, $query5) or die("Error realizando fichaje");
+      }
+    }
     echo json_encode($data);
     exit;
   }

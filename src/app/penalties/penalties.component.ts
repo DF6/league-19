@@ -80,19 +80,19 @@ export class PenaltiesComponent implements OnInit{
         switch (penalty.tournament) {
                 case 'Primera':
                 case 'Segunda':
-                    ret = (penalty.round > 7 && penalty.round < 11);
+                    ret = (penalty.round > 10 && penalty.round < 15);
                     break;
                 case 'Copa':
-                    ret = (penalty.round > 4 && penalty.round < 7);
+                    ret = (penalty.round > 6 && penalty.round < 9);
                     break;
                 case 'Champions League':
-                    ret = (penalty.round > 8 && penalty.round < 11);
+                    ret = (penalty.round > 10 && penalty.round < 13);
                     break;
                 case 'Europa League':
-                    ret = (penalty.round > 2 && penalty.round < 5);
+                    ret = (penalty.round > 4 && penalty.round < 7);
                     break;
                 case 'Intertoto':
-                    ret = (penalty.round > 0);
+                    ret = (penalty.round > 2);
                     break;
                 case 'Supercopa de Clubes':
                 case 'Supercopa de Europa':
@@ -287,26 +287,26 @@ export class PenaltiesComponent implements OnInit{
                 if (round < 3) { return 'Octavos de Final'; }
                 else if (round >= 3 && round < 5) { return 'Cuartos de Final'; }
                 else if (round >= 5 && round < 7) { return 'Semifinales'; }
-                else if (round == 8) { return 'Tercer y Cuarto Puesto'; }
-                else if (round == 9) { return 'Final'; }
+                else if (round == 9) { return 'Tercer y Cuarto Puesto'; }
+                else if (round == 8) { return 'Final'; }
                 break;
             case 'Champions League':
                 if (round < 7) { return 'Fase de Grupos'; }
                 else if (round >= 7 && round < 9) { return 'Cuartos de Final'; }
                 else if (round >= 9 && round < 11) { return 'Semifinales'; }
-                else if (round == 11) { return 'Tercer y Cuarto Puesto'; }
-                else if (round == 12) { return 'Final'; }
+                else if (round == 12) { return 'Tercer y Cuarto Puesto'; }
+                else if (round == 11) { return 'Final'; }
                 break;
             case 'Europa League':
                 if (round < 3) { return 'Cuartos de Final'; }
                 else if (round >= 3 && round < 5) { return 'Semifinales'; }
-                else if (round == 5) { return 'Tercer y Cuarto Puesto'; }
-                else if (round == 6) { return 'Final'; }
+                else if (round == 6) { return 'Tercer y Cuarto Puesto'; }
+                else if (round == 5) { return 'Final'; }
                 break;
             case 'Intertoto':
                 if (round < 3) { return 'Semifinales'; }
-                else if (round == 3) { return 'Tercer y Cuarto Puesto'; }
-                else if (round == 4) { return 'Final'; }
+                else if (round == 4) { return 'Tercer y Cuarto Puesto'; }
+                else if (round == 3) { return 'Final'; }
                 break;
             case 'Supercopa de Clubes':
             case 'Supercopa Europea': 

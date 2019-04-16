@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
+import { RouterLinkWithHref, Router } from '@angular/router';
 
 declare interface TableData {
     headerRow: string[];
@@ -15,6 +16,7 @@ declare interface TableData {
 export class UserComponent{
 
     public usersTable: TableData;
+    public offersTable: TableData;
     public user;
     public teams;
     public players;
@@ -28,7 +30,7 @@ export class UserComponent{
     public signins;
     public playerChangeSignins;
 
-    constructor(private http: Http) {
+    constructor(private http: Http, private router: Router) {
         this.user = JSON.parse(sessionStorage.getItem('user'));
         this.users = JSON.parse(sessionStorage.getItem('users')).users;
         this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
@@ -64,6 +66,7 @@ export class UserComponent{
     }
 
     public setOffersOfMyTeam() {
+        if(this.offersTable) { this.offersTable.dataRows = []; }
         let myOffers = [];
         this.signins.forEach( (value) => {
             if (value.market == this.constants.marketEdition && (value.signinType == 'G' || value.signinType == 'C') && value.accepted == 0) {
@@ -76,11 +79,51 @@ export class UserComponent{
                         }
                     });
                     myOffers.push(value);
+                    if(myOffers.length != 0) {
+                        this.setOffersTable(myOffers);
+                    }
                 });
             }
         });
-        if(myOffers.length != 0) {
-            this.setOffersTable(myOffers);
+    }
+
+    public resolveOffer(offer, result) {
+        if(result) {
+            if(confirm('¿Aceptar?')) {
+                this.http.post('./CMDataRequesting.php', {type: 'aceOfe', id: offer.id, player: offer.player, newTeam: offer.buyerTeam, oldTeam: offer.oldTeam, amount: offer.amount, signinType: offer.signinType, cedido: this.getPlayerById(offer.player).cedido}).subscribe( (response) => {
+                    alert(response.json().message) 
+                    if(response.json().success) {
+                        offer.playersOffered.forEach( (value) => {
+                            this.http.post('./CMDataRequesting.php', {type: 'traJug', player: value.player, oldTeam: value.originTeam, newTeam: value.newTeam, market: this.constants.marketEdition, signinType: offer.signinType, cedido: this.getPlayerById(offer.player).cedido}).subscribe( (response) => {
+                                alert(response.json().message);
+                                if(response.json().success) {
+                                    this.getPlayersByTeam(this.user.teamID);
+                                    this.setOffersOfMyTeam();
+                                }
+                            });
+                        });
+                        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
+                            this.signins = response.json().signins;
+                            this.setOffersOfMyTeam();
+                            this.getPlayersByTeam(this.user.teamID);
+                        });
+                    } else {
+                        this.router.navigateByUrl('plantillas');
+                    }
+                });
+            }
+        } else {
+            if(confirm('¿Rechazar?')) {
+                this.http.post('./CMDataRequesting.php', {type: 'recOfe', id: offer.id}).subscribe( (response) => {
+                    alert(response.json().message);
+                    if(response.json().success) {
+                        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
+                            this.signins = response.json().signins;
+                            this.setOffersOfMyTeam();
+                        });
+                    }
+                });
+            }
         }
     }
 
@@ -169,6 +212,13 @@ export class UserComponent{
             });
         }
     }
+    
+    public getType(type) {
+        switch(type) {
+            case 'G': return 'Compra';
+            case 'C': return 'Cesión';
+        }
+    }
 
     private setTableConfig() {
         this.usersTable = {
@@ -178,7 +228,7 @@ export class UserComponent{
     }
 
     private setOffersTable(data) {
-        this.usersTable = {
+        this.offersTable = {
             headerRow: [ 'type', 'player', 'team', 'amount', 'players', 'actions'],
             dataRows: data
         };

@@ -49,7 +49,7 @@ export class AdminMatchesComponent{
         });
         for (let i = 0; i < finalTableMatches.length; i++) {
             if ((this.getTournamentById(finalTableMatches[i].tournament).name == 'Primera' ||
-               this.getTournamentById(finalTableMatches[i].tournament).name == 'Segunda') && finalTableMatches[i].round > 10) {
+               this.getTournamentById(finalTableMatches[i].tournament).name == 'Segunda') && finalTableMatches[i].round > 14) {
                  finalTableMatches.splice(i, 1);
                  i--;
             }
@@ -92,26 +92,26 @@ export class AdminMatchesComponent{
                 if (match.round < 3) { return 'Octavos de Final'; }
                 else if (match.round >= 3 && match.round < 5) { return 'Cuartos de Final'; }
                 else if (match.round >= 5 && match.round < 7) { return 'Semifinales'; }
-                else if (match.round == 8) { return 'Tercer y Cuarto Puesto'; }
-                else if (match.round == 9) { return 'Final'; }
+                else if (match.round == 9) { return 'Tercer y Cuarto Puesto'; }
+                else if (match.round == 8) { return 'Final'; }
                 break;
             case 'Champions League':
                 if (match.round < 7) { return 'Fase de Grupos'; }
                 else if (match.round >= 7 && match.round < 9) { return 'Cuartos de Final'; }
                 else if (match.round >= 9 && match.round < 11) { return 'Semifinales'; }
-                else if (match.round == 11) { return 'Tercer y Cuarto Puesto'; }
-                else if (match.round == 12) { return 'Final'; }
+                else if (match.round == 12) { return 'Tercer y Cuarto Puesto'; }
+                else if (match.round == 11) { return 'Final'; }
                 break;
             case 'Europa League':
                 if (match.round < 3) { return 'Cuartos de Final'; }
                 else if (match.round >= 3 && match.round < 5) { return 'Semifinales'; }
-                else if (match.round == 5) { return 'Tercer y Cuarto Puesto'; }
-                else if (match.round == 6) { return 'Final'; }
+                else if (match.round == 6) { return 'Tercer y Cuarto Puesto'; }
+                else if (match.round == 5) { return 'Final'; }
                 break;
             case 'Intertoto':
                 if (match.round < 3) { return 'Semifinales'; }
-                else if (match.round == 3) { return 'Tercer y Cuarto Puesto'; }
-                else if (match.round == 4) { return 'Final'; }
+                else if (match.round == 4) { return 'Tercer y Cuarto Puesto'; }
+                else if (match.round == 3) { return 'Final'; }
                 break;
             case 'Supercopa de Clubes':
             case 'Supercopa Europea': 

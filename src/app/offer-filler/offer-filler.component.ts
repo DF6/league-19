@@ -33,6 +33,7 @@ export class OfferFillerComponent implements OnInit{
     public constants;
     public playersOfMyTeam;
     public pcsToAdd;
+    public signType;
 
     constructor(private http: Http){
     }
@@ -63,7 +64,8 @@ export class OfferFillerComponent implements OnInit{
     }
 
     public sendOffer() {
-        this.http.post('./CMDataRequesting.php', {type: 'hacOfe', signinType: this.offer.signinType, player: this.offer.player, oldTeam: this.offer.oldTeam, newTeam: this.offer.buyerTeam, amount: this.offer.amount, market: this.constants.marketEdition}).subscribe( (response) => {
+        if(!this.signType) { this.signType = this.offer.signinType; }
+        this.http.post('./CMDataRequesting.php', {type: 'hacOfe', signinType: this.signType, player: this.offer.player, oldTeam: this.offer.oldTeam, newTeam: this.offer.buyerTeam, amount: this.offer.amount, market: this.constants.marketEdition}).subscribe( (response) => {
             alert(response.json().message);
             if(response.json().success && this.offer.players.length > 0) {
                 this.offer.players.forEach( (value) => {

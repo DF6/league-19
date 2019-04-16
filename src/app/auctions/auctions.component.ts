@@ -87,7 +87,7 @@ export class AuctionsComponent implements OnInit{
             let date = new Date();
             date.setHours(date.getHours() + 12);
             let formattedDate = this.addZero(date.getDate()) + "/" + (this.addZero(date.getMonth()+1)) + "/" + this.addZero(date.getFullYear()) + " " + this.addZero(date.getHours()) + ":" + this.addZero(date.getMinutes()) + ":" + this.addZero(date.getSeconds());
-            this.http.post('./CMDataRequesting.php', {type: 'nueSub', playerName: this.newPlayer.name, position: this.newPlayer.position.toUpperCase(), amount: this.newPlayer.amount, overage: this.newPlayer.overage, buyerTeam: this.user.teamID, market: this.constants.marketEdition, limitDate: formattedDate}).subscribe( (response) => {
+            this.http.post('./CMDataRequesting.php', {type: 'nueSub', playerName: this.removeAccents(this.newPlayer.name), position: this.newPlayer.position.toUpperCase(), amount: this.newPlayer.amount, overage: this.newPlayer.overage, buyerTeam: this.user.teamID, market: this.constants.marketEdition, limitDate: formattedDate}).subscribe( (response) => {
                 if(response.json().success) {
                     this.setTable();
                     this.new = false;
@@ -101,6 +101,19 @@ export class AuctionsComponent implements OnInit{
                 alert(response.json().message);
             });
         }
+    }
+
+    public removeAccents(name) {
+        let chars={
+            "á":"a", "é":"e", "í":"i", "ó":"o", "ú":"u",
+            "à":"a", "è":"e", "ì":"i", "ò":"o", "ù":"u", "ñ":"/n",
+            "ä":"a", "ë":"e", "ï":"i", "ö":"o", "ü":"u",
+            "Á":"A", "É":"E", "Í":"I", "Ó":"O", "Ú":"U",
+            "À":"A", "È":"E", "Ì":"I", "Ò":"O", "Ù":"U", "Ñ":"/n",
+            "Ä":"A", "Ë":"E", "Ï":"I", "Ö":"O", "Ü":"U"}
+        let expr=/[áàéèíìóòúùäëïöüñ]/ig;
+        let res=name.replace(expr,function(e){return chars[e]});
+        return res;
     }
 
     public getPlayerById(player) {

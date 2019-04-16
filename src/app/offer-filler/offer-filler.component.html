@@ -3,9 +3,9 @@
         <div class="col-md-12">
             <div class="card" style="padding: 16px;" *ngIf="offer">
                 <h1>Oferta por {{player.name}}</h1>
-                <select [(ngModel)]="offer.signinType">
-                    <option [ngValue]="G">Compra</option>
-                    <option [ngValue]="C">Cesión</option>
+                <select [(ngModel)]="signType">
+                    <option value="G">Compra</option>
+                    <option value="C">Cesión</option>
                 </select>
                 <br/><br/>
                 <span>Importe</span> <input type="number" step="1" min="0" [(ngModel)]="offer.amount">
