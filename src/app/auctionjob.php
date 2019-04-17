@@ -16,8 +16,8 @@
     
     $consult = "SELECT * from signins where accepted=0";
     $result = mysqli_query($link, $consult) or die("Error comparando fechas");
-    $fecha_actual = new DateTime();
-    $fecha_actual->modify('+2 hours');
+    $fecha_actual = date("d-m-Y H:i:s", time());
+    $fecha_actual = strtotime('+2 hour', strtotime($fecha_actual));
     while($row = mysqli_fetch_array($result)) {
       $fecha_limite = strtotime($row['limit_date']);
       $tipo = utf8_decode($row['signin_type']);
@@ -25,7 +25,7 @@
       $jugador = $row['player'];
       $id = $row['id'];
       $amount = $row['amount'];
-      if($fecha_actual > $fecha_limite && $tipo == "A") {
+      if($fecha_actual > $fecha_limite && strcmp($tipo, "A") == 0) {
         $consult5 = "SELECT * from teams";
         $result5 = mysqli_query($link, $consult5) or die("Error consultando equipo");
         $resolver = true;
@@ -44,6 +44,8 @@
         }else {
             $consult6 = "DELETE from signins where id=". $id;
             $result6 = mysqli_query($link, $consult6) or die("Error borrando subasta");
+            $consult7 = "DELETE from players where id=". $jugador;
+            $result7 = mysqli_query($link, $consult7) or die("Error borrando jugador");
         }
       }
     }
