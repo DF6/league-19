@@ -448,6 +448,8 @@
     $data = array();
     $query="UPDATE partners SET partner=".$params->partner." where team=".$params->team;
     $resultado=mysqli_query($con, $query) or die("Error de patrocinador");
+    $query2="UPDATE teams SET budget=budget+10 where id=".$params->team;
+    $resultado2=mysqli_query($con, $query2) or die("Error de patrocinador2");
     $data['success'] = true;
     $data['message'] = "Nuevo patrocinador";
     echo json_encode($data);
@@ -631,10 +633,20 @@
   function setMatchResult($con, $params)
   {
     $data = array();
-    $query="UPDATE matches SET local_goals=". $params->localGoals .", away_goals=".$params->awayGoals." where id=" . $params->matchID;
-    $resultado=mysqli_query($con, $query) or die("Error introduciendo resultado");
     $data['success'] = true;
     $data['message'] = "Resultado introducido";
+    $consult="SELECT * from matches where id=" . $params->matchID;
+    $consultResult=mysqli_query($con, $consult) or die("Error comprobando resultado");
+    while($row = mysqli_fetch_array($consultResult)) {
+      if($row['local_goals'] != -1) {
+        $data['success'] = false;
+        $data['message'] = "Resultado ya introducido";
+      }
+    }
+    if($data['success'] == true) {
+      $query="UPDATE matches SET local_goals=". $params->localGoals .", away_goals=".$params->awayGoals." where id=" . $params->matchID;
+      $resultado=mysqli_query($con, $query) or die("Error introduciendo resultado");
+    }
     echo json_encode($data);
     exit;
   }

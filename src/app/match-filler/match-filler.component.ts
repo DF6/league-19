@@ -31,6 +31,7 @@ export class MatchFillerComponent implements OnInit{
     public localPlayers: any[];
     public awayPlayers: any[];
     public models: any;
+    public sent = false;
 
     constructor(private http: Http){
         this.local = {
@@ -184,27 +185,36 @@ export class MatchFillerComponent implements OnInit{
     }
 
     public sendMatchInfo() {
-        this.http.post('./CMDataRequesting.php', {type: 'setRes', localGoals: this.local.score, awayGoals: this.away.score, matchID: this.data.id}).subscribe( () => {
-            let local = {points: 0, won: 0, draw: 0, lost: 0};
-            let away = {points: 0, won: 0, draw: 0, lost: 0};
-            if (this.local.score > this.away.score) {
-                local.points = 3;
-                local.won = 1;
-                away.lost = 1;
-            }else if (this.local.score < this.away.score) {
-                away.points = 3;
-                away.won = 1;
-                local.lost = 1;
-            } else {
-                local.points = 1;
-                away.points = 1;
-                local.draw = 1;
-                away.draw = 1;
-            }
-            this.http.post('./CMDataRequesting.php', {type: 'updSta', points: local.points, won: local.won, draw: local.draw, lost: local.lost, goalsFor: this.local.score, goalsAgainst: this.away.score, tournamentID: this.data.tournament, team: this.data.local}).subscribe( () => {});
-            this.http.post('./CMDataRequesting.php', {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, goalsFor: this.away.score, goalsAgainst: this.local.score, tournamentID: this.data.tournament, team: this.data.away}).subscribe( () => {});
-            this.sendActionsOfTheMatch();
-        });
+        if (!this.sent) {
+            this.sent = true;
+            this.http.post('./CMDataRequesting.php', {type: 'setRes', localGoals: this.local.score, awayGoals: this.away.score, matchID: this.data.id}).subscribe( (response) => {
+                if (response.json().success) {
+                    let local = {points: 0, won: 0, draw: 0, lost: 0};
+                    let away = {points: 0, won: 0, draw: 0, lost: 0};
+                    if (this.local.score > this.away.score) {
+                        local.points = 3;
+                        local.won = 1;
+                        away.lost = 1;
+                    }else if (this.local.score < this.away.score) {
+                        away.points = 3;
+                        away.won = 1;
+                        local.lost = 1;
+                    } else {
+                        local.points = 1;
+                        away.points = 1;
+                        local.draw = 1;
+                        away.draw = 1;
+                    }
+                    this.http.post('./CMDataRequesting.php', {type: 'updSta', points: local.points, won: local.won, draw: local.draw, lost: local.lost, goalsFor: this.local.score, goalsAgainst: this.away.score, tournamentID: this.data.tournament, team: this.data.local}).subscribe( () => {});
+                    this.http.post('./CMDataRequesting.php', {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, goalsFor: this.away.score, goalsAgainst: this.local.score, tournamentID: this.data.tournament, team: this.data.away}).subscribe( () => {});
+                    this.sendActionsOfTheMatch();
+                } else {
+                    alert(response.json().message);
+                }
+            });
+        } else {
+            alert('Resultado ya introducido');
+        }
     }
 
     public sendActionsOfTheMatch() {
