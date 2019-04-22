@@ -1,0 +1,87 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card" style="padding: 16px;" *ngIf="matchToAdd">
+                <h2>Insertar partidos</h2>
+                <span>Local</span>
+                <select [(ngModel)]="matchToAdd.local">
+                    <option [ngValue]="t.id" *ngFor="let t of teams">{{t.name}}</option>
+                </select>
+                <span>Visitante</span>
+                <select [(ngModel)]="matchToAdd.away">
+                    <option [ngValue]="t2.id" *ngFor="let t2 of teams">{{t2.name}}</option>
+                </select>
+                <span>Ronda</span> <input type="number" step="1" min="0" [(ngModel)]="matchToAdd.round">
+                <span>Torneo</span>
+                <select [(ngModel)]="matchToAdd.tournament">
+                    <option [ngValue]="to.id" *ngFor="let to of tournaments">{{to.name}}</option>
+                </select>
+                <div class="row">
+                    <button class="col-md-12" (click)="insertMatch()">Añadir Partido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card" style="padding: 16px;" *ngIf="prizes">
+                <h2>Resolver Premios Torneo</h2>
+                <span>Primero</span>
+                <select [(ngModel)]="prizes.first">
+                    <option [ngValue]="t.id" *ngFor="let t of teams">{{t.name}}</option>
+                </select>
+                <span>Segundo</span>
+                <select [(ngModel)]="prizes.second">
+                    <option [ngValue]="t2.id" *ngFor="let t2 of teams">{{t2.name}}</option>
+                </select>
+                <span>Tercero</span>
+                <select [(ngModel)]="prizes.third">
+                    <option [ngValue]="t3.id" *ngFor="let t3 of teams">{{t3.name}}</option>
+                </select>
+                <span>Cuarto</span>
+                <select [(ngModel)]="prizes.fourth">
+                    <option [ngValue]="t4.id" *ngFor="let t4 of teams">{{t4.name}}</option>
+                </select>
+                <span>Quinto</span>
+                <select [(ngModel)]="prizes.fifth">
+                    <option [ngValue]="t5.id" *ngFor="let t5 of teams">{{t5.name}}</option>
+                </select>
+                <span>Sexto</span>
+                <select [(ngModel)]="prizes.sixth">
+                    <option [ngValue]="t6.id" *ngFor="let t6 of teams">{{t6.name}}</option>
+                </select>
+                <span>Séptimo</span>
+                <select [(ngModel)]="prizes.seventh">
+                    <option [ngValue]="t7.id" *ngFor="let t7 of teams">{{t7.name}}</option>
+                </select>
+                <span>Octavo</span>
+                <select [(ngModel)]="prizes.eight">
+                    <option [ngValue]="t8.id" *ngFor="let t8 of teams">{{t8.name}}</option>
+                </select>
+                <div class="row">
+                    <button class="col-md-12" (click)="setPrizes()">Resolver Torneo</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div>
+    <br/><br/>
+    <span style="display:block;">Jugadores</span>
+    <div>
+        <ul class="heroes">
+            <li style="list-style: none;" *ngFor="let pcsAdded of offer.players">{{getPlayerById(pcsAdded.player).name}} <i class="ti-close" (click)="removePCS($index)"></i></li>
+        </ul>
+        <select *ngIf="playersOfMyTeam" [(ngModel)]="pcsToAdd">
+            <option *ngFor="let teamPlayer of playersOfMyTeam" 
+            [ngValue]="teamPlayer.id">{{teamPlayer.name}}</option>
+        </select>
+    </div>
+    <button (click)="addPCS()" style="margin-top: 4px;">Añadir</button>
+</div>
+
+    
+<div class="row">
+    <button class="col-md-12" (click)="sendOffer()">Enviar Oferta</button>
+</div>
