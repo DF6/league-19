@@ -26,7 +26,8 @@ export class AdminPageComponent implements OnInit{
 
     public offer: OfferData;
     public teams;
-    public constants;
+    public players;
+    public tournaments;
     public matchToAdd;
     public prizes;
 
@@ -34,32 +35,32 @@ export class AdminPageComponent implements OnInit{
     }
 
     ngOnInit() {
-        this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
-    }
-
-    public sendOffer() {
-        this.http.post('./CMDataRequesting.php', {type: 'hacOfe', signinType: this.signType, player: this.offer.player, oldTeam: this.offer.oldTeam, newTeam: this.offer.buyerTeam, amount: this.offer.amount, market: this.constants.marketEdition}).subscribe( (response) => {
-            alert(response.json().message);
-            if(response.json().success && this.offer.players.length > 0) {
-                this.offer.players.forEach( (value) => {
-                    this.http.post('./CMDataRequesting.php', {type: 'ofeJug', player: value.player, offerTeam: value.newTeam, originTeam: value.originTeam, signin: response.json().id}).subscribe( (response) => {
-                        alert(response.json().message);
-                    });
-                });
-            }
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
+            this.players = response.json().players;
+            this.players.forEach( (value) => {
+                while (value.name.indexOf('/n') != -1) {
+                value.name = value.name.replace('/n', 'ñ');
+                }
+            });
+            this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
+            this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
+            this.matchToAdd = {
+                local: -1,
+                away: -1,
+                tournament: -1,
+                round: -1
+            };
+            this.prizes = {
+                first: -1,
+                second: -1,
+                third: -1,
+                fourth: -1,
+                fifth: -1,
+                sixth: -1,
+                seventh: -1,
+                eight: -1
+            };
         });
-    }
-
-    public addPCS() {
-        this.offer.players.push({
-            player: this.pcsToAdd,
-            originTeam: this.offer.buyerTeam,
-            newTeam: this.offer.oldTeam
-        });
-    }
-
-    public removePCS(position) {
-        this.offer.players.splice(position, 1);
     }
 
     public getTeamById(team) {
@@ -80,15 +81,5 @@ export class AdminPageComponent implements OnInit{
             }
         });
         return playerToReturn;
-    }
-
-    public getPlayersByTeam(team) {
-        let playersToReturn = [];
-        this.players.forEach( (value) => {
-            if (value.teamID == team && value.cedido == 0) {
-                playersToReturn.push(value);
-            }
-        });
-        this.playersOfMyTeam = playersToReturn;
     }
 }
