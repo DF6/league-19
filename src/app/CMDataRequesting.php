@@ -238,6 +238,9 @@
     if(($salaries + $params->salary) > 100) {
       $data['success'] = false;
       $data['message'] = "Límite de sueldos alcanzado";
+    } else if($params->salary > 10 || $params->salary <= 0) {
+      $data['success'] = false;
+      $data['message'] = "Límite de sueldo individual alcanzado";
     } else if ($untouchables == $untouchablesOfTeam && $params->salary == 10) {
       $data['success'] = false;
       $data['message'] = "Ya tienes el máximo de intocables";
