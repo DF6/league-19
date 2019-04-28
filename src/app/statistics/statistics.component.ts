@@ -133,7 +133,8 @@ export class StatisticsComponent implements OnInit{
             }
         });
         if (!updated && action.player > 0) {
-            data.push({position: -1, team: this.getTeamById(this.getPlayerById(action.player).teamID).shortName, playerID: action.player, name: this.getPlayerById(action.player).name, quantity: 1});
+            const tt = this.getPlayerById(action.player).teamID !=0 ? this.getTeamById(this.getPlayerById(action.player).teamID).shortName : 'LIB';
+            data.push({position: -1, team: tt, playerID: action.player, name: this.getPlayerById(action.player).name, quantity: 1});
         }
         return data;
     }
