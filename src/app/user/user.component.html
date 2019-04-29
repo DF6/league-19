@@ -160,13 +160,13 @@
                                             {{player.overage}}
                                         </div>
                                         <div class="col-xs-2" *ngIf="!player.salaryMode && player.salary != 10 && player.cedido == 0">
-                                            {{player.salary}}M€ <a *ngIf="user.teamID == 16" style="cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a>
+                                            {{player.salary}}M€ <a style="display:none;cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a>
                                         </div>
                                         <div class="col-xs-2" *ngIf="!player.salaryMode && player.salary == 10 && player.cedido == 0">
-                                            INTOCABLE <a *ngIf="user.teamID == 16" style="cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a>
+                                            INTOCABLE <a style="display:none;cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a>
                                         </div>
                                         <div class="col-xs-2 text-right" *ngIf="player.buyedThisMarket == 0 && player.cedido == 0 && !player.salaryMode">
-                                            <a style="cursor:pointer;" (click)="giveWildCard(player.id)">Liberar</a> - <a *ngIf="user.teamID == 16" style="cursor:pointer;" (click)="setEmblem(player.id)">Emblema</a>
+                                            <a style="cursor:pointer;" (click)="giveWildCard(player.id)">Liberar</a> - <a style="cursor:pointer;" (click)="setEmblem(player.id)">Emblema</a>
                                         </div>
                                         <div class="col-xs-2 text-right" *ngIf="player.buyedThisMarket == 1 && player.cedido == 0 && !player.salaryMode">
                                             ALTA
@@ -188,10 +188,10 @@
                                             {{player.overage}}
                                         </div>
                                         <div class="col-xs-2" *ngIf="!player.salaryMode && player.salary != 10 && player.cedido == 0">
-                                            {{player.salary}}M€ <a *ngIf="user.teamID == 16" style="cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a> 
+                                            {{player.salary}}M€ <a style="display:none;cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a> 
                                         </div>
                                         <div class="col-xs-2" *ngIf="!player.salaryMode && player.salary == 10 && player.cedido == 0">
-                                            INTOCABLE <a *ngIf="user.teamID == 16" style="cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a>
+                                            INTOCABLE <a style="display:none;cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a>
                                         </div>
                                         <div class="col-xs-2 text-right" *ngIf="player.buyedThisMarket == 0 && player.cedido == 0 && !player.salaryMode">
                                             <a style="cursor:pointer;" (click)="giveWildCard(player.id)">Liberar</a>

@@ -55,6 +55,7 @@ export class MarketComponent implements OnInit{
                             case 'C': type = 'Cesión'; oldTeam = this.getTeamById(value.oldTeam).name; break;
                             case 'F': type = 'Cláusula'; oldTeam = this.getTeamById(value.oldTeam).name; break;
                             case 'W': type = 'Libre'; oldTeam = 'Libre'; break;
+                            case 'D': type = 'Descarte'; oldTeam = this.getTeamById(value.oldTeam).name; break;
                         }
                         let auction = { id: value.id, 
                             name: player.name,
@@ -84,11 +85,22 @@ export class MarketComponent implements OnInit{
 
     public getTeamById(team) {
         let teamToReturn = null;
-        this.teams.forEach( (value) => {
-            if (value.id == team) {
-                teamToReturn = value;
+        if(team == 0) 
+        {
+            teamToReturn = {
+                name: 'Libre'
             }
-        });
+        } else if(team == -1) {
+            teamToReturn = {
+                name: 'N/D'
+            }
+        } else {
+            this.teams.forEach( (value) => {
+                if (value.id == team) {
+                    teamToReturn = value;
+                }
+            });
+        }
         return teamToReturn;
     }
 

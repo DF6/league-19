@@ -43,7 +43,7 @@
                                 <td *ngIf="row.state == 1" style="color: red;font-weight: bold;">CERRADA</td>
                                 <td *ngIf="row.state == 0">{{row.time}}</td>
                                 <td *ngIf="row.state == 1" colspan="2">00:00:00</td>
-                                <td *ngIf="row.state == 0"><input type="number" [(ngModel)]="amountsRaised[$index]" min="{{row.amount}}" max="100" step="1" onkeydown="return false">
+                                <td *ngIf="row.state == 0"><input type="number" [(ngModel)]="amountsRaised[$index]" min="{{row.amount}}" max="100" step="1">
                                 <a style="cursor:pointer;" (click)="raiseAuction(row.id, $index)">Pujar</a></td>
                             </tr>
                         </tbody>
