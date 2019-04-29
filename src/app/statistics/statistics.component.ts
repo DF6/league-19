@@ -34,6 +34,13 @@ export class StatisticsComponent implements OnInit{
 
     ngOnInit() {
         this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
+        let finalTournaments = [];
+        this.tournaments.forEach( (value) => {
+            if(value.edition == this.getLastEdition(value.name)) {
+                finalTournaments.push(value);
+            }
+        });
+        this.tournaments = finalTournaments;
         this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
         this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
             this.players = response.json().players;
@@ -53,6 +60,16 @@ export class StatisticsComponent implements OnInit{
             });
         });
         
+    }
+
+    private getLastEdition(league) {
+        let lastEdition = -1;
+        for (let i = 0; i < this.tournaments.length; i++) {
+            if (this.tournaments[i].name == league) {
+                lastEdition = this.tournaments[i].edition;
+            }
+        }
+        return lastEdition;
     }
 
     private fillTables(e?) {
