@@ -16,6 +16,11 @@ export interface PlayerOfferedData {
     newTeam: any;
 }
 
+declare interface TableData {
+    headerRow: string[];
+    dataRows: string[][];
+}
+
 @Component({
     selector: 'adminpage',
     moduleId: module.id,
@@ -30,6 +35,8 @@ export class AdminPageComponent implements OnInit{
     public tournaments;
     public matchToAdd;
     public prizes;
+    public teamSalaries: TableData;
+    public salaryData;
 
     constructor(private http: Http){
     }
@@ -60,6 +67,7 @@ export class AdminPageComponent implements OnInit{
                 seventh: -1,
                 eight: -1
             };
+            this.getTotalSalaries();
         });
     }
 
@@ -81,5 +89,49 @@ export class AdminPageComponent implements OnInit{
             }
         });
         return playerToReturn;
+    }
+
+    public discountSalaries() {
+        this.salaryData.forEach( (value) => {
+            this.http.post('./CMDataRequesting.php', {type: 'chaSal', amount: value.salaries, id: value.team});
+        });
+        alert('Terminado');
+    }
+
+    public getTotalSalaries() {
+        let sal = [];
+        this.teams.forEach( (value) => {
+            sal.push({ team: value.id, salaries: this.getTotalSalariesByTeam(value.id)});
+        });
+        this.salaryData = sal;
+        this.setTableConfig();
+    }
+
+    public getTotalSalariesByTeam(team) {
+        let playerToBe = this.getPlayersByTeam(team);
+        let total = 0;
+        playerToBe.forEach( (value) => {
+            if(value.cedido == 0) {
+                total += parseFloat(value.salary);
+            }
+        });
+        return Math.round(total * 100) / 100;
+    }
+
+    public getPlayersByTeam(team): any {
+        let playersOfTheTeam = [];
+        this.players.forEach( (value) =>{
+            if(value.teamID == team) {
+                playersOfTheTeam.push(value);
+            }
+        });
+        return playersOfTheTeam;
+    }
+
+    private setTableConfig() {
+        this.teamSalaries = {
+            headerRow: [ 'team', 'salaries'],
+            dataRows: this.salaryData
+        };
     }
 }

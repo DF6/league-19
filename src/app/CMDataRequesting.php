@@ -592,7 +592,7 @@
   function changeSalaries($con, $params)
   {
     $data = array();
-    $query="UPDATE teams SET budget=budget+". $params->amount ." where id=" . $params->id;
+    $query="UPDATE teams SET budget=budget-". $params->amount ." where id=" . $params->id;
     $resultado=mysqli_query($con, $query) or die("Error cambiando salarios");
     $data['success'] = true;
     $data['message'] = "Salarios decrementados";

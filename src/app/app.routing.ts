@@ -25,6 +25,7 @@ import { MarketComponent } from './market/market.component';
 import { PartnersComponent } from './partners/partners.component';
 import { OfferComponent } from './offer/offer.component';
 import { EuropeSupercupComponent } from './europesupercup/europesupercup.component';
+import { AdminPageComponent } from './adminpage/adminpage.component';
 
 export const AppRoutes: Routes = [
     {
@@ -127,5 +128,9 @@ export const AppRoutes: Routes = [
     {
         path: 'europesupercup',
         component: EuropeSupercupComponent
+    },
+    {
+        path: 'adminpage',
+        component: AdminPageComponent
     }
 ]

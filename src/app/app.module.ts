@@ -39,6 +39,7 @@ import { OfferFillerModule } from './offer-filler/offer-filler.module';
 import { PartnersComponent } from './partners/partners.component';
 import { OfferComponent } from './offer/offer.component';
 import { EuropeSupercupComponent } from './europesupercup/europesupercup.component';
+import { AdminPageComponent } from './adminpage/adminpage.component';
 
 @NgModule({
   declarations: [
@@ -67,7 +68,8 @@ import { EuropeSupercupComponent } from './europesupercup/europesupercup.compone
     MarketComponent,
     PartnersComponent,
     OfferComponent,
-    EuropeSupercupComponent
+    EuropeSupercupComponent,
+    AdminPageComponent
   ],
   imports: [
     BrowserModule,

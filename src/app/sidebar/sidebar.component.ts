@@ -63,6 +63,7 @@ export const ADMINROUTES: RouteInfo[] = [
     { path: 'estadisticas', title: 'Estadisticas', icon: 'ti-bar-chart', class: '' },
     { path: 'sanciones', title: 'Sanciones', icon: 'ti-wheelchair', class: '' },
     { path: 'partidospendientestotales', title: 'Partidos Pendientes', icon: 'ti-text', class: '' },
+    { path: 'adminpage', title: 'Administracion', icon: 'ti-text', class: '' },
     { path: 'jugadoreslibres', title: 'Libres', icon: 'ti-text', class: '' },
     { path: 'subastas', title: 'Subastas', icon: 'ti-text', class: '' },
     { path: 'mercado', title: 'Mercado', icon: 'ti-money', class: '' },
