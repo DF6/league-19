@@ -18,12 +18,12 @@
     $resultado=mysqli_query($link, $query) or die("Error abriendo mercado");
 
     $query2="UPDATE constants SET market_opened=0";
-    $resultado2=mysqli_query($link, $query2) or die("Error cerrando mercado");*/
+    $resultado2=mysqli_query($link, $query2) or die("Error cerrando mercado");
 
     $query3="UPDATE constants SET forced_signins_opened=0";
     $resultado3=mysqli_query($link, $query3) or die("Error cerrando clausulas");
 
-    /*$query4="UPDATE constants SET auctions_opened=0";
+    $query4="UPDATE constants SET auctions_opened=0";
     $resultado4=mysqli_query($link, $query4) or die("Error cerrando subastas");
 
     $query5="UPDATE partners SET partner=0";
