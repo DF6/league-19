@@ -169,7 +169,7 @@
                                             <a style="cursor:pointer;" (click)="giveWildCard(player.id)">Liberar</a> - <a style="cursor:pointer;" (click)="setEmblem(player.id)">Emblema</a>
                                         </div>
                                         <div class="col-xs-2 text-right" *ngIf="player.buyedThisMarket == 1 && player.cedido == 0 && !player.salaryMode">
-                                            ALTA
+                                            ALTA - <a style="cursor:pointer;" (click)="setEmblem(player.id)">Emblema</a>
                                         </div>
                                         <div class="col-xs-2 text-right" *ngIf="player.cedido != 0 && !player.salaryMode">
                                             CEDIDO

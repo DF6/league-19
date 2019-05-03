@@ -69,7 +69,9 @@ export class UserComponent{
         if(this.offersTable) { this.offersTable.dataRows = []; }
         let myOffers = [];
         this.signins.forEach( (value) => {
-            if (value.market == this.constants.marketEdition && (value.signinType == 'G' || value.signinType == 'C') && value.accepted == 0) {
+            if (value.market == this.constants.marketEdition &&
+                (value.signinType == 'G' || value.signinType == 'C') && value.accepted == 0 &&
+                value.oldTeam == this.user.teamID) {
                 value.playersOffered = [];
                 this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'PCS'}).subscribe( (response) => {
                     this.playerChangeSignins = response.json().playerChangeSignins;
