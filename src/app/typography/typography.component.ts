@@ -18,14 +18,18 @@ export class TypographyComponent{
     public user;
     public tournaments;
     public teams;
+    public constants;
     public matches = [];
 
     constructor(private http: Http) {
         this.user = JSON.parse(sessionStorage.getItem('user'));
         this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
         this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
-        this.setTableConfig();
-        this.getMatchesByTeam(this.user.teamID);
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
+            this.constants = response.json().constants[0];
+            this.setTableConfig();
+            this.getMatchesByTeam(this.user.teamID);
+        });
     }
 
     private getMatchesByTeam(team) {
@@ -51,7 +55,7 @@ export class TypographyComponent{
         });
         for (let i = 0; i < finalTableMatches.length; i++) {
             if ((this.getTournamentById(finalTableMatches[i].tournament).name == 'Primera' ||
-               this.getTournamentById(finalTableMatches[i].tournament).name == 'Segunda') && finalTableMatches[i].round > 18) {
+               this.getTournamentById(finalTableMatches[i].tournament).name == 'Segunda') && finalTableMatches[i].round > this.constants.intervalActual) {
                  finalTableMatches.splice(i, 1);
                  i--;
             }
