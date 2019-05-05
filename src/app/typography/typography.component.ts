@@ -55,7 +55,7 @@ export class TypographyComponent{
         });
         for (let i = 0; i < finalTableMatches.length; i++) {
             if ((this.getTournamentById(finalTableMatches[i].tournament).name == 'Primera' ||
-               this.getTournamentById(finalTableMatches[i].tournament).name == 'Segunda') && finalTableMatches[i].round > this.constants.intervalActual) {
+               this.getTournamentById(finalTableMatches[i].tournament).name == 'Segunda') && finalTableMatches[i].round > parseInt(this.constants.intervalActual)) {
                  finalTableMatches.splice(i, 1);
                  i--;
             }
