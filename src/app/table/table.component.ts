@@ -26,6 +26,7 @@ export class TableComponent implements OnInit{
     public season;
     public matches;
     public playoffMatches;
+    public visibleLegend = false;
 
     constructor(private http: Http){}
 

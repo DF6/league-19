@@ -26,6 +26,7 @@ export class NationsComponent implements OnInit{
     public standingsArray;
     public season;
     public matches;
+    public visibleLegend = false;
 
     constructor(private http: Http){}
 
@@ -54,7 +55,8 @@ export class NationsComponent implements OnInit{
                         case 35:
                             groupAStandings.push([
                                 0,
-                                this.getTeamById(parseInt(this.standingsArray[i].team)).nation,
+                                this.getTeamById(parseInt(this.standingsArray[i].team)).nation + ' (' + 
+                                this.getTeamById(parseInt(this.standingsArray[i].team)).shortName + ')',
                                 parseInt(this.standingsArray[i].round),
                                 parseInt(this.standingsArray[i].won),
                                 parseInt(this.standingsArray[i].draw),
@@ -71,7 +73,8 @@ export class NationsComponent implements OnInit{
                         case 39:
                             groupBStandings.push([
                                 0,
-                                this.getTeamById(parseInt(this.standingsArray[i].team)).nation,
+                                this.getTeamById(parseInt(this.standingsArray[i].team)).nation + ' (' + 
+                                this.getTeamById(parseInt(this.standingsArray[i].team)).shortName + ')',
                                 parseInt(this.standingsArray[i].round),
                                 parseInt(this.standingsArray[i].won),
                                 parseInt(this.standingsArray[i].draw),
@@ -88,7 +91,8 @@ export class NationsComponent implements OnInit{
                         case 43:
                             groupCStandings.push([
                                 0,
-                                this.getTeamById(parseInt(this.standingsArray[i].team)).nation,
+                                this.getTeamById(parseInt(this.standingsArray[i].team)).nation + ' (' + 
+                                this.getTeamById(parseInt(this.standingsArray[i].team)).shortName + ')',
                                 parseInt(this.standingsArray[i].round),
                                 parseInt(this.standingsArray[i].won),
                                 parseInt(this.standingsArray[i].draw),
@@ -105,7 +109,8 @@ export class NationsComponent implements OnInit{
                         case 47:
                             groupDStandings.push([
                                 0,
-                                this.getTeamById(parseInt(this.standingsArray[i].team)).nation,
+                                this.getTeamById(parseInt(this.standingsArray[i].team)).nation + ' (' + 
+                                this.getTeamById(parseInt(this.standingsArray[i].team)).shortName + ')',
                                 parseInt(this.standingsArray[i].round),
                                 parseInt(this.standingsArray[i].won),
                                 parseInt(this.standingsArray[i].draw),

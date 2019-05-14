@@ -27,6 +27,7 @@ export class ChampionsComponent implements OnInit{
     public season;
     public matches;
     public KOMatches;
+    public visibleLegend = false;
 
     constructor(private http: Http){}
 

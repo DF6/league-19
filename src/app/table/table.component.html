@@ -4,7 +4,7 @@
             <div class="card">
                 <div class="header">
                     <h4 class="title">Primera División</h4>
-                    <p class="category">Temporada {{season}}</p>
+                    <p class="category">Edición {{season}}</p>
                 </div>
                 <div *ngIf="tableData1.dataRows.length !=0" class="content table-responsive table-full-width">
                     <table class="table table-hover">
@@ -28,7 +28,9 @@
                             </tr>
                         </tbody>
                     </table>
-
+                    <a style="cursor:pointer;margin-left: 15px;" *ngIf="!visibleLegend" (click)="visibleLegend = true">Ver Leyenda</a>
+                    <a style="cursor:pointer;margin-left: 15px;" *ngIf="visibleLegend" (click)="visibleLegend = false">Esconder Leyenda</a>
+                    <span *ngIf="visibleLegend" style="margin-left: 15px;">POS = Posición  PJ - Partidos Jugados  G - Ganados  E - Empatados  P - Perdidos  GF - Goles a Favor  GC - Goles en Contra  DG - Diferencia de goles  PTS - Puntos</span>
                 </div>
                 <div *ngIf="tableData1.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
                     Clasificación no disponible
@@ -91,7 +93,7 @@
             <div class="card">
                 <div class="header">
                     <h4 class="title">Segunda División</h4>
-                    <p class="category">Temporada {{season}}</p>
+                    <p class="category">Edición {{season}}</p>
                 </div>
                 <div *ngIf="tableData2.dataRows.length != 0" class="content table-responsive table-full-width">
                     <table class="table table-hover">
@@ -115,6 +117,9 @@
                             </tr>
                         </tbody>
                     </table>
+                    <a style="cursor:pointer;margin-left: 15px;" *ngIf="!visibleLegend" (click)="visibleLegend = true">Ver Leyenda</a>
+                    <a style="cursor:pointer;margin-left: 15px;" *ngIf="visibleLegend" (click)="visibleLegend = false">Esconder Leyenda</a>
+                    <span *ngIf="visibleLegend" style="margin-left: 15px;">POS = Posición  PJ - Partidos Jugados  G - Ganados  E - Empatados  P - Perdidos  GF - Goles a Favor  GC - Goles en Contra  DG - Diferencia de goles  PTS - Puntos</span>
                 </div>
                 <div *ngIf="tableData2.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
                     Clasificación no disponible
@@ -126,7 +131,7 @@
                 <div class="card">
                     <div class="header">
                         <h4 class="title">Partidos</h4>
-                        <p class="category">Primera División - Temporada {{season}}</p>
+                        <p class="category">Primera División - Edición {{season}}</p>
                     </div>
                     <div *ngIf="tableData3.dataRows.length != 0" class="content table-responsive table-full-width">
                         <table class="table table-hover">
@@ -160,7 +165,7 @@
                 <div class="card">
                     <div class="header">
                         <h4 class="title">Partidos</h4>
-                        <p class="category">Segunda División - Temporada {{season}}</p>
+                        <p class="category">Segunda División - Edición {{season}}</p>
                     </div>
                     <div *ngIf="tableData4.dataRows.length != 0" class="content table-responsive table-full-width">
                         <table class="table table-hover">
