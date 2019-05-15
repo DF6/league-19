@@ -36,7 +36,7 @@ export class StatisticsComponent implements OnInit{
         this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
         let finalTournaments = [];
         this.tournaments.forEach( (value) => {
-            if(value.edition == this.getLastEdition(value.name)) {
+            if(value.edition == this.getLastEdition(value.name) && value.name != 'Nations League') {
                 finalTournaments.push(value);
             }
         });

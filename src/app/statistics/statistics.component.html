@@ -3,8 +3,8 @@
         <option *ngFor="let tournament of tournaments" 
         [ngValue]="tournament">{{tournament.name}} edición {{tournament.edition}}</option>
     </select>
-    <div class="row">
-        <div class="col-md-6">
+    <div style="margin-top: 20px;" class="row">
+        <div class="col-md-6" *ngIf="scorers.dataRows">
             <div class="card">
                 <div class="header">
                     <h4 class="title">{{actualTournament.name}} - Goleadores</h4>
@@ -36,7 +36,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-6">
+        <div class="col-md-6" *ngIf="assistants.dataRows">
             <div class="card">
                 <div class="header">
                     <h4 class="title">{{actualTournament.name}} - Asistentes</h4>
@@ -70,7 +70,7 @@
         </div>
     </div>
     <div class="row">
-            <div class="col-md-6">
+            <div class="col-md-6" *ngIf="yellowCards.dataRows">
                 <div class="card">
                     <div class="header">
                         <h4 class="title">{{actualTournament.name}} - Tarjetas Amarillas</h4>
@@ -102,7 +102,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6" *ngIf="redCards.dataRows">
                 <div class="card">
                     <div class="header">
                         <h4 class="title">{{actualTournament.name}} - Tarjetas Rojas</h4>
@@ -136,7 +136,7 @@
             </div>
         </div>
         <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6" *ngIf="injuries.dataRows">
                     <div class="card">
                         <div class="header">
                             <h4 class="title">{{actualTournament.name}} - Lesiones</h4>
@@ -168,7 +168,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-6" *ngIf="mvp.dataRows">
                     <div class="card">
                         <div class="header">
                             <h4 class="title">{{actualTournament.name}} - MVPs</h4>
