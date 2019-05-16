@@ -40,6 +40,7 @@ import { PartnersComponent } from './partners/partners.component';
 import { OfferComponent } from './offer/offer.component';
 import { EuropeSupercupComponent } from './europesupercup/europesupercup.component';
 import { AdminPageComponent } from './adminpage/adminpage.component';
+import { AppService } from './app.service';
 
 @NgModule({
   declarations: [
@@ -85,7 +86,7 @@ import { AdminPageComponent } from './adminpage/adminpage.component';
     NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=YOUR_KEY_HERE'})
 
   ],
-  providers: [],
+  providers: [AppService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

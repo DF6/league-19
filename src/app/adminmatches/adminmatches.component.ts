@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Http } from '@angular/http';
+import { AppService } from 'app/app.service';
 
 declare interface TableData {
     headerRow: string[];
@@ -20,10 +21,11 @@ export class AdminMatchesComponent{
     public teams;
     public matches = [];
 
-    constructor(private http: Http) {
+    constructor(private http: Http, private appService: AppService) {
         this.user = JSON.parse(sessionStorage.getItem('user'));
         this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
         this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
+        this.appService.setData({ user: this.user, tournaments: this.tournaments, teams: this.teams});
         this.setTableConfig();
         this.getMatches();
     }
@@ -48,8 +50,8 @@ export class AdminMatchesComponent{
             }
         });
         for (let i = 0; i < finalTableMatches.length; i++) {
-            if ((this.getTournamentById(finalTableMatches[i].tournament).name == 'Primera' ||
-               this.getTournamentById(finalTableMatches[i].tournament).name == 'Segunda') && finalTableMatches[i].round > 14) {
+            if ((this.appService.getTournamentById(finalTableMatches[i].tournament).name == 'Primera' ||
+               this.appService.getTournamentById(finalTableMatches[i].tournament).name == 'Segunda') && finalTableMatches[i].round > 14) {
                  finalTableMatches.splice(i, 1);
                  i--;
             }
@@ -65,29 +67,8 @@ export class AdminMatchesComponent{
         };
     }
 
-    public getTournamentById(id):any {
-        let tournament = {};
-        id = parseInt(id);
-        this.tournaments.forEach( (value) => {
-            if (value.id == id) {
-                tournament = value;
-            }
-        });
-        return tournament;
-    }
-
-    public getTeamById(team) {
-        let teamToReturn = null;
-        this.teams.forEach( (value) => {
-            if (value.id == team) {
-                teamToReturn = value;
-            }
-        });
-        return teamToReturn;
-    }
-
     public getRoundName(match) {
-        switch (this.getTournamentById(match.tournament).name) {
+        switch (this.appService.getTournamentById(match.tournament).name) {
             case 'Copa':
                 if (match.round < 3) { return 'Octavos de Final'; }
                 else if (match.round >= 3 && match.round < 5) { return 'Cuartos de Final'; }
