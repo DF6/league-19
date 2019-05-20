@@ -16,87 +16,35 @@ declare interface TableData {
 export class AdminMatchesComponent{
 
     public tableData1: TableData;
-    public user;
     public tournaments;
     public teams;
     public matches = [];
 
     constructor(private http: Http, private appService: AppService) {
-        this.user = JSON.parse(sessionStorage.getItem('user'));
-        this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
-        this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
-        this.appService.setData({ user: this.user, tournaments: this.tournaments, teams: this.teams});
-        this.setTableConfig();
-        this.getMatches();
-    }
-
-    private getMatches() {
-        this.matches = [];
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
-            let matchesArray = response.json().matches;
-            matchesArray.forEach( (value, key) => {
-                this.matches.push(value);
-            });
+        this.appService.setUser(JSON.parse(sessionStorage.getItem('user')));
+        const tableFields = [ 'tournament', 'round', 'local', '', 'away' ];
+        this.tableData1 = this.appService.getTableConfig(tableFields);
+        this.appService.getMatches().subscribe( (response) => {
+            this.matches = response;
             this.setUndisputedMatches();
         });
     }
 
     private setUndisputedMatches() {
         let finalTableMatches = [];
-        this.matches.forEach( (value, key) => {
+        this.matches.forEach( (value) => {
             if (value.localGoals == "-1" && value.awayGoals == "-1") {
                 value.filling = false;
                 finalTableMatches.push(value);
             }
         });
         for (let i = 0; i < finalTableMatches.length; i++) {
-            if ((this.appService.getTournamentById(finalTableMatches[i].tournament).name == 'Primera' ||
-               this.appService.getTournamentById(finalTableMatches[i].tournament).name == 'Segunda') && finalTableMatches[i].round > 14) {
+            if (this.appService.isThisInterval(finalTableMatches[i].tournament, finalTableMatches[i].round)) {
                  finalTableMatches.splice(i, 1);
                  i--;
             }
         }
         this.matches = finalTableMatches;
         this.tableData1.dataRows = this.matches;
-    }
-
-    private setTableConfig() {
-        this.tableData1 = {
-            headerRow: [ 'tournament', 'round', 'local', '', 'away'],
-            dataRows: []
-        };
-    }
-
-    public getRoundName(match) {
-        switch (this.appService.getTournamentById(match.tournament).name) {
-            case 'Copa':
-                if (match.round < 3) { return 'Octavos de Final'; }
-                else if (match.round >= 3 && match.round < 5) { return 'Cuartos de Final'; }
-                else if (match.round >= 5 && match.round < 7) { return 'Semifinales'; }
-                else if (match.round == 9) { return 'Tercer y Cuarto Puesto'; }
-                else if (match.round == 8) { return 'Final'; }
-                break;
-            case 'Champions League':
-                if (match.round < 7) { return 'Fase de Grupos'; }
-                else if (match.round >= 7 && match.round < 9) { return 'Cuartos de Final'; }
-                else if (match.round >= 9 && match.round < 11) { return 'Semifinales'; }
-                else if (match.round == 12) { return 'Tercer y Cuarto Puesto'; }
-                else if (match.round == 11) { return 'Final'; }
-                break;
-            case 'Europa League':
-                if (match.round < 3) { return 'Cuartos de Final'; }
-                else if (match.round >= 3 && match.round < 5) { return 'Semifinales'; }
-                else if (match.round == 6) { return 'Tercer y Cuarto Puesto'; }
-                else if (match.round == 5) { return 'Final'; }
-                break;
-            case 'Intertoto':
-                if (match.round < 3) { return 'Semifinales'; }
-                else if (match.round == 4) { return 'Tercer y Cuarto Puesto'; }
-                else if (match.round == 3) { return 'Final'; }
-                break;
-            case 'Supercopa de Clubes':
-            case 'Supercopa Europea': 
-                if (match.round == 1) { return 'Final'; } break;
-        }
     }
 }

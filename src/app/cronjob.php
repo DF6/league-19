@@ -13,6 +13,9 @@
 
 	$link=mysqli_connect($db_host, $db_user, $db_pass) or die ("Error conectando a la base de datos - " . mysql_error());
     mysqli_select_db($link, $db_name) or die("Error seleccionando la base de datos.");
+
+    $query="UPDATE constants SET market_opened=1, auctions_opened=1";
+    $resultado=mysqli_query($link, $query) or die("Error abriendo mercado");
     
     /*$query="UPDATE constants SET market_opened=1, forced_signins_opened=1, auctions_opened=1";
     $resultado=mysqli_query($link, $query) or die("Error abriendo mercado");

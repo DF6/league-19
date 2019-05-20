@@ -22,9 +22,9 @@ export const ROUTES: RouteInfo[] = [
     { path: 'estadisticas', title: 'Estadisticas', icon: 'ti-bar-chart', class: '' },
     { path: 'sanciones', title: 'Sanciones', icon: 'ti-wheelchair', class: '' },
     { path: 'partidospendientes', title: 'Partidos Pendientes', icon:'ti-text', class: '' },
-    // { path: 'jugadoreslibres', title: 'Libres', icon: 'ti-text', class: '' },
-    // { path: 'subastas', title: 'Subastas', icon: 'ti-text', class: '' },
-    // { path: 'mercado', title: 'Mercado', icon: 'ti-money', class: '' },
+    { path: 'jugadoreslibres', title: 'Libres', icon: 'ti-text', class: '' },
+    { path: 'subastas', title: 'Subastas', icon: 'ti-text', class: '' },
+    { path: 'mercado', title: 'Mercado', icon: 'ti-money', class: '' },
     // { path: 'patrocinadores', title: 'Patrocinadores', icon: 'ti-money', class: '' },
     { path: 'usuario', title: 'Perfil', icon: 'ti-user', class: '' },
     { path: 'plantillas', title: 'Plantillas', icon: 'ti-pencil-alt2', class: '' },
@@ -112,7 +112,7 @@ export class SidebarComponent implements OnInit {
           });
     }
     isNotMobileMenu(){
-        if($(window).width() > 991){
+        if($(window).width() > 479){
             return false;
         }
         return true;
