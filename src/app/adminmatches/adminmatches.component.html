@@ -19,8 +19,8 @@
                         <tbody>
                             <tr *ngFor="let row of tableData1.dataRows">
                                 <td>{{appService.getTournamentById(row.tournament).name}}</td>
-                                <td *ngIf="appService.getRoundRobinTournaments().indexOf(appService.getTournamentById(row.tournament).name) != -1">{{row.round}}</td>
-                                <td *ngIf="appService.getRoundRobinTournaments().indexOf(appService.getTournamentById(row.tournament).name) == -1">{{appService.getRoundName(row)}}</td>
+                                <td *ngIf="appService.config.roundRobinTournaments.indexOf(appService.getTournamentById(row.tournament).name) != -1">{{row.round}}</td>
+                                <td *ngIf="appService.config.roundRobinTournaments.indexOf(appService.getTournamentById(row.tournament).name) == -1">{{appService.getRoundName(row)}}</td>
                                 <td *ngIf="appService.getTournamentById(row.tournament).name != 'Nations League'">{{appService.getTeamById(row.local).name}}</td>
                                 <td *ngIf="appService.getTournamentById(row.tournament).name == 'Nations League'">{{appService.getTeamById(row.local).nation}}</td>
                                 <td>-</td>

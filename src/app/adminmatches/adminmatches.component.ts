@@ -1,11 +1,6 @@
 import { Component } from '@angular/core';
 import { Http } from '@angular/http';
-import { AppService } from 'app/app.service';
-
-declare interface TableData {
-    headerRow: string[];
-    dataRows: string[][];
-}
+import { AppService, TableData } from 'app/app.service';
 
 @Component({
     selector: 'adminmatches-cmp',
@@ -20,19 +15,21 @@ export class AdminMatchesComponent{
     public teams;
     public matches = [];
 
-    constructor(private http: Http, private appService: AppService) {
+    constructor(private appService: AppService) {
         this.appService.setUser(JSON.parse(sessionStorage.getItem('user')));
-        const tableFields = [ 'tournament', 'round', 'local', '', 'away' ];
-        this.tableData1 = this.appService.getTableConfig(tableFields);
+        this.tableData1 = this.appService.getTableConfig(this.appService.config.tableHeaders.adminmatches);
+        this.appService.getConstants();
+        this.appService.getTournaments();
+        this.appService.getTeams();
         this.appService.getMatches().subscribe( (response) => {
-            this.matches = response;
+            this.appService.setMatches(response.json().matches);
             this.setUndisputedMatches();
         });
     }
 
     private setUndisputedMatches() {
         let finalTableMatches = [];
-        this.matches.forEach( (value) => {
+        this.appService.data.matches.forEach( (value) => {
             if (value.localGoals == "-1" && value.awayGoals == "-1") {
                 value.filling = false;
                 finalTableMatches.push(value);
@@ -44,7 +41,6 @@ export class AdminMatchesComponent{
                  i--;
             }
         }
-        this.matches = finalTableMatches;
-        this.tableData1.dataRows = this.matches;
+        this.tableData1.dataRows = finalTableMatches;
     }
 }

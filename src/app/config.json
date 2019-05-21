@@ -1,4 +1,7 @@
 {
     "roundRobinTournaments": [ "Primera", "Segunda", "Nations League"],
-    "leagues": [ "Primera", "Segunda" ]
+    "leagues": [ "Primera", "Segunda" ],
+    "tableHeaders": {
+        "adminMatches": [ "tournament", "round", "local", "", "away" ]
+    }
 }

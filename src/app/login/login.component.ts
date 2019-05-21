@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { Http } from '@angular/http';
 import { SideBarService } from '../sidebar/sidebar.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { AppService } from 'app/app.service';
 
 @Component({
     selector: 'login-cmp',
@@ -16,17 +17,14 @@ export class LoginComponent{
     public pass;
     public disableInputs = false;
 
-    constructor(private http: Http, private sidebarService: SideBarService, private router: Router) {
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'U'}).subscribe( (response) => {
-            this.users = response.json() ? response.json().users : null;
-            sessionStorage.setItem('users', JSON.stringify({users: this.users}));
-          });
+    constructor(private http: Http, private sidebarService: SideBarService, private router: Router, private appService: AppService) {
+        this.appService.getUsers();
     }
 
     public login() {
         this.http.post('./CMDataRequesting.php', {type: 'login', user: this.user, pass: this.pass}).subscribe( (response) => {
             if (response.json().success) {
-                this.users.forEach( (value) => {
+                this.appService.data.users.forEach( (value) => {
                     if (value.user.toLowerCase() == this.user.toLowerCase()) {
                         sessionStorage.setItem('user', JSON.stringify({
                             id: value.id,

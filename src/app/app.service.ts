@@ -1,6 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Subject } from 'rxjs/Subject';
+import { Observable } from 'rxjs/Observable';
+
+export interface TableData {
+    headerRow: string[];
+    dataRows: string[][];
+}
 
 @Injectable()
 
@@ -8,15 +14,17 @@ export class AppService {
 
     public data = {
         user: undefined,
+        users: undefined,
         teams: undefined,
-        tournaments: undefined
+        tournaments: undefined,
+        constants: undefined,
+        matches: undefined
     };
     public config;
-    private subject = new Subject<any>();
 
     constructor(private http: Http) {
         this.http.post('config.json', null).subscribe( (response) => {
-            this.config = response;
+            this.config = response.json();
         });
     }
 
@@ -24,35 +32,27 @@ export class AppService {
         this.data.user = user;
     }
 
+    public setMatches(matches) {
+        this.data.matches = matches;
+    }
+
     public getConstants(): any {
         this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
-            let constants = response.json() ? response.json().constants[0]: {};
-            this.subject.asObservable();
-            this.subject.next({constants: constants});
-        }, () => {
-            return null;
+            this.data.constants = response.json() ? response.json().constants[0] : {};
         });
     }
 
-    public getUsers(): any {
-        return this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'U'}).subscribe( (response) => {
-            const users = response.json() ? response.json().users : [];
-            return users;
-        }, () => {
-            return [];
+    public getUsers() {
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'U'}).subscribe( (response) => {
+            this.data.users = response.json() ? response.json().users : [];
         });
     }
 
-    public getMatches(): any {
-        return this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
-            const matches = response.json() ? response.json().matches : [];
-            return matches;
-        }, () => {
-            return [];
-        });
+    public getMatches(): Observable<any> {
+        return this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'});
     }
 
-    public getTeamById(team) {
+    public getTeams() {
         this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'T'}).subscribe( (response) => {
             this.data.teams = response.json() ? response.json().teams : [];
             this.data.teams.forEach( (value) => {
@@ -60,36 +60,34 @@ export class AppService {
                   value.nation = value.nation.replace('/n', 'ñ');
                 }
             });
-            let teamToReturn = null;
-            this.data.teams.forEach( (value) => {
-                if (value.id == team) {
-                    teamToReturn = value;
-                }
-            });
-            return teamToReturn;
-        }, () => {
-            return null;
         });
+    }
+
+    public getTournaments() {
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'TO'}).subscribe( (response) => {
+            this.data.tournaments = response.json() ? response.json().tournaments : [];
+        });
+    }
+
+    public getTeamById(team) {
+        let teamToReturn = null;
+        this.data.teams.forEach( (value) => {
+            if (value.id == team) {
+                teamToReturn = value;
+            }
+        });
+        return teamToReturn;
     }
 
     public getTournamentById(id): any { 
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'TO'}).subscribe( (response) => {
-            this.data.tournaments = response.json() ? response.json().tournaments: [];
-            let tournament = {};
-            id = parseInt(id);
-            this.data.tournaments.forEach( (value) => {
-                if (value.id == id) {
-                    tournament = value;
-                }
-            });
-            return tournament;
-        }, () => {
-            return null;
+        let tournament = {};
+        id = parseInt(id);
+        this.data.tournaments.forEach( (value) => {
+            if (value.id == id) {
+                tournament = value;
+            }
         });
-    }
-
-    public getRoundRobinTournaments() {
-        return this.config.roundRobinTournaments;
+        return tournament;
     }
 
     public getTableConfig(tableFields, rows?) {
@@ -138,8 +136,8 @@ export class AppService {
             if(value == this.getTournamentById(tournament).name) {
                 ret = true;
             }
-        }); 
-        if(ret && round <= this.getConstants().intervalActual) {
+        });
+        if(!ret || round > this.data.constants.intervalActual) {
             ret = false;
         }
         return ret;
