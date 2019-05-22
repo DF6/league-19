@@ -16,12 +16,11 @@ export class AdminMatchesComponent{
     public matches = [];
 
     constructor(private appService: AppService) {
-        this.appService.setUser(JSON.parse(sessionStorage.getItem('user')));
         this.tableData1 = this.appService.getTableConfig(this.appService.config.tableHeaders.adminmatches);
         this.appService.getConstants();
         this.appService.getTournaments();
         this.appService.getTeams();
-        this.appService.getMatches().subscribe( (response) => {
+        this.appService.getMatchesObservable().subscribe( (response) => {
             this.appService.setMatches(response.json().matches);
             this.setUndisputedMatches();
         });

@@ -1,7 +1,39 @@
 {
+    "auctionDefaultOverage": 40,
+    "auctionInitialAmounts": [
+        {
+            "min": 0,
+            "max": 71,
+            "amount": 2
+        },
+        {
+            "min": 71,
+            "max": 76,
+            "amount": 3
+        },
+        {
+            "min": 76,
+            "max": 81,
+            "amount": 5
+        },
+        {
+            "min": 81,
+            "max": 86,
+            "amount": 10
+        },
+        {
+            "min": 86,
+            "max": 100,
+            "amount": 15
+        }
+    ],
     "roundRobinTournaments": [ "Primera", "Segunda", "Nations League"],
     "leagues": [ "Primera", "Segunda" ],
+    "signinTypes": {
+        "auction": "A"
+    },
     "tableHeaders": {
-        "adminMatches": [ "tournament", "round", "local", "", "away" ]
+        "adminMatches": [ "tournament", "round", "local", "", "away" ],
+        "auctions": [ "name", "position", "overage", "team", "amount", "state", "time", "raise"]
     }
 }

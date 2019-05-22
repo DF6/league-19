@@ -1,13 +1,14 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <div class="card" *ngIf="tableData1">
+            <div class="card" *ngIf="tableData1.dataRows">
                 <div class="header">
                     <h4 class="title">Subastas</h4>
                     <p class="category">Total - {{tableData1.dataRows.length}}</p>
                     <span *ngIf="!new"
                         style="float:right;font-weight: bold; padding: 8px;border: 2pt solid black; background-color: #ccc; border-radius: 5px;" 
-                        (click)="new = true">Nueva</span>
+                        (click)="new = true">Nueva
+                    </span>
                 </div>
                 <div *ngIf="tableData1.dataRows.length !=0" class="content table-responsive table-full-width">
                     <table class="table table-hover">
@@ -38,7 +39,7 @@
                                 <td>{{row.position}}</td>
                                 <td>{{row.overage}}</td>
                                 <td>{{row.amount}}M€</td>
-                                <td>{{getTeamById(row.team).name}}</td>
+                                <td>{{appService.getTeamById(row.team).name}}</td>
                                 <td *ngIf="row.state == 0" style="color: green;font-weight: bold;">ABIERTA</td>
                                 <td *ngIf="row.state == 1" style="color: red;font-weight: bold;">CERRADA</td>
                                 <td *ngIf="row.state == 0">{{row.time}}</td>
@@ -48,12 +49,11 @@
                             </tr>
                         </tbody>
                     </table>
-
                 </div>
                 <div *ngIf="tableData1.dataRows.length == 0 && !new" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
                     Lista no disponible
                 </div>
-                <div *ngIf="tableData1.dataRows.length ==0 && new" class="content table-responsive table-full-width">
+                <div *ngIf="tableData1.dataRows.length == 0 && new" class="content table-responsive table-full-width">
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -79,10 +79,8 @@
                             </tr>
                         </tbody>
                     </table>
-
                 </div>
             </div>
         </div>
-
     </div>
 </div>

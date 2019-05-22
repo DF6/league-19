@@ -13,32 +13,68 @@ export interface TableData {
 export class AppService {
 
     public data = {
-        user: undefined,
-        users: undefined,
+        constants: undefined,
+        matches: undefined,
+        players: undefined,
+        signins: undefined,
         teams: undefined,
         tournaments: undefined,
-        constants: undefined,
-        matches: undefined
+        user: undefined,
+        users: undefined
     };
     public config;
 
     constructor(private http: Http) {
+        if(sessionStorage.getItem('user') != null) {
+            this.setUser(sessionStorage.getItem('user'));
+        }
         this.http.post('config.json', null).subscribe( (response) => {
             this.config = response.json();
         });
-    }
-
-    public setUser(user) {
-        this.data.user = user;
     }
 
     public setMatches(matches) {
         this.data.matches = matches;
     }
 
+    public setUser(user) {
+        this.data.user = user;
+    }
+
     public getConstants(): any {
         this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
             this.data.constants = response.json() ? response.json().constants[0] : {};
+        });
+    }
+
+    public getMatchesObservable(): Observable<any> {
+        return this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'});
+    }
+
+    public getPlayers() {
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
+            this.data.players = response.json() ? response.json().players : [];
+        });
+    }
+
+    public getSignins() {
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
+            this.data.signins = response.json() ? response.json().signins: [];
+        });
+    }
+
+    public getTeams() {
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'T'}).subscribe( (response) => {
+            this.data.teams = response.json() ? response.json().teams : [];
+            this.data.teams.forEach( (value) => {
+                value.nation = this.convertNToÑ(value.nation);
+            });
+        });
+    }
+
+    public getTournaments() {
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'TO'}).subscribe( (response) => {
+            this.data.tournaments = response.json() ? response.json().tournaments : [];
         });
     }
 
@@ -48,25 +84,14 @@ export class AppService {
         });
     }
 
-    public getMatches(): Observable<any> {
-        return this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'});
-    }
-
-    public getTeams() {
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'T'}).subscribe( (response) => {
-            this.data.teams = response.json() ? response.json().teams : [];
-            this.data.teams.forEach( (value) => {
-                while (value.nation.indexOf('/n') != -1) {
-                  value.nation = value.nation.replace('/n', 'ñ');
-                }
-            });
+    public getPlayerById(player) {
+        let playerToReturn = null;
+        this.data.players.forEach( (value) => {
+            if (value.id == player) {
+                playerToReturn = value;
+            }
         });
-    }
-
-    public getTournaments() {
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'TO'}).subscribe( (response) => {
-            this.data.tournaments = response.json() ? response.json().tournaments : [];
-        });
+        return playerToReturn;
     }
 
     public getTeamById(team) {
@@ -143,5 +168,33 @@ export class AppService {
             ret = true
         }
         return ret;
+    }
+
+    public removeAccents(name) {
+        let chars = {
+            "á":"a", "é":"e", "í":"i", "ó":"o", "ú":"u",
+            "à":"a", "è":"e", "ì":"i", "ò":"o", "ù":"u", "ñ":"/n",
+            "ä":"a", "ë":"e", "ï":"i", "ö":"o", "ü":"u",
+            "Á":"A", "É":"E", "Í":"I", "Ó":"O", "Ú":"U",
+            "À":"A", "È":"E", "Ì":"I", "Ò":"O", "Ù":"U", "Ñ":"/n",
+            "Ä":"A", "Ë":"E", "Ï":"I", "Ö":"O", "Ü":"U"}
+        let expr=/[áàéèíìóòúùäëïöüñ]/ig;
+        let res=name.replace(expr,function(e){return chars[e]});
+        return res;
+    }
+
+    public convertNToÑ(name) {
+        while (name.indexOf('/n') != -1) {
+          name = name.replace('/n', 'ñ');
+        }
+        while (name.indexOf('/N') != -1) {
+          name = name.replace('/N', 'Ñ');
+        }
+        return name;
+    }
+    
+    public addZero(number) {
+        if(number<10){number="0"+number;}
+        return number;
     }
 }
