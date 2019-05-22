@@ -137,8 +137,10 @@ export class AppService {
                 ret = true;
             }
         });
-        if(!ret || round > this.data.constants.intervalActual) {
+        if(ret && parseInt(round) > parseInt(this.data.constants.intervalActual)) {
             ret = false;
+        } else if (!ret) {
+            ret = true
         }
         return ret;
     }

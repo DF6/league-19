@@ -36,7 +36,7 @@ export class AdminMatchesComponent{
             }
         });
         for (let i = 0; i < finalTableMatches.length; i++) {
-            if (this.appService.isThisInterval(finalTableMatches[i].tournament, finalTableMatches[i].round)) {
+            if (!this.appService.isThisInterval(finalTableMatches[i].tournament, finalTableMatches[i].round)) {
                  finalTableMatches.splice(i, 1);
                  i--;
             }
