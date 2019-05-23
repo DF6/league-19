@@ -27,6 +27,7 @@
             "amount": 15
         }
     ],
+    "auctionsRaisingStep": 1,
     "roundRobinTournaments": [ "Primera", "Segunda", "Nations League"],
     "leagues": [ "Primera", "Segunda" ],
     "signinTypes": {

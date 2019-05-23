@@ -26,7 +26,7 @@ export class AppService {
 
     constructor(private http: Http) {
         if(sessionStorage.getItem('user') != null) {
-            this.setUser(sessionStorage.getItem('user'));
+            this.setUser(JSON.parse(sessionStorage.getItem('user')));
         }
         this.http.post('config.json', null).subscribe( (response) => {
             this.config = response.json();
@@ -35,6 +35,10 @@ export class AppService {
 
     public setMatches(matches) {
         this.data.matches = matches;
+    }
+
+    public setSignins(signins) {
+        this.data.signins = signins;
     }
 
     public setUser(user) {
@@ -61,6 +65,10 @@ export class AppService {
         this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
             this.data.signins = response.json() ? response.json().signins: [];
         });
+    }
+
+    public getSigninsObservable(): Observable<any> {
+        return this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'S'});
     }
 
     public getTeams() {

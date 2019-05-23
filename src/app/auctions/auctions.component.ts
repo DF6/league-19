@@ -10,7 +10,7 @@ declare var $:any;
     templateUrl: 'auctions.component.html'
 })
 
-export class AuctionsComponent implements OnInit{
+export class AuctionsComponent {
     public tableData1: TableData;
     public players;
     public signins;
@@ -27,15 +27,14 @@ export class AuctionsComponent implements OnInit{
     };
 
     constructor(private http: Http, private appService: AppService) {
+        this.tableData1 = this.appService.getTableConfig(this.appService.config.tableHeaders.auctions);
         this.appService.getConstants();
         this.appService.getTeams();
-        this.appService.getSignins();
         this.appService.getPlayers();
-    }
-
-    ngOnInit() {
-        this.appService.getTableConfig(this.appService.config.tableHeaders.auctions);
-        this.setTable();
+        this.appService.getSigninsObservable().subscribe( (response) => {
+            this.appService.setSignins(response.json().signins);
+            this.setTable();
+        });
     }
 
     public setTable() {
@@ -102,7 +101,7 @@ export class AuctionsComponent implements OnInit{
         if(!this.newPlayer.overage || this.newPlayer.overage == null || this.newPlayer.overage == undefined) {
             this.newPlayer.amount = 0;
         } else {
-            this.appService.config.auctionsInitialAmounts.forEach( (value) => {
+            this.appService.config.auctionInitialAmounts.forEach( (value) => {
                 if(this.newPlayer.overage >= value.min && this.newPlayer.overage < value.max) {
                     this.newPlayer.amount = value.amount;
                 }
