@@ -765,7 +765,8 @@
         $twitch=utf8_decode($row['twitch']);
         $name=utf8_decode($row['complete_name']);
         $psnID=utf8_decode($row['psn_id']);
-        $users[] = array('id'=> $id, 'teamID'=> $teamID, 'user'=> $user, 'email'=> $email, 'name'=> $name, 'twitch'=> $twitch, 'psnID'=> $psnID);
+        $adminRights=$row['admin_rights'];
+        $users[] = array('id'=> $id, 'teamID'=> $teamID, 'user'=> $user, 'email'=> $email, 'name'=> $name, 'twitch'=> $twitch, 'psnID'=> $psnID, 'adminRights'=> $adminRights);
     }
     $data['users']=$users;
     $data['success'] = true;

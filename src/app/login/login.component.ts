@@ -33,7 +33,8 @@ export class LoginComponent{
                             email: value.email,
                             name: value.name,
                             psnID: value.psnID,
-                            twitch: value.twitch
+                            twitch: value.twitch,
+                            adminRights: value.adminRights
                         }));
                         this.sidebarService.logChange();
                         alert(response.json().message);

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { Subject } from 'rxjs/Subject';
 import { Observable } from 'rxjs/Observable';
+import { Router } from '@angular/router';
 
 export interface TableData {
     headerRow: string[];
@@ -24,13 +24,25 @@ export class AppService {
     };
     public config;
 
-    constructor(private http: Http) {
-        if(sessionStorage.getItem('user') != null) {
-            this.setUser(JSON.parse(sessionStorage.getItem('user')));
-        }
+    constructor(private http: Http, private router: Router) {
+        this.refreshUser();
         this.http.post('config.json', null).subscribe( (response) => {
             this.config = response.json();
         });
+    }
+
+    public refreshUser() {
+        if(sessionStorage.getItem('user') != null) {
+            this.setUser(JSON.parse(sessionStorage.getItem('user')));
+        }
+    }
+
+    public goTo(url){
+        this.router.navigateByUrl(url);
+    }
+
+    public setConfig(config) {
+        this.config = config;
     }
 
     public setMatches(matches) {
@@ -43,6 +55,10 @@ export class AppService {
 
     public setUser(user) {
         this.data.user = user;
+    }
+
+    public getConfigObservable(): Observable<any> {
+        return this.http.post('config.json', null);
     }
 
     public getConstants(): any {

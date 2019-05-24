@@ -1,7 +1,7 @@
 import { Component, OnInit, Renderer, ViewChild, ElementRef } from '@angular/core';
-import { ROUTES } from '../../sidebar/sidebar.component';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Location, LocationStrategy, PathLocationStrategy } from '@angular/common';
+import { AppService } from 'app/app.service';
 
 @Component({
     moduleId: module.id,
@@ -18,17 +18,21 @@ export class NavbarComponent implements OnInit{
 
     @ViewChild("navbar-cmp") button;
 
-    constructor(location:Location, private renderer : Renderer, private element : ElementRef, private router: Router) {
+    constructor(location:Location, private renderer : Renderer, private element : ElementRef, private router: Router, private appService: AppService) {
         this.location = location;
         this.nativeElement = element.nativeElement;
         this.sidebarVisible = false;
     }
 
     ngOnInit(){
-        this.listTitles = ROUTES.filter(listTitle => listTitle);
-        var navbar : HTMLElement = this.element.nativeElement;
-        this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
+        this.appService.getConfigObservable().subscribe( (response) => {
+            this.appService.setConfig(response.json());
+            this.listTitles = this.appService.config.routes.logged.filter(listTitle => listTitle);
+            var navbar : HTMLElement = this.element.nativeElement;
+            this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
+        });
     }
+
     getTitle(){
         var titlee = window.location.pathname;
         titlee = titlee.substring(1);
@@ -43,6 +47,7 @@ export class NavbarComponent implements OnInit{
     goTo(url){
         this.router.navigateByUrl(url);
     }
+    
     sidebarToggle(){
         var toggleButton = this.toggleButton;
         var body = document.getElementsByTagName('body')[0];
