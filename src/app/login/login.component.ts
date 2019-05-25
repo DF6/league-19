@@ -3,6 +3,7 @@ import { Http } from '@angular/http';
 import { SideBarService } from '../sidebar/sidebar.service';
 import { Router } from '@angular/router';
 import { AppService } from 'app/app.service';
+import { HostListener } from '@angular/core';
 
 @Component({
     selector: 'login-cmp',
@@ -19,6 +20,13 @@ export class LoginComponent{
 
     constructor(private http: Http, private sidebarService: SideBarService, private router: Router, private appService: AppService) {
         this.appService.getUsers();
+    }
+
+    @HostListener('document:keypress', ['$event'])
+    handleKeyboardEvent(event: KeyboardEvent) { 
+        if(event.key == 'Enter') {
+            this.login();
+        }
     }
 
     public login() {
