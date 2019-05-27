@@ -41,6 +41,7 @@ import { OfferComponent } from './offer/offer.component';
 import { EuropeSupercupComponent } from './europesupercup/europesupercup.component';
 import { AdminPageComponent } from './adminpage/adminpage.component';
 import { AppService } from './app.service';
+import { KeyModule } from './key/key.module';
 
 @NgModule({
   declarations: [
@@ -83,6 +84,7 @@ import { AppService } from './app.service';
     FixedPluginModule,
     MatchFillerModule,
     OfferFillerModule,
+    KeyModule,
     NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=YOUR_KEY_HERE'})
 
   ],
