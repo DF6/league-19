@@ -13,10 +13,9 @@ declare var $:any;
 export class SidebarComponent implements OnInit {
     public menuItems: any[];
 
-    constructor(
-        private sideBarService: SideBarService,
-        private appService: AppService
-      ) { }
+    constructor(private sideBarService: SideBarService, private appService: AppService) {
+        this.appService.getConstants();
+    }
 
     ngOnInit() {
         this.appService.getConfigObservable().subscribe( (response) => {
@@ -26,10 +25,10 @@ export class SidebarComponent implements OnInit {
                 this.appService.refreshUser();
                 if (isLogged) {
                     if (!parseInt(this.appService.data.user.adminRights)) {
-                        if(this.appService.data.user.teamID == this.appService.config.notTeam) {
+                        if (this.appService.data.user.teamID == this.appService.config.notTeam) {
                             this.menuItems = this.appService.config.routes.noTeam.filter(menuItem => menuItem);
                         } else {
-                            this.menuItems = this.appService.config.routes.logged.filter(menuItem => menuItem);
+                            this.menuItems = this.appService.data.constants.marketOpened == 1 ? this.appService.config.routes.loggedInMarket.filter(menuItem => menuItem) : this.appService.config.routes.logged.filter(menuItem => menuItem);
                         }
                     } else {
                         this.menuItems = this.appService.config.routes.admin.filter(menuItem => menuItem);
