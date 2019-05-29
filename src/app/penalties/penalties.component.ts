@@ -80,19 +80,19 @@ export class PenaltiesComponent implements OnInit{
         switch (penalty.tournament) {
                 case 'Primera':
                 case 'Segunda':
-                    ret = (penalty.round > 7 && penalty.round < 11);
+                    ret = (penalty.round > 10 && penalty.round < 15);
                     break;
                 case 'Copa':
-                    ret = (penalty.round > 4 && penalty.round < 7);
+                    ret = (penalty.round > 6 && penalty.round < 9);
                     break;
                 case 'Champions League':
-                    ret = (penalty.round > 8 && penalty.round < 11);
+                    ret = (penalty.round > 10 && penalty.round < 13);
                     break;
                 case 'Europa League':
-                    ret = (penalty.round > 2 && penalty.round < 5);
+                    ret = (penalty.round > 4 && penalty.round < 7);
                     break;
                 case 'Intertoto':
-                    ret = (penalty.round > 0);
+                    ret = (penalty.round > 2);
                     break;
                 case 'Supercopa de Clubes':
                 case 'Supercopa de Europa':

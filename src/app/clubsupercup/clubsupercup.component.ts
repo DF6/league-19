@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Http } from '@angular/http';
+import { AppService } from 'app/app.service';
 
 declare var $:any;
 
@@ -11,65 +11,35 @@ declare var $:any;
 
 export class ClubSupercupComponent implements OnInit{
 
-    public teams;
-    public matches;
-    public tournaments;
-    public user;
+    public matchesConfig;
     public season;
+    public champion;
 
-    constructor(private http: Http) {}
+    constructor(private appService: AppService) {
+        this.appService.getTournaments();
+        this.appService.getTeams();
+    }
 
     ngOnInit() {
-        this.user = JSON.parse(sessionStorage.getItem('user'));
-        this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
-        this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
         this.getMatches();
     }
 
     private getMatches() {
         let finalTableMatches = [];
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
+        this.appService.getMatchesObservable().subscribe( (response) => {
             let matchesArray = response.json().matches;
-            const cupLastEdition = this.getLastEdition('Supercopa de Clubes');
-            const tournament = this.getTournamentByEdition(cupLastEdition);
-            this.season = cupLastEdition;
-            matchesArray.forEach( (value, key) => {
-                if (value.tournament == tournament) {
+            const tournament = this.appService.getLastEdition(this.appService.config.clubSupercup);
+            this.season = tournament.edition;
+            matchesArray.forEach( (value) => {
+                if (value.tournament == tournament.id) {
                     value.filling = false;
-                    finalTableMatches.push(value);
+                    if(this.appService.whoWon(value)) {
+                        this.champion = this.appService.whoWon(value);
+                    }
+                    finalTableMatches.push(this.appService.getMatchConfiguration(value, this.appService.getClassNames(this.appService.config.classNameSizes.all)));
                 }
             });
-            this.matches = finalTableMatches;
+            this.matchesConfig = finalTableMatches;
         });
-    }
-
-    private getLastEdition(league) {
-        let lastEdition = -1;
-        for (let i = 0; i < this.tournaments.length; i++) {
-            if (this.tournaments[i].name == league && lastEdition < this.tournaments[i].edition) {
-                lastEdition = this.tournaments[i].edition;
-            }
-        }
-        return lastEdition;
-    }
-
-    private getTournamentByEdition(edition) {
-        let tournament = -1;
-        for (let i = 0; i < this.tournaments.length; i++) {
-            if (this.tournaments[i].name == 'Supercopa de Clubes' && edition == this.tournaments[i].edition) {
-                tournament = this.tournaments[i].id;
-            }
-        }
-        return tournament;
-    }
-
-    public getTeamById(team) {
-        let teamToReturn = null;
-        this.teams.forEach( (value) => {
-            if(value.id == team) {
-                teamToReturn = value;
-            }
-        });
-        return teamToReturn;
     }
 }

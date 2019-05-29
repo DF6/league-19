@@ -8,6 +8,14 @@ export interface TableData {
     dataRows: string[][];
 }
 
+export interface KeyConfig {
+    round: number;
+    matches: any[];
+    local: number;
+    away: number;
+    classNames: Object;
+}
+
 @Injectable()
 
 export class AppService {
@@ -26,15 +34,19 @@ export class AppService {
 
     constructor(private http: Http, private router: Router) {
         this.refreshUser();
-        this.http.post('config.json', null).subscribe( (response) => {
-            this.config = response.json();
-        });
+        this.refreshConfig();
     }
 
     public refreshUser() {
         if(sessionStorage.getItem('user') != null) {
             this.setUser(JSON.parse(sessionStorage.getItem('user')));
         }
+    }
+
+    public refreshConfig() {
+        this.http.post('config.json', null).subscribe( (response) => {
+            this.config = response.json();
+        });
     }
 
     public goTo(url){
@@ -108,6 +120,24 @@ export class AppService {
         });
     }
 
+    public getClassNames(size) {
+        return {
+            small: this.config.classNameSizes.all,
+            medium: size,
+            large: size == this.config.classNameSizes.all ? 12: size + 1
+        }
+    }
+
+    public getLastEdition(name) {
+        let lastEdition = null;
+        for (let i = 0; i < this.data.tournaments.length; i++) {
+            if (this.data.tournaments[i].name == name && lastEdition < this.data.tournaments[i].edition) {
+                lastEdition = this.data.tournaments[i];
+            }
+        }
+        return lastEdition;
+    }
+
     public getPlayerById(player) {
         let playerToReturn = null;
         this.data.players.forEach( (value) => {
@@ -116,6 +146,26 @@ export class AppService {
             }
         });
         return playerToReturn;
+    }
+
+    public getMatchConfiguration(match, classNames, previousConfig?: KeyConfig): KeyConfig {
+        if (previousConfig) {
+            previousConfig.matches.push(match);
+        }
+        return {
+            round: previousConfig ? previousConfig.round : match.round,
+            matches: previousConfig ? previousConfig.matches : [match],
+            local: previousConfig ? previousConfig.local: match.local,
+            away: previousConfig ? previousConfig.away : match.away,
+            classNames: previousConfig ? previousConfig.classNames : classNames
+        };
+    }
+
+    public getTableConfig(tableFields, rows?) {
+        return {
+            headerRow: tableFields,
+            dataRows: rows ? rows : []
+        };
     }
 
     public getTeamById(team) {
@@ -139,11 +189,14 @@ export class AppService {
         return tournament;
     }
 
-    public getTableConfig(tableFields, rows?) {
-        return {
-            headerRow: tableFields,
-            dataRows: rows ? rows : []
-        };
+    private getTournamentByNameAndEdition(name, edition) {
+        let tournament = -1;
+        for (let i = 0; i < this.data.tournaments.length; i++) {
+            if (this.data.tournaments[i].name == name && edition == this.data.tournaments[i].edition) {
+                tournament = this.data.tournaments[i].id;
+            }
+        }
+        return tournament;
     }
 
     public getRoundName(match) {
@@ -192,6 +245,20 @@ export class AppService {
             ret = true
         }
         return ret;
+    }
+
+    public whoWon(match) {
+        if(match.localGoals == -1 || match.awayGoals == -1) {
+            return null;
+        } else {
+            if (match.localGoals > match.awayGoals) {
+                return match.local;
+            }else if (match.localGoals < match.awayGoals) {
+                return match.away;
+            }else if (match. localGoals == match.awayGoals) {
+                return null;
+            }
+        }
     }
 
     public removeAccents(name) {
