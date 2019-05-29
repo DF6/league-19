@@ -248,7 +248,7 @@ export class AppService {
     }
 
     public whoWon(match) {
-        if(match.localGoals == -1 || match.awayGoals == -1) {
+        if (match.localGoals == -1 || match.awayGoals == -1) {
             return null;
         } else {
             if (match.localGoals > match.awayGoals) {
@@ -269,8 +269,8 @@ export class AppService {
             "Á":"A", "É":"E", "Í":"I", "Ó":"O", "Ú":"U",
             "À":"A", "È":"E", "Ì":"I", "Ò":"O", "Ù":"U", "Ñ":"/n",
             "Ä":"A", "Ë":"E", "Ï":"I", "Ö":"O", "Ü":"U"}
-        let expr=/[áàéèíìóòúùäëïöüñ]/ig;
-        let res=name.replace(expr,function(e){return chars[e]});
+        let expr = /[áàéèíìóòúùäëïöüñ]/ig;
+        let res = name.replace(expr,function(e){return chars[e]});
         return res;
     }
 
@@ -283,7 +283,7 @@ export class AppService {
         }
         return name;
     }
-    
+
     public addZero(number) {
         if(number<10){number="0"+number;}
         return number;
