@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import * as Chartist from 'chartist';
 import { Http } from '@angular/http';
 
-declare var $:any;
+declare var $: any;
 
 @Component({
     selector: 'dashboard-cmp',
@@ -10,7 +10,7 @@ declare var $:any;
     templateUrl: 'dashboard.component.html'
 })
 
-export class DashboardComponent implements OnInit{
+export class DashboardComponent implements OnInit {
 
     public tournaments;
     public teams;
@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit{
 
     constructor(private http: Http) {}
 
-    ngOnInit(){
+    ngOnInit() {
       this.user = JSON.parse(sessionStorage.getItem('user'));
       this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
       this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
@@ -33,7 +33,7 @@ export class DashboardComponent implements OnInit{
       this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
         this.matches = response.json().matches;
         this.matches.forEach( (value, key) => {
-            if ((value.local == team || value.away == team) && (value.localGoals == "-1" && value.awayGoals == "-1")) {
+            if ((value.local == team || value.away == team) && (value.localGoals == '-1' && value.awayGoals == '-1')) {
                 myTeamMatches.push(value);
             }
         });
@@ -44,7 +44,7 @@ export class DashboardComponent implements OnInit{
     private getTeamById(team) {
       let returnedTeam = {};
       this.teams.forEach( (value, key) => {
-        if(value.id === team) {
+        if (value.id === team) {
           returnedTeam = value;
         }
       });
@@ -54,7 +54,7 @@ export class DashboardComponent implements OnInit{
     public getPlayersByTeam(team) {
       let players = [];
       this.players.forEach( (value, key) => {
-        if(value.teamID == team) {
+        if (value.teamID == team) {
           players.push(value);
         }
       });

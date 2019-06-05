@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
     templateUrl: 'registro.component.html'
 })
 
-export class RegistroComponent implements OnInit{
+export class RegistroComponent implements OnInit {
 
     public users;
     public user: String;
@@ -19,22 +19,22 @@ export class RegistroComponent implements OnInit{
 
     constructor(private http: Http, private router: Router) {}
 
-    ngOnInit(){
+    ngOnInit() {
         this.users = JSON.parse(sessionStorage.getItem('users')).users;
     }
 
     public register() {
         let registering = true;
-        if(this.pass != this.pass2) {
+        if (this.pass != this.pass2) {
             alert('Las contraseñas no coinciden');
             registering = false;
         }
         this.users.forEach( (value, key) => {
-            if(value.user == this.user) {
+            if (value.user == this.user) {
                 alert('El usuario ya existe');
                 registering = false;
             }
-            if(value.email == this.email) {
+            if (value.email == this.email) {
                 alert('El email ya existe');
                 registering = false;
             }

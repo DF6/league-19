@@ -39,7 +39,7 @@ export class AppService {
     }
 
     public refreshUser() {
-        if(sessionStorage.getItem('user') != null) {
+        if (sessionStorage.getItem('user') != null) {
             this.setUser(JSON.parse(sessionStorage.getItem('user')));
         }
     }
@@ -92,7 +92,7 @@ export class AppService {
 
     public getSignins() {
         this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
-            this.data.signins = response.json() ? response.json().signins: [];
+            this.data.signins = response.json() ? response.json().signins : [];
         });
     }
 
@@ -125,7 +125,7 @@ export class AppService {
         return {
             small: this.config.classNameSizes.all,
             medium: size,
-            large: size == this.config.classNameSizes.all ? 12: size + 1
+            large: size == this.config.classNameSizes.all ? 12 : size + 1
         }
     }
 
@@ -156,7 +156,7 @@ export class AppService {
         return {
             round: previousConfig ? previousConfig.round : match.round,
             matches: previousConfig ? previousConfig.matches : [match],
-            local: previousConfig ? previousConfig.local: match.local,
+            local: previousConfig ? previousConfig.local : match.local,
             away: previousConfig ? previousConfig.away : match.away,
             classNames: previousConfig ? previousConfig.classNames : classNames,
             showTitle: previousConfig ? previousConfig.showTitle : showTitle
@@ -180,7 +180,7 @@ export class AppService {
         return teamToReturn;
     }
 
-    public getTournamentById(id): any { 
+    public getTournamentById(id): any {
         let tournament = {};
         id = parseInt(id);
         this.data.tournaments.forEach( (value) => {
@@ -204,32 +204,33 @@ export class AppService {
     public getRoundName(match) {
         switch (this.getTournamentById(match.tournament).name) {
             case 'Copa':
-                if (match.round < 3) { return 'Octavos de Final'; }
-                else if (match.round >= 3 && match.round < 5) { return 'Cuartos de Final'; }
-                else if (match.round >= 5 && match.round < 7) { return 'Semifinales'; }
-                else if (match.round == 9) { return 'Tercer y Cuarto Puesto'; }
-                else if (match.round == 8) { return 'Final'; }
+                if (match.round < 3) { return 'Octavos de Final';
+                }else if (match.round >= 3 && match.round < 5) { return 'Cuartos de Final';
+                }else if (match.round >= 5 && match.round < 7) { return 'Semifinales';
+                }else if (match.round == 9) { return 'Tercer y Cuarto Puesto';
+                }else if (match.round == 8) { return 'Final'; }
                 break;
             case 'Champions League':
-                if (match.round < 7) { return 'Fase de Grupos'; }
-                else if (match.round >= 7 && match.round < 9) { return 'Cuartos de Final'; }
-                else if (match.round >= 9 && match.round < 11) { return 'Semifinales'; }
-                else if (match.round == 12) { return 'Tercer y Cuarto Puesto'; }
-                else if (match.round == 11) { return 'Final'; }
+                if (match.round < 7) { return 'Fase de Grupos';
+                }else if (match.round >= 7 && match.round < 9) { return 'Cuartos de Final';
+                }else if (match.round >= 9 && match.round < 11) { return 'Semifinales';
+                }else if (match.round == 12) { return 'Tercer y Cuarto Puesto';
+                }else if (match.round == 11) { return 'Final';
+                }
                 break;
             case 'Europa League':
-                if (match.round < 3) { return 'Cuartos de Final'; }
-                else if (match.round >= 3 && match.round < 5) { return 'Semifinales'; }
-                else if (match.round == 6) { return 'Tercer y Cuarto Puesto'; }
-                else if (match.round == 5) { return 'Final'; }
+                if (match.round < 3) { return 'Cuartos de Final';
+                }else if (match.round >= 3 && match.round < 5) { return 'Semifinales';
+                }else if (match.round == 6) { return 'Tercer y Cuarto Puesto';
+                }else if (match.round == 5) { return 'Final'; }
                 break;
             case 'Intertoto':
-                if (match.round < 3) { return 'Semifinales'; }
-                else if (match.round == 4) { return 'Tercer y Cuarto Puesto'; }
-                else if (match.round == 3) { return 'Final'; }
+                if (match.round < 3) { return 'Semifinales';
+                }else if (match.round == 4) { return 'Tercer y Cuarto Puesto';
+                }else if (match.round == 3) { return 'Final'; }
                 break;
             case 'Supercopa de Clubes':
-            case 'Supercopa Europea': 
+            case 'Supercopa Europea':
                 if (match.round == 1) { return 'Final'; } break;
         }
     }
@@ -237,14 +238,14 @@ export class AppService {
     public isThisInterval(tournament, round) {
         let ret = false;
         this.config.leagues.forEach( (value) => {
-            if(value == this.getTournamentById(tournament).name) {
+            if (value == this.getTournamentById(tournament).name) {
                 ret = true;
             }
         });
-        if(ret && parseInt(round) > parseInt(this.data.constants.intervalActual)) {
+        if (ret && parseInt(round) > parseInt(this.data.constants.intervalActual)) {
             ret = false;
         } else if (!ret) {
-            ret = true
+            ret = true;
         }
         return ret;
     }
@@ -264,15 +265,15 @@ export class AppService {
     }
 
     public removeAccents(name) {
-        let chars = {
-            "á":"a", "é":"e", "í":"i", "ó":"o", "ú":"u",
-            "à":"a", "è":"e", "ì":"i", "ò":"o", "ù":"u", "ñ":"/n",
-            "ä":"a", "ë":"e", "ï":"i", "ö":"o", "ü":"u",
-            "Á":"A", "É":"E", "Í":"I", "Ó":"O", "Ú":"U",
-            "À":"A", "È":"E", "Ì":"I", "Ò":"O", "Ù":"U", "Ñ":"/n",
-            "Ä":"A", "Ë":"E", "Ï":"I", "Ö":"O", "Ü":"U"}
-        let expr = /[áàéèíìóòúùäëïöüñ]/ig;
-        let res = name.replace(expr,function(e){return chars[e]});
+        const chars = {
+            'á': 'a', 'é': 'e', 'í': 'i', 'ó': 'o', 'ú': 'u',
+            'à': 'a', 'è': 'e', 'ì': 'i', 'ò': 'o', 'ù': 'u', 'ñ': '/n',
+            'ä': 'a', 'ë': 'e', 'ï': 'i', 'ö': 'o', 'ü': 'u',
+            'Á': 'A', 'É': 'E', 'Í': 'I', 'Ó': 'O', 'Ú': 'U',
+            'À': 'A', 'È': 'E', 'Ì': 'I', 'Ò': 'O', 'Ù': 'U', 'Ñ': '/n',
+            'Ä': 'A', 'Ë': 'E', 'Ï': 'I', 'Ö': 'O', 'Ü': 'U'};
+        const expr = /[áàéèíìóòúùäëïöüñ]/ig;
+        const res = name.replace(expr, function(e){return chars[e]; });
         return res;
     }
 
@@ -287,7 +288,7 @@ export class AppService {
     }
 
     public addZero(number) {
-        if(number<10){number="0"+number;}
+        if (number < 10) {number = '0' + number; }
         return number;
     }
 }

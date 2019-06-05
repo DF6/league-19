@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SideBarService } from './sidebar.service';
 import { AppService } from 'app/app.service';
 
-declare var $:any;
+declare var $: any;
 
 @Component({
     moduleId: module.id,
@@ -27,7 +27,9 @@ export class SidebarComponent implements OnInit {
                         if (this.appService.data.user.teamID == this.appService.config.notTeam) {
                             this.menuItems = this.appService.config.routes.noTeam.filter(menuItem => menuItem);
                         } else {
-                            this.menuItems = this.appService.data.constants.marketOpened == '1' ? this.appService.config.routes.loggedInMarket.filter(menuItem => menuItem) : this.appService.config.routes.logged.filter(menuItem => menuItem);
+                            this.menuItems = this.appService.data.constants.marketOpened == '1' ?
+                                this.appService.config.routes.loggedInMarket.filter(menuItem => menuItem) :
+                                this.appService.config.routes.logged.filter(menuItem => menuItem);
                         }
                     } else {
                         this.menuItems = this.appService.config.routes.admin.filter(menuItem => menuItem);
@@ -40,7 +42,7 @@ export class SidebarComponent implements OnInit {
     }
 
     isNotMobileMenu(){
-        if ($(window).width() > this.appService.config.notMobileMenuWidth){
+        if ($(window).width() > this.appService.config.notMobileMenuWidth) {
             return false;
         }
         return true;

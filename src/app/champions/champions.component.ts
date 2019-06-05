@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { AngularWaitBarrier } from 'blocking-proxy/built/lib/angular_wait_barrier';
+import { Http} from '@angular/http';
 
 declare interface TableData {
     headerRow: string[];
     dataRows: string[][];
 }
 
-declare var $:any;
+declare var $: any;
 
 @Component({
     selector: 'champions-cmp',
@@ -15,7 +14,7 @@ declare var $:any;
     templateUrl: 'champions.component.html'
 })
 
-export class ChampionsComponent implements OnInit{
+export class ChampionsComponent implements OnInit {
     public groupA: TableData;
     public groupB: TableData;
     public groupC: TableData;
@@ -29,7 +28,7 @@ export class ChampionsComponent implements OnInit{
     public KOMatches;
     public visibleLegend = false;
 
-    constructor(private http: Http){}
+    constructor(private http: Http) {}
 
     ngOnInit() {
         this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
@@ -124,11 +123,11 @@ export class ChampionsComponent implements OnInit{
             }
 
             let position = 1;
-            while(groupAStandings.length != 0) {
+            while (groupAStandings.length != 0) {
                 let indexToInsert = -1;
                 let maxPoints = -1;
                 groupAStandings.forEach( (value, key) => {
-                    if(value[9] > maxPoints) {
+                    if (value[9] > maxPoints) {
                         indexToInsert = key;
                         maxPoints = value[9];
                     }
@@ -141,21 +140,21 @@ export class ChampionsComponent implements OnInit{
             let aux = null;
             for (let i = 0; i < aStands.length; i++) {
                 for (let j = 0; j < aStands.length - 1 - i; j++) {
-                    if (aStands[j][9] == aStands[j+1][9] && aStands[j][8] < aStands[j+1][8]) {
+                    if (aStands[j][9] == aStands[j + 1][9] && aStands[j][8] < aStands[j + 1][8]) {
                         aStands[j][0]++;
-                        aStands[j+1][0]--;
+                        aStands[j + 1][0]--;
                         aux = aStands[j];
-                        aStands[j] = aStands[j+1];
-                        aStands[j+1] = aux;
+                        aStands[j] = aStands[j + 1];
+                        aStands[j + 1] = aux;
                     }
                 }
             }
             position = 1;
-            while(groupBStandings.length != 0) {
+            while (groupBStandings.length != 0) {
                 let indexToInsert = -1;
                 let maxPoints = -1;
                 groupBStandings.forEach( (value, key) => {
-                    if(value[9] > maxPoints) {
+                    if (value[9] > maxPoints) {
                         indexToInsert = key;
                         maxPoints = value[9];
                     }
@@ -167,21 +166,21 @@ export class ChampionsComponent implements OnInit{
             }
             for (let i = 0; i < bStands.length; i++) {
                 for (let j = 0; j < bStands.length - 1 - i; j++) {
-                    if (bStands[j][9] == bStands[j+1][9] && bStands[j][8] < bStands[j+1][8]) {
+                    if (bStands[j][9] == bStands[j + 1][9] && bStands[j][8] < bStands[j + 1][8]) {
                         bStands[j][0]++;
-                        bStands[j+1][0]--;
+                        bStands[j + 1][0]--;
                         aux = bStands[j];
-                        bStands[j] = bStands[j+1];
-                        bStands[j+1] = aux;
+                        bStands[j] = bStands[j + 1];
+                        bStands[j + 1] = aux;
                     }
                 }
             }
             position = 1;
-            while(groupCStandings.length != 0) {
+            while (groupCStandings.length != 0) {
                 let indexToInsert = -1;
                 let maxPoints = -1;
                 groupCStandings.forEach( (value, key) => {
-                    if(value[9] > maxPoints) {
+                    if (value[9] > maxPoints) {
                         indexToInsert = key;
                         maxPoints = value[9];
                     }
@@ -193,21 +192,21 @@ export class ChampionsComponent implements OnInit{
             }
             for (let i = 0; i < cStands.length; i++) {
                 for (let j = 0; j < cStands.length - 1 - i; j++) {
-                    if (cStands[j][9] == cStands[j+1][9] && cStands[j][8] < cStands[j+1][8]) {
+                    if (cStands[j][9] == cStands[j + 1][9] && cStands[j][8] < cStands[j + 1][8]) {
                         cStands[j][0]++;
-                        cStands[j+1][0]--;
+                        cStands[j + 1][0]--;
                         aux = cStands[j];
-                        cStands[j] = cStands[j+1];
-                        cStands[j+1] = aux;
+                        cStands[j] = cStands[j + 1];
+                        cStands[j + 1] = aux;
                     }
                 }
             }
             position = 1;
-            while(groupDStandings.length != 0) {
+            while (groupDStandings.length != 0) {
                 let indexToInsert = -1;
                 let maxPoints = -1;
                 groupDStandings.forEach( (value, key) => {
-                    if(value[9] > maxPoints) {
+                    if (value[9] > maxPoints) {
                         indexToInsert = key;
                         maxPoints = value[9];
                     }
@@ -219,12 +218,12 @@ export class ChampionsComponent implements OnInit{
             }
             for (let i = 0; i < dStands.length; i++) {
                 for (let j = 0; j < dStands.length - 1 - i; j++) {
-                    if (dStands[j][9] == dStands[j+1][9] && dStands[j][8] < dStands[j+1][8]) {
+                    if (dStands[j][9] == dStands[j + 1][9] && dStands[j][8] < dStands[j + 1][8]) {
                         dStands[j][0]++;
-                        dStands[j+1][0]--;
+                        dStands[j + 1][0]--;
                         aux = dStands[j];
-                        dStands[j] = dStands[j+1];
-                        dStands[j+1] = aux;
+                        dStands[j] = dStands[j + 1];
+                        dStands[j + 1] = aux;
                     }
                 }
             }
@@ -288,13 +287,13 @@ export class ChampionsComponent implements OnInit{
     }
 
     public showSummary(match) {
-        let matchSummary = this.getMatchById(match);
+        const matchSummary = this.getMatchById(match);
         let message = this.getTeamById(matchSummary.local).name + ' ' + matchSummary.localGoals + ' - ';
         message += this.getTeamById(matchSummary.away).name + ' ' + matchSummary.awayGoals;
         $.notify({
-        	icon: "ti-gift",
-        	message: message
-        },{
+            icon: 'ti-gift',
+            message: message
+        }, {
             type: 'success',
             timer: 4000,
             placement: {

@@ -11,7 +11,7 @@ import { HostListener } from '@angular/core';
     templateUrl: 'login.component.html'
 })
 
-export class LoginComponent{
+export class LoginComponent {
 
     public users;
     public user;
@@ -23,8 +23,8 @@ export class LoginComponent{
     }
 
     @HostListener('document:keypress', ['$event'])
-    handleKeyboardEvent(event: KeyboardEvent) { 
-        if(event.key == 'Enter') {
+    handleKeyboardEvent(event: KeyboardEvent) {
+        if (event.key == 'Enter') {
             this.login();
         }
     }
