@@ -42,6 +42,8 @@ export class NavbarComponent implements OnInit{
     }
     
     sidebarToggle(){
+        var navbar : HTMLElement = this.element.nativeElement;
+        this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
         var toggleButton = this.toggleButton;
         var body = document.getElementsByTagName('body')[0];
 

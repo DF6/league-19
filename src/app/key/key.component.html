@@ -1,6 +1,6 @@
 <div class="container-fluid" *ngIf="showElement">
     <div class="row">
-        <h3>{{appService.getRoundName(config.matches[0])}}</h3>
+        <h3 *ngIf="config.showTitle">{{appService.getRoundName(config.matches[0])}}</h3>
         <div class="col-lg-{{config.classNames.large}} col-md-{{config.classNames.medium}}" *ngIf="config.matches.length == 1">
             <div class="well" style="border-radius: 5%;background-color: #ccc5b9;text-align:right;">
                 <span style="float:left;">{{appService.getTeamById(config.local).name}}</span>

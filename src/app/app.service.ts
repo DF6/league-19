@@ -14,6 +14,7 @@ export interface KeyConfig {
     local: number;
     away: number;
     classNames: Object;
+    showTitle: boolean;
 }
 
 @Injectable()
@@ -148,7 +149,7 @@ export class AppService {
         return playerToReturn;
     }
 
-    public getMatchConfiguration(match, classNames, previousConfig?: KeyConfig): KeyConfig {
+    public getMatchConfiguration(match, classNames, showTitle, previousConfig?: KeyConfig): KeyConfig {
         if (previousConfig) {
             previousConfig.matches.push(match);
         }
@@ -157,7 +158,8 @@ export class AppService {
             matches: previousConfig ? previousConfig.matches : [match],
             local: previousConfig ? previousConfig.local: match.local,
             away: previousConfig ? previousConfig.away : match.away,
-            classNames: previousConfig ? previousConfig.classNames : classNames
+            classNames: previousConfig ? previousConfig.classNames : classNames,
+            showTitle: previousConfig ? previousConfig.showTitle : showTitle
         };
     }
 
