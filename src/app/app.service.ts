@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
+import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 export interface TableData {
     headerRow: string[];
@@ -161,6 +162,34 @@ export class AppService {
             classNames: previousConfig ? previousConfig.classNames : classNames,
             showTitle: previousConfig ? previousConfig.showTitle : showTitle
         };
+    }
+
+    public hasPreviousMatch(match, matchesToSearch) {
+        switch (this.getTournamentById(match.tournament).name) {
+            case 'Copa':
+            case 'Europa League':
+            case 'Intertoto':
+                if (match.round % 2 == 0) {
+                    matchesToSearch.forEach( (value) => {
+                        if (value.local == match.away && value.away == match.local && value.round == match.round - 1) {
+                            return [value, match];
+                        }
+                    });
+                }
+                return null;
+            case 'Champions League':
+                if (match.round % 2 == 0 && match.round > 6) {
+                    matchesToSearch.forEach( (value) => {
+                        if (value.local == match.away && value.away == match.local && value.round == match.round - 1) {
+                            return [value, match];
+                        }
+                    });
+                }
+                return null;
+            case 'Supercopa de Clubes':
+            case 'Supercopa Europea':
+                return null;
+        }
     }
 
     public getTableConfig(tableFields, rows?) {
