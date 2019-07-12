@@ -2,12 +2,12 @@ import { Component, Input } from '@angular/core';
 import { AppService, KeyConfig } from 'app/app.service';
 
 @Component({
-    selector: 'tournament-key',
+    selector: 'roundkeys',
     moduleId: module.id,
-    templateUrl: 'key.component.html'
+    templateUrl: 'roundkeys.component.html'
 })
 
-export class KeyComponent {
+export class RoundkeysComponent {
 
     @Input() config: KeyConfig | null;
     public showElement = false;

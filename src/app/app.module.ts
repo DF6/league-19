@@ -42,6 +42,7 @@ import { EuropeSupercupComponent } from './europesupercup/europesupercup.compone
 import { AdminPageComponent } from './adminpage/adminpage.component';
 import { AppService } from './app.service';
 import { KeyModule } from './key/key.module';
+import { RoundkeysModule } from './roundkeys/roundkeys.module';
 
 @NgModule({
   declarations: [
@@ -85,6 +86,7 @@ import { KeyModule } from './key/key.module';
     MatchFillerModule,
     OfferFillerModule,
     KeyModule,
+    RoundkeysModule,
     NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=YOUR_KEY_HERE'})
 
   ],
