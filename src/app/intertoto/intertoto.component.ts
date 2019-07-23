@@ -37,10 +37,10 @@ export class IntertotoComponent implements OnInit {
                         this.appService.whoWon(value)) {
                         this.champion = this.appService.whoWon(value);
                     }
-                    finalTableMatches.push(this.appService.hasPreviousMatch(value, matchesArray));
+                    finalTableMatches.push(this.appService.getMatchConfiguration(value, this.appService.getClassNames(this.appService.config.classNameSizes.large), true));
                 }
             });
-            this.matches = finalTableMatches;
+            this.matches = this.appService.divideByRounds(finalTableMatches, this.appService.config.tournamentGeneralInfo.intertoto.finalRound, 2);
         });
     }
 }

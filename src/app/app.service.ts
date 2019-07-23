@@ -168,7 +168,7 @@ export class AppService {
         switch (this.getTournamentById(match.tournament).name) {
             case 'Copa':
             case 'Europa League':
-            case 'Intertoto':
+            case this.config.tournamentGeneralInfo.intertoto.name:
                 if (match.round % 2 == 0) {
                     matchesToSearch.forEach( (value) => {
                         if (value.local == match.away && value.away == match.local && value.round == match.round - 1) {
@@ -186,10 +186,41 @@ export class AppService {
                     });
                 }
                 return null;
-            case 'Supercopa de Clubes':
-            case 'Supercopa Europea':
+            case this.config.tournamentGeneralInfo.clubSupercup.name:
+            case this.config.tournamentGeneralInfo.europeSupercup.name:
                 return null;
         }
+    }
+
+    public divideByRounds(matches, finalRound, matchesPerRound) {
+        let roundArray = [];
+        for (let round = 1; round < finalRound; round += matchesPerRound) {
+            roundArray.push({ rounds: this.getMatchNumbers(round, matchesPerRound), matches: []});
+        }
+        roundArray.push({ rounds: [finalRound], matches: []});
+        roundArray.push({ rounds: [finalRound + 1], matches: []});
+
+        matches.forEach( (value) => {
+            roundArray.forEach( (value2) => {
+                if (value2.rounds.includes(value.round)) {
+                    value2.matches.push(value);
+                }
+            });
+        });
+
+        let ret = [];
+        roundArray.forEach( (value) => {
+            ret.push(value.matches);
+        });
+        return ret;
+    }
+
+    private getMatchNumbers(round, matchesPerRound) {
+        let ret = [];
+        for (let cont = 0; cont < matchesPerRound; cont++) {
+            ret.push(round + cont);
+        }
+        return ret;
     }
 
     public getTableConfig(tableFields, rows?) {
@@ -253,13 +284,13 @@ export class AppService {
                 }else if (match.round == 6) { return 'Tercer y Cuarto Puesto';
                 }else if (match.round == 5) { return 'Final'; }
                 break;
-            case 'Intertoto':
+            case this.config.tournamentGeneralInfo.intertoto.name:
                 if (match.round < 3) { return 'Semifinales';
                 }else if (match.round == 4) { return 'Tercer y Cuarto Puesto';
                 }else if (match.round == 3) { return 'Final'; }
                 break;
-            case 'Supercopa de Clubes':
-            case 'Supercopa Europea':
+            case this.config.tournamentGeneralInfo.clubSupercup.name:
+            case this.config.tournamentGeneralInfo.europeSupercup.name:
                 if (match.round == 1) { return 'Final'; } break;
         }
     }
