@@ -140,13 +140,20 @@
         ]
     },
     "signinTypes": {
-        "auction": "A"
+        "auction": "A",
+        "discard": "D",
+        "forcedSign": "F",
+        "freePlayer": "W"
     },
     "tableHeaders": {
         "adminMatches": [ "tournament", "round", "local", "", "away" ],
         "auctions": [ "name", "position", "overage", "team", "amount", "state", "time", "raise"]
     },
     "tournamentGeneralInfo": {
+        "championsLeague": {
+            "name": "Champions League",
+            "finalRound": 11
+        },
         "clubSupercup": {
             "name": "Supercopa de Clubes",
             "finalRound": 1
@@ -158,6 +165,18 @@
         "intertoto": {
             "name": "Intertoto",
             "finalRound": 3
+        },
+        "nationsLeague": {
+            "name": "Nations League",
+            "finalRound": 3
+        },
+        "primera": {
+            "name": "Primera",
+            "finalRound": 14
+        },
+        "segunda": {
+            "name": "Segunda",
+            "finalRound": 14
         }
     }
 }
