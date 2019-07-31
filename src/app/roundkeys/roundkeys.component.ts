@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { KeyConfig } from 'app/app.service';
 
 @Component({
@@ -7,9 +7,14 @@ import { KeyConfig } from 'app/app.service';
     templateUrl: 'roundkeys.component.html'
 })
 
-export class RoundkeysComponent {
+export class RoundkeysComponent implements OnInit{
 
     @Input() config: KeyConfig[] | null;
+    public showElement = false;
 
     constructor() {}
+
+    ngOnInit() {
+        this.showElement = true;
+    }
 }

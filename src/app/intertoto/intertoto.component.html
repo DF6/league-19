@@ -2,11 +2,11 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-6" *ngIf="matches">
-                <roundkeys config="keysConfig[0]"></roundkeys>
+                <roundkeys config="matches[0]"></roundkeys>
             </div>
             <div class="col-md-6" *ngIf="matches">
-                <roundkeys config="keysConfig[1]"></roundkeys>
-                <roundkeys config="keysConfig[2]"></roundkeys>
+                <roundkeys config="matches[1]"></roundkeys>
+                <roundkeys config="matches[2]"></roundkeys>
             </div>
             <div *ngIf="!matches" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
                 Partidos no disponibles

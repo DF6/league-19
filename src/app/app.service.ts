@@ -202,7 +202,7 @@ export class AppService {
 
         matches.forEach( (value) => {
             roundArray.forEach( (value2) => {
-                if (value2.rounds.includes(value.round)) {
+                if (value2.rounds.includes(parseInt(value.round))) {
                     value2.matches.push(value);
                 }
             });

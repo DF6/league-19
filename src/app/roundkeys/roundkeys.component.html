@@ -1,6 +1,6 @@
 <div class="container-fluid" *ngIf="showElement">
     <div class="row">
-        <h3 *ngIf="config.showTitle">{{appService.getRoundName(config[0].round)}}</h3>
+        <h3 *ngIf="config[0].showTitle">{{appService.getRoundName(config[0].round)}}</h3>
         <div *ngFor="let newKey of config">
             <tournament-key config="newKey"></tournament-key>
         </div>
