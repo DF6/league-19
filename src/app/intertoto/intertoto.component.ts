@@ -31,7 +31,7 @@ export class IntertotoComponent implements OnInit {
             const tournament = this.appService.getLastEdition(this.appService.config.tournamentGeneralInfo.intertoto.name);
             this.season = tournament.edition;
             matchesArray.forEach( (value) => {
-                if (value.tournament == tournament) {
+                if (value.tournament == tournament.id) {
                     value.filling = false;
                     if (value.round == this.appService.config.tournamentGeneralInfo.intertoto.finalRound &&
                         this.appService.whoWon(value)) {
