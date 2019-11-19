@@ -177,7 +177,7 @@ export class AppService {
                     });
                 }
                 return null;
-            case 'Champions League':
+            case this.config.tournamentGeneralInfo.championsLeague.name:
                 if (match.round % 2 == 0 && match.round > 6) {
                     matchesToSearch.forEach( (value) => {
                         if (value.local == match.away && value.away == match.local && value.round == match.round - 1) {
@@ -189,6 +189,24 @@ export class AppService {
             case this.config.tournamentGeneralInfo.clubSupercup.name:
             case this.config.tournamentGeneralInfo.europeSupercup.name:
                 return null;
+        }
+    }
+
+    public isUpdatableStanding(match) {
+        switch (this.getTournamentById(match.tournament).name) {
+            case this.config.tournamentGeneralInfo.championsLeague.name:
+            case this.config.tournamentGeneralInfo.primera.name:
+            case this.config.tournamentGeneralInfo.segunda.name:
+                return this.config.tournamentGeneralInfo
+                .filter( (tournament) => {
+                    return tournament.name == this.getTournamentById(match.tournament).name;
+                }).KORound >= match.round;
+            case this.config.tournamentGeneralInfo.clubSupercup.name:
+            case this.config.tournamentGeneralInfo.europeSupercup.name:
+            case 'Copa':
+            case 'Europa League':
+            case this.config.tournamentGeneralInfo.intertoto.name:
+                return false;
         }
     }
 

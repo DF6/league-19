@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
+import { AppService } from 'app/app.service';
 
 export interface MatchData {
     id: String;
@@ -33,7 +34,7 @@ export class MatchFillerComponent implements OnInit{
     public models: any;
     public sent = false;
 
-    constructor(private http: Http){
+    constructor(private http: Http, private appService: AppService){
         this.local = {
             score: 0,
             scorers: [],
@@ -205,8 +206,10 @@ export class MatchFillerComponent implements OnInit{
                         local.draw = 1;
                         away.draw = 1;
                     }
-                    this.http.post('./CMDataRequesting.php', {type: 'updSta', points: local.points, won: local.won, draw: local.draw, lost: local.lost, goalsFor: this.local.score, goalsAgainst: this.away.score, tournamentID: this.data.tournament, team: this.data.local}).subscribe( () => {});
-                    this.http.post('./CMDataRequesting.php', {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, goalsFor: this.away.score, goalsAgainst: this.local.score, tournamentID: this.data.tournament, team: this.data.away}).subscribe( () => {});
+                    if(this.appService.isUpdatableStanding()) {
+                        this.http.post('./CMDataRequesting.php', {type: 'updSta', points: local.points, won: local.won, draw: local.draw, lost: local.lost, goalsFor: this.local.score, goalsAgainst: this.away.score, tournamentID: this.data.tournament, team: this.data.local});
+                        this.http.post('./CMDataRequesting.php', {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, goalsFor: this.away.score, goalsAgainst: this.local.score, tournamentID: this.data.tournament, team: this.data.away});
+                    }
                     this.sendActionsOfTheMatch();
                 } else {
                     alert(response.json().message);
