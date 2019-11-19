@@ -258,6 +258,16 @@ export class AppService {
         return teamToReturn;
     }
 
+    public getMatchById(match) {
+        let matchToReturn = null;
+        this.data.matches.forEach( (value) => {
+            if (value.id == match) {
+                matchToReturn = value;
+            }
+        });
+        return matchToReturn;
+    }
+
     public getTournamentById(id): any {
         let tournament = {};
         id = parseInt(id);
