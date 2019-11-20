@@ -113,7 +113,7 @@ export class OfferFillerComponent implements OnInit{
     public getPlayersByTeam(team) {
         let playersToReturn = [];
         this.players.forEach( (value) => {
-            if (value.teamID == team && value.cedido == 0) {
+            if (value.teamID == team && value.cedido == 0 && value.buyedThisMarket == 0) {
                 playersToReturn.push(value);
             }
         });
