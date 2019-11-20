@@ -17,7 +17,7 @@
     $consult = "SELECT * from signins where accepted=0";
     $result = mysqli_query($link, $consult) or die("Error comparando fechas");
     $fecha_actual = date("d-m-Y H:i:s", time());
-    $fecha_actual = strtotime('+2 hour', strtotime($fecha_actual));
+    $fecha_actual = strtotime('+1 hour', strtotime($fecha_actual));
     while($row = mysqli_fetch_array($result)) {
       $fecha_limite = strtotime($row['limit_date']);
       $tipo = utf8_decode($row['signin_type']);
