@@ -1,7 +1,8 @@
+  
 import { Component, OnInit } from '@angular/core';
 import { AppService } from 'app/app.service';
 
-declare var $: any;
+declare var $:any;
 
 @Component({
     selector: 'intertoto-cmp',
@@ -9,7 +10,7 @@ declare var $: any;
     templateUrl: 'intertoto.component.html'
 })
 
-export class IntertotoComponent implements OnInit {
+export class IntertotoComponent implements OnInit{
 
     public matches;
     public season;
@@ -27,7 +28,7 @@ export class IntertotoComponent implements OnInit {
     private getMatches() {
         let finalTableMatches = [];
         this.appService.getMatchesObservable().subscribe( (response) => {
-            const matchesArray = response.json().matches;
+            let matchesArray = response.json().matches;
             const tournament = this.appService.getLastEdition(this.appService.config.tournamentGeneralInfo.intertoto.name);
             this.season = tournament.edition;
             matchesArray.forEach( (value) => {
@@ -37,10 +38,10 @@ export class IntertotoComponent implements OnInit {
                         this.appService.whoWon(value)) {
                         this.champion = this.appService.whoWon(value);
                     }
-                    finalTableMatches.push(this.appService.getMatchConfiguration(value, this.appService.getClassNames(this.appService.config.classNameSizes.large), true));
+                    finalTableMatches.push(value);
                 }
             });
-            this.matches = this.appService.divideByRounds(finalTableMatches, this.appService.config.tournamentGeneralInfo.intertoto.finalRound, 2);
+            this.matches = finalTableMatches;
         });
     }
 }

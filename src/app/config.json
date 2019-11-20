@@ -152,18 +152,22 @@
     "tournamentGeneralInfo": {
         "championsLeague": {
             "name": "Champions League",
+            "KORound": 7,
             "finalRound": 11
         },
         "clubSupercup": {
             "name": "Supercopa de Clubes",
+            "KORound": 1,
             "finalRound": 1
         },
         "europeSupercup": {
             "name": "Supercopa Europea",
+            "KORound": 1,
             "finalRound": 1
         },
         "intertoto": {
             "name": "Intertoto",
+            "KORound": 1,
             "finalRound": 3
         },
         "nationsLeague": {
@@ -176,6 +180,7 @@
         },
         "segunda": {
             "name": "Segunda",
+            "KORound": 15,
             "finalRound": 14
         }
     }

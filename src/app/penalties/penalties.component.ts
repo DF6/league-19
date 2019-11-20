@@ -80,19 +80,19 @@ export class PenaltiesComponent implements OnInit{
         switch (penalty.tournament) {
                 case 'Primera':
                 case 'Segunda':
-                    ret = (penalty.round > 10 && penalty.round < 15);
+                    ret = (penalty.round > 7);
                     break;
                 case 'Copa':
-                    ret = (penalty.round > 6 && penalty.round < 9);
-                    break;
-                case 'Champions League':
-                    ret = (penalty.round > 10 && penalty.round < 13);
-                    break;
-                case 'Europa League':
                     ret = (penalty.round > 4 && penalty.round < 7);
                     break;
+                case 'Champions League':
+                    ret = (penalty.round > 8 && penalty.round < 11);
+                    break;
+                case 'Europa League':
+                    ret = (penalty.round > 2 && penalty.round < 5);
+                    break;
                 case 'Intertoto':
-                    ret = (penalty.round > 2);
+                    ret = (penalty.round > 0);
                     break;
                 case 'Supercopa de Clubes':
                 case 'Supercopa de Europa':
@@ -102,7 +102,6 @@ export class PenaltiesComponent implements OnInit{
         return ret;
     }
 
-    
     private updateYellowCount(action) {
         let updated = false;
         let isPenalty = false;
