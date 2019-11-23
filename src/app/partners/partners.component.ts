@@ -18,7 +18,7 @@ export class PartnersComponent{
     constructor(private http: Http, private router: Router) {
         this.user = JSON.parse(sessionStorage.getItem('user'));
         this.users = JSON.parse(sessionStorage.getItem('users')).users;
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'PARTNERS'}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'PARTNERS'}).subscribe( (response) => {
                 this.partners = response.json().partners;
                 this.partners.forEach( (value) => {
                     if(value.team == this.user.teamID) {
@@ -29,7 +29,7 @@ export class PartnersComponent{
     }
 
     public choosePartner(partner) {
-        this.http.post('./CMDataRequesting.php', {type: 'firPat', team: this.user.teamID, partner: partner}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'firPat', team: this.user.teamID, partner: partner}).subscribe( (response) => {
             alert(response.json().message);
             if(response.json().success) {
                 this.router.navigateByUrl('usuario');

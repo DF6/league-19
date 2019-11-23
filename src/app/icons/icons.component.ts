@@ -17,10 +17,10 @@ export class IconsComponent{
     public user;
 
     constructor(private http: Http, private router: Router) {
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
             this.constants = response.json().constants[0];
             this.user = JSON.parse(sessionStorage.getItem('user'));
-            this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
+            this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
                 this.players = response.json().players;
                 this.players.forEach( (value) => {
                     while (value.name.indexOf('/n') != -1) {
@@ -47,7 +47,7 @@ export class IconsComponent{
     }
     
     public forceSignin(player) {
-        this.http.post('./CMDataRequesting.php', {type: 'claJug', player: player.id, oldTeam: player.teamID, buyerTeam: this.user.teamID, amount: (player.salary*10), market: this.constants.marketEdition}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'claJug', player: player.id, oldTeam: player.teamID, buyerTeam: this.user.teamID, amount: (player.salary*10), market: this.constants.marketEdition}).subscribe( (response) => {
             alert(response.json().message);
             if(response.json().success) {
                 this.router.navigateByUrl('usuario');

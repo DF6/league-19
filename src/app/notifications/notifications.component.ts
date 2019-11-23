@@ -28,7 +28,7 @@ export class NotificationsComponent implements OnInit{
 
     private getMatches() {
         let finalTableMatches = [];
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
             let matchesArray = response.json().matches;
             const cupLastEdition = this.getLastEdition('Copa');
             const tournament = this.getTournamentByEdition(cupLastEdition);

@@ -40,7 +40,7 @@ export class RegistroComponent implements OnInit {
             }
         });
         if (registering) {
-            this.http.post('./CMDataRequesting.php', {type: 'regUsu', user: this.user, pass: this.pass, email: this.email}).subscribe( (response) => {
+            this.http.post('./test_CMDataRequesting.php', {type: 'regUsu', user: this.user, pass: this.pass, email: this.email}).subscribe( (response) => {
                 const users = response.json() ? response.json().users : null;
                 sessionStorage.setItem('users', JSON.stringify({users: users}));
               });

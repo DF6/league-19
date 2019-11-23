@@ -72,7 +72,7 @@ export class MatchFillerComponent implements OnInit{
     ngOnInit() {
         this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
         this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
             this.players = response.json().players;
             this.players.forEach( (value) => {
                 while (value.name.indexOf('/n') != -1) {
@@ -188,7 +188,7 @@ export class MatchFillerComponent implements OnInit{
     public sendMatchInfo() {
         if (!this.sent) {
             this.sent = true;
-            this.http.post('./CMDataRequesting.php', {type: 'setRes', localGoals: this.local.score, awayGoals: this.away.score, matchID: this.data.id}).subscribe( (response) => {
+            this.http.post('./test_CMDataRequesting.php', {type: 'setRes', localGoals: this.local.score, awayGoals: this.away.score, matchID: this.data.id}).subscribe( (response) => {
                 if (response.json().success) {
                     let local = {points: 0, won: 0, draw: 0, lost: 0};
                     let away = {points: 0, won: 0, draw: 0, lost: 0};
@@ -207,8 +207,8 @@ export class MatchFillerComponent implements OnInit{
                         away.draw = 1;
                     }
                     if(this.appService.isUpdatableStanding(this.appService.getMatchById(this.data.id))) {
-                        this.http.post('./CMDataRequesting.php', {type: 'updSta', points: local.points, won: local.won, draw: local.draw, lost: local.lost, goalsFor: this.local.score, goalsAgainst: this.away.score, tournamentID: this.data.tournament, team: this.data.local});
-                        this.http.post('./CMDataRequesting.php', {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, goalsFor: this.away.score, goalsAgainst: this.local.score, tournamentID: this.data.tournament, team: this.data.away});
+                        this.http.post('./test_CMDataRequesting.php', {type: 'updSta', points: local.points, won: local.won, draw: local.draw, lost: local.lost, goalsFor: this.local.score, goalsAgainst: this.away.score, tournamentID: this.data.tournament, team: this.data.local});
+                        this.http.post('./test_CMDataRequesting.php', {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, goalsFor: this.away.score, goalsAgainst: this.local.score, tournamentID: this.data.tournament, team: this.data.away});
                     }
                     this.sendActionsOfTheMatch();
                 } else {
@@ -259,13 +259,13 @@ export class MatchFillerComponent implements OnInit{
             query += this.mountAction('M', value);
         });
         if (query != '') {
-            this.http.post('./CMDataRequesting.php', {type: 'insAct', query: query}).subscribe( () => {
+            this.http.post('./test_CMDataRequesting.php', {type: 'insAct', query: query}).subscribe( () => {
                 this.matchFilled.emit();
             });
         } else {
             this.matchFilled.emit();
         }
-        this.http.post('./CMDataRequesting.php', {type: 'log', user: JSON.parse(sessionStorage.getItem('user')).id, message: 'Partido insertado: ' + this.data.id + ''}).subscribe( () => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'log', user: JSON.parse(sessionStorage.getItem('user')).id, message: 'Partido insertado: ' + this.data.id + ''}).subscribe( () => {
             console.log('Log insertado');
         });
     }

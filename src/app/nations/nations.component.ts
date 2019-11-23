@@ -34,7 +34,7 @@ export class NationsComponent implements OnInit{
         this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
         this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
         this.setTableConfig();
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'ST'}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'ST'}).subscribe( (response) => {
             this.standingsArray = response.json().standings;
             const nationsLastEdition = this.getLastEdition('Nations League', this.standingsArray[32].tournamentID).toString();
             this.season = this.getTournamentById(nationsLastEdition).edition;
@@ -235,7 +235,7 @@ export class NationsComponent implements OnInit{
             this.groupB.dataRows = bStands;
             this.groupC.dataRows = cStands;
             this.groupD.dataRows = dStands;
-            this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
+            this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
                 this.matches = response.json() ? response.json().matches : null;
                 sessionStorage.setItem('matches', JSON.stringify({matches: this.matches}));
                 let nlMatches = [];

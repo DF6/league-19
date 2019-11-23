@@ -76,33 +76,33 @@ export class AppService {
     }
 
     public getConstants(): any {
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
             this.data.constants = response.json() ? response.json().constants[0] : {};
         });
     }
 
     public getMatchesObservable(): Observable<any> {
-        return this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'});
+        return this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'M'});
     }
 
     public getPlayers() {
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
             this.data.players = response.json() ? response.json().players : [];
         });
     }
 
     public getSignins() {
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
             this.data.signins = response.json() ? response.json().signins : [];
         });
     }
 
     public getSigninsObservable(): Observable<any> {
-        return this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'S'});
+        return this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'S'});
     }
 
     public getTeams() {
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'T'}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'T'}).subscribe( (response) => {
             this.data.teams = response.json() ? response.json().teams : [];
             this.data.teams.forEach( (value) => {
                 value.nation = this.convertNToÑ(value.nation);
@@ -111,13 +111,13 @@ export class AppService {
     }
 
     public getTournaments() {
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'TO'}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'TO'}).subscribe( (response) => {
             this.data.tournaments = response.json() ? response.json().tournaments : [];
         });
     }
 
     public getUsers() {
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'U'}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'U'}).subscribe( (response) => {
             this.data.users = response.json() ? response.json().users : [];
         });
     }

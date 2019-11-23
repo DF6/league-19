@@ -42,7 +42,7 @@ export class AdminPageComponent implements OnInit{
     }
 
     ngOnInit() {
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
             this.players = response.json().players;
             this.players.forEach( (value) => {
                 while (value.name.indexOf('/n') != -1) {
@@ -93,7 +93,7 @@ export class AdminPageComponent implements OnInit{
 
     public discountSalaries() {
         this.salaryData.forEach( (value) => {
-            this.http.post('./CMDataRequesting.php', {type: 'chaSal', amount: value.salaries, id: value.team});
+            this.http.post('./test_CMDataRequesting.php', {type: 'chaSal', amount: value.salaries, id: value.team});
         });
         alert('Terminado');
     }

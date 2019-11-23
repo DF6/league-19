@@ -34,7 +34,7 @@ export class ChampionsComponent implements OnInit {
         this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
         this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
         this.setTableConfig();
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'ST'}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'ST'}).subscribe( (response) => {
             this.standingsArray = response.json().standings;
             const championsLastEdition = this.getLastEdition('Champions League', this.standingsArray[16].tournamentID).toString();
             this.season = this.getTournamentById(championsLastEdition).edition;
@@ -231,7 +231,7 @@ export class ChampionsComponent implements OnInit {
             this.groupB.dataRows = bStands;
             this.groupC.dataRows = cStands;
             this.groupD.dataRows = dStands;
-            this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
+            this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
                 this.matches = response.json() ? response.json().matches : null;
                 let championsMatches = [];
                 const championsLastEdition = this.getLastEdition('Champions League', this.standingsArray[16].tournamentID).toString();

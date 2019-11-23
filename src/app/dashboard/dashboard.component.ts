@@ -30,7 +30,7 @@ export class DashboardComponent implements OnInit {
 
     public getRemainingMatches(team) {
       let myTeamMatches = [];
-      this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
+      this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
         this.matches = response.json().matches;
         this.matches.forEach( (value, key) => {
             if ((value.local == team || value.away == team) && (value.localGoals == '-1' && value.awayGoals == '-1')) {

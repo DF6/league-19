@@ -25,7 +25,7 @@ export class FreePlayersComponent implements OnInit{
     constructor(private http: Http){}
 
     ngOnInit() {
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
             this.constants = response.json().constants[0];
             this.user = JSON.parse(sessionStorage.getItem('user'));
             this.setTableConfig();
@@ -35,7 +35,7 @@ export class FreePlayersComponent implements OnInit{
 
     public setTable() {
         this.tableData1.dataRows = [];
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
             this.players = response.json().players;
             let freeplayers = [];
             this.players.forEach( (value) => {
@@ -48,7 +48,7 @@ export class FreePlayersComponent implements OnInit{
     }
 
     public hireFreePlayer(player) {
-        this.http.post('./CMDataRequesting.php', {type: 'conLib', team: this.user.teamID, player: player, market: this.constants.marketEdition}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'conLib', team: this.user.teamID, player: player, market: this.constants.marketEdition}).subscribe( (response) => {
             if(response.json().success) {
                 this.setTable();
             }

@@ -42,7 +42,7 @@ export class StatisticsComponent implements OnInit{
         });
         this.tournaments = finalTournaments;
         this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
             this.players = response.json().players;
             this.players.forEach( (value) => {
                 while (value.name.indexOf('/n') != -1) {
@@ -51,9 +51,9 @@ export class StatisticsComponent implements OnInit{
             });
             this.actualTournament = this.tournaments[0];
             this.setTableConfig();
-            this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
+            this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
                 this.matches = response.json().matches;
-                this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'A'}).subscribe( (response) => {
+                this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'A'}).subscribe( (response) => {
                     this.actionsArray = response.json().actions;
                     this.fillTables();
                 });

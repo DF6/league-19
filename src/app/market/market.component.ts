@@ -28,7 +28,7 @@ export class MarketComponent implements OnInit{
     constructor(private http: Http){}
 
     ngOnInit() {
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
             this.constants = response.json().constants[0];
             this.edition = this.constants.marketEdition;
             this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
@@ -39,9 +39,9 @@ export class MarketComponent implements OnInit{
 
     public setTable() {
         this.tableData1.dataRows = [];
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
             this.signins = response.json().signins;
-            this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
+            this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
                 this.players = response.json().players;
                 let marketResume = [];
                 this.signins.forEach( (value) => {
