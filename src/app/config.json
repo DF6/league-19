@@ -38,6 +38,14 @@
     "notResolvedMatch": -1,
     "notTeam": 0,
     "leagues": [ "Primera", "Segunda" ],
+    "roundNames": {
+        "groupStage": "Fase de Grupos",
+        "outOf16": "Octavos de Final",
+        "quarterFinals": "Cuartos de Final",
+        "semifinals": "Semifinales",
+        "final": "Final",
+        "thirdAndFourthPlace": "Tercer y Cuarto Puesto"
+    },
     "roundRobinTournaments": [ "Primera", "Segunda", "Nations League"],
     "routes": {
         "admin": [
@@ -160,10 +168,20 @@
             "KORound": 1,
             "finalRound": 1
         },
+        "europaLeague": {
+            "name": "Europa League",
+            "KORound": 1,
+            "finalRound": 5
+        },
         "europeSupercup": {
             "name": "Supercopa Europea",
             "KORound": 1,
             "finalRound": 1
+        },
+        "generalCup": {
+            "name": "Copa",
+            "KORound": 1,
+            "finalRound": 7
         },
         "intertoto": {
             "name": "Intertoto",
