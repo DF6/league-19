@@ -18,7 +18,7 @@ import { TypographyComponent } from './typography/typography.component';
 import { IconsComponent } from './icons/icons.component';
 import { MapsComponent } from './maps/maps.component';
 import { NotificationsComponent } from './notifications/notifications.component';
-import { UpgradeComponent } from './upgrade/upgrade.component';
+import { RulesComponent } from './rules/rules.component';
 import { HttpModule } from '@angular/http';
 import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './registro/registro.component';
@@ -54,7 +54,7 @@ import { RoundkeysModule } from './roundkeys/roundkeys.module';
     IconsComponent,
     MapsComponent,
     NotificationsComponent,
-    UpgradeComponent,
+    RulesComponent,
     LoginComponent,
     RegistroComponent,
     LogoutComponent,

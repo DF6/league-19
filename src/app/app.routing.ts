@@ -7,7 +7,7 @@ import { TypographyComponent }   from './typography/typography.component';
 import { IconsComponent }   from './icons/icons.component';
 import { MapsComponent }   from './maps/maps.component';
 import { NotificationsComponent }   from './notifications/notifications.component';
-import { UpgradeComponent }   from './upgrade/upgrade.component';
+import { RulesComponent }   from './rules/rules.component';
 import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './registro/registro.component';
 import { LogoutComponent } from './logout/logout.component';
@@ -63,7 +63,7 @@ export const AppRoutes: Routes = [
     },
     {
         path: 'normas',
-        component: UpgradeComponent
+        component: RulesComponent
     },
     {
         path: 'login',
