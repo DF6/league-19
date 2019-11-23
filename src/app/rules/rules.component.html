@@ -1,35 +1,75 @@
 <div class="main-content">
     <div class="container-fluid">
         <div class="row">
-                    <div class="col-md-8 col-md-offset-2">
-                        <div class="card">
-                                <div class="header text-center">
-                                    <p class="category">Última actualización: 06/03/2019<br/><br/></p>
-        </div></div></div></div>
+            <div class="col-md-4 col-sm-12" (click)="resetView();showCard.matchRules = true">
+                <div style="cursor: pointer" class="card">
+                    <div class="header text-center">
+                        <p style="font-weight: bold" class="category">Partidos<br/><br/></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12" (click)="resetView();showCard.playerRules = true">
+                <div style="cursor: pointer" class="card">
+                    <div class="header text-center">
+                        <p style="font-weight: bold" class="category">Jugadores y Contratos<br/><br/></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12" (click)="resetView();showCard.marketRules = true">
+                <div style="cursor: pointer" class="card">
+                    <div class="header text-center">
+                        <p style="font-weight: bold" class="category">Mercado<br/><br/></p>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+            <div class="col-md-4 col-sm-12" (click)="resetView();showCard.penaltyRules = true">
+                <div style="cursor: pointer" class="card">
+                    <div class="header text-center">
+                        <p style="font-weight: bold" class="category">Sanciones y Lesiones<br/><br/></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12" (click)="resetView();showCard.prizes = true">
+                <div style="cursor: pointer" class="card">
+                    <div class="header text-center">
+                        <p style="font-weight: bold" class="category">Premios de Torneos<br/><br/></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12" (click)="resetView();showCard.polls = true">
+                <div style="cursor: pointer" class="card">
+                    <div class="header text-center">
+                        <p style="font-weight: bold" class="category">Encuestas<br/><br/></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="showCard.matchRules">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="header text-center">
                         <h3 class="title">Normas de Partidos</h3>
                         <p class="category" style="text-align: left">
-                                <br/><br/> <span>Partidos a 6 minutos cada parte, con velocidad normal</span>
-                                <br/><br/> <span>La invitación debe ser enviada por el equipo local</span>
-                                <br/><br/> <span>El ganador del partido debe postear los datos de éste, incluyendo: resultado, goles, asistencias, tarjetas amarillas, tarjetas rojas, lesiones y MVP. En caso de empate, debe postear el local.</span>
-                                <br/><br/> <span>No está permitido trucar las estadísticas de los jugadores</span>
-                                <br/><br/> <span>No está permitido hacer pausas con intención de desestabilizar psicológicamente al rival</span>
-                                <br/><br/> <span>No está permitido perder tiempo de manera deliberada</span>
-                                <br/><br/> <span>No está permitido obstruir tiros de falta poniendo un jugador bajo el larguero o cerca de él</span>
-                                <br/><br/> <span>No está permitido faltar al respeto al rival antes, durante o después del partido</span>
-                                <br/><br/> <span>Las prórrogas en caso de empate en eliminatoria serán a gol de oro: el primero que marque en un nuevo partido gana</span>
-                                <br/><br/> <span>En caso de darse estos supuestos, el jugador puede denunciar ante la administración alguna de éstas prácticas, incluyendo prueba visual. En caso de juzgarse cierto, a criterio siempre del administrador, se podrá sancionar al equipo infractor con uno o varios partidos de sanción, incluso con la expulsión de la liga si el jugador es reincidente.</span>
+                            <br/><br/> <span>Partidos a 6 minutos cada parte, con velocidad normal</span>
+                            <br/><br/> <span>La invitación debe ser enviada por el equipo local</span>
+                            <br/><br/> <span>El ganador del partido debe postear los datos de éste, incluyendo: resultado, goles, asistencias, tarjetas amarillas, tarjetas rojas, lesiones y MVP. En caso de empate, debe postear el local.</span>
+                            <br/><br/> <span>No está permitido trucar las estadísticas de los jugadores</span>
+                            <br/><br/> <span>No está permitido hacer pausas con intención de desestabilizar psicológicamente al rival</span>
+                            <br/><br/> <span>No está permitido perder tiempo de manera deliberada</span>
+                            <br/><br/> <span>No está permitido obstruir tiros de falta poniendo un jugador bajo el larguero o cerca de él</span>
+                            <br/><br/> <span>No está permitido faltar al respeto al rival antes, durante o después del partido</span>
+                            <br/><br/> <span>Las prórrogas en caso de empate en eliminatoria serán a gol de oro: el primero que marque en un nuevo partido gana</span>
+                            <br/><br/> <span>En caso de darse estos supuestos, el jugador puede denunciar ante la administración alguna de éstas prácticas, incluyendo prueba visual. En caso de juzgarse cierto, a criterio siempre del administrador, se podrá sancionar al equipo infractor con uno o varios partidos de sanción, incluso con la expulsión de la liga si el jugador es reincidente.</span>
                         </p>
                         <br>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-                <div class="col-md-8 col-md-offset-2">
+        <div class="row" *ngIf="showCard.playerRules">
+                <div class="col-md-12">
                     <div class="card">
                         <div class="header text-center">
                             <h3 class="title">Normas de Jugadores y Contratos</h3>
@@ -53,8 +93,8 @@
                     </div>
                 </div>
         </div>
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+        <div class="row" *ngIf="showCard.marketRules">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="header text-center">
                         <h3 class="title">Normas de Mercado</h3>
@@ -88,8 +128,8 @@
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
+        <div class="row" *ngIf="showCard.penaltyRules">
+            <div class="col-md-12">
                 <div class="card">
                     <div class="header text-center">
                         <h3 class="title">Normas de Sanciones y Lesiones</h3>
@@ -114,6 +154,173 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="row" *ngIf="showCard.penaltyRules">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header text-center">
+                        <h3 class="title">Premios de Torneos</h3>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-4 col-sm-12">
+                <div class="card">
+                    <div class="header text-center">
+                        <p class="category">
+                            Primera División
+                            <br/><br/> <span>Un campeonato regular de 14 jornadas a ida y vuelta. El primero gana la liga</span>
+                            <br/><br/> <span>1º - 110M€</span>
+                            <br/><span>2º - 100M€</span>
+                            <br/><span>3º -  95M€</span>
+                            <br/><span>4º -  90M€</span>
+                            <br/><span>5º -  85M€</span>
+                            <br/><span>6º -  80M€</span>
+                            <br/><span>7º -  75M€</span>
+                            <br/><span>8º -  70M€</span>
+                        </p>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                    <div class="card">
+                        <div class="header text-center">
+                            <p class="category">
+                                Segunda División
+                                <br/><br/> <span>Un campeonato regular de 14 jornadas a ida y vuelta. El primero asciende directamente, del 2 al 5 disputan un playoff (2 vs 5 y 3 vs 4) a doble partido, y los ganadores se disputarán a doble partido el ascenso a primera</span>
+                                <br/><br/> <span>1º - 95M€</span>
+                                <br/><span>2º - 85M€</span>
+                                <br/><span>3º - 80M€</span>
+                                <br/><span>4º - 75M€</span>
+                                <br/><span>5º - 70M€</span>
+                                <br/><span>6º - 65M€</span>
+                                <br/><span>7º - 60M€</span>
+                                <br/><span>8º - 60M€</span>
+                            </p>
+                            <br>
+                        </div>
+                    </div>
+            </div>
+            <div class="col-md-4 col-sm-12">
+                    <div class="card">
+                        <div class="header text-center">
+                            <p class="category">
+                                Premios Auxiliares de Liga Regular
+                                <br/><br/> <span>Pichichi en temporada: 12 M€</span>
+                                <br/><span>Equipo menos goleado: 10 M€</span>
+                                <br/><span>Equipo más goleador: 10 M€</span>
+                                <br/><span>MVP temporada: 10 M€</span>
+                                <br/><span>Maximo asistente: 8 M€</span>
+                            </p>
+                            <br>
+                        </div>
+                    </div>
+            </div>
+        </div>
+        <div class="row">
+                <div class="col-md-4 col-sm-12">
+                    <div class="card">
+                        <div class="header text-center">
+                            <p class="category">
+                                Copa General de Clubes
+                                <br/><br/> <span>Copa por eliminatorias a doble partido hasta la final a partido único</span>
+                                <br/><br/> <span>1º - 18M€</span>
+                                <br/><span>2º - 12M€</span>
+                                <br/><span>3º -  8M€</span>
+                                <br/><span>4º -  5M€</span>
+                            </p>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                        <div class="card">
+                            <div class="header text-center">
+                                <p class="category">
+                                    Champions League
+                                    <br/><br/> <span>El máximo trofeo continental. Fase de grupos más eliminatorias a doble partido hasta la final</span>
+                                    <br/><br/> <span>1º - 25M€</span>
+                                    <br/><span>2º - 18M€</span>
+                                    <br/><span>3º - 14M€</span>
+                                    <br/><span>4º - 10M€</span>
+                                    <br/><span>Participación - 2M€</span>
+                                </p>
+                                <br>
+                            </div>
+                        </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                        <div class="card">
+                            <div class="header text-center">
+                                <p class="category">
+                                    Europa League
+                                    <br/><br/> <span>El segundo trofeo continental. Participan los eliminados en fase de grupos de Champions. Eliminatorias a doble partido hasta la final</span>
+                                    <br/><br/> <span>1º - 15M€</span>
+                                    <br/><span>2º - 10M€</span>
+                                    <br/><span>3º -  7M€</span>
+                                    <br/><span>4º -  5M€</span>
+                                </p>
+                                <br>
+                            </div>
+                        </div>
+                </div>
+        </div>
+        <div class="row">
+                <div class="col-md-4 col-sm-12">
+                    <div class="card">
+                        <div class="header text-center">
+                            <p class="category">
+                                Copa Mugre
+                                <br/><br/> <span>EL AUTÉNTICO TROFEO DE LA LIGA. Participan los eliminados en primera ronda de Europa League. Semifinal a doble partido y final a partido único</span>
+                                <br/><br/> <span>1º - 5M€</span>
+                                <br/><span>2º - 3M€</span>
+                                <br/><span>3º - 2M€</span>
+                                <br/><span>4º -  1M€</span>
+                            </p>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                        <div class="card">
+                            <div class="header text-center">
+                                <p class="category">
+                                    Liga de Naciones
+                                    <br/><br/> <span>Competición de selecciones con 4 divisiones de 4 equipos cada una. 
+                                    Se jugarán 3 jornadas, ascendiendo el primero de cada división y descendiendo el último. 
+                                    Las 3 jornadas se jugarán durante una vuelta entera, de manera que haya dos ligas de naciones 
+                                    por temporada. Cada temporada se sortearán de nuevo las selecciones. La convocatoria de éstas 
+                                    es libre. Los ganadores de la segunda vuelta además disputarán un playoff a partido único 
+                                    por ser el campeón del año, en el que el premio será 30 minutos de acceso prioritario a las 
+                                    cláusulas del siguiente mercado.</span>
+                                    <br/><br/> <span>1º - 25M€</span>
+                                    <br/><span>2º - 18M€</span>
+                                    <br/><span>3º - 14M€</span>
+                                    <br/><span>4º - 10M€</span>
+                                    <br/><span>Participación - 2M€</span>
+                                </p>
+                                <br>
+                            </div>
+                        </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                        <div class="card">
+                            <div class="header text-center">
+                                <p class="category">
+                                    Supercopas
+                                    <br/><br/> <span>El segundo trofeo continental. Participan los eliminados en fase de grupos de Champions. Eliminatorias a doble partido hasta la final</span>
+                                    <br/><br/> <span>1º - 15M€</span>
+                                    <br/><span>2º - 10M€</span>
+                                    <br/><span>3º -  7M€</span>
+                                    <br/><span>4º -  5M€</span>
+                                </p>
+                                <br>
+                            </div>
+                        </div>
+                </div>
         </div>
     </div>
 </div>

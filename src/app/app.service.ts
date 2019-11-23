@@ -107,13 +107,13 @@ export class AppService {
 
     public getMatchById(match) {
         return this.data.matches.filter( (filteredMatch) => { filteredMatch.id == match });
-        let matchToReturn = null;
+        /*let matchToReturn = null;
         this.data.matches.forEach( (value) => {
             if (value.id == match) {
                 matchToReturn = value;
             }
         });
-        return matchToReturn;
+        return matchToReturn;*/
     }
 
     public getMatchConfiguration(match, classNames, showTitle, previousConfig?: KeyConfig): KeyConfig {
@@ -144,13 +144,13 @@ export class AppService {
 
     public getPlayerById(player) {
         return this.data.players.filter( (filteredPlayer) => { filteredPlayer.id == player });
-        let playerToReturn = null;
+        /*let playerToReturn = null;
         this.data.players.forEach( (value) => {
             if (value.id == player) {
                 playerToReturn = value;
             }
         });
-        return playerToReturn;
+        return playerToReturn;*/
     }
 
     public getPlayers() {
@@ -164,13 +164,13 @@ export class AppService {
 
     public getPlayersByTeam(team) {
         return this.data.players.filter( (filteredPlayer) => { filteredPlayer.teamID == team });
-        let playersToReturn = [];
+        /*let playersToReturn = [];
         this.data.players.forEach( (value) => {
             if (value.teamID == team) {
                 playersToReturn.push(value);
             }
         });
-        return playersToReturn;
+        return playersToReturn;*/
     }
 
     public getRoundName(match) {
@@ -226,13 +226,13 @@ export class AppService {
 
     public getTeamById(team) {
         return this.data.teams.filter( (filteredTeam) => { filteredTeam.id == team });
-        let teamToReturn = null;
+        /*let teamToReturn = null;
         this.data.teams.forEach( (value) => {
             if (value.id == team) {
                 teamToReturn = value;
             }
         });
-        return teamToReturn;
+        return teamToReturn;*/
     }
 
     public getTeams() {
@@ -247,14 +247,14 @@ export class AppService {
     public getTournamentById(id): any {
         id = parseInt(id);
         return this.data.tournaments.filter( (filteredTournament) => { filteredTournament.id == id });
-        let tournament = {};
+        /*let tournament = {};
         id = parseInt(id);
         this.data.tournaments.forEach( (value) => {
             if (value.id == id) {
                 tournament = value;
             }
         });
-        return tournament;
+        return tournament;*/
     }
 
     private getTournamentByNameAndEdition(name, edition) {
