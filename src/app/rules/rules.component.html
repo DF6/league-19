@@ -155,7 +155,7 @@
                 </div>
             </div>
         </div>
-        <div class="row" *ngIf="showCard.penaltyRules">
+        <div class="row" *ngIf="showCard.prizes">
             <div class="col-md-12">
                 <div class="card">
                     <div class="header text-center">
@@ -165,7 +165,7 @@
                 </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="showCard.prizes">
             <div class="col-md-4 col-sm-12">
                 <div class="card">
                     <div class="header text-center">
@@ -220,7 +220,7 @@
                     </div>
             </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="showCard.prizes">
                 <div class="col-md-4 col-sm-12">
                     <div class="card">
                         <div class="header text-center">
@@ -268,7 +268,7 @@
                         </div>
                 </div>
         </div>
-        <div class="row">
+        <div class="row" *ngIf="showCard.prizes">
                 <div class="col-md-4 col-sm-12">
                     <div class="card">
                         <div class="header text-center">
@@ -319,5 +319,15 @@
                         </div>
                 </div>
         </div>
+        <div class="row" *ngIf="showCard.polls">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="header text-center">
+                            <h3 class="title">¡Todavía no hay encuestas!</h3>
+                            <p class="category" style="text-align: left"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </div>
 </div>
