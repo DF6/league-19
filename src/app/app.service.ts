@@ -106,7 +106,7 @@ export class AppService {
     }
 
     public getMatchById(match) {
-        return this.data.matches.filter( (filteredMatch) => { filteredMatch.id == match });
+        return this.data.matches.filter( (filteredMatch) => { return filteredMatch.id == match });
         /*let matchToReturn = null;
         this.data.matches.forEach( (value) => {
             if (value.id == match) {
@@ -143,7 +143,7 @@ export class AppService {
     }
 
     public getPlayerById(player) {
-        return this.data.players.filter( (filteredPlayer) => { filteredPlayer.id == player });
+        return this.data.players.filter( (filteredPlayer) => { return filteredPlayer.id == player });
         /*let playerToReturn = null;
         this.data.players.forEach( (value) => {
             if (value.id == player) {
@@ -163,7 +163,7 @@ export class AppService {
     }
 
     public getPlayersByTeam(team) {
-        return this.data.players.filter( (filteredPlayer) => { filteredPlayer.teamID == team });
+        return this.data.players.filter( (filteredPlayer) => { return filteredPlayer.teamID == team });
         /*let playersToReturn = [];
         this.data.players.forEach( (value) => {
             if (value.teamID == team) {
@@ -225,7 +225,7 @@ export class AppService {
     }
 
     public getTeamById(team) {
-        return this.data.teams.filter( (filteredTeam) => { filteredTeam.id == team });
+        return this.data.teams.filter( (filteredTeam) => { return filteredTeam.id == team });
         /*let teamToReturn = null;
         this.data.teams.forEach( (value) => {
             if (value.id == team) {
@@ -246,7 +246,7 @@ export class AppService {
 
     public getTournamentById(id): any {
         id = parseInt(id);
-        return this.data.tournaments.filter( (filteredTournament) => { filteredTournament.id == id });
+        return this.data.tournaments.filter( (filteredTournament) => { return filteredTournament.id == id });
         /*let tournament = {};
         id = parseInt(id);
         this.data.tournaments.forEach( (value) => {

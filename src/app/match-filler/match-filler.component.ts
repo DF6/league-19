@@ -20,7 +20,7 @@ export interface MatchData {
     templateUrl: 'match-filler.component.html'
 })
 
-export class MatchFillerComponent implements OnInit{
+export class MatchFillerComponent{
 
     @Input() data: MatchData;
     @Output() matchFilled = new EventEmitter<boolean>();
@@ -35,52 +35,44 @@ export class MatchFillerComponent implements OnInit{
     public sent = false;
 
     constructor(private http: Http, private appService: AppService){
-        this.local = {
-            score: 0,
-            scorers: [],
-            assistants: [],
-            yellowCards: [],
-            redCards: [],
-            injuries: [],
-            mvp: []
-        };
-        this.away = {
-            score: 0,
-            scorers: [],
-            assistants: [],
-            yellowCards: [],
-            redCards: [],
-            injuries: [],
-            mvp: []
-        };
-        this.models = {
-            localScorer: null,
-            awayScorer: null,
-            localAssistant: null,
-            awayAssistant: null,
-            localYellowCard: null,
-            awayYellowCard: null,
-            localRedCard: null,
-            awayRedCard: null,
-            localinjury: null,
-            awayinjury: null,
-            localmvp: null,
-            awaymvp: null
-        }
-    }
-
-    ngOnInit() {
-        this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
-        this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
-        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
-            this.players = response.json().players;
-            this.players.forEach( (value) => {
-                while (value.name.indexOf('/n') != -1) {
-                  value.name = value.name.replace('/n', 'ñ');
-                }
-            });
-            this.localPlayers = this.getPlayersByTeam(this.data.local);
-            this.awayPlayers = this.getPlayersByTeam(this.data.away);
+        this.appService.getTournaments();
+        this.appService.getTeams();
+        this.appService.getPlayers();
+        this.appService.getMatchesObservable().subscribe( () => {
+            this.local = {
+                score: 0,
+                scorers: [],
+                assistants: [],
+                yellowCards: [],
+                redCards: [],
+                injuries: [],
+                mvp: []
+            };
+            this.away = {
+                score: 0,
+                scorers: [],
+                assistants: [],
+                yellowCards: [],
+                redCards: [],
+                injuries: [],
+                mvp: []
+            };
+            this.models = {
+                localScorer: null,
+                awayScorer: null,
+                localAssistant: null,
+                awayAssistant: null,
+                localYellowCard: null,
+                awayYellowCard: null,
+                localRedCard: null,
+                awayRedCard: null,
+                localinjury: null,
+                awayinjury: null,
+                localmvp: null,
+                awaymvp: null
+            };
+            this.localPlayers = this.appService.getPlayersByTeam(this.data.local);
+            this.awayPlayers = this.appService.getPlayersByTeam(this.data.away);
         });
     }
 
@@ -207,8 +199,8 @@ export class MatchFillerComponent implements OnInit{
                         away.draw = 1;
                     }
                     if(this.appService.isUpdatableStanding(this.appService.getMatchById(this.data.id))) {
-                        this.http.post('./test_CMDataRequesting.php', {type: 'updSta', points: local.points, won: local.won, draw: local.draw, lost: local.lost, goalsFor: this.local.score, goalsAgainst: this.away.score, tournamentID: this.data.tournament, team: this.data.local});
-                        this.http.post('./test_CMDataRequesting.php', {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, goalsFor: this.away.score, goalsAgainst: this.local.score, tournamentID: this.data.tournament, team: this.data.away});
+                        this.http.post('./test_CMDataRequesting.php', {type: 'updSta', points: local.points, won: local.won, draw: local.draw, lost: local.lost, goalsFor: this.local.score, goalsAgainst: this.away.score, tournamentID: this.data.tournament, team: this.data.local}).subscribe( () => {});
+                        this.http.post('./test_CMDataRequesting.php', {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, goalsFor: this.away.score, goalsAgainst: this.local.score, tournamentID: this.data.tournament, team: this.data.away}).subscribe( () => {});
                     }
                     this.sendActionsOfTheMatch();
                 } else {
@@ -271,49 +263,9 @@ export class MatchFillerComponent implements OnInit{
     }
 
     public mountAction(type, player) {
-        return "INSERT INTO actions (match_id, type, player) values ("
+        return "INSERT INTO test_actions (match_id, type, player) values ("
          + this.data.id + ", '"
          + type + "', "
          + player + "); ";
-    }
-
-    public getTeamById(team) {
-        let teamToReturn = null;
-        this.teams.forEach( (value) => {
-            if(value.id == team) {
-                teamToReturn = value;
-            }
-        });
-        return teamToReturn;
-    }
-
-    public getPlayerById(player) {
-        let playerToReturn = null;
-        this.players.forEach( (value) => {
-            if(value.id == player) {
-                playerToReturn = value;
-            }
-        });
-        return playerToReturn;
-    }
-
-    public getTournamentById(tournament) {
-        let tournamentToReturn = null;
-        this.tournaments.forEach( (value) => {
-            if(value.id == tournament) {
-                tournamentToReturn = value;
-            }
-        });
-        return tournamentToReturn;
-    }
-
-    public getPlayersByTeam(team) {
-        let playersToReturn = [];
-        this.players.forEach( (value) => {
-            if (value.teamID == team) {
-                playersToReturn.push(value);
-            }
-        });
-        return playersToReturn;
     }
 }
