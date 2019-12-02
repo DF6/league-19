@@ -180,7 +180,7 @@ export class MatchFillerComponent{
     public sendMatchInfo() {
         if (!this.sent) {
             this.sent = true;
-            this.http.post('./test_CMDataRequesting.php', {type: 'setRes', localGoals: this.local.score, awayGoals: this.away.score, matchID: this.data.id}).subscribe( (response) => {
+            this.http.post('./CMDataRequesting.php', {type: 'setRes', localGoals: this.local.score, awayGoals: this.away.score, matchID: this.data.id}).subscribe( (response) => {
                 if (response.json().success) {
                     let local = {points: 0, won: 0, draw: 0, lost: 0};
                     let away = {points: 0, won: 0, draw: 0, lost: 0};
@@ -199,8 +199,8 @@ export class MatchFillerComponent{
                         away.draw = 1;
                     }
                     if(this.appService.isUpdatableStanding(this.appService.getMatchById(this.data.id))) {
-                        this.http.post('./test_CMDataRequesting.php', {type: 'updSta', points: local.points, won: local.won, draw: local.draw, lost: local.lost, goalsFor: this.local.score, goalsAgainst: this.away.score, tournamentID: this.data.tournament, team: this.data.local}).subscribe( () => {});
-                        this.http.post('./test_CMDataRequesting.php', {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, goalsFor: this.away.score, goalsAgainst: this.local.score, tournamentID: this.data.tournament, team: this.data.away}).subscribe( () => {});
+                        this.http.post('./CMDataRequesting.php', {type: 'updSta', points: local.points, won: local.won, draw: local.draw, lost: local.lost, goalsFor: this.local.score, goalsAgainst: this.away.score, tournamentID: this.data.tournament, team: this.data.local}).subscribe( () => {});
+                        this.http.post('./CMDataRequesting.php', {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, goalsFor: this.away.score, goalsAgainst: this.local.score, tournamentID: this.data.tournament, team: this.data.away}).subscribe( () => {});
                     }
                     this.sendActionsOfTheMatch();
                 } else {
@@ -251,19 +251,19 @@ export class MatchFillerComponent{
             query += this.mountAction('M', value);
         });
         if (query != '') {
-            this.http.post('./test_CMDataRequesting.php', {type: 'insAct', query: query}).subscribe( () => {
+            this.http.post('./CMDataRequesting.php', {type: 'insAct', query: query}).subscribe( () => {
                 this.matchFilled.emit();
             });
         } else {
             this.matchFilled.emit();
         }
-        this.http.post('./test_CMDataRequesting.php', {type: 'log', user: JSON.parse(sessionStorage.getItem('user')).id, message: 'Partido insertado: ' + this.data.id + ''}).subscribe( () => {
+        this.http.post('./CMDataRequesting.php', {type: 'log', user: JSON.parse(sessionStorage.getItem('user')).id, message: 'Partido insertado: ' + this.data.id + ''}).subscribe( () => {
             console.log('Log insertado');
         });
     }
 
     public mountAction(type, player) {
-        return "INSERT INTO test_actions (match_id, type, player) values ("
+        return "INSERT INTO actions (match_id, type, player) values ("
          + this.data.id + ", '"
          + type + "', "
          + player + "); ";

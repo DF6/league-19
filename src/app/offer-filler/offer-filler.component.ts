@@ -41,9 +41,9 @@ export class OfferFillerComponent implements OnInit{
     ngOnInit() {
         this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
         this.user = JSON.parse(sessionStorage.getItem('user'));
-        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
             this.constants = response.json().constants[0];
-            this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
+            this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
                 this.players = response.json().players;
                 this.players.forEach( (value) => {
                     while (value.name.indexOf('/n') != -1) {
@@ -65,11 +65,11 @@ export class OfferFillerComponent implements OnInit{
 
     public sendOffer() {
         if(!this.signType) { this.signType = this.offer.signinType; }
-        this.http.post('./test_CMDataRequesting.php', {type: 'hacOfe', signinType: this.signType, player: this.offer.player, oldTeam: this.offer.oldTeam, newTeam: this.offer.buyerTeam, amount: this.offer.amount, market: this.constants.marketEdition}).subscribe( (response) => {
+        this.http.post('./CMDataRequesting.php', {type: 'hacOfe', signinType: this.signType, player: this.offer.player, oldTeam: this.offer.oldTeam, newTeam: this.offer.buyerTeam, amount: this.offer.amount, market: this.constants.marketEdition}).subscribe( (response) => {
             alert(response.json().message);
             if(response.json().success && this.offer.players.length > 0) {
                 this.offer.players.forEach( (value) => {
-                    this.http.post('./test_CMDataRequesting.php', {type: 'ofeJug', player: value.player, offerTeam: value.newTeam, originTeam: value.originTeam, signin: response.json().id}).subscribe( (response) => {
+                    this.http.post('./CMDataRequesting.php', {type: 'ofeJug', player: value.player, offerTeam: value.newTeam, originTeam: value.originTeam, signin: response.json().id}).subscribe( (response) => {
                         alert(response.json().message);
                     });
                 });

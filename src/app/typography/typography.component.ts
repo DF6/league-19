@@ -25,7 +25,7 @@ export class TypographyComponent{
         this.user = JSON.parse(sessionStorage.getItem('user'));
         this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
         this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
-        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
             this.constants = response.json().constants[0];
             this.setTableConfig();
             this.getMatchesByTeam(this.user.teamID);
@@ -34,7 +34,7 @@ export class TypographyComponent{
 
     private getMatchesByTeam(team) {
         this.matches = [];
-        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
             let matchesArray = response.json().matches;
             matchesArray.forEach( (value, key) => {
                 if (value.local == team || value.away == team) {

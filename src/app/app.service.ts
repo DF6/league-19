@@ -17,7 +17,7 @@ export interface KeyConfig {
     showTitle: boolean;
 }
 
-const PHPFILENAME = './test_CMDataRequesting.php';
+const PHPFILENAME = './CMDataRequesting.php';
 
 @Injectable()
 

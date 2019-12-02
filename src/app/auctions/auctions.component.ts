@@ -62,7 +62,7 @@ export class AuctionsComponent {
     }
 
     public raiseAuction(auctionID, index) {
-        this.http.post('./test_CMDataRequesting.php', {type: 'pujSub', newTeam: this.appService.data.user.teamID, id: auctionID, amount: this.amountsRaised[index]}).subscribe( (response) => {
+        this.http.post('./CMDataRequesting.php', {type: 'pujSub', newTeam: this.appService.data.user.teamID, id: auctionID, amount: this.amountsRaised[index]}).subscribe( (response) => {
             if(response.json().success) {
                 this.setTable();
             } else {
@@ -81,7 +81,7 @@ export class AuctionsComponent {
                                 this.appService.addZero(date.getHours()) + ":" + 
                                 this.appService.addZero(date.getMinutes()) + ":" + 
                                 this.appService.addZero(date.getSeconds());
-            this.http.post('./test_CMDataRequesting.php', {type: 'nueSub', playerName: this.appService.removeAccents(this.newPlayer.name), position: this.newPlayer.position.toUpperCase(), amount: this.newPlayer.amount, overage: this.newPlayer.overage, buyerTeam: this.appService.data.user.teamID, market: this.appService.data.constants.marketEdition, limitDate: formattedDate}).subscribe( (response) => {
+            this.http.post('./CMDataRequesting.php', {type: 'nueSub', playerName: this.appService.removeAccents(this.newPlayer.name), position: this.newPlayer.position.toUpperCase(), amount: this.newPlayer.amount, overage: this.newPlayer.overage, buyerTeam: this.appService.data.user.teamID, market: this.appService.data.constants.marketEdition, limitDate: formattedDate}).subscribe( (response) => {
                 if(response.json().success) {
                     this.setTable();
                     this.new = false;

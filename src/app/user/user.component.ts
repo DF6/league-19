@@ -34,11 +34,11 @@ export class UserComponent{
         this.user = JSON.parse(sessionStorage.getItem('user'));
         this.users = JSON.parse(sessionStorage.getItem('users')).users;
         this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
-        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
                 this.constants = response.json().constants[0];
                 this.getPlayersByTeam(this.user.teamID);
                 this.setTableConfig();
-                this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
+                this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
                     this.signins = response.json().signins;
                     this.setOffersOfMyTeam();
                 });
@@ -46,7 +46,7 @@ export class UserComponent{
     }
 
     public setSalary(player) {
-        this.http.post('./test_CMDataRequesting.php', {type: 'guaSal', player: player.id, salary: (player.newSalary/10), team: player.teamID}).subscribe( (response) => {
+        this.http.post('./CMDataRequesting.php', {type: 'guaSal', player: player.id, salary: (player.newSalary/10), team: player.teamID}).subscribe( (response) => {
             alert(response.json().message);
             if(response.json().success) {
                 player.salaryMode = false;
@@ -57,7 +57,7 @@ export class UserComponent{
     }
 
     public setEmblem(player) {
-        this.http.post('./test_CMDataRequesting.php', {type: 'hacEmb', player: player, team: this.user.teamID}).subscribe( (response) => {
+        this.http.post('./CMDataRequesting.php', {type: 'hacEmb', player: player, team: this.user.teamID}).subscribe( (response) => {
             alert(response.json().message);
             if(response.json().success) {
                 this.getPlayersByTeam(this.user.teamID);
@@ -73,7 +73,7 @@ export class UserComponent{
                 (value.signinType == 'G' || value.signinType == 'C') && value.accepted == 0 &&
                 value.oldTeam == this.user.teamID) {
                 value.playersOffered = [];
-                this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'PCS'}).subscribe( (response) => {
+                this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'PCS'}).subscribe( (response) => {
                     this.playerChangeSignins = response.json().playerChangeSignins;
                     this.playerChangeSignins.forEach( (value2) => {
                         if(value2.signinID == value.id) {
@@ -92,11 +92,11 @@ export class UserComponent{
     public resolveOffer(offer, result) {
         if(result) {
             if(confirm('¿Aceptar?')) {
-                this.http.post('./test_CMDataRequesting.php', {type: 'aceOfe', id: offer.id, player: offer.player, newTeam: offer.buyerTeam, oldTeam: offer.oldTeam, amount: offer.amount, signinType: offer.signinType, cedido: this.getPlayerById(offer.player).cedido}).subscribe( (response) => {
+                this.http.post('./CMDataRequesting.php', {type: 'aceOfe', id: offer.id, player: offer.player, newTeam: offer.buyerTeam, oldTeam: offer.oldTeam, amount: offer.amount, signinType: offer.signinType, cedido: this.getPlayerById(offer.player).cedido}).subscribe( (response) => {
                     alert(response.json().message) 
                     if(response.json().success) {
                         offer.playersOffered.forEach( (value) => {
-                            this.http.post('./test_CMDataRequesting.php', {type: 'traJug', player: value.player, oldTeam: value.originTeam, newTeam: value.newTeam, market: this.constants.marketEdition, signinType: offer.signinType, cedido: this.getPlayerById(offer.player).cedido}).subscribe( (response) => {
+                            this.http.post('./CMDataRequesting.php', {type: 'traJug', player: value.player, oldTeam: value.originTeam, newTeam: value.newTeam, market: this.constants.marketEdition, signinType: offer.signinType, cedido: this.getPlayerById(offer.player).cedido}).subscribe( (response) => {
                                 alert(response.json().message);
                                 if(response.json().success) {
                                     this.getPlayersByTeam(this.user.teamID);
@@ -104,7 +104,7 @@ export class UserComponent{
                                 }
                             });
                         });
-                        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
+                        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
                             this.signins = response.json().signins;
                             this.setOffersOfMyTeam();
                             this.getPlayersByTeam(this.user.teamID);
@@ -116,10 +116,10 @@ export class UserComponent{
             }
         } else {
             if(confirm('¿Rechazar?')) {
-                this.http.post('./test_CMDataRequesting.php', {type: 'recOfe', id: offer.id}).subscribe( (response) => {
+                this.http.post('./CMDataRequesting.php', {type: 'recOfe', id: offer.id}).subscribe( (response) => {
                     alert(response.json().message);
                     if(response.json().success) {
-                        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
+                        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
                             this.signins = response.json().signins;
                             this.setOffersOfMyTeam();
                         });
@@ -131,7 +131,7 @@ export class UserComponent{
 
     public getPlayersByTeam(team): any {
         let playersOfTheTeam = [];
-        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
             this.players = response.json().players;
             this.players.forEach( (value) => {
                 while (value.name.indexOf('/n') != -1) {
@@ -177,7 +177,7 @@ export class UserComponent{
         if(this.pass != this.pass2) {
             alert('Las contraseñas no coinciden');
         }else{
-            this.http.post('./test_CMDataRequesting.php', {type: 'updUsu', teamID: this.user.teamID, pass: this.pass, email: this.user.email, id: this.user.id, user: this.user.user}).subscribe( (response) => {
+            this.http.post('./CMDataRequesting.php', {type: 'updUsu', teamID: this.user.teamID, pass: this.pass, email: this.user.email, id: this.user.id, user: this.user.user}).subscribe( (response) => {
                 alert('Contraseña cambiada');
               });
         }
@@ -206,7 +206,7 @@ export class UserComponent{
 
     public giveWildCard(player) {
         if(confirm('¿Liberar a ' + this.getPlayerById(player).name + '?')) {
-            this.http.post('./test_CMDataRequesting.php', {type: 'disPla', player: player, market: this.constants.marketEdition}).subscribe( (response) => {
+            this.http.post('./CMDataRequesting.php', {type: 'disPla', player: player, market: this.constants.marketEdition}).subscribe( (response) => {
                 if(response.json().success) {
                     this.playersOfMyTeam = this.getPlayersByTeam(this.user.teamID);
                 }

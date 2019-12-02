@@ -34,7 +34,7 @@ export class TableComponent implements OnInit{
         this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
         this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
         this.setTableConfig();
-        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'ST'}).subscribe( (response) => {
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'ST'}).subscribe( (response) => {
             this.standingsArray = response.json().standings;
             const premierLastEdition = this.getLastEdition('Primera', this.standingsArray[0].tournamentID).toString();
             this.season = this.getTournamentById(premierLastEdition).edition;
@@ -119,7 +119,7 @@ export class TableComponent implements OnInit{
             this.tableData1.dataRows = pStands;
             this.tableData2.dataRows = sStands;
 
-            this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
+            this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
                 this.matches = response.json() ? response.json().matches : null;
                 sessionStorage.setItem('matches', JSON.stringify({matches: this.matches}));
                 let premierMatches = [];

@@ -30,7 +30,7 @@ export class LoginComponent {
     }
 
     public login() {
-        this.http.post('./test_CMDataRequesting.php', {type: 'login', user: this.user, pass: this.pass}).subscribe( (response) => {
+        this.http.post('./CMDataRequesting.php', {type: 'login', user: this.user, pass: this.pass}).subscribe( (response) => {
             if (response.json().success) {
                 this.appService.data.users.forEach( (value) => {
                     if (value.user.toLowerCase() == this.user.toLowerCase()) {

@@ -30,7 +30,7 @@ export class PenaltiesComponent implements OnInit{
     ngOnInit() {
         this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
         this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
-        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
+        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
             this.players = response.json().players;
             this.players.forEach( (value) => {
                 while (value.name.indexOf('/n') != -1) {
@@ -38,9 +38,9 @@ export class PenaltiesComponent implements OnInit{
                 }
               });
             this.setTableConfig();
-            this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'A'}).subscribe( (response) => {
+            this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'A'}).subscribe( (response) => {
                 this.actions = response.json().actions;
-                this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
+                this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
                     this.matches = response.json().matches;
                     let penalties = [];
 
