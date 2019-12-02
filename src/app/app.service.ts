@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
-import { analyzeAndValidateNgModules } from '@angular/compiler';
 
 export interface TableData {
     headerRow: string[];
@@ -17,6 +16,8 @@ export interface KeyConfig {
     classNames: Object;
     showTitle: boolean;
 }
+
+const PHPFILENAME = './CMDataRequesting.php';
 
 @Injectable()
 
@@ -39,87 +40,41 @@ export class AppService {
         this.refreshConfig();
     }
 
-    public refreshUser() {
-        if (sessionStorage.getItem('user') != null) {
-            this.setUser(JSON.parse(sessionStorage.getItem('user')));
+    public addZero(number) {
+        return number < 10 ? '0' + number : number;
+    }
+
+    public convertNToÑ(name) {
+        while (name.indexOf('/n') != -1) {
+          name = name.replace('/n', 'ñ');
         }
+        while (name.indexOf('/N') != -1) {
+          name = name.replace('/N', 'Ñ');
+        }
+        return name;
     }
 
-    public refreshConfig() {
-        this.http.post('config.json', null).subscribe( (response) => {
-            this.config = response.json();
-        });
-    }
+    public divideByRounds(matches, finalRound, matchesPerRound) {
+        let roundArray = [];
+        for (let round = 1; round < finalRound; round += matchesPerRound) {
+            roundArray.push({ rounds: this.getMatchNumbers(round, matchesPerRound), matches: []});
+        }
+        roundArray.push({ rounds: [finalRound], matches: []});
+        roundArray.push({ rounds: [finalRound + 1], matches: []});
 
-    public goTo(url){
-        this.router.navigateByUrl(url);
-    }
-
-    public setConfig(config) {
-        this.config = config;
-    }
-
-    public setMatches(matches) {
-        this.data.matches = matches;
-    }
-
-    public setSignins(signins) {
-        this.data.signins = signins;
-    }
-
-    public setUser(user) {
-        this.data.user = user;
-    }
-
-    public getConfigObservable(): Observable<any> {
-        return this.http.post('config.json', null);
-    }
-
-    public getConstants(): any {
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
-            this.data.constants = response.json() ? response.json().constants[0] : {};
-        });
-    }
-
-    public getMatchesObservable(): Observable<any> {
-        return this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'});
-    }
-
-    public getPlayers() {
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
-            this.data.players = response.json() ? response.json().players : [];
-        });
-    }
-
-    public getSignins() {
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
-            this.data.signins = response.json() ? response.json().signins : [];
-        });
-    }
-
-    public getSigninsObservable(): Observable<any> {
-        return this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'S'});
-    }
-
-    public getTeams() {
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'T'}).subscribe( (response) => {
-            this.data.teams = response.json() ? response.json().teams : [];
-            this.data.teams.forEach( (value) => {
-                value.nation = this.convertNToÑ(value.nation);
+        matches.forEach( (value) => {
+            roundArray.forEach( (value2) => {
+                if (value2.rounds.includes(parseInt(value.round))) {
+                    value2.matches.push(value);
+                }
             });
         });
-    }
 
-    public getTournaments() {
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'TO'}).subscribe( (response) => {
-            this.data.tournaments = response.json() ? response.json().tournaments : [];
+        let ret = [];
+        roundArray.forEach( (value) => {
+            ret.push(value.matches);
         });
-    }
-
-    public getUsers() {
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'U'}).subscribe( (response) => {
-            this.data.users = response.json() ? response.json().users : [];
-        });
+        return ret;
     }
 
     public getClassNames(size) {
@@ -128,6 +83,16 @@ export class AppService {
             medium: size,
             large: size == this.config.classNameSizes.all ? 12 : size + 1
         }
+    }
+
+    public getConfigObservable(): Observable<any> {
+        return this.http.post('config.json', null);
+    }
+
+    public getConstants(): any {
+        this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
+            this.data.constants = response.json() ? response.json().constants[0] : {};
+        });
     }
 
     public getLastEdition(name) {
@@ -140,14 +105,15 @@ export class AppService {
         return lastEdition;
     }
 
-    public getPlayerById(player) {
-        let playerToReturn = null;
-        this.data.players.forEach( (value) => {
-            if (value.id == player) {
-                playerToReturn = value;
+    public getMatchById(match) {
+        return this.data.matches.filter( (filteredMatch) => { return filteredMatch.id == match });
+        /*let matchToReturn = null;
+        this.data.matches.forEach( (value) => {
+            if (value.id == match) {
+                matchToReturn = value;
             }
         });
-        return playerToReturn;
+        return matchToReturn;*/
     }
 
     public getMatchConfiguration(match, classNames, showTitle, previousConfig?: KeyConfig): KeyConfig {
@@ -164,10 +130,163 @@ export class AppService {
         };
     }
 
+    private getMatchNumbers(round, matchesPerRound) {
+        let ret = [];
+        for (let cont = 0; cont < matchesPerRound; cont++) {
+            ret.push(round + cont);
+        }
+        return ret;
+    }
+
+    public getMatchesObservable(): Observable<any> {
+        return this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'M'});
+    }
+
+    public getPlayerById(player) {
+        return this.data.players.filter( (filteredPlayer) => { return filteredPlayer.id == player });
+        /*let playerToReturn = null;
+        this.data.players.forEach( (value) => {
+            if (value.id == player) {
+                playerToReturn = value;
+            }
+        });
+        return playerToReturn;*/
+    }
+
+    public getPlayers() {
+        this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
+            this.data.players = response.json() ? response.json().players : [];
+            this.data.players.forEach( (value) => {
+                this.convertNToÑ(value.name);
+            });
+        });
+    }
+
+    public getPlayersByTeam(team) {
+        return this.data.players.filter( (filteredPlayer) => { return filteredPlayer.teamID == team });
+        /*let playersToReturn = [];
+        this.data.players.forEach( (value) => {
+            if (value.teamID == team) {
+                playersToReturn.push(value);
+            }
+        });
+        return playersToReturn;*/
+    }
+
+    public getRoundName(match) {
+        switch (this.getTournamentById(match.tournament).name) {
+            case this.config.tournamentGeneralInfo.generalCup.name:
+                if (match.round < 3) { return this.config.roundNames.outOf16;
+                }else if (match.round >= 3 && match.round < 5) { return this.config.roundNames.quarterFinals;
+                }else if (match.round >= 5 && match.round < 7) { return this.config.roundNames.semifinals;
+                }else if (match.round == 9) { return this.config.roundNames.thirdAndFourthPlace;
+                }else if (match.round == 8) { return this.config.roundNames.final; }
+                break;
+            case this.config.tournamentGeneralInfo.championsLeague.name:
+                if (match.round < 7) { return this.config.roundNames.groupStage;
+                }else if (match.round >= 7 && match.round < 9) { return this.config.roundNames.quarterFinals;
+                }else if (match.round >= 9 && match.round < 11) { return this.config.roundNames.semifinals;
+                }else if (match.round == 12) { return this.config.roundNames.thirdAndFourthPlace;
+                }else if (match.round == 11) { return this.config.roundNames.final;
+                }
+                break;
+            case this.config.tournamentGeneralInfo.europaLeague.name:
+                if (match.round < 3) { return this.config.roundNames.quarterFinals;
+                }else if (match.round >= 3 && match.round < 5) { return this.config.roundNames.semifinals;
+                }else if (match.round == 6) { return this.config.roundNames.thirdAndFourthPlace;
+                }else if (match.round == 5) { return this.config.roundNames.final; }
+                break;
+            case this.config.tournamentGeneralInfo.intertoto.name:
+                if (match.round < 3) { return this.config.roundNames.semifinals;
+                }else if (match.round == 4) { return this.config.roundNames.thirdAndFourthPlace;
+                }else if (match.round == 3) { return this.config.roundNames.final; }
+                break;
+            case this.config.tournamentGeneralInfo.clubSupercup.name:
+            case this.config.tournamentGeneralInfo.europeSupercup.name:
+                if (match.round == 1) { return this.config.roundNames.final; } break;
+        }
+    }
+
+    public getSignins() {
+        this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
+            this.data.signins = response.json() ? response.json().signins : [];
+        });
+    }
+
+    public getSigninsObservable(): Observable<any> {
+        return this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'S'});
+    }
+
+    public getTableConfig(tableFields, rows?) {
+        return {
+            headerRow: tableFields,
+            dataRows: rows ? rows : []
+        };
+    }
+
+    public getTeamById(team) {
+        return this.data.teams.filter( (filteredTeam) => { return filteredTeam.id == team });
+        /*let teamToReturn = null;
+        this.data.teams.forEach( (value) => {
+            if (value.id == team) {
+                teamToReturn = value;
+            }
+        });
+        return teamToReturn;*/
+    }
+
+    public getTeams() {
+        this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'T'}).subscribe( (response) => {
+            this.data.teams = response.json() ? response.json().teams : [];
+            this.data.teams.forEach( (value) => {
+                value.nation = this.convertNToÑ(value.nation);
+            });
+        });
+    }
+
+    public getTournamentById(id): any {
+        id = parseInt(id);
+        return this.data.tournaments.filter( (filteredTournament) => { return filteredTournament.id == id });
+        /*let tournament = {};
+        id = parseInt(id);
+        this.data.tournaments.forEach( (value) => {
+            if (value.id == id) {
+                tournament = value;
+            }
+        });
+        return tournament;*/
+    }
+
+    private getTournamentByNameAndEdition(name, edition) {
+        let tournament = -1;
+        for (let i = 0; i < this.data.tournaments.length; i++) {
+            if (this.data.tournaments[i].name == name && edition == this.data.tournaments[i].edition) {
+                tournament = this.data.tournaments[i].id;
+            }
+        }
+        return tournament;
+    }
+
+    public getTournaments() {
+        this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'TO'}).subscribe( (response) => {
+            this.data.tournaments = response.json() ? response.json().tournaments : [];
+        });
+    }
+
+    public getUsers() {
+        this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'U'}).subscribe( (response) => {
+            this.data.users = response.json() ? response.json().users : [];
+        });
+    }
+
+    public goTo(url){
+        this.router.navigateByUrl(url);
+    }
+
     public hasPreviousMatch(match, matchesToSearch) {
         switch (this.getTournamentById(match.tournament).name) {
-            case 'Copa':
-            case 'Europa League':
+            case this.config.tournamentGeneralInfo.generalCup.name:
+            case this.config.tournamentGeneralInfo.europaLeague.name:
             case this.config.tournamentGeneralInfo.intertoto.name:
                 if (match.round % 2 == 0) {
                     matchesToSearch.forEach( (value) => {
@@ -203,123 +322,10 @@ export class AppService {
                 }).KORound >= match.round;
             case this.config.tournamentGeneralInfo.clubSupercup.name:
             case this.config.tournamentGeneralInfo.europeSupercup.name:
-            case 'Copa':
-            case 'Europa League':
+            case this.config.tournamentGeneralInfo.generalCup.name:
+            case this.config.tournamentGeneralInfo.europaLeague.name:
             case this.config.tournamentGeneralInfo.intertoto.name:
                 return false;
-        }
-    }
-
-    public divideByRounds(matches, finalRound, matchesPerRound) {
-        let roundArray = [];
-        for (let round = 1; round < finalRound; round += matchesPerRound) {
-            roundArray.push({ rounds: this.getMatchNumbers(round, matchesPerRound), matches: []});
-        }
-        roundArray.push({ rounds: [finalRound], matches: []});
-        roundArray.push({ rounds: [finalRound + 1], matches: []});
-
-        matches.forEach( (value) => {
-            roundArray.forEach( (value2) => {
-                if (value2.rounds.includes(parseInt(value.round))) {
-                    value2.matches.push(value);
-                }
-            });
-        });
-
-        let ret = [];
-        roundArray.forEach( (value) => {
-            ret.push(value.matches);
-        });
-        return ret;
-    }
-
-    private getMatchNumbers(round, matchesPerRound) {
-        let ret = [];
-        for (let cont = 0; cont < matchesPerRound; cont++) {
-            ret.push(round + cont);
-        }
-        return ret;
-    }
-
-    public getTableConfig(tableFields, rows?) {
-        return {
-            headerRow: tableFields,
-            dataRows: rows ? rows : []
-        };
-    }
-
-    public getTeamById(team) {
-        let teamToReturn = null;
-        this.data.teams.forEach( (value) => {
-            if (value.id == team) {
-                teamToReturn = value;
-            }
-        });
-        return teamToReturn;
-    }
-
-    public getMatchById(match) {
-        let matchToReturn = null;
-        this.data.matches.forEach( (value) => {
-            if (value.id == match) {
-                matchToReturn = value;
-            }
-        });
-        return matchToReturn;
-    }
-
-    public getTournamentById(id): any {
-        let tournament = {};
-        id = parseInt(id);
-        this.data.tournaments.forEach( (value) => {
-            if (value.id == id) {
-                tournament = value;
-            }
-        });
-        return tournament;
-    }
-
-    private getTournamentByNameAndEdition(name, edition) {
-        let tournament = -1;
-        for (let i = 0; i < this.data.tournaments.length; i++) {
-            if (this.data.tournaments[i].name == name && edition == this.data.tournaments[i].edition) {
-                tournament = this.data.tournaments[i].id;
-            }
-        }
-        return tournament;
-    }
-
-    public getRoundName(match) {
-        switch (this.getTournamentById(match.tournament).name) {
-            case 'Copa':
-                if (match.round < 3) { return 'Octavos de Final';
-                }else if (match.round >= 3 && match.round < 5) { return 'Cuartos de Final';
-                }else if (match.round >= 5 && match.round < 7) { return 'Semifinales';
-                }else if (match.round == 9) { return 'Tercer y Cuarto Puesto';
-                }else if (match.round == 8) { return 'Final'; }
-                break;
-            case 'Champions League':
-                if (match.round < 7) { return 'Fase de Grupos';
-                }else if (match.round >= 7 && match.round < 9) { return 'Cuartos de Final';
-                }else if (match.round >= 9 && match.round < 11) { return 'Semifinales';
-                }else if (match.round == 12) { return 'Tercer y Cuarto Puesto';
-                }else if (match.round == 11) { return 'Final';
-                }
-                break;
-            case 'Europa League':
-                if (match.round < 3) { return 'Cuartos de Final';
-                }else if (match.round >= 3 && match.round < 5) { return 'Semifinales';
-                }else if (match.round == 6) { return 'Tercer y Cuarto Puesto';
-                }else if (match.round == 5) { return 'Final'; }
-                break;
-            case this.config.tournamentGeneralInfo.intertoto.name:
-                if (match.round < 3) { return 'Semifinales';
-                }else if (match.round == 4) { return 'Tercer y Cuarto Puesto';
-                }else if (match.round == 3) { return 'Final'; }
-                break;
-            case this.config.tournamentGeneralInfo.clubSupercup.name:
-            case this.config.tournamentGeneralInfo.europeSupercup.name:
-                if (match.round == 1) { return 'Final'; } break;
         }
     }
 
@@ -338,18 +344,12 @@ export class AppService {
         return ret;
     }
 
-    public whoWon(match) {
-        if (match.localGoals == -1 || match.awayGoals == -1) {
-            return null;
-        } else {
-            if (match.localGoals > match.awayGoals) {
-                return match.local;
-            }else if (match.localGoals < match.awayGoals) {
-                return match.away;
-            }else if (match. localGoals == match.awayGoals) {
-                return null;
-            }
-        }
+    public refreshConfig() {
+        this.http.post('config.json', null).subscribe( (response) => { this.config = response.json(); });
+    }
+
+    public refreshUser() {
+        sessionStorage.getItem('user') != null ? this.setUser(JSON.parse(sessionStorage.getItem('user'))) : null;
     }
 
     public removeAccents(name) {
@@ -365,18 +365,33 @@ export class AppService {
         return res;
     }
 
-    public convertNToÑ(name) {
-        while (name.indexOf('/n') != -1) {
-          name = name.replace('/n', 'ñ');
-        }
-        while (name.indexOf('/N') != -1) {
-          name = name.replace('/N', 'Ñ');
-        }
-        return name;
+    public setConfig(config) {
+        this.config = config;
     }
 
-    public addZero(number) {
-        if (number < 10) {number = '0' + number; }
-        return number;
+    public setMatches(matches) {
+        this.data.matches = matches;
+    }
+
+    public setSignins(signins) {
+        this.data.signins = signins;
+    }
+
+    public setUser(user) {
+        this.data.user = user;
+    }
+
+    public whoWon(match) {
+        if (match.localGoals == -1 || match.awayGoals == -1) {
+            return null;
+        } else {
+            if (match.localGoals > match.awayGoals) {
+                return match.local;
+            }else if (match.localGoals < match.awayGoals) {
+                return match.away;
+            }else if (match. localGoals == match.awayGoals) {
+                return null;
+            }
+        }
     }
 }

@@ -7,7 +7,7 @@ import { TypographyComponent }   from './typography/typography.component';
 import { IconsComponent }   from './icons/icons.component';
 import { MapsComponent }   from './maps/maps.component';
 import { NotificationsComponent }   from './notifications/notifications.component';
-import { UpgradeComponent }   from './upgrade/upgrade.component';
+import { RulesComponent }   from './rules/rules.component';
 import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './registro/registro.component';
 import { LogoutComponent } from './logout/logout.component';
@@ -33,104 +33,29 @@ export const AppRoutes: Routes = [
         redirectTo: 'normas',
         pathMatch: 'full',
     },
-    {
-        path: 'panelcontrol',
-        component: DashboardComponent
-    },
-    {
-        path: 'usuario',
-        component: UserComponent
-    },
-    {
-        path: 'liga',
-        component: TableComponent
-    },
-    {
-        path: 'partidospendientes',
-        component: TypographyComponent
-    },
-    {
-        path: 'partidospendientestotales',
-        component: AdminMatchesComponent
-    },
-    {
-        path: 'plantillas',
-        component: IconsComponent
-    },
-    {
-        path: 'copa',
-        component: NotificationsComponent
-    },
-    {
-        path: 'normas',
-        component: UpgradeComponent
-    },
-    {
-        path: 'login',
-        component: LoginComponent
-    },
-    {
-        path: 'logout',
-        component: LogoutComponent
-    },
-    {
-        path: 'registro',
-        component: RegistroComponent
-    },
-    {
-        path: 'estadisticas',
-        component: StatisticsComponent
-    },
-    {
-        path: 'champions',
-        component: ChampionsComponent
-    },
-    {
-        path: 'el',
-        component: EuropaLeagueComponent
-    },
-    {
-        path: 'intertoto',
-        component: IntertotoComponent
-    },
-    {
-        path: 'nations',
-        component: NationsComponent
-    },
-    {
-        path: 'clubsupercup',
-        component: ClubSupercupComponent
-    },
-    {
-        path: 'sanciones',
-        component: PenaltiesComponent
-    },
-    {
-        path: 'jugadoreslibres',
-        component: FreePlayersComponent
-    },
-    {
-        path: 'subastas',
-        component: AuctionsComponent
-    },
-    {
-        path: 'mercado',
-        component: MarketComponent
-    },
-    {
-        path: 'patrocinadores',
-        component: PartnersComponent
-    },
-    {
-        path: 'offer',
-        component: OfferComponent
-    },
-    {
-        path: 'europesupercup',
-        component: EuropeSupercupComponent
-    },
-    {
-        path: 'adminpage',
-        component: AdminPageComponent
-    }
+    { path: 'panelcontrol', component: DashboardComponent },
+    { path: 'usuario', component: UserComponent },
+    { path: 'liga', component: TableComponent },
+    { path: 'partidospendientes', component: TypographyComponent },
+    { path: 'partidospendientestotales', component: AdminMatchesComponent },
+    { path: 'plantillas', component: IconsComponent },
+    { path: 'copa', component: NotificationsComponent },
+    { path: 'normas', component: RulesComponent },
+    { path: 'login', component: LoginComponent },
+    { path: 'logout', component: LogoutComponent },
+    { path: 'registro', component: RegistroComponent },
+    { path: 'estadisticas', component: StatisticsComponent },
+    { path: 'champions', component: ChampionsComponent },
+    { path: 'el', component: EuropaLeagueComponent },
+    { path: 'intertoto', component: IntertotoComponent },
+    { path: 'nations', component: NationsComponent },
+    { path: 'clubsupercup', component: ClubSupercupComponent },
+    { path: 'sanciones', component: PenaltiesComponent },
+    { path: 'jugadoreslibres', component: FreePlayersComponent },
+    { path: 'subastas', component: AuctionsComponent },
+    { path: 'mercado', component: MarketComponent },
+    { path: 'patrocinadores', component: PartnersComponent },
+    { path: 'offer', component: OfferComponent },
+    { path: 'europesupercup', component: EuropeSupercupComponent },
+    { path: 'adminpage', component: AdminPageComponent }
 ]
