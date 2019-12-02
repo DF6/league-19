@@ -194,6 +194,7 @@
         },
         "primera": {
             "name": "Primera",
+            "KORound": 15,
             "finalRound": 14
         },
         "segunda": {
