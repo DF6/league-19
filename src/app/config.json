@@ -190,10 +190,12 @@
         },
         "nationsLeague": {
             "name": "Nations League",
+            "KORound": 4,
             "finalRound": 3
         },
         "primera": {
             "name": "Primera",
+            "KORound": 15,
             "finalRound": 14
         },
         "segunda": {

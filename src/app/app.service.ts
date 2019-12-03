@@ -106,7 +106,7 @@ export class AppService {
     }
 
     public getMatchById(match) {
-        return this.data.matches.filter( (filteredMatch) => { return filteredMatch.id == match });
+        return this.data.matches.filter( (filteredMatch) => { return filteredMatch.id == match })[0];
         /*let matchToReturn = null;
         this.data.matches.forEach( (value) => {
             if (value.id == match) {
@@ -143,7 +143,7 @@ export class AppService {
     }
 
     public getPlayerById(player) {
-        return this.data.players.filter( (filteredPlayer) => { return filteredPlayer.id == player });
+        return this.data.players.filter( (filteredPlayer) => { return filteredPlayer.id == player })[0];
         /*let playerToReturn = null;
         this.data.players.forEach( (value) => {
             if (value.id == player) {
@@ -157,7 +157,7 @@ export class AppService {
         this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
             this.data.players = response.json() ? response.json().players : [];
             this.data.players.forEach( (value) => {
-                this.convertNToÑ(value.name);
+                value.name = this.convertNToÑ(value.name);
             });
         });
     }
@@ -225,7 +225,7 @@ export class AppService {
     }
 
     public getTeamById(team) {
-        return this.data.teams.filter( (filteredTeam) => { return filteredTeam.id == team });
+        return this.data.teams.filter( (filteredTeam) => { return filteredTeam.id == team })[0];
         /*let teamToReturn = null;
         this.data.teams.forEach( (value) => {
             if (value.id == team) {
@@ -246,7 +246,7 @@ export class AppService {
 
     public getTournamentById(id): any {
         id = parseInt(id);
-        return this.data.tournaments.filter( (filteredTournament) => { return filteredTournament.id == id });
+        return this.data.tournaments.filter( (filteredTournament) => { return filteredTournament.id == id })[0];
         /*let tournament = {};
         id = parseInt(id);
         this.data.tournaments.forEach( (value) => {
@@ -312,21 +312,7 @@ export class AppService {
     }
 
     public isUpdatableStanding(match) {
-        switch (this.getTournamentById(match.tournament).name) {
-            case this.config.tournamentGeneralInfo.championsLeague.name:
-            case this.config.tournamentGeneralInfo.primera.name:
-            case this.config.tournamentGeneralInfo.segunda.name:
-                return this.config.tournamentGeneralInfo
-                .filter( (tournament) => {
-                    return tournament.name == this.getTournamentById(match.tournament).name;
-                }).KORound >= match.round;
-            case this.config.tournamentGeneralInfo.clubSupercup.name:
-            case this.config.tournamentGeneralInfo.europeSupercup.name:
-            case this.config.tournamentGeneralInfo.generalCup.name:
-            case this.config.tournamentGeneralInfo.europaLeague.name:
-            case this.config.tournamentGeneralInfo.intertoto.name:
-                return false;
-        }
+        return this.config.tournamentGeneralInfo[this.toCamelCase(this.getTournamentById(match.tournament).name)].KORound >= match.round;
     }
 
     public isThisInterval(tournament, round) {
@@ -379,6 +365,14 @@ export class AppService {
 
     public setUser(user) {
         this.data.user = user;
+    }
+
+    private toCamelCase(param) {
+        return param
+        .toLowerCase()
+        .replace(/(?:^\w|[A-Z]|\b\w)/g, (ltr, idx) => idx === 0 ? 
+        ltr.toLowerCase() : 
+        ltr.toUpperCase()).replace(/\s+/g, '');
     }
 
     public whoWon(match) {
