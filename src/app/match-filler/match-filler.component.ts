@@ -20,7 +20,7 @@ export interface MatchData {
     templateUrl: 'match-filler.component.html'
 })
 
-export class MatchFillerComponent{
+export class MatchFillerComponent implements OnInit{
 
     @Input() data: MatchData;
     @Output() matchFilled = new EventEmitter<boolean>();
@@ -35,10 +35,14 @@ export class MatchFillerComponent{
     public sent = false;
 
     constructor(private http: Http, private appService: AppService){
+        this.appService.getPlayers();
         this.appService.getTournaments();
         this.appService.getTeams();
-        this.appService.getPlayers();
-        this.appService.getMatchesObservable().subscribe( () => {
+    }
+
+    ngOnInit() {
+        this.appService.getMatchesObservable().subscribe( (response) => {
+            this.appService.setMatches(response.json().matches);
             this.local = {
                 score: 0,
                 scorers: [],
@@ -265,5 +269,9 @@ export class MatchFillerComponent{
          + this.data.id + ", '"
          + type + "', "
          + player + "); ";
+    }
+
+    public isNationsLeague(tournament) {
+        return this.appService.getTournamentById(tournament).name == this.appService.config.tournamentGeneralInfo.nationsLeague.name;
     }
 }
