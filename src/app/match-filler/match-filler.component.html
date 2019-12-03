@@ -3,12 +3,12 @@
         <div class="col-md-6 col-sm-12">
             <div class="card" style="padding: 16px;">
                 <h1 style="text-align: right !important;"
-                *ngIf="appService.getTournamentById(data.tournament).name != appService.config.tournamentGeneralInfo.nationsLeague.name">
+                *ngIf="!isNationsLeague(data.tournament)">
                 {{appService.getTeamById(data.local).name}} {{local.score}}</h1>
                 <h1 style="text-align: right !important;"
-                *ngIf="appService.getTournamentById(data.tournament).name == appService.config.tournamentGeneralInfo.nationsLeague.name">
+                *ngIf="isNationsLeague(data.tournament)">
                 {{appService.getTeamById(data.local).nation}} <input class="col-md-3" type="number" step="1" min="0" [(ngModel)]="local.score"></h1>
-                <div *ngIf="appService.getTournamentById(data.tournament).name != appService.config.tournamentGeneralInfo.nationsLeague.name">
+                <div *ngIf="!isNationsLeague(data.tournament)">
                     <span style="display:block;">Goles</span>
                     <div>
                         <ul class="heroes">
@@ -114,12 +114,12 @@
         <div class="col-md-6 col-sm-12">
             <div class="card" style="padding: 16px;">
                 <h1 style="text-align: right !important;"
-                *ngIf="getTournamentById(data.tournament).name != appService.config.tournamentGeneralInfo.nationsLeague.name">
+                *ngIf="!isNationsLeague(data.tournament)">
                 {{appService.getTeamById(data.away).name}} {{away.score}}</h1>
                 <h1 style="text-align: right !important;"
-                *ngIf="getTournamentById(data.tournament).name == appService.config.tournamentGeneralInfo.nationsLeague.name">
+                *ngIf="isNationsLeague(data.tournament)">
                 {{appService.getTeamById(data.away).nation}} <input class="col-md-3" type="number" step="1" min="0" [(ngModel)]="away.score"></h1>
-                <div *ngIf="getTournamentById(data.tournament).name != appService.config.tournamentGeneralInfo.nationsLeague.name">
+                <div *ngIf="!isNationsLeague(data.tournament)">
                     <span style="display:block;">Goles</span>
                     <div>
                         <ul class="heroes">

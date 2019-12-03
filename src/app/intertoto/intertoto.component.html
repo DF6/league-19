@@ -33,16 +33,16 @@
                             </tbody>
                         </table>
             </div>
-            <div class="col-md-6" *ngIf="matches">
+            <div class="col-md-6" *ngIf="matches.length > 4">
                 <h3>Final</h3>
                 <table style="margin-top: 15px;min-width:16.6%;min-height:14.65%;border-radius: 10%;background-color: #ccc5b9;" class="table table-hover">
                         <tbody>
                             <tr>
-                                <td style="border-right: 1px solid #000;">{{getTeamById(matches[4].local).name}}</td>
+                                <td style="border-right: 1px solid #000;">{{appService.getTeamById(matches[4].local).name}}</td>
                                 <td style="border-right: 1px solid #000;" *ngIf="matches[4].localGoals != -1">{{matches[4].localGoals}}</td>
                             </tr>
                             <tr>
-                                <td style="border-right: 1px solid #000;">{{getTeamById(matches[4].away).name}}</td>
+                                <td style="border-right: 1px solid #000;">{{appService.getTeamById(matches[4].away).name}}</td>
                                 <td style="border-right: 1px solid #000;" *ngIf="matches[4].awayGoals != -1">{{matches[4].awayGoals}}</td>
                             </tr>
                         </tbody>
@@ -51,11 +51,11 @@
                 <table style="margin-top: 15px;min-width:16.6%;min-height:14.65%;border-radius: 10%;background-color: #ccc5b9;" class="table table-hover">
                         <tbody>
                             <tr>
-                                <td style="border-right: 1px solid #000;">{{getTeamById(matches[5].local).name}}</td>
+                                <td style="border-right: 1px solid #000;">{{appService.getTeamById(matches[5].local).name}}</td>
                                 <td style="border-right: 1px solid #000;" *ngIf="matches[5].localGoals != -1">{{matches[5].localGoals}}</td>
                             </tr>
                             <tr>
-                                <td style="border-right: 1px solid #000;">{{getTeamById(matches[5].away).name}}</td>
+                                <td style="border-right: 1px solid #000;">{{appService.getTeamById(matches[5].away).name}}</td>
                                 <td style="border-right: 1px solid #000;" *ngIf="matches[5].awayGoals != -1">{{matches[5].awayGoals}}</td>
                             </tr>
                         </tbody>
