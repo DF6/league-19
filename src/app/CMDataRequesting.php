@@ -670,8 +670,8 @@
 
   function resetStandings($con, $params)
   {
-    $query6="UPDATE standings SET round=0, points=0, won=0, draw=0, lost=0, goals_for=0, goals_against=0 where tournament_id=" . $params->tournament;
-    $resultado6=mysqli_query($link, $query6) or die("Error reiniciando clasificaciones");
+    $query="UPDATE standings SET " . "'round'=0, points=0, won=0, draw=0, lost=0, goals_for=0, goals_against=0 WHERE tournament_id=" . $params->tournament;
+    $resultado6=mysqli_query($link, $query) or die("Error reiniciando clasificaciones");
     $data['success'] = true;
     $data['message'] = "Tabla reseteada";
     echo json_encode($data);

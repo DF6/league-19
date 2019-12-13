@@ -173,6 +173,10 @@ export class AppService {
         return playersToReturn;*/
     }
 
+    public getPublicTournaments() {
+        return this.data.tournaments;
+    }
+
     public getRoundName(match) {
         switch (this.getTournamentById(match.tournament).name) {
             case this.config.tournamentGeneralInfo.generalCup.name:

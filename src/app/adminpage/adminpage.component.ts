@@ -31,14 +31,12 @@ declare interface TableData {
 export class AdminPageComponent implements OnInit{
 
     public offer: OfferData;
-    public teams;
-    public players;
     public matches;
-    public tournaments;
     public matchToAdd;
     public prizes;
     public teamSalaries: TableData;
     public salaryData;
+    public tournamentToReset;
 
     constructor(private http: Http, private appService: AppService){
         this.appService.getPlayers();
@@ -49,6 +47,7 @@ export class AdminPageComponent implements OnInit{
     ngOnInit() {    
         this.appService.getMatchesObservable().subscribe( (response) => {
             this.matches = response.json().matches;
+            this.tournamentToReset = this.appService.getLastEdition(this.appService.getPublicTournaments()[0].name).id;
             this.matchToAdd = {
                 local: -1,
                 away: -1,
@@ -77,12 +76,12 @@ export class AdminPageComponent implements OnInit{
     }
 
     public getTotalSalaries() {
-        let sal = [];
+        /*let sal = [];
         this.teams.forEach( (value) => {
             sal.push({ team: value.id, salaries: this.getTotalSalariesByTeam(value.id)});
         });
         this.salaryData = sal;
-        this.setTableConfig();
+        this.teamSalaries = this.appService.getTableConfig(this.appService.config.tableHeaders.adminSalaries, this.salaryData);*/
     }
 
     public getTotalSalariesByTeam(team) {
@@ -96,18 +95,11 @@ export class AdminPageComponent implements OnInit{
         return Math.round(total * 100) / 100;
     }
 
-    private setTableConfig() {
-        this.teamSalaries = {
-            headerRow: [ 'team', 'salaries'],
-            dataRows: this.salaryData
-        };
-    }
-
-    public resetStandings(tournament) {
-        this.http.post('./CMDataRequesting.php', {type: 'resSta', tournament: tournament}).subscribe( (response) => {
+    public recalculateStandings() {
+        this.http.post('./CMDataRequesting.php', {type: 'resSta', tournament: this.tournamentToReset}).subscribe( (response) => {
             if(response.json().success) {
                 this.matches.forEach( (value) => {
-                    if(value.tournament == tournament) {
+                    if(value.tournament == this.tournamentToReset && value.localGoals != -1) {
                         let local = {points: 0, won: 0, draw: 0, lost: 0};
                         let away = {points: 0, won: 0, draw: 0, lost: 0};
                         if (parseInt(value.localGoals) > parseInt(value.awayGoals)) {
