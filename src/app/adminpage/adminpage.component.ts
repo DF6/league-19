@@ -96,10 +96,10 @@ export class AdminPageComponent implements OnInit{
     }
 
     public recalculateStandings() {
-        this.http.post('./CMDataRequesting.php', {type: 'resSta', tournament: this.tournamentToReset}).subscribe( (response) => {
+        this.http.post('./CMDataRequesting.php', {type: 'resSta', tournament: this.tournamentToReset.id}).subscribe( (response) => {
             if(response.json().success) {
                 this.matches.forEach( (value) => {
-                    if(value.tournament == this.tournamentToReset && value.localGoals != -1) {
+                    if(value.tournament == this.tournamentToReset.id && value.localGoals != -1) {
                         let local = {points: 0, won: 0, draw: 0, lost: 0};
                         let away = {points: 0, won: 0, draw: 0, lost: 0};
                         if (parseInt(value.localGoals) > parseInt(value.awayGoals)) {
@@ -120,6 +120,7 @@ export class AdminPageComponent implements OnInit{
                         this.http.post('./CMDataRequesting.php', {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, goalsFor: parseInt(value.awayGoals), goalsAgainst: parseInt(value.localGoals), tournamentID: value.tournament, team: value.away}).subscribe( () => {});
                     }
                 });
+                alert('Reinicio realizado');
             }
         });
     }

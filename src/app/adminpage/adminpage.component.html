@@ -2,7 +2,7 @@
     <div class="row">
         <select class="col-md-4 col-sm-12" [(ngModel)]="tournamentToReset">
             <option *ngFor="let tournament of appService.getPublicTournaments()" 
-                [ngValue]="tournament.id">{{tournament.name}}</option>
+                [ngValue]="tournament">{{tournament.name}}</option>
         </select>
         <button class="col-md-7 offset-md-1 col-sm-12" (click)="recalculateStandings()">Recalcular Clasificacion</button>
     </div>
