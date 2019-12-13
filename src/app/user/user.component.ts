@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Http } from '@angular/http';
 import { RouterLinkWithHref, Router } from '@angular/router';
+import { AppService } from 'app/app.service';
 
 declare interface TableData {
     headerRow: string[];
@@ -18,30 +19,28 @@ export class UserComponent{
     public usersTable: TableData;
     public offersTable: TableData;
     public user;
-    public teams;
-    public players;
-    public users;
     public playersOfMyTeam;
     public pass;
     public pass2;
-    public constants;
+    public holidaysMessage;
     public totalSalaries;
     public salaryMode = false;
     public signins;
     public playerChangeSignins;
+    public showPlayersTable = false;
 
-    constructor(private http: Http, private router: Router) {
+    constructor(private http: Http, private router: Router, private appService: AppService) {
         this.user = JSON.parse(sessionStorage.getItem('user'));
-        this.users = JSON.parse(sessionStorage.getItem('users')).users;
-        this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
-        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
-                this.constants = response.json().constants[0];
-                this.getPlayersByTeam(this.user.teamID);
-                this.setTableConfig();
-                this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
-                    this.signins = response.json().signins;
-                    this.setOffersOfMyTeam();
-                });
+        this.appService.getConstants();
+        this.appService.getPlayers();
+        this.appService.getTeams();
+        this.appService.getUsers();
+        this.appService.getSigninsObservable().subscribe( (response) => {
+            this.appService.setSignins(response.json().signins);
+            this.playersOfMyTeam = this.appService.getPlayersByTeam(this.user.teamID);
+            this.getAdditionalPlayerInfo();
+            this.usersTable = this.appService.getTableConfig(this.appService.config.tableHeaders.userInfo, this.appService.getActiveUsers());
+            this.setOffersOfMyTeam();
         });
     }
 
@@ -50,8 +49,8 @@ export class UserComponent{
             alert(response.json().message);
             if(response.json().success) {
                 player.salaryMode = false;
-                this.getPlayersByTeam(this.user.teamID);
-                this.getTotalSalariesByTeam();
+                this.appService.getPlayersByTeam(this.user.teamID);
+                this.appService.getTotalSalariesByTeam(this.playersOfMyTeam);
             }
         });
     }
@@ -60,7 +59,7 @@ export class UserComponent{
         this.http.post('./test_CMDataRequesting.php', {type: 'hacEmb', player: player, team: this.user.teamID}).subscribe( (response) => {
             alert(response.json().message);
             if(response.json().success) {
-                this.getPlayersByTeam(this.user.teamID);
+                this.appService.getPlayersByTeam(this.user.teamID);
             }
         });
     }
@@ -68,8 +67,8 @@ export class UserComponent{
     public setOffersOfMyTeam() {
         if(this.offersTable) { this.offersTable.dataRows = []; }
         let myOffers = [];
-        this.signins.forEach( (value) => {
-            if (value.market == this.constants.marketEdition &&
+        this.appService.data.signins.forEach( (value) => {
+            if (value.market == this.appService.data.constants.marketEdition &&
                 (value.signinType == 'G' || value.signinType == 'C') && value.accepted == 0 &&
                 value.oldTeam == this.user.teamID) {
                 value.playersOffered = [];
@@ -82,7 +81,7 @@ export class UserComponent{
                     });
                     myOffers.push(value);
                     if(myOffers.length != 0) {
-                        this.setOffersTable(myOffers);
+                        this.appService.getTableConfig(this.appService.config.tableHeaders.offers, myOffers);
                     }
                 });
             }
@@ -92,14 +91,14 @@ export class UserComponent{
     public resolveOffer(offer, result) {
         if(result) {
             if(confirm('¿Aceptar?')) {
-                this.http.post('./test_CMDataRequesting.php', {type: 'aceOfe', id: offer.id, player: offer.player, newTeam: offer.buyerTeam, oldTeam: offer.oldTeam, amount: offer.amount, signinType: offer.signinType, cedido: this.getPlayerById(offer.player).cedido}).subscribe( (response) => {
+                this.http.post('./test_CMDataRequesting.php', {type: 'aceOfe', id: offer.id, player: offer.player, newTeam: offer.buyerTeam, oldTeam: offer.oldTeam, amount: offer.amount, signinType: offer.signinType, cedido: this.appService.getPlayerById(offer.player).cedido}).subscribe( (response) => {
                     alert(response.json().message) 
                     if(response.json().success) {
                         offer.playersOffered.forEach( (value) => {
-                            this.http.post('./test_CMDataRequesting.php', {type: 'traJug', player: value.player, oldTeam: value.originTeam, newTeam: value.newTeam, market: this.constants.marketEdition, signinType: offer.signinType, cedido: this.getPlayerById(offer.player).cedido}).subscribe( (response) => {
+                            this.http.post('./test_CMDataRequesting.php', {type: 'traJug', player: value.player, oldTeam: value.originTeam, newTeam: value.newTeam, market: this.appService.data.constants.marketEdition, signinType: offer.signinType, cedido: this.appService.getPlayerById(offer.player).cedido}).subscribe( (response) => {
                                 alert(response.json().message);
                                 if(response.json().success) {
-                                    this.getPlayersByTeam(this.user.teamID);
+                                    this.appService.getPlayersByTeam(this.user.teamID);
                                     this.setOffersOfMyTeam();
                                 }
                             });
@@ -107,7 +106,7 @@ export class UserComponent{
                         this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
                             this.signins = response.json().signins;
                             this.setOffersOfMyTeam();
-                            this.getPlayersByTeam(this.user.teamID);
+                            this.appService.getPlayersByTeam(this.user.teamID);
                         });
                     } else {
                         this.router.navigateByUrl('plantillas');
@@ -128,49 +127,14 @@ export class UserComponent{
             }
         }
     }
-
-    public getPlayersByTeam(team): any {
-        let playersOfTheTeam = [];
-        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
-            this.players = response.json().players;
-            this.players.forEach( (value) => {
-                while (value.name.indexOf('/n') != -1) {
-                  value.name = value.name.replace('/n', 'ñ');
-                }
-            });
-            this.players.forEach( (value) =>{
-                if(value.teamID == team) {
-                    // this.salaries.push(value.salary);
-                    value.newSalary = value.salary*10;
-                    value.salaryMode = false;
-                    playersOfTheTeam.push(value);
-                }
-            });
-            this.playersOfMyTeam = playersOfTheTeam;
-            if(!this.totalSalaries) {
-                this.getTotalSalariesByTeam();
-            }
+    
+    public getAdditionalPlayerInfo() {
+        this.playersOfMyTeam.forEach( (value) => {
+            value.newSalary = value.salary*10;
+            value.salaryMode = false;
         });
-    }
-
-    public getTeamById(team) {
-        let teamToReturn = null;
-        this.teams.forEach( (value) => {
-            if(value.id == team) {
-                teamToReturn = value;
-            }
-        });
-        return teamToReturn;
-    }
-
-    public getPlayerById(player) {
-        let playerToReturn = null;
-        this.players.forEach( (value) => {
-            if(value.id == player) {
-                playerToReturn = value;
-            }
-        });
-        return playerToReturn;
+        if(!this.totalSalaries) { this.appService.getTotalSalariesByTeam(this.playersOfMyTeam); }
+        this.showPlayersTable = true;
     }
 
     public changePass() {
@@ -182,33 +146,12 @@ export class UserComponent{
               });
         }
     }
-    
-    public getTotalSalariesByTeam() {
-        let playerToBe = this.playersOfMyTeam;
-        let total = 0;
-        playerToBe.forEach( (value) => {
-            if(value.cedido == 0) {
-                total += parseFloat(value.salary);
-            }
-        });
-        this.totalSalaries = Math.round(total * 100) / 100;
-    }
-
-    private giveActiveUsers() {
-        let finalUsers = [];
-        this.users.forEach( (value) => {
-            if(value.teamID != 0 && value.teamID != -1 && finalUsers.length < 16) {
-                finalUsers.push(value);
-            }
-        });
-        return finalUsers;
-    }
 
     public giveWildCard(player) {
-        if(confirm('¿Liberar a ' + this.getPlayerById(player).name + '?')) {
-            this.http.post('./test_CMDataRequesting.php', {type: 'disPla', player: player, market: this.constants.marketEdition}).subscribe( (response) => {
+        if(confirm('¿Liberar a ' + this.appService.getPlayerById(player).name + '?')) {
+            this.http.post('./test_CMDataRequesting.php', {type: 'disPla', player: player, market: this.appService.data.constants.marketEdition}).subscribe( (response) => {
                 if(response.json().success) {
-                    this.playersOfMyTeam = this.getPlayersByTeam(this.user.teamID);
+                    this.playersOfMyTeam = this.appService.getPlayersByTeam(this.user.teamID);
                 }
                 alert(response.json().message);
             });
@@ -222,17 +165,12 @@ export class UserComponent{
         }
     }
 
-    private setTableConfig() {
-        this.usersTable = {
-            headerRow: [ 'name', 'team', 'nation', 'psnID', 'twitch'],
-            dataRows: this.giveActiveUsers()
-        };
-    }
-
-    private setOffersTable(data) {
-        this.offersTable = {
-            headerRow: [ 'type', 'player', 'team', 'amount', 'players', 'actions'],
-            dataRows: data
-        };
+    public changeHolidaysMode(result) {
+        this.http.post('./test_CMDataRequesting.php', {type: 'setHol', user: this.user.id, holidaysMode: result, holidaysMessage: result ? this.holidaysMessage : '' }).subscribe( (response) => {
+            if(response.json().success) {
+                result ? alert('Modo vacaciones activado') : alert('Modo vacaciones desactivado');
+                this.user.holidaysMode = result;
+            }
+        });
     }
 }

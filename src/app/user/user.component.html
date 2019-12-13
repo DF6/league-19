@@ -1,15 +1,15 @@
     <div class="container-fluid">
         <div class="row">
-            <div class="col-lg-4 col-md-5">
+            <div class="col-lg-4 col-md-5 col-sm-12">
                 <div class="card card-user">
                     <div class="image">
                         <img src="assets/img/background.jpg"/>
                     </div>
                     <div class="content">
                         <div class="author">
-                          <img class="avatar border-black" src="{{getTeamById(user.teamID).teamImage}}"/>   
+                          <img class="avatar border-black" src="{{appService.getTeamById(user.teamID).teamImage}}"/>   
                           <h4 class="title" *ngIf="user">{{user.name}}<br />
-                            {{getTeamById(user.teamID).name}}<br/>
+                            {{appService.getTeamById(user.teamID).name}}<br/>
                             {{user.psnID}}<br/>
                             <a href="http://www.{{user.twitch}}" target="_blank"><i class="ti-sharethis"></i></a>
                           </h4>
@@ -22,7 +22,7 @@
                                 <h5 *ngIf="playersOfMyTeam"> {{playersOfMyTeam.length}}<br /><small>Jugadores</small></h5>
                             </div>
                             <div class="col-md-4">
-                                <h5 *ngIf="teams"> {{getTeamById(user.teamID).budget}}<br /><small>M€</small></h5>
+                                <h5 *ngIf="teams"> {{appService.getTeamById(user.teamID).budget}}<br /><small>M€</small></h5>
                             </div>
                             <div class="col-md-3">
                                 <h5><br /><small>Posición</small></h5>
@@ -62,8 +62,38 @@
                         </div>
                     </div>
                 </div>
+                <div class="card">
+                        <div class="header">
+                            <h4 class="title">Modo vacaciones</h4>
+                        </div>
+                        <div class="content">
+                            <div class="row" *ngIf="!user.holidaysMode">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Razón</label>
+                                        <input [(ngModel)]="holidaysMessage" type="text" class="form-control border-input">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row" *ngIf="user.holidaysMode">
+                                <div *ngIf="user.holidaysMessage"class="col-md-12">
+                                    {{user.holidaysMessage}}
+                                </div>
+                                <div *ngIf="!user.holidaysMessage"class="col-md-12">
+                                    {{holidaysMessage}}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="text-center" style="cursor:pointer;">
+                                    <span *ngIf="!user.holidaysMode" style="font-weight: bold; padding: 8px;border: 2pt solid black; background-color: rgb(2, 114, 21); border-radius: 5px;" (click)="changeHolidaysMode(1)">Activar</span>
+                                    <span *ngIf="user.holidaysMode" style="font-weight: bold; padding: 8px;border: 2pt solid black; background-color: #ff0000; border-radius: 5px;" (click)="changeHolidaysMode(0)">Desactivar</span>
+                                </div>
+                                <div class="clearfix"></div>
+                            </div>
+                        </div>
+                </div>
             </div>
-            <div class="col-lg-8 col-md-7">
+            <div class="col-lg-8 col-md-7 col-sm-12">
                 <div class="card" *ngIf="usersTable">
                     <div class="header">
                         <h4 class="title">Datos de usuarios</h4>
@@ -84,8 +114,8 @@
                                 <tbody>
                                     <tr *ngFor="let row of usersTable.dataRows">
                                         <td>{{row.name}}</td>
-                                        <td>{{getTeamById(row.teamID).name}}</td>
-                                        <td>{{getTeamById(row.teamID).nation}}</td>
+                                        <td>{{appService.getTeamById(row.teamID).name}}</td>
+                                        <td>{{appService.getTeamById(row.teamID).nation}}</td>
                                         <td>{{row.psnID}}</td>
                                         <td *ngIf="row.twitch"><a href="http://www.{{row.twitch}}" target="_blank"><i class="ti-sharethis"></i></a></td>
                                         <td *ngIf="!row.twitch">N/D</td>
@@ -120,13 +150,13 @@
                                         <tbody>
                                             <tr *ngFor="let row of offersTable.dataRows">
                                                 <td>{{getType(row.signinType)}}</td>
-                                                <td>{{getPlayerById(row.player).name}}</td>
-                                                <td>{{getTeamById(row.buyerTeam).name}}</td>
+                                                <td>{{appService.getPlayerById(row.player).name}}</td>
+                                                <td>{{appService.getTeamById(row.buyerTeam).name}}</td>
                                                 <td>{{row.amount}}</td>
                                                 <td *ngIf="row.playersOffered.length != 0">
                                                     <div *ngFor="let plOf of row.playersOffered">
-                                                        <span *ngIf="$index != row.playersOffered.length - 1">{{getPlayerById(plOf.player).name}}, </span>
-                                                        <span *ngIf="$index == row.playersOffered.length - 1">{{getPlayerById(plOf.player).name}}</span>
+                                                        <span *ngIf="$index != row.playersOffered.length - 1">{{appService.getPlayerById(plOf.player).name}}, </span>
+                                                        <span *ngIf="$index == row.playersOffered.length - 1">{{appService.getPlayerById(plOf.player).name}}</span>
                                                     </div>
                                                 </td>
                                                 <td *ngIf="row.playersOffered.length == 0">NO</td>
@@ -140,9 +170,9 @@
                                 </div>
                                 </div>
                             </div>
-            <div *ngIf="playersOfMyTeam" class="card">
+            <div *ngIf="showPlayersTable" class="card">
                 <div class="header">
-                    <h4 *ngIf="players" class="title">Mi plantilla - {{playersOfMyTeam.length}} jugadores</h4>
+                    <h4 class="title">Mi plantilla - {{playersOfMyTeam.length}} jugadores</h4>
                     <!--<span 
                         style="float:right;font-weight: bold; padding: 8px;border: 2pt solid black; background-color: #ccc; border-radius: 5px;" 
                         (click)="player.salaryMode = true">Cambiar Salarios</span>-->
@@ -160,10 +190,10 @@
                                             {{player.overage}}
                                         </div>
                                         <div class="col-xs-2" *ngIf="!player.salaryMode && player.salary != 10 && player.cedido == 0">
-                                            {{player.salary}}M€ <a *ngIf="constants.salaryTime == 1" style="cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a>
+                                            {{player.salary}}M€ <a *ngIf="appService.data.constants.salaryTime == 1" style="cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a>
                                         </div>
                                         <div class="col-xs-2" *ngIf="!player.salaryMode && player.salary == 10 && player.cedido == 0">
-                                            INTOCABLE <a *ngIf="constants.salaryTime == 1" style="cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a>
+                                            INTOCABLE <a *ngIf="appService.data.constants.salaryTime == 1" style="cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a>
                                         </div>
                                         <div class="col-xs-2 text-right" *ngIf="player.buyedThisMarket == 0 && player.cedido == 0 && !player.salaryMode">
                                             <a style="cursor:pointer;" (click)="giveWildCard(player.id)">Liberar</a> - <a style="cursor:pointer;" (click)="setEmblem(player.id)">Emblema</a>
@@ -188,10 +218,10 @@
                                             {{player.overage}}
                                         </div>
                                         <div class="col-xs-2" *ngIf="!player.salaryMode && player.salary != 10 && player.cedido == 0">
-                                            {{player.salary}}M€ <a *ngIf="constants.salaryTime" style="cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a> 
+                                            {{player.salary}}M€ <a *ngIf="appService.data.constants.salaryTime" style="cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a> 
                                         </div>
                                         <div class="col-xs-2" *ngIf="!player.salaryMode && player.salary == 10 && player.cedido == 0">
-                                            INTOCABLE <a *ngIf="constants.salaryTime" style="cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a>
+                                            INTOCABLE <a *ngIf="appService.data.constants.salaryTime" style="cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a>
                                         </div>
                                         <div class="col-xs-2 text-right" *ngIf="player.buyedThisMarket == 0 && player.cedido == 0 && !player.salaryMode">
                                             <a style="cursor:pointer;" (click)="giveWildCard(player.id)">Liberar</a>

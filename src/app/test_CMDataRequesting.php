@@ -131,6 +131,9 @@
        case "hacEmb":
           makeEmblem($link, $params);
             break;
+       case "setHol":
+          setHolidaysMode($link, $params);
+            break;
        case "firPat":
           setPartner($link, $params);
             break;
@@ -719,6 +722,18 @@
     echo json_encode($data);
   	exit;
   }
+
+  function setHolidaysMode($con, $params)
+  {
+    $data = array();
+    $query="UPDATE test_users SET holidays_mode=" . $params->holidaysMode . ", holidays_message='". $params->holidaysMessage ."' where id=" . $params->user;
+    $resultado=mysqli_query($con, $query) or die("Error vacaciones");
+    $data['success'] = true;
+    $data['message'] = "Vacaciones actualizadas";
+    echo json_encode($data);
+    exit;
+  }
+
   
   function addZero($number)
   {
@@ -766,7 +781,9 @@
         $name=utf8_decode($row['complete_name']);
         $psnID=utf8_decode($row['psn_id']);
         $adminRights=$row['admin_rights'];
-        $users[] = array('id'=> $id, 'teamID'=> $teamID, 'user'=> $user, 'email'=> $email, 'name'=> $name, 'twitch'=> $twitch, 'psnID'=> $psnID, 'adminRights'=> $adminRights);
+        $holidaysMode=$row['holidays_mode'];
+        $holidaysMessage=$row['holidays_message'];
+        $users[] = array('id'=> $id, 'teamID'=> $teamID, 'user'=> $user, 'email'=> $email, 'name'=> $name, 'twitch'=> $twitch, 'psnID'=> $psnID, 'adminRights'=> $adminRights, 'holidaysMode'=> $holidaysMode, 'holidaysMessage'=> $holidaysMessage);
     }
     $data['users']=$users;
     $data['success'] = true;

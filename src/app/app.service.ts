@@ -77,6 +77,10 @@ export class AppService {
         return ret;
     }
 
+    public getActiveUsers() {
+        return this.data.users.filter( (user) => { return user.teamID != 0 && user.teamID != -1 });
+    }
+
     public getClassNames(size) {
         return {
             small: this.config.classNameSizes.all,
@@ -107,13 +111,6 @@ export class AppService {
 
     public getMatchById(match) {
         return this.data.matches.filter( (filteredMatch) => { return filteredMatch.id == match })[0];
-        /*let matchToReturn = null;
-        this.data.matches.forEach( (value) => {
-            if (value.id == match) {
-                matchToReturn = value;
-            }
-        });
-        return matchToReturn;*/
     }
 
     public getMatchConfiguration(match, classNames, showTitle, previousConfig?: KeyConfig): KeyConfig {
@@ -144,13 +141,6 @@ export class AppService {
 
     public getPlayerById(player) {
         return this.data.players.filter( (filteredPlayer) => { return filteredPlayer.id == player })[0];
-        /*let playerToReturn = null;
-        this.data.players.forEach( (value) => {
-            if (value.id == player) {
-                playerToReturn = value;
-            }
-        });
-        return playerToReturn;*/
     }
 
     public getPlayers() {
@@ -164,13 +154,6 @@ export class AppService {
 
     public getPlayersByTeam(team) {
         return this.data.players.filter( (filteredPlayer) => { return filteredPlayer.teamID == team });
-        /*let playersToReturn = [];
-        this.data.players.forEach( (value) => {
-            if (value.teamID == team) {
-                playersToReturn.push(value);
-            }
-        });
-        return playersToReturn;*/
     }
 
     public getRoundName(match) {
@@ -226,13 +209,6 @@ export class AppService {
 
     public getTeamById(team) {
         return this.data.teams.filter( (filteredTeam) => { return filteredTeam.id == team })[0];
-        /*let teamToReturn = null;
-        this.data.teams.forEach( (value) => {
-            if (value.id == team) {
-                teamToReturn = value;
-            }
-        });
-        return teamToReturn;*/
     }
 
     public getTeams() {
@@ -244,17 +220,19 @@ export class AppService {
         });
     }
 
+    public getTotalSalariesByTeam(playersOfTheTeam) {
+        let total = 0;
+        playersOfTheTeam.forEach( (value) => {
+            if(value.cedido == 0) {
+                total += parseFloat(value.salary);
+            }
+        });
+        return Math.round(total * 100) / 100;
+    }
+
     public getTournamentById(id): any {
         id = parseInt(id);
         return this.data.tournaments.filter( (filteredTournament) => { return filteredTournament.id == id })[0];
-        /*let tournament = {};
-        id = parseInt(id);
-        this.data.tournaments.forEach( (value) => {
-            if (value.id == id) {
-                tournament = value;
-            }
-        });
-        return tournament;*/
     }
 
     private getTournamentByNameAndEdition(name, edition) {
@@ -277,6 +255,10 @@ export class AppService {
         this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'U'}).subscribe( (response) => {
             this.data.users = response.json() ? response.json().users : [];
         });
+    }
+
+    public getUsersObservable(): Observable<any> {
+        return this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'U'});
     }
 
     public goTo(url){
@@ -365,6 +347,10 @@ export class AppService {
 
     public setUser(user) {
         this.data.user = user;
+    }
+
+    public setUsers(users) {
+        this.data.users = users;
     }
 
     private toCamelCase(param) {

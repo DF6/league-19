@@ -42,7 +42,9 @@ export class LoginComponent {
                             name: value.name,
                             psnID: value.psnID,
                             twitch: value.twitch,
-                            adminRights: value.adminRights
+                            adminRights: parseInt(value.adminRights),
+                            holidaysMode: parseInt(value.holidaysMode),
+                            holidaysMessage: value.holidaysMessage
                         }));
                         this.sidebarService.logChange();
                         alert(response.json().message);

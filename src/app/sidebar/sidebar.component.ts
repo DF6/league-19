@@ -23,7 +23,7 @@ export class SidebarComponent implements OnInit {
             this.sideBarService.logged.subscribe(isLogged => {
                 this.appService.refreshUser();
                 if (isLogged) {
-                    if (!parseInt(this.appService.data.user.adminRights)) {
+                    if (!this.appService.data.user.adminRights) {
                         if (this.appService.data.user.teamID == this.appService.config.notTeam) {
                             this.menuItems = this.appService.config.routes.noTeam.filter(menuItem => menuItem);
                         } else {
