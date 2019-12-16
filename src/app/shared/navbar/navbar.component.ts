@@ -23,6 +23,9 @@ export class NavbarComponent implements OnInit {
     }
 
     ngOnInit() {
+        if(document.body.clientWidth <= 991) {
+            document.getElementsByClassName('sidebar')[0].setAttribute('style', 'display: none');
+        }
         this.appService.getConfigObservable().subscribe( (response) => {
             this.appService.setConfig(response.json());
             this.listTitles = this.appService.config.routes.all.filter(listTitle => listTitle);
@@ -53,10 +56,16 @@ export class NavbarComponent implements OnInit {
             }, 500);
             body.classList.add('nav-open');
             this.sidebarVisible = true;
+            if(document.body.clientWidth <= 991) {
+                document.getElementsByClassName('sidebar')[0].setAttribute('style', 'display: block');
+            }
         } else {
             this.toggleButton.classList.remove('toggled');
-            this.sidebarVisible = false;
             body.classList.remove('nav-open');
+            this.sidebarVisible = false;
+            if(document.body.clientWidth <= 991) {
+                document.getElementsByClassName('sidebar')[0].setAttribute('style', 'display: none');
+            }
         }
     }
 }
