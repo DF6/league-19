@@ -160,6 +160,10 @@ export class AppService {
         return this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'P'});
     }
 
+    public getPublicTournaments() {
+        return this.data.tournaments;
+    }
+
     public getRoundName(match) {
         switch (this.getTournamentById(match.tournament).name) {
             case this.config.tournamentGeneralInfo.generalCup.name:
