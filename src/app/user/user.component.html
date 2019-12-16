@@ -1,17 +1,17 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-lg-4 col-md-5 col-sm-12">
-                <div class="card card-user">
+                <div class="card card-user" *ngIf="showMyPlayerTable">
                     <div class="image">
                         <img src="assets/img/background.jpg"/>
                     </div>
                     <div class="content">
                         <div class="author">
-                          <img class="avatar border-black" src="{{appService.getTeamById(user.teamID).teamImage}}"/>   
-                          <h4 class="title" *ngIf="user">{{user.name}}<br />
-                            {{appService.getTeamById(user.teamID).name}}<br/>
-                            {{user.psnID}}<br/>
-                            <a href="http://www.{{user.twitch}}" target="_blank"><i class="ti-sharethis"></i></a>
+                          <img class="avatar border-black" src="{{appService.getTeamById(appService.data.user.teamID).teamImage}}"/>   
+                          <h4 class="title" *ngIf="appService.data.user">{{appService.data.user.name}}<br />
+                            {{appService.getTeamById(appService.data.user.teamID).name}}<br/>
+                            {{appService.data.user.psnID}}<br/>
+                            <a href="http://www.{{appService.data.user.twitch}}" target="_blank"><i class="ti-sharethis"></i></a>
                           </h4>
                         </div>
                     </div>
@@ -22,7 +22,7 @@
                                 <h5 *ngIf="playersOfMyTeam"> {{playersOfMyTeam.length}}<br /><small>Jugadores</small></h5>
                             </div>
                             <div class="col-md-4">
-                                <h5 *ngIf="teams"> {{appService.getTeamById(user.teamID).budget}}<br /><small>M€</small></h5>
+                                <h5 *ngIf="teams"> {{appService.getTeamById(appService.data.user.teamID).budget}}<br /><small>M€</small></h5>
                             </div>
                             <div class="col-md-3">
                                 <h5><br /><small>Posición</small></h5>
@@ -62,12 +62,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="card">
+                <div class="card" *ngIf="appService.data.user">
                         <div class="header">
                             <h4 class="title">Modo vacaciones</h4>
                         </div>
                         <div class="content">
-                            <div class="row" *ngIf="!user.holidaysMode">
+                            <div class="row" *ngIf="!appService.data.user.holidaysMode">
                                 <div class="col-md-12">
                                     <div class="form-group">
                                         <label>Razón</label>
@@ -75,18 +75,18 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="row" *ngIf="user.holidaysMode">
-                                <div *ngIf="user.holidaysMessage"class="col-md-12">
-                                    {{user.holidaysMessage}}
+                            <div class="row" *ngIf="appService.data.user.holidaysMode">
+                                <div class="col-md-12" *ngIf="holidaysMessage == ''">
+                                    {{appService.data.user.holidaysMessage}}
                                 </div>
-                                <div *ngIf="!user.holidaysMessage"class="col-md-12">
+                                <div class="col-md-12" *ngIf="holidaysMessage != ''">
                                     {{holidaysMessage}}
                                 </div>
                             </div>
                             <div class="row">
-                                <div class="text-center" style="cursor:pointer;">
-                                    <span *ngIf="!user.holidaysMode" style="font-weight: bold; padding: 8px;border: 2pt solid black; background-color: rgb(2, 114, 21); border-radius: 5px;" (click)="changeHolidaysMode(1)">Activar</span>
-                                    <span *ngIf="user.holidaysMode" style="font-weight: bold; padding: 8px;border: 2pt solid black; background-color: #ff0000; border-radius: 5px;" (click)="changeHolidaysMode(0)">Desactivar</span>
+                                <div class="text-center" style="cursor:pointer;margin-top: 10px;">
+                                    <span *ngIf="!appService.data.user.holidaysMode" style="font-weight: bold; padding: 8px;border: 2pt solid black; background-color: rgb(2, 114, 21); border-radius: 5px;" (click)="changeHolidaysMode(1)">Activar</span>
+                                    <span *ngIf="appService.data.user.holidaysMode" style="font-weight: bold; padding: 8px;border: 2pt solid black; background-color: #ff0000; border-radius: 5px;" (click)="changeHolidaysMode(0)">Desactivar</span>
                                 </div>
                                 <div class="clearfix"></div>
                             </div>
@@ -113,12 +113,13 @@
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let row of usersTable.dataRows">
-                                        <td>{{row.name}}</td>
-                                        <td>{{appService.getTeamById(row.teamID).name}}</td>
-                                        <td>{{appService.getTeamById(row.teamID).nation}}</td>
-                                        <td>{{row.psnID}}</td>
-                                        <td *ngIf="row.twitch"><a href="http://www.{{row.twitch}}" target="_blank"><i class="ti-sharethis"></i></a></td>
-                                        <td *ngIf="!row.twitch">N/D</td>
+                                        <td *ngIf="row.holidaysMode == '0'">{{row.name}}</td>
+                                        <td *ngIf="row.holidaysMode == '0'">{{appService.getTeamById(row.teamID).name}}</td>
+                                        <td *ngIf="row.holidaysMode == '0'">{{appService.getTeamById(row.teamID).nation}}</td>
+                                        <td *ngIf="row.holidaysMode == '0'">{{row.psnID}}</td>
+                                        <td *ngIf="row.holidaysMode == '0' && row.twitch"><a href="http://www.{{row.twitch}}" target="_blank"><i class="ti-sharethis"></i></a></td>
+                                        <td *ngIf="row.holidaysMode == '0' && !row.twitch">N/D</td>
+                                        <td colspan="6" *ngIf="row.holidaysMode == '1'" style="color: red;font-weight: bold;">{{row.name}} ({{appService.getTeamById(row.teamID).name}}) en modo VACACIONES (Motivo: {{row.holidaysMessage}})</td>
                                     </tr>
                                 </tbody>
                             </table>

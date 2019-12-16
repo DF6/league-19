@@ -19,6 +19,7 @@ export class UserComponent{
     public usersTable: TableData;
     public offersTable: TableData;
     public user;
+    public oldUser;
     public playersOfMyTeam;
     public pass;
     public pass2;
@@ -28,16 +29,17 @@ export class UserComponent{
     public signins;
     public playerChangeSignins;
     public showPlayersTable = false;
+    public showMyPlayerTable = false;
 
     constructor(private http: Http, private router: Router, private appService: AppService) {
-        this.user = JSON.parse(sessionStorage.getItem('user'));
         this.appService.getConstants();
-        this.appService.getPlayers();
         this.appService.getTeams();
         this.appService.getUsers();
-        this.appService.getSigninsObservable().subscribe( (response) => {
-            this.appService.setSignins(response.json().signins);
-            this.playersOfMyTeam = this.appService.getPlayersByTeam(this.user.teamID);
+        this.appService.getSignins();
+        this.appService.getPlayersObservable().subscribe( (response) => {
+            this.appService.setPlayers(response.json().players);
+            this.showMyPlayerTable = true;
+            this.playersOfMyTeam = this.appService.getPlayersByTeam(this.appService.data.user.teamID);
             this.getAdditionalPlayerInfo();
             this.usersTable = this.appService.getTableConfig(this.appService.config.tableHeaders.userInfo, this.appService.getActiveUsers());
             this.setOffersOfMyTeam();
@@ -49,17 +51,17 @@ export class UserComponent{
             alert(response.json().message);
             if(response.json().success) {
                 player.salaryMode = false;
-                this.appService.getPlayersByTeam(this.user.teamID);
+                this.appService.getPlayersByTeam(this.appService.data.user.teamID);
                 this.appService.getTotalSalariesByTeam(this.playersOfMyTeam);
             }
         });
     }
 
     public setEmblem(player) {
-        this.http.post('./test_CMDataRequesting.php', {type: 'hacEmb', player: player, team: this.user.teamID}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'hacEmb', player: player, team: this.appService.data.user.teamID}).subscribe( (response) => {
             alert(response.json().message);
             if(response.json().success) {
-                this.appService.getPlayersByTeam(this.user.teamID);
+                this.appService.getPlayersByTeam(this.appService.data.user.teamID);
             }
         });
     }
@@ -70,7 +72,7 @@ export class UserComponent{
         this.appService.data.signins.forEach( (value) => {
             if (value.market == this.appService.data.constants.marketEdition &&
                 (value.signinType == 'G' || value.signinType == 'C') && value.accepted == 0 &&
-                value.oldTeam == this.user.teamID) {
+                value.oldTeam == this.appService.data.user.teamID) {
                 value.playersOffered = [];
                 this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'PCS'}).subscribe( (response) => {
                     this.playerChangeSignins = response.json().playerChangeSignins;
@@ -98,7 +100,7 @@ export class UserComponent{
                             this.http.post('./test_CMDataRequesting.php', {type: 'traJug', player: value.player, oldTeam: value.originTeam, newTeam: value.newTeam, market: this.appService.data.constants.marketEdition, signinType: offer.signinType, cedido: this.appService.getPlayerById(offer.player).cedido}).subscribe( (response) => {
                                 alert(response.json().message);
                                 if(response.json().success) {
-                                    this.appService.getPlayersByTeam(this.user.teamID);
+                                    this.appService.getPlayersByTeam(this.appService.data.user.teamID);
                                     this.setOffersOfMyTeam();
                                 }
                             });
@@ -106,7 +108,7 @@ export class UserComponent{
                         this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
                             this.signins = response.json().signins;
                             this.setOffersOfMyTeam();
-                            this.appService.getPlayersByTeam(this.user.teamID);
+                            this.appService.getPlayersByTeam(this.appService.data.user.teamID);
                         });
                     } else {
                         this.router.navigateByUrl('plantillas');
@@ -141,7 +143,7 @@ export class UserComponent{
         if(this.pass != this.pass2) {
             alert('Las contraseñas no coinciden');
         }else{
-            this.http.post('./test_CMDataRequesting.php', {type: 'updUsu', teamID: this.user.teamID, pass: this.pass, email: this.user.email, id: this.user.id, user: this.user.user}).subscribe( (response) => {
+            this.http.post('./test_CMDataRequesting.php', {type: 'updUsu', teamID: this.appService.data.user.teamID, pass: this.pass, email: this.appService.data.user.email, id: this.appService.data.user.id, user: this.appService.data.user.user}).subscribe( (response) => {
                 alert('Contraseña cambiada');
               });
         }
@@ -151,7 +153,7 @@ export class UserComponent{
         if(confirm('¿Liberar a ' + this.appService.getPlayerById(player).name + '?')) {
             this.http.post('./test_CMDataRequesting.php', {type: 'disPla', player: player, market: this.appService.data.constants.marketEdition}).subscribe( (response) => {
                 if(response.json().success) {
-                    this.playersOfMyTeam = this.appService.getPlayersByTeam(this.user.teamID);
+                    this.playersOfMyTeam = this.appService.getPlayersByTeam(this.appService.data.user.teamID);
                 }
                 alert(response.json().message);
             });
@@ -166,10 +168,10 @@ export class UserComponent{
     }
 
     public changeHolidaysMode(result) {
-        this.http.post('./test_CMDataRequesting.php', {type: 'setHol', user: this.user.id, holidaysMode: result, holidaysMessage: result ? this.holidaysMessage : '' }).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'setHol', user: this.appService.data.user.id, holidaysMode: result, holidaysMessage: result ? this.holidaysMessage : '' }).subscribe( (response) => {
             if(response.json().success) {
                 result ? alert('Modo vacaciones activado') : alert('Modo vacaciones desactivado');
-                this.user.holidaysMode = result;
+                this.appService.data.user.holidaysMode = result;
             }
         });
     }

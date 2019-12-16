@@ -156,6 +156,10 @@ export class AppService {
         return this.data.players.filter( (filteredPlayer) => { return filteredPlayer.teamID == team });
     }
 
+    public getPlayersObservable() {
+        return this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'P'});
+    }
+
     public getRoundName(match) {
         switch (this.getTournamentById(match.tournament).name) {
             case this.config.tournamentGeneralInfo.generalCup.name:
@@ -317,7 +321,30 @@ export class AppService {
     }
 
     public refreshUser() {
-        sessionStorage.getItem('user') != null ? this.setUser(JSON.parse(sessionStorage.getItem('user'))) : null;
+        this.getUsersObservable().subscribe( (response) => {
+            if(response.json().success) {
+                this.setUsers(response.json().users);
+                this.setUser(this.data.users
+                    .filter( (value) => {
+                        return value.id == JSON.parse(sessionStorage.getItem('user')).id;
+                    })
+                    .map( (user) => {
+                        return {
+                            id: user.id,
+                            teamID: user.teamID,
+                            user: user.user,
+                            email: user.email,
+                            name: user.name,
+                            psnID: user.psnID,
+                            twitch: user.twitch,
+                            adminRights: parseInt(user.adminRights),
+                            holidaysMode: parseInt(user.holidaysMode),
+                            holidaysMessage: user.holidaysMessage
+                        }
+                    })[0]);
+                this.setSessionUser(this.data.user);
+            }
+        });
     }
 
     public removeAccents(name) {
@@ -339,6 +366,14 @@ export class AppService {
 
     public setMatches(matches) {
         this.data.matches = matches;
+    }
+
+    public setPlayers(players) {
+        this.data.players = players;
+    }
+
+    public setSessionUser(user) {
+        sessionStorage.setItem('user', JSON.stringify(user));
     }
 
     public setSignins(signins) {
