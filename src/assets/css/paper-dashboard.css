@@ -3075,9 +3075,6 @@ Copyright (c) 2015 Daniel Eden
 }
 /*          Changes for small display      */
 @media (max-width: 991px) {
-  .sidebar {
-    display: none;
-  }
 
   .main-panel {
     width: 100%;
@@ -3136,7 +3133,6 @@ Copyright (c) 2015 Daniel Eden
 
   .sidebar {
     position: fixed;
-    display: block;
     top: 0;
     height: 100%;
     width: 230px;

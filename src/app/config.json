@@ -156,7 +156,9 @@
     "tableHeaders": {
         "adminMatches": [ "tournament", "round", "local", "", "away" ],
         "adminSalaries": [ "team", "salaries"],
-        "auctions": [ "name", "position", "overage", "team", "amount", "state", "time", "raise"]
+        "auctions": [ "name", "position", "overage", "team", "amount", "state", "time", "raise"],
+        "offers": [ "type", "player", "team", "amount", "players", "actions"],
+        "userInfo": [ "name", "team", "nation", "psnID", "twitch"]
     },
     "tournamentGeneralInfo": {
         "championsLeague": {

@@ -34,7 +34,7 @@ export class LoginComponent {
             if (response.json().success) {
                 this.appService.data.users.forEach( (value) => {
                     if (value.user.toLowerCase() == this.user.toLowerCase()) {
-                        sessionStorage.setItem('user', JSON.stringify({
+                        this.appService.setSessionUser({
                             id: value.id,
                             teamID: value.teamID,
                             user: value.user,
@@ -42,8 +42,10 @@ export class LoginComponent {
                             name: value.name,
                             psnID: value.psnID,
                             twitch: value.twitch,
-                            adminRights: value.adminRights
-                        }));
+                            adminRights: parseInt(value.adminRights),
+                            holidaysMode: parseInt(value.holidaysMode),
+                            holidaysMessage: value.holidaysMessage
+                        });
                         this.sidebarService.logChange();
                         alert(response.json().message);
                         this.disableInputs = true;
