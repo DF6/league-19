@@ -37,14 +37,16 @@ export class AdminPageComponent implements OnInit{
     public salaryData;
     public matches;
     public tournamentToReset;
+    public showModule;
 
-    constructor(private http: Http, private appService: AppService){
+    constructor(private http: Http, private appService: AppService) {
+        this.resetView();
         this.appService.getPlayers();
         this.appService.getTeams();
         this.appService.getTournaments();
     }
 
-    ngOnInit() {    
+    ngOnInit() {
         this.appService.getMatchesObservable().subscribe( (response) => {
             this.matches = response.json().matches;
             this.tournamentToReset = this.appService.getLastEdition(this.appService.data.tournaments[0].name).id;
@@ -124,5 +126,16 @@ export class AdminPageComponent implements OnInit{
                 alert('Reinicio realizado');
             }
         });
+    }
+
+    public resetView() {
+        this.showModule = {
+            changeSeasonslot: false,
+            createTournament: false,
+            discountSalaries: false,
+            editMatch: false,
+            insertMatch: false,
+            recalculateStandings: false
+        }
     }
 }
