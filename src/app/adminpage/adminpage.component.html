@@ -1,4 +1,52 @@
 <div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 col-sm-12" (click)="resetView();showCard.matchRules = true">
+            <div style="cursor: pointer" class="card">
+                <div class="header text-center">
+                    <p style="font-weight: bold" class="category">Insertar Partido<br/><br/></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div style="cursor: pointer" class="card">
+                <div class="header text-center">
+                    <select class="col-md-4 col-sm-12" [(ngModel)]="tournamentToReset">
+                        <option *ngFor="let tournament of appService.getPublicTournaments()" 
+                            [ngValue]="tournament">{{tournament.name}}</option>
+                    </select>
+                    <button class="col-md-7 offset-md-1 col-sm-12" (click)="recalculateStandings()">Recalcular Clasificacion</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row" *ngIf="teamSalaries">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Sueldos</h4>
+                </div>
+                <div *ngIf="teamSalaries.dataRows.length != 0" class="content table-responsive table-full-width">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Equipo</th>
+                                <th>Sueldos</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of teamSalaries.dataRows">
+                                <td style="text-align: center;">{{getTeamById(row.team).name}}</td>
+                                <td style="text-align: center;">{{row.salaries}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div *ngIf="teamSalaries.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                    Salarios no disponibles
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row" *ngIf="teamSalaries">
             <div class="col-md-12">
                     <div class="card">

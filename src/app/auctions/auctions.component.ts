@@ -64,6 +64,7 @@ export class AuctionsComponent {
     public raiseAuction(auctionID, index) {
         this.http.post('./test_CMDataRequesting.php', {type: 'pujSub', newTeam: this.appService.data.user.teamID, id: auctionID, amount: this.amountsRaised[index]}).subscribe( (response) => {
             if(response.json().success) {
+                this.appService.insertLog({logType: this.appService.config.logTypes.auctionRaised, logInfo: 'Sobrepuja: ' + this.appService.getPlayerById(this.appService.data.signins.filter( (signin) => { return signin.id == auctionID })[0].player).name + ' por ' + this.amountsRaised[index] + 'M€ (ID ' + auctionID + ')'});
                 this.setTable();
             } else {
                 alert(response.json().message);

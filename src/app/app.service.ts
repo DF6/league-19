@@ -36,7 +36,7 @@ export class AppService {
     public config;
 
     constructor(private http: Http, private router: Router) {
-        this.refreshUser();
+        if(sessionStorage.getItem('user')) { this.refreshUser(); }
         this.refreshConfig();
     }
 
@@ -295,6 +295,10 @@ export class AppService {
             case this.config.tournamentGeneralInfo.europeSupercup.name:
                 return null;
         }
+    }
+
+    public insertLog(log) {
+        this.http.post(PHPFILENAME, {type: 'log', user: this.data.user ? this.data.user.id : log.id, logType: log.logType, logInfo: log.logInfo}).subscribe(()=>{});
     }
 
     public isUpdatableStanding(match) {

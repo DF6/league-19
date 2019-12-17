@@ -47,6 +47,7 @@ export class LoginComponent {
                             holidaysMessage: value.holidaysMessage
                         });
                         this.sidebarService.logChange();
+                        this.appService.insertLog({id: value.id, logType: this.appService.config.logTypes.login, logInfo: 'Login'});
                         alert(response.json().message);
                         this.disableInputs = true;
                         this.router.navigateByUrl('normas');

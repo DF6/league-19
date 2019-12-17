@@ -38,6 +38,13 @@
     "notResolvedMatch": -1,
     "notTeam": 0,
     "leagues": [ "Primera", "Segunda" ],
+    "logTypes": {
+        "auctionRaised": "AR",
+        "login": "LI",
+        "logout": "LO",
+        "matchFilled": "MF",
+        "resetStandings": "RS"
+    },
     "roundNames": {
         "groupStage": "Fase de Grupos",
         "outOf16": "Octavos de Final",
@@ -155,6 +162,7 @@
     },
     "tableHeaders": {
         "adminMatches": [ "tournament", "round", "local", "", "away" ],
+        "adminSalaries": [ "team", "salaries"],
         "auctions": [ "name", "position", "overage", "team", "amount", "state", "time", "raise"],
         "offers": [ "type", "player", "team", "amount", "players", "actions"],
         "userInfo": [ "name", "team", "nation", "psnID", "twitch"]

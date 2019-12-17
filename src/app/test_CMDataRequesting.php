@@ -65,6 +65,9 @@
         case "PARTNERS":
           obtainPartners($link);
           break;
+        case "LOG":
+          obtainLog($link);
+          break;
         default:
           invalidRequest();
      }
@@ -671,7 +674,7 @@
   function insertLog($con, $params)
   {
     $data = array();
-    $query="INSERT INTO test_log (user, message) VALUES (".$params->user.", '".$params->message."')";
+    $query="INSERT INTO test_log (user, type, log_information) VALUES (".$params->user.", '" . $params->logType . "', '".$params->logInfo."')";
     $resultado=mysqli_query($con, $query) or die("Error insertando log");
     $data['success'] = true;
     $data['message'] = "Log insertado";
@@ -1089,6 +1092,28 @@
         $constants[] = array('marketEdition'=> $marketEdition, 'marketOpened'=> $marketOpened, 'forcedSigninsOpened'=> $forcedSigninsOpened, 'auctionsOpened'=> $auctionsOpened, 'intervalActual'=> $intervalActual);
     }
     $data['constants']=$constants;
+    $data['success'] = true;
+    $data['message'] = "Datos recogidos";
+    echo json_encode($data);
+    exit;
+  }
+
+  function obtainLog($con)
+  {
+    $data = array();
+    $query="SELECT * from test_log";
+    $resultado=mysqli_query($con, $query) or die("Error recuperando log");
+  
+    $log=array();
+    while($row = mysqli_fetch_array($resultado))
+    {
+        $user=$row['user'];
+        $type=utf8_decode($row['type']);
+        $logInformation=utf8_decode($row['log_information']);
+        $logTime=$row['log_time'];
+        $log[] = array('user'=>$user, 'type'=> $type, 'logInformation'=> $logInformation, 'logTime'=> $logTime);
+    }
+    $data['log']=$log;
     $data['success'] = true;
     $data['message'] = "Datos recogidos";
     echo json_encode($data);
