@@ -12,11 +12,6 @@ declare var $:any;
 
 export class AuctionsComponent {
     public tableData1: TableData;
-    public players;
-    public signins;
-    public user;
-    public teams;
-    public constants;
     public amountsRaised = [];
     public new = false;
     public newPlayer = {
@@ -39,26 +34,27 @@ export class AuctionsComponent {
 
     public setTable() {
         this.tableData1.dataRows = [];
-        let auctionedPlayers = [];
-        this.appService.data.signins.forEach( (value) => {
-            if (value.signinType == this.appService.config.signinTypes.auction && value.market == this.appService.data.constants.marketEdition) {
-                let player = this.appService.getPlayerById(value.player);
-                let auction = {
-                    id: value.id, 
-                    name: player.name,
-                    position: player.position,
-                    overage: player.overage,
-                    team: value.buyerTeam,
-                    amount: value.amount,
-                    state: value.accepted,
-                    time: value.limitDate
-                };
-                this.amountsRaised.push(auction.amount);
-                auctionedPlayers.push(auction);
-                auctionedPlayers[auctionedPlayers.length - 1].time = this.getFormattedTime(auctionedPlayers[auctionedPlayers.length - 1]);
-            }
+        const dataRows = this.appService.data.signins
+        .filter( (signin) => {
+            return signin.signinType == this.appService.config.signinTypes.auction && signin.market == this.appService.data.constants.marketEdition;
+        })
+        .map( (filteredSignins) => {
+            const player = this.appService.getPlayerById(filteredSignins.player);
+            const auction = {
+                id: filteredSignins.id, 
+                name: player.name,
+                position: player.position,
+                overage: player.overage,
+                team: filteredSignins.buyerTeam,
+                amount: filteredSignins.amount,
+                state: filteredSignins.accepted,
+                time: filteredSignins.limitDate
+            };
+            this.amountsRaised.push(auction.amount);
+            auction.time = this.getFormattedTime(auction);
+            return auction;
         });
-        this.tableData1.dataRows = auctionedPlayers;
+        this.tableData1.dataRows = dataRows;
     }
 
     public raiseAuction(auctionID, index) {
@@ -66,6 +62,7 @@ export class AuctionsComponent {
             if(response.json().success) {
                 this.appService.insertLog({logType: this.appService.config.logTypes.auctionRaised, logInfo: 'Sobrepuja: ' + this.appService.getPlayerById(this.appService.data.signins.filter( (signin) => { return signin.id == auctionID })[0].player).name + ' por ' + this.amountsRaised[index] + 'M€ (ID ' + auctionID + ')'});
                 this.setTable();
+                alert('Nueva puja completada');
             } else {
                 alert(response.json().message);
             }
@@ -75,7 +72,7 @@ export class AuctionsComponent {
     public addPlayerToAuction() {
         if(confirm("¿Seguro?")) {
             let date = new Date();
-            date.setHours(date.getHours() + 12);
+            date.setHours(date.getHours() + this.appService.config.auctionLimit);
             let formattedDate = this.appService.addZero(date.getDate()) + "/" + 
                                 (this.appService.addZero(date.getMonth()+1)) + "/" + 
                                 this.appService.addZero(date.getFullYear()) + " " + 
@@ -92,6 +89,7 @@ export class AuctionsComponent {
                         overage: this.appService.config.auctionDefaultOverage,
                         amount: 0
                     };
+                    this.appService.insertLog({logType: this.appService.config.logTypes.playerAddedInAuction, logInfo: 'Nuevo jugador en subasta: ' + this.appService.getPlayerById(response.json().newID).name + ' por ' + this.newPlayer.amount + 'M€ (ID ' + response.json().newID + ')'});
                 }
                 alert(response.json().message);
             });
@@ -102,10 +100,12 @@ export class AuctionsComponent {
         if(!this.newPlayer.overage || this.newPlayer.overage == null || this.newPlayer.overage == undefined) {
             this.newPlayer.amount = 0;
         } else {
-            this.appService.config.auctionInitialAmounts.forEach( (value) => {
-                if(this.newPlayer.overage >= value.min && this.newPlayer.overage < value.max) {
-                    this.newPlayer.amount = value.amount;
-                }
+            this.appService.config.auctionInitialAmounts
+            .filter( (amount) => {
+                return this.newPlayer.overage >= amount.min && this.newPlayer.overage < amount.max;
+            })
+            .map( (value) => {
+                this.newPlayer.amount = value.amount;
             });
         }
     }

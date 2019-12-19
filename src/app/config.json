@@ -27,6 +27,7 @@
             "amount": 15
         }
     ],
+    "auctionLimit": 12,
     "auctionsRaisingStep": 1,
     "classNameSizes": {
         "small": 3,
@@ -38,15 +39,18 @@
         "absent": "-2",
         "notPlayed": "-1"
     },
+    "mobileMenuLimit": 991,
     "notMobileMenuWidth": 479,
     "notResolvedMatch": -1,
     "notTeam": 0,
     "leagues": [ "Primera", "Segunda" ],
     "logTypes": {
         "auctionRaised": "AR",
+        "closedAuction": "CA",
         "login": "LI",
         "logout": "LO",
         "matchFilled": "MF",
+        "playerAddedInAuction": "PA",
         "resetStandings": "RS"
     },
     "roundNames": {

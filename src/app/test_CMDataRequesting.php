@@ -545,7 +545,7 @@
       $resultado=mysqli_query($con, $query) or die("Error insertando jugador");
       $query2="INSERT INTO test_signins (player,buyer_team,amount,signin_type,market,accepted,limit_date) values (".mysqli_insert_id($con).",".$params->buyerTeam.", ".$params->amount.", 'A', ".$params->market.", false, DATE_ADD(NOW(), INTERVAL 13 HOUR))";
       $resultado2=mysqli_query($con, $query2) or die("Error insertando subasta");
-      $idResult=mysqli_insert_id($con);
+      $data['newID']=mysqli_insert_id($con);
     }
     echo json_encode($data);
     exit;
