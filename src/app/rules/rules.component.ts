@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Http } from '@angular/http';
+import { AppService } from 'app/app.service';
 
 @Component({
     selector: 'rules-cmp',
@@ -9,8 +11,9 @@ import { Component } from '@angular/core';
 export class RulesComponent{
 
     public showCard;
+    public suggestion;
 
-    constructor() {
+    constructor(private appService: AppService) {
         this.resetView();
     }
 
@@ -23,5 +26,10 @@ export class RulesComponent{
             prizes: false,
             polls: false
         }
+    }
+
+    public sendSuggestion() {
+        this.appService.sendSuggestion(this.suggestion);
+        alert('Sugerencia enviada');
     }
 }

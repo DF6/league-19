@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { SideBarService } from '../sidebar/sidebar.service';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
+import { AppService } from 'app/app.service';
 
 @Component({
     selector: 'logout-cmp',
@@ -10,7 +11,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 export class LogoutComponent{
 
-    constructor(private sidebarService: SideBarService, private router: Router) {
+    constructor(private sidebarService: SideBarService, private router: Router, private appService: AppService) {
+        this.appService.insertLog({logType: this.appService.config.logTypes.logout, logInfo: 'Logout'});
         sessionStorage.removeItem('user');
         this.sidebarService.logChange();
         this.router.navigateByUrl('login');
