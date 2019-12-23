@@ -152,6 +152,9 @@
        case "updSta":
           updateStandings($link, $params);
             break;
+       case "resSta":
+          resetStandings($link, $params);
+            break;
        case "genOrd":
           createOrder($link, $params);
           break;
@@ -684,6 +687,16 @@
     $resultado=mysqli_query($con, $query) or die("Error actualizando tabla");
     $data['success'] = true;
     $data['message'] = "Tabla actualizando";
+    echo json_encode($data);
+    exit;
+  }
+
+  function resetStandings($con, $params)
+  {
+    $query="UPDATE standings SET round=0, points=0, won=0, draw=0, lost=0, goals_for=0, goals_against=0 WHERE tournament_id=" . $params->tournament;
+    $resultado6=mysqli_query($con, $query) or die("Error reiniciando clasificaciones");
+    $data['success'] = true;
+    $data['message'] = "Tabla reseteada";
     echo json_encode($data);
     exit;
   }
