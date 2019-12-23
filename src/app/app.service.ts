@@ -24,6 +24,9 @@ const PHPFILENAME = './CMDataRequesting.php';
 export class AppService {
 
     public data = {
+        adminData: {
+            suggestions: undefined
+        },
         constants: undefined,
         matches: undefined,
         players: undefined,
@@ -36,7 +39,7 @@ export class AppService {
     public config;
 
     constructor(private http: Http, private router: Router) {
-        this.refreshUser();
+        if(sessionStorage.getItem('user')) { this.refreshUser(); }
         this.refreshConfig();
     }
 
@@ -208,6 +211,12 @@ export class AppService {
         return this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'S'});
     }
 
+    public getSuggestions() {
+        this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'SUG'}).subscribe( (response) => {
+            this.data.adminData.suggestions = response.json() ? response.json().suggestions : [];
+        });
+    }
+
     public getTableConfig(tableFields, rows?) {
         return {
             headerRow: tableFields,
@@ -259,6 +268,10 @@ export class AppService {
         });
     }
 
+    public getUserById(id): any {
+        return this.data.users.filter( (filteredUser) => { return filteredUser.id == id })[0];
+    }
+
     public getUsers() {
         this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'U'}).subscribe( (response) => {
             this.data.users = response.json() ? response.json().users : [];
@@ -299,6 +312,10 @@ export class AppService {
             case this.config.tournamentGeneralInfo.europeSupercup.name:
                 return null;
         }
+    }
+
+    public insertLog(log) {
+        this.http.post(PHPFILENAME, {type: 'log', user: this.data.user ? this.data.user.id : log.id, logType: log.logType, logInfo: log.logInfo}).subscribe(()=>{});
     }
 
     public isUpdatableStanding(match) {
@@ -362,6 +379,21 @@ export class AppService {
         const expr = /[áàéèíìóòúùäëïöüñ]/ig;
         const res = name.replace(expr, function(e){return chars[e]; });
         return res;
+    }
+
+    public sendSuggestion(suggestion): any {
+        let userToSend = 0;
+        if(this.data.user) {
+            userToSend = this.data.user.id;
+        }
+        this.http.post(PHPFILENAME, {type: 'senSug', user: userToSend, suggestion: suggestion}).subscribe( (response) => {
+            if (response.json().success) {
+                this.insertLog({logType: this.config.logTypes.sendSuggestion, logInfo: 'Sugerencia enviada'});
+                return true;
+            } else {
+                return false;
+            }
+        });
     }
 
     public setConfig(config) {

@@ -31,23 +31,27 @@ declare interface TableData {
 export class AdminPageComponent implements OnInit{
 
     public offer: OfferData;
-    public matches;
     public matchToAdd;
     public prizes;
     public teamSalaries: TableData;
     public salaryData;
+    public matches;
     public tournamentToReset;
+    public showModule;
+    public suggestionsTable;
 
-    constructor(private http: Http, private appService: AppService){
+    constructor(private http: Http, private appService: AppService) {
+        this.resetView();
         this.appService.getPlayers();
         this.appService.getTeams();
         this.appService.getTournaments();
+        this.appService.getSuggestions();
     }
 
-    ngOnInit() {    
+    ngOnInit() {
         this.appService.getMatchesObservable().subscribe( (response) => {
             this.matches = response.json().matches;
-            this.tournamentToReset = this.appService.getLastEdition(this.appService.getPublicTournaments()[0].name).id;
+            this.tournamentToReset = this.appService.getLastEdition(this.appService.data.tournaments[0].name).id;
             this.matchToAdd = {
                 local: -1,
                 away: -1,
@@ -65,23 +69,28 @@ export class AdminPageComponent implements OnInit{
                 eight: -1
             };
             this.getTotalSalaries();
+            this.getSuggestions();
         });
     }
 
     public discountSalaries() {
         this.salaryData.forEach( (value) => {
-            this.http.post('./CMDataRequesting.php', {type: 'chaSal', amount: value.salaries, id: value.team});
+            this.http.post('./CMDataRequesting.php', {type: 'chaSal', amount: value.salaries, id: value.team}).subscribe( () => {}, (error) => {
+                alert('Error al descontar salarios de ' + this.appService.getTeamById(value.team) + ': ' + error);
+            });
         });
         alert('Terminado');
     }
 
+    public getSuggestions() {
+        this.suggestionsTable = this.appService.getTableConfig(this.appService.config.tableHeaders.suggestions, this.appService.data.adminData.suggestions);
+    }
+
     public getTotalSalaries() {
-        /*let sal = [];
-        this.teams.forEach( (value) => {
-            sal.push({ team: value.id, salaries: this.getTotalSalariesByTeam(value.id)});
+        this.salaryData = this.appService.data.teams.map( (value) => {
+            return { team: value.id, salaries: this.getTotalSalariesByTeam(value.id) };
         });
-        this.salaryData = sal;
-        this.teamSalaries = this.appService.getTableConfig(this.appService.config.tableHeaders.adminSalaries, this.salaryData);*/
+        this.appService.getTableConfig(this.appService.config.tableHeaders.adminSalaries, this.salaryData);
     }
 
     public getTotalSalariesByTeam(team) {
@@ -120,8 +129,21 @@ export class AdminPageComponent implements OnInit{
                         this.http.post('./CMDataRequesting.php', {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, goalsFor: parseInt(value.awayGoals), goalsAgainst: parseInt(value.localGoals), tournamentID: value.tournament, team: value.away}).subscribe( () => {});
                     }
                 });
+                this.appService.insertLog({logType: this.appService.config.logTypes.resetStandings, logInfo: 'Clasificación reseteada en ' + this.tournamentToReset.name + ' (ID ' + this.tournamentToReset.id + ')'});
                 alert('Reinicio realizado');
             }
         });
+    }
+
+    public resetView() {
+        this.showModule = {
+            changeSeasonslot: false,
+            createTournament: false,
+            discountSalaries: false,
+            editMatch: false,
+            insertMatch: false,
+            recalculateStandings: false,
+            suggestions: false
+        }
     }
 }

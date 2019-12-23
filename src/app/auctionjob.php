@@ -41,6 +41,7 @@
             $result3 = mysqli_query($link, $consult3) or die("Error asignando jugador");
             $consult4 = "UPDATE teams SET auctions_available=auctions_available-1, budget=budget-" . $amount . " where id=" . $equipo;
             $result4 = mysqli_query($link, $consult4) or die("Error asignando presupuesto");
+            insertLog($link, $equipo, $jugador, $amount, $id);
         }else {
             $consult6 = "DELETE from signins where id=". $id;
             $result6 = mysqli_query($link, $consult6) or die("Error borrando subasta");
@@ -48,6 +49,13 @@
             $result7 = mysqli_query($link, $consult7) or die("Error borrando jugador");
         }
       }
+    }
+
+    function insertLog($con, $equipo, $jugador, $amount, $id)
+    {
+      $data = array();
+      $query="INSERT INTO log (user, type, log_information) VALUES (0, 'CA', 'Subasta cerrada por " . $jugador . ": vendido al " . $equipo . " por " . $amount . "M€ (ID " . $id . ")";
+      $resultado=mysqli_query($con, $query) or die("Error insertando log");
     }
 
 ?>

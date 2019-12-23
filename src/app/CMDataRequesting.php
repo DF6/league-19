@@ -65,6 +65,12 @@
         case "PARTNERS":
           obtainPartners($link);
           break;
+        case "LOG":
+          obtainLog($link);
+          break;
+        case "SUG":
+          obtainSuggestions($link);
+          break;
         default:
           invalidRequest();
      }
@@ -146,9 +152,6 @@
        case "updSta":
           updateStandings($link, $params);
             break;
-       case "resSta":
-          resetStandings($link, $params);
-            break;
        case "genOrd":
           createOrder($link, $params);
           break;
@@ -163,6 +166,9 @@
             break;
        case "newPla":
           insertNewPlayer($link, $params);
+            break;
+       case "senSug":
+          insertSuggestion($link, $params);
             break;
         default:
           invalidRequest();
@@ -478,6 +484,17 @@
     exit;
   }
 
+  function insertSuggestion($con, $params)
+  {
+    $data = array();
+    $query="INSERT INTO suggestions (user,suggestion) values (".$params->user.", '".$params->suggestion."')";
+    $resultado=mysqli_query($con, $query) or die("Error insertando sugerencia");
+    $data['success'] = true;
+    $data['message'] = "Sugerencia enviada";
+    echo json_encode($data);
+    exit;
+  }
+
   function signWildCard($con, $params)
   {
     $data = array();
@@ -545,7 +562,7 @@
       $resultado=mysqli_query($con, $query) or die("Error insertando jugador");
       $query2="INSERT INTO signins (player,buyer_team,amount,signin_type,market,accepted,limit_date) values (".mysqli_insert_id($con).",".$params->buyerTeam.", ".$params->amount.", 'A', ".$params->market.", false, DATE_ADD(NOW(), INTERVAL 13 HOUR))";
       $resultado2=mysqli_query($con, $query2) or die("Error insertando subasta");
-      $idResult=mysqli_insert_id($con);
+      $data['newID']=mysqli_insert_id($con);
     }
     echo json_encode($data);
     exit;
@@ -671,20 +688,10 @@
     exit;
   }
 
-  function resetStandings($con, $params)
-  {
-    $query="UPDATE standings SET round=0, points=0, won=0, draw=0, lost=0, goals_for=0, goals_against=0 WHERE tournament_id=" . $params->tournament;
-    $resultado6=mysqli_query($con, $query) or die("Error reiniciando clasificaciones");
-    $data['success'] = true;
-    $data['message'] = "Tabla reseteada";
-    echo json_encode($data);
-    exit;
-  }
-
   function insertLog($con, $params)
   {
     $data = array();
-    $query="INSERT INTO log (user, message) VALUES (".$params->user.", '".$params->message."')";
+    $query="INSERT INTO log (user, type, log_information) VALUES (".$params->user.", '" . $params->logType . "', '".$params->logInfo."')";
     $resultado=mysqli_query($con, $query) or die("Error insertando log");
     $data['success'] = true;
     $data['message'] = "Log insertado";
@@ -1102,6 +1109,48 @@
         $constants[] = array('marketEdition'=> $marketEdition, 'marketOpened'=> $marketOpened, 'forcedSigninsOpened'=> $forcedSigninsOpened, 'auctionsOpened'=> $auctionsOpened, 'intervalActual'=> $intervalActual);
     }
     $data['constants']=$constants;
+    $data['success'] = true;
+    $data['message'] = "Datos recogidos";
+    echo json_encode($data);
+    exit;
+  }
+
+  function obtainLog($con)
+  {
+    $data = array();
+    $query="SELECT * from log";
+    $resultado=mysqli_query($con, $query) or die("Error recuperando log");
+  
+    $log=array();
+    while($row = mysqli_fetch_array($resultado))
+    {
+        $user=$row['user'];
+        $type=utf8_decode($row['type']);
+        $logInformation=utf8_decode($row['log_information']);
+        $logTime=$row['log_time'];
+        $log[] = array('user'=>$user, 'type'=> $type, 'logInformation'=> $logInformation, 'logTime'=> $logTime);
+    }
+    $data['log']=$log;
+    $data['success'] = true;
+    $data['message'] = "Datos recogidos";
+    echo json_encode($data);
+    exit;
+  }
+
+  function obtainSuggestions($con)
+  {
+    $data = array();
+    $query="SELECT * from suggestions";
+    $resultado=mysqli_query($con, $query) or die("Error recuperando sugerencias");
+  
+    $log=array();
+    while($row = mysqli_fetch_array($resultado))
+    {
+        $user=$row['user'];
+        $suggestion=utf8_decode($row['suggestion']);
+        $suggestions[] = array('user'=>$user, 'suggestion'=> $suggestion);
+    }
+    $data['suggestions']=$suggestions;
     $data['success'] = true;
     $data['message'] = "Datos recogidos";
     echo json_encode($data);

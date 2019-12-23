@@ -56,14 +56,14 @@ export class NavbarComponent implements OnInit {
             }, 500);
             body.classList.add('nav-open');
             this.sidebarVisible = true;
-            if(document.body.clientWidth <= 991) {
+            if(document.body.clientWidth <= this.appService.config.mobileMenuLimit) {
                 document.getElementsByClassName('sidebar')[0].setAttribute('style', 'display: block');
             }
         } else {
             this.toggleButton.classList.remove('toggled');
             body.classList.remove('nav-open');
             this.sidebarVisible = false;
-            if(document.body.clientWidth <= 991) {
+            if(document.body.clientWidth <= this.appService.config.mobileMenuLimit) {
                 document.getElementsByClassName('sidebar')[0].setAttribute('style', 'display: none');
             }
         }

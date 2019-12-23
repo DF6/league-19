@@ -59,9 +59,16 @@ export class SidebarComponent implements OnInit {
                         }
                     }
                 });
-                
             });
         });
+    }
+
+    public navbarToggle() {
+        document.getElementsByClassName('navbar-toggle')[0].classList.remove('toggled');
+        document.getElementsByTagName('body')[0].classList.remove('nav-open');
+        if(document.body.clientWidth <= this.appService.config.mobileMenuLimit) {
+            document.getElementsByClassName('sidebar')[0].setAttribute('style', 'display: none');
+        }
     }
 
     isNotMobileMenu(){
