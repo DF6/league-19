@@ -41,7 +41,7 @@
             <div class="col-md-4 col-sm-12" (click)="resetView();showCard.polls = true">
                 <div style="cursor: pointer" class="card">
                     <div class="header text-center">
-                        <p style="font-weight: bold" class="category">Encuestas<br/><br/></p>
+                        <p style="font-weight: bold" class="category">Encuestas y Buzón de Sugerencias<br/><br/></p>
                     </div>
                 </div>
             </div>
@@ -320,14 +320,23 @@
                 </div>
         </div>
         <div class="row" *ngIf="showCard.polls">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="header text-center">
-                            <h3 class="title">¡Todavía no hay encuestas!</h3>
-                            <p class="category" style="text-align: left"></p>
-                        </div>
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header text-center">
+                        <h3 class="title">Buzón de Sugerencias</h3>
+                        <p class="category" style="text-align: left">
+                            <div class="form-group">
+                                <label>Rellena tu sugerencia aquí</label>
+                                <input [(ngModel)]="suggestion" type="text" class="form-control border-input">
+                            </div>
+                            <div class="text-center" style="cursor:pointer;margin-top: 10px;">
+                                <span style="font-weight: bold; padding: 8px;border: 2pt solid black; background-color: #ff0000; border-radius: 5px;" (click)="sendSuggestion()">Enviar</span>
+                            </div>
+                            <hr/>
+                            <span>¡Todavía no hay encuestas!</span>
                     </div>
                 </div>
             </div>
+        </div>
     </div>
 </div>

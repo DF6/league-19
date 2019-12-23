@@ -68,6 +68,9 @@
         case "LOG":
           obtainLog($link);
           break;
+        case "SUG":
+          obtainSuggestions($link);
+          break;
         default:
           invalidRequest();
      }
@@ -163,6 +166,9 @@
             break;
        case "newPla":
           insertNewPlayer($link, $params);
+            break;
+       case "senSug":
+          insertSuggestion($link, $params);
             break;
         default:
           invalidRequest();
@@ -474,6 +480,17 @@
     $resultado2=mysqli_query($con, $query2) or die("Error insertando signin");
     $data['success'] = true;
     $data['message'] = "Jugador creado";
+    echo json_encode($data);
+    exit;
+  }
+
+  function insertSuggestion($con, $params)
+  {
+    $data = array();
+    $query="INSERT INTO test_suggestions (user,suggestion) values (".$params->user.", '".$params->suggestion."')";
+    $resultado=mysqli_query($con, $query) or die("Error insertando sugerencia");
+    $data['success'] = true;
+    $data['message'] = "Sugerencia enviada";
     echo json_encode($data);
     exit;
   }
@@ -1114,6 +1131,26 @@
         $log[] = array('user'=>$user, 'type'=> $type, 'logInformation'=> $logInformation, 'logTime'=> $logTime);
     }
     $data['log']=$log;
+    $data['success'] = true;
+    $data['message'] = "Datos recogidos";
+    echo json_encode($data);
+    exit;
+  }
+
+  function obtainSuggestions($con)
+  {
+    $data = array();
+    $query="SELECT * from test_suggestions";
+    $resultado=mysqli_query($con, $query) or die("Error recuperando sugerencias");
+  
+    $log=array();
+    while($row = mysqli_fetch_array($resultado))
+    {
+        $user=$row['user'];
+        $suggestion=utf8_decode($row['suggestion']);
+        $suggestions[] = array('user'=>$user, 'suggestion'=> $suggestion);
+    }
+    $data['suggestions']=$suggestions;
     $data['success'] = true;
     $data['message'] = "Datos recogidos";
     echo json_encode($data);

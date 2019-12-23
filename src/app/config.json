@@ -51,7 +51,8 @@
         "logout": "LO",
         "matchFilled": "MF",
         "playerAddedInAuction": "PA",
-        "resetStandings": "RS"
+        "resetStandings": "RS",
+        "sendSuggestion": "SS"
     },
     "roundNames": {
         "groupStage": "Fase de Grupos",
@@ -173,6 +174,7 @@
         "adminSalaries": [ "team", "salaries"],
         "auctions": [ "name", "position", "overage", "team", "amount", "state", "time", "raise"],
         "offers": [ "type", "player", "team", "amount", "players", "actions"],
+        "suggestions": [ "user", "suggestion"],
         "userInfo": [ "name", "team", "nation", "psnID", "twitch"]
     },
     "tournamentGeneralInfo": {

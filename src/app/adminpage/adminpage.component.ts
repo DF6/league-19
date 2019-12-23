@@ -38,12 +38,14 @@ export class AdminPageComponent implements OnInit{
     public matches;
     public tournamentToReset;
     public showModule;
+    public suggestionsTable;
 
     constructor(private http: Http, private appService: AppService) {
         this.resetView();
         this.appService.getPlayers();
         this.appService.getTeams();
         this.appService.getTournaments();
+        this.appService.getSuggestions();
     }
 
     ngOnInit() {
@@ -67,6 +69,7 @@ export class AdminPageComponent implements OnInit{
                 eight: -1
             };
             this.getTotalSalaries();
+            this.getSuggestions();
         });
     }
 
@@ -77,6 +80,10 @@ export class AdminPageComponent implements OnInit{
             });
         });
         alert('Terminado');
+    }
+
+    public getSuggestions() {
+        this.suggestionsTable = this.appService.getTableConfig(this.appService.config.tableHeaders.suggestions, this.appService.data.adminData.suggestions);
     }
 
     public getTotalSalaries() {
@@ -135,7 +142,8 @@ export class AdminPageComponent implements OnInit{
             discountSalaries: false,
             editMatch: false,
             insertMatch: false,
-            recalculateStandings: false
+            recalculateStandings: false,
+            suggestions: false
         }
     }
 }

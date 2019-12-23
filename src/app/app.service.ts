@@ -24,6 +24,9 @@ const PHPFILENAME = './test_CMDataRequesting.php';
 export class AppService {
 
     public data = {
+        adminData: {
+            suggestions: undefined
+        },
         constants: undefined,
         matches: undefined,
         players: undefined,
@@ -204,6 +207,12 @@ export class AppService {
         return this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'S'});
     }
 
+    public getSuggestions() {
+        this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'SUG'}).subscribe( (response) => {
+            this.data.adminData.suggestions = response.json() ? response.json().suggestions : [];
+        });
+    }
+
     public getTableConfig(tableFields, rows?) {
         return {
             headerRow: tableFields,
@@ -253,6 +262,10 @@ export class AppService {
         this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'TO'}).subscribe( (response) => {
             this.data.tournaments = response.json() ? response.json().tournaments : [];
         });
+    }
+
+    public getUserById(id): any {
+        return this.data.users.filter( (filteredUser) => { return filteredUser.id == id })[0];
     }
 
     public getUsers() {
@@ -362,6 +375,21 @@ export class AppService {
         const expr = /[áàéèíìóòúùäëïöüñ]/ig;
         const res = name.replace(expr, function(e){return chars[e]; });
         return res;
+    }
+
+    public sendSuggestion(suggestion): any {
+        let userToSend = 0;
+        if(this.data.user) {
+            userToSend = this.data.user.id;
+        }
+        this.http.post(PHPFILENAME, {type: 'senSug', user: userToSend, suggestion: suggestion}).subscribe( (response) => {
+            if (response.json().success) {
+                this.insertLog({logType: this.config.logTypes.sendSuggestion, logInfo: 'Sugerencia enviada'});
+                return true;
+            } else {
+                return false;
+            }
+        });
     }
 
     public setConfig(config) {
