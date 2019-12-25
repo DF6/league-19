@@ -2,7 +2,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-md-12" *ngIf="matchesConfig">
-                <tournament-key *ngFor="let match of matchesConfig" [config]="match"></tournament-key>
+                <tournament-key *ngFor="let match of matchesConfig" [keyConfig]="match"></tournament-key>
                 <div style="text-align: center;" *ngIf="champion">
                     <h2>CAMPEÓN</h2>
                     <img style="width:20%;" src="{{appService.getTeamById(champion).teamImage}}"/>

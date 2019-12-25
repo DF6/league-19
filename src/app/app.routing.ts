@@ -6,7 +6,7 @@ import { TableComponent }   from './table/table.component';
 import { TypographyComponent }   from './typography/typography.component';
 import { IconsComponent }   from './icons/icons.component';
 import { MapsComponent }   from './maps/maps.component';
-import { NotificationsComponent }   from './notifications/notifications.component';
+import { GeneralCupComponent }   from './generalcup/generalcup.component';
 import { RulesComponent }   from './rules/rules.component';
 import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './registro/registro.component';
@@ -39,7 +39,7 @@ export const AppRoutes: Routes = [
     { path: 'partidospendientes', component: TypographyComponent },
     { path: 'partidospendientestotales', component: AdminMatchesComponent },
     { path: 'plantillas', component: IconsComponent },
-    { path: 'copa', component: NotificationsComponent },
+    { path: 'copa', component: GeneralCupComponent },
     { path: 'normas', component: RulesComponent },
     { path: 'login', component: LoginComponent },
     { path: 'logout', component: LogoutComponent },

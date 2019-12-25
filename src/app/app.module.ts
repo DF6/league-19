@@ -31,7 +31,7 @@ import { MapsComponent } from './maps/maps.component';
 import { MarketComponent } from './market/market.component';
 import { MatchFillerModule } from './match-filler/match-filler.module';
 import { NationsComponent } from './nations/nations.component';
-import { NotificationsComponent } from './notifications/notifications.component';
+import { GeneralCupComponent } from './generalcup/generalcup.component';
 import { OfferComponent } from './offer/offer.component';
 import { OfferFillerModule } from './offer-filler/offer-filler.module';
 import { PartnersComponent } from './partners/partners.component';
@@ -53,7 +53,7 @@ import { UserComponent } from './user/user.component';
     TypographyComponent,
     IconsComponent,
     MapsComponent,
-    NotificationsComponent,
+    GeneralCupComponent,
     RulesComponent,
     LoginComponent,
     RegistroComponent,

@@ -32,7 +32,6 @@ export class ClubSupercupComponent implements OnInit{
             this.season = tournament.edition;
             matchesArray.forEach( (value) => {
                 if (value.tournament == tournament.id) {
-                    value.filling = false;
                     if (this.appService.whoWon(value)) {
                         this.champion = this.appService.whoWon(value);
                     }

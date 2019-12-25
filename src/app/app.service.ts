@@ -9,6 +9,7 @@ export interface TableData {
 }
 
 export interface KeyConfig {
+    tournament: number,
     round: number;
     matches: any[];
     local: number;
@@ -88,7 +89,7 @@ export class AppService {
         return {
             small: this.config.classNameSizes.all,
             medium: size,
-            large: size == this.config.classNameSizes.all ? 12 : size + 1
+            large: size
         }
     }
 
@@ -121,6 +122,7 @@ export class AppService {
             previousConfig.matches.push(match);
         }
         return {
+            tournament: previousConfig ? previousConfig.tournament : match.tournament,
             round: previousConfig ? previousConfig.round : match.round,
             matches: previousConfig ? previousConfig.matches : [match],
             local: previousConfig ? previousConfig.local : match.local,
@@ -166,19 +168,20 @@ export class AppService {
     public getRoundName(match) {
         switch (this.getTournamentById(match.tournament).name) {
             case this.config.tournamentGeneralInfo.generalCup.name:
-                if (match.round < 3) { return this.config.roundNames.outOf16;
-                }else if (match.round >= 3 && match.round < 5) { return this.config.roundNames.quarterFinals;
-                }else if (match.round >= 5 && match.round < 7) { return this.config.roundNames.semifinals;
-                }else if (match.round == 9) { return this.config.roundNames.thirdAndFourthPlace;
-                }else if (match.round == 8) { return this.config.roundNames.final; }
+                switch(parseInt(match.round)) {
+                    case 1: return this.config.roundNames.outOf16;
+                    case 2: return this.config.roundNames.quarterFinals;
+                    case 3: return this.config.roundNames.semifinals;
+                    case 4: return this.config.roundNames.thirdAndFourthPlace;
+                    case 5: return this.config.roundNames.final;
+                }
                 break;
             case this.config.tournamentGeneralInfo.championsLeague.name:
                 if (match.round < 7) { return this.config.roundNames.groupStage;
                 }else if (match.round >= 7 && match.round < 9) { return this.config.roundNames.quarterFinals;
                 }else if (match.round >= 9 && match.round < 11) { return this.config.roundNames.semifinals;
                 }else if (match.round == 12) { return this.config.roundNames.thirdAndFourthPlace;
-                }else if (match.round == 11) { return this.config.roundNames.final;
-                }
+                }else if (match.round == 11) { return this.config.roundNames.final; }
                 break;
             case this.config.tournamentGeneralInfo.europaLeague.name:
                 if (match.round < 3) { return this.config.roundNames.quarterFinals;
@@ -193,7 +196,7 @@ export class AppService {
                 break;
             case this.config.tournamentGeneralInfo.clubSupercup.name:
             case this.config.tournamentGeneralInfo.europeSupercup.name:
-                if (match.round == 1) { return this.config.roundNames.final; } break;
+                return this.config.roundNames.final;
         }
     }
 
@@ -429,15 +432,16 @@ export class AppService {
     }
 
     public whoWon(match) {
+        if (!match) { return undefined; }
         if (match.localGoals == -1 || match.awayGoals == -1) {
-            return null;
+            return undefined;
         } else {
             if (match.localGoals > match.awayGoals) {
                 return match.local;
             }else if (match.localGoals < match.awayGoals) {
                 return match.away;
             }else if (match. localGoals == match.awayGoals) {
-                return null;
+                return undefined;
             }
         }
     }
