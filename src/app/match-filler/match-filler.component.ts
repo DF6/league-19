@@ -181,6 +181,15 @@ export class MatchFillerComponent implements OnInit{
         this.away.mvp = [];
     }
 
+    public increaseSalaries() {
+        this.appService.data.players.filter( (playerFiltered) => {
+            return playerFiltered.teamID == this.data.local || playerFiltered.teamID == this.data.away;
+        })
+        .forEach( (value) => {
+            this.http.post('./test_CMDataRequesting.php', {type: 'guaSal', salary: parseFloat(value.salary) + this.appService.config.salaryIncreaseRate, player: value.id, team: value.teamID}).subscribe( () => {});
+        });
+    }
+
     public sendMatchInfo() {
         if (!this.sent) {
             this.sent = true;
@@ -206,6 +215,7 @@ export class MatchFillerComponent implements OnInit{
                         this.http.post('./test_CMDataRequesting.php', {type: 'updSta', points: local.points, won: local.won, draw: local.draw, lost: local.lost, goalsFor: this.local.score, goalsAgainst: this.away.score, tournamentID: this.data.tournament, team: this.data.local}).subscribe( () => {});
                         this.http.post('./test_CMDataRequesting.php', {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, goalsFor: this.away.score, goalsAgainst: this.local.score, tournamentID: this.data.tournament, team: this.data.away}).subscribe( () => {});
                     }
+                    this.increaseSalaries();
                     this.sendActionsOfTheMatch();
                 } else {
                     alert(response.json().message);

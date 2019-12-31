@@ -29,7 +29,7 @@ export class IntertotoComponent implements OnInit{
         let finalTableMatches = [];
         this.appService.getMatchesObservable().subscribe( (response) => {
             let matchesArray = response.json().matches;
-            const tournament = this.appService.getLastEdition(this.appService.config.tournamentGeneralInfo.intertoto.name);
+            const tournament = this.appService.getLastEdition(this.appService.config.tournamentGeneralInfo.copaMugre.name);
             this.season = tournament.edition;
             matchesArray.forEach( (value) => {
                 if (value.tournament == tournament.id) {

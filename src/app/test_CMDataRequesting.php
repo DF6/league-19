@@ -234,35 +234,8 @@
     $data = array();
     $data['success'] = true;
     $data['message'] = "Salario actualizado";
-    $consult = "SELECT * from test_players where team_id=" . $params->team;
-    $consultResult = mysqli_query($con, $consult) or die ("Error consultando salarios");
-    $salaries = 0;
-    $untouchables = 0;
-    while($row = mysqli_fetch_array($consultResult)) {
-      $salaries = $salaries + $row['salary'];
-      if($row['salary'] == 10) {
-        $untouchables++;
-      }
-    }
-    $consult2 = "SELECT * from test_teams where id=" . $params->team;
-    $consult2Result = mysqli_query($con, $consult2) or die ("Error consult2ando salarios");
-    $untouchablesOfTeam = 0;
-    while($row2 = mysqli_fetch_array($consult2Result)) {
-      $untouchablesOfTeam = $row2['untouchables'];
-    }
-    if(($salaries + $params->salary) > 100) {
-      $data['success'] = false;
-      $data['message'] = "Límite de sueldos alcanzado";
-    } else if($params->salary > 10 || $params->salary <= 0) {
-      $data['success'] = false;
-      $data['message'] = "Límite de sueldo individual alcanzado";
-    } else if ($untouchables == $untouchablesOfTeam && $params->salary == 10) {
-      $data['success'] = false;
-      $data['message'] = "Ya tienes el máximo de intocables";
-    } else {
-      $query="UPDATE test_players SET salary=".$params->salary." where id=".$params->player;
-      $resultado=mysqli_query($con, $query) or die("Error actualizando salario");
-    }
+    $query="UPDATE test_players SET salary=".$params->salary." where id=".$params->player;
+    $resultado=mysqli_query($con, $query) or die("Error actualizando salario");
     echo json_encode($data);
     exit;
   }
@@ -1180,4 +1153,42 @@
   }
 
   mysql_close($link);
+
+  /*function saveSalary($con, $params)
+  {
+    $data = array();
+    $data['success'] = true;
+    $data['message'] = "Salario actualizado";
+    /*$consult = "SELECT * from test_players where team_id=" . $params->team;
+    $consultResult = mysqli_query($con, $consult) or die ("Error consultando salarios");
+    //$salaries = 0;
+    $untouchables = 0;
+    while($row = mysqli_fetch_array($consultResult)) {
+      //$salaries = $salaries + $row['salary'];
+      if($row['salary'] == 10) {
+        $untouchables++;
+      }
+    }
+    $consult2 = "SELECT * from test_teams where id=" . $params->team;
+    $consult2Result = mysqli_query($con, $consult2) or die ("Error consultando salarios 2");
+    $untouchablesOfTeam = 0;
+    while($row2 = mysqli_fetch_array($consult2Result)) {
+      $untouchablesOfTeam = $row2['untouchables'];
+    }
+    if(($salaries + $params->salary) > 100) {
+      $data['success'] = false;
+      $data['message'] = "Límite de sueldos alcanzado";
+    } else if($params->salary > 10 || $params->salary <= 0) {
+      $data['success'] = false;
+      $data['message'] = "Límite de sueldo individual alcanzado";
+    } else if ($untouchables == $untouchablesOfTeam && $params->salary == 10) {
+      $data['success'] = false;
+      $data['message'] = "Ya tienes el máximo de intocables";
+    } else {
+      $query="UPDATE test_players SET salary=".$params->salary." where id=".$params->player;
+      $resultado=mysqli_query($con, $query) or die("Error actualizando salario");
+    //}
+    echo json_encode($data);
+    exit;
+  }*/
 ?>

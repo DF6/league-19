@@ -189,7 +189,7 @@ export class AppService {
                 }else if (match.round == 6) { return this.config.roundNames.thirdAndFourthPlace;
                 }else if (match.round == 5) { return this.config.roundNames.final; }
                 break;
-            case this.config.tournamentGeneralInfo.intertoto.name:
+            case this.config.tournamentGeneralInfo.copaMugre.name:
                 if (match.round < 3) { return this.config.roundNames.semifinals;
                 }else if (match.round == 4) { return this.config.roundNames.thirdAndFourthPlace;
                 }else if (match.round == 3) { return this.config.roundNames.final; }
@@ -289,7 +289,7 @@ export class AppService {
         switch (this.getTournamentById(match.tournament).name) {
             case this.config.tournamentGeneralInfo.generalCup.name:
             case this.config.tournamentGeneralInfo.europaLeague.name:
-            case this.config.tournamentGeneralInfo.intertoto.name:
+            case this.config.tournamentGeneralInfo.copaMugre.name:
                 if (match.round % 2 == 0) {
                     matchesToSearch.forEach( (value) => {
                         if (value.local == match.away && value.away == match.local && value.round == match.round - 1) {
@@ -378,6 +378,22 @@ export class AppService {
         const expr = /[áàéèíìóòúùäëïöüñ]/ig;
         const res = name.replace(expr, function(e){return chars[e]; });
         return res;
+    }
+
+    public resetAllSalaries() {
+        this.getPlayersObservable().subscribe( (response) => {
+            this.data.players = response.json().players;
+            this.data.players.forEach( (value) => {
+                this.http.post('./test_CMDataRequesting.php', {type: 'guaSal', salary: parseInt(value.overage)/100, player: value.id, team: value.teamID}).subscribe( () => {});
+            });
+            alert('Terminado');
+        });
+    }
+
+    public resetSalary(player) {
+        this.http.post('./test_CMDataRequesting.php', {type: 'guaSal', salary: parseInt(player.overage)/100, player: player.id, team: player.teamID}).subscribe( (response) => {
+            if(response.json().success) { alert('Reseteado'); }
+        });
     }
 
     public sendSuggestion(suggestion): any {
