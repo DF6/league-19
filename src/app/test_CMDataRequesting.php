@@ -656,7 +656,7 @@
   function updateStandings($con, $params)
   {
     $data = array();
-    $query="UPDATE test_standings SET points=points+". $params->points .", round=round+1, won=won+".$params->won.", draw=draw+".$params->draw.", lost=lost+".$params->lost.", goals_for=goals_for+".$params->goalsFor.", goals_against=goals_against+".$params->goalsAgainst." where tournament_id=" . $params->tournamentID ." and team=".$params->team;
+    $query="UPDATE test_standings SET points=points+". $params->points .", round=round+1, won=won+".$params->won.", draw=draw+".$params->draw.", lost=lost+".$params->lost.", non_played=non_played+".$params->nonPlayed.", goals_for=goals_for+".$params->goalsFor.", goals_against=goals_against+".$params->goalsAgainst." where tournament_id=" . $params->tournamentID ." and team=".$params->team;
     $resultado=mysqli_query($con, $query) or die("Error actualizando tabla");
     $data['success'] = true;
     $data['message'] = "Tabla actualizando";
@@ -666,7 +666,7 @@
 
   function resetStandings($con, $params)
   {
-    $query="UPDATE standings SET round=0, points=0, won=0, draw=0, lost=0, goals_for=0, goals_against=0 WHERE tournament_id=" . $params->tournament;
+    $query="UPDATE standings SET round=0, points=0, won=0, draw=0, lost=0, non_played=0, goals_for=0, goals_against=0 WHERE tournament_id=" . $params->tournament;
     $resultado6=mysqli_query($con, $query) or die("Error reiniciando clasificaciones");
     $data['success'] = true;
     $data['message'] = "Tabla reseteada";
@@ -1005,9 +1005,10 @@
         $won=$row['won'];
         $draw=$row['draw'];
         $lost=$row['lost'];
+        $nonPlayed=$row['non_played'];
         $goalsFor=$row['goals_for'];
         $goalsAgainst=$row['goals_against'];
-        $standings[] = array('tournamentID'=> $tournamentID, 'round'=> $round, 'team'=> $team, 'points'=> $points, 'won'=> $won, 'draw'=> $draw, 'lost'=> $lost, 'goalsFor'=> $goalsFor, 'goalsAgainst'=> $goalsAgainst);
+        $standings[] = array('tournamentID'=> $tournamentID, 'round'=> $round, 'team'=> $team, 'points'=> $points, 'won'=> $won, 'draw'=> $draw, 'lost'=> $lost, 'nonPlayed'=>$nonPlayed, 'goalsFor'=> $goalsFor, 'goalsAgainst'=> $goalsAgainst);
     }
     $data['standings']=$standings;
     $data['success'] = true;

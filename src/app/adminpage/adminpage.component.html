@@ -28,11 +28,11 @@
                 <div class="header">
                     <h4 class="title">Insertar Partido</h4>
                 </div>
-                <div class="content" style="min-height: 250px">
+                <div class="content" style="min-height: 270px">
                     <span class="col-md-12 col-sm-12">Elegir Torneo</span>
                     <select class="col-md-12 col-sm-12" [(ngModel)]="insertMatch.tournament" (ngModelChange)="setNewMatchRound()">
                         <option *ngFor="let tournament of appService.data.tournaments" 
-                            [ngValue]="tournament">{{tournament.name}}</option>
+                            [ngValue]="tournament">{{tournament.name}} edición {{tournament.edition}}</option>
                     </select>
                     <div *ngIf="showNewRound" style="margin-top: 16px">
                         <span class="col-md-12 col-sm-12">Elegir Ronda</span>
@@ -115,7 +115,7 @@
                     <button style="margin-top: 10px" class="col-md-12 col-sm-12" (click)="discountSalaries()">Descontar Salarios</button>
                 </div>
                 <div *ngIf="teamSalaries.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
-                    Salarios no disponibles
+                    No hay Salarios
                 </div>
             </div>
         </section>
@@ -156,94 +156,92 @@
                     </table>
                 </div>
                 <div *ngIf="suggestionsTable.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
-                    Sugerencias no disponibles
+                    No hay Sugerencias
                 </div>
             </div>
         </section>
     </div>
-    <!--<div class="row">
-        <div class="col-md-12">
-            <div class="card" style="padding: 16px;" *ngIf="matchToAdd">
-                <h2>Insertar partidos</h2>
-                <span>Local</span>
-                <select [(ngModel)]="matchToAdd.local">
-                    <option [ngValue]="t.id" *ngFor="let t of teams">{{t.name}}</option>
-                </select>
-                <span>Visitante</span>
-                <select [(ngModel)]="matchToAdd.away">
-                    <option [ngValue]="t2.id" *ngFor="let t2 of teams">{{t2.name}}</option>
-                </select>
-                <span>Ronda</span> <input type="number" step="1" min="0" [(ngModel)]="matchToAdd.round">
-                <span>Torneo</span>
-                <select [(ngModel)]="matchToAdd.tournament">
-                    <option [ngValue]="to.id" *ngFor="let to of tournaments">{{to.name}}</option>
-                </select>
-                <div class="row">
-                    <button class="col-md-12" (click)="insertMatch()">Añadir Partido</button>
+    <div class="row">
+        <div class="col-md-4 col-sm-12" (click)="resetView();showModule.createTournamentMatches = true">
+            <div style="cursor: pointer" class="card">
+                <div class="header text-center">
+                    <p style="font-weight: bold" class="category">Realizar Sorteo<br/><br/></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12" (click)="resetView();showModule.showPendingMatches = true">
+            <div style="cursor: pointer" class="card">
+                <div class="header text-center">
+                    <p style="font-weight: bold" class="category">Ver Partidos Pendientes<br/><br/></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12" (click)="resetView();showModule.noPlayed = true">
+            <div style="cursor: pointer" class="card">
+                <div class="header text-center">
+                    <p style="font-weight: bold" class="category">Resolver Partido No Presentado<br/><br/></p>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
-            <div class="card" style="padding: 16px;" *ngIf="prizes">
-                <h2>Resolver Premios Torneo</h2>
-                <span>Primero</span>
-                <select [(ngModel)]="prizes.first">
-                    <option [ngValue]="t.id" *ngFor="let t of teams">{{t.name}}</option>
-                </select>
-                <span>Segundo</span>
-                <select [(ngModel)]="prizes.second">
-                    <option [ngValue]="t2.id" *ngFor="let t2 of teams">{{t2.name}}</option>
-                </select>
-                <span>Tercero</span>
-                <select [(ngModel)]="prizes.third">
-                    <option [ngValue]="t3.id" *ngFor="let t3 of teams">{{t3.name}}</option>
-                </select>
-                <span>Cuarto</span>
-                <select [(ngModel)]="prizes.fourth">
-                    <option [ngValue]="t4.id" *ngFor="let t4 of teams">{{t4.name}}</option>
-                </select>
-                <span>Quinto</span>
-                <select [(ngModel)]="prizes.fifth">
-                    <option [ngValue]="t5.id" *ngFor="let t5 of teams">{{t5.name}}</option>
-                </select>
-                <span>Sexto</span>
-                <select [(ngModel)]="prizes.sixth">
-                    <option [ngValue]="t6.id" *ngFor="let t6 of teams">{{t6.name}}</option>
-                </select>
-                <span>Séptimo</span>
-                <select [(ngModel)]="prizes.seventh">
-                    <option [ngValue]="t7.id" *ngFor="let t7 of teams">{{t7.name}}</option>
-                </select>
-                <span>Octavo</span>
-                <select [(ngModel)]="prizes.eight">
-                    <option [ngValue]="t8.id" *ngFor="let t8 of teams">{{t8.name}}</option>
-                </select>
-                <div class="row">
-                    <button class="col-md-12" (click)="setPrizes()">Resolver Torneo</button>
+        <section class="col-md-12 col-sm-12" *ngIf="showModule.createTournamentMatches">
+        
+        </section>
+        <section class="col-md-12 col-sm-12" *ngIf="showModule.showPendingMatches">
+            <div class="card" *ngIf="adminMatchesTable">
+                <div class="header">
+                    <h4 class="title">Partidos pendientes - {{adminMatchesTable.dataRows.length}}</h4>
+                </div>
+                <div *ngIf="adminMatchesTable.dataRows.length !=0" class="content table-responsive table-full-width">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Torneo</th>
+                                <th>Ronda</th>
+                                <th>Local</th>
+                                <th></th>
+                                <th>Visitante</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of adminMatchesTable.dataRows">
+                                <td>{{appService.getTournamentById(row.tournament).name}}</td>
+                                <td *ngIf="appService.config.roundRobinTournaments.indexOf(appService.getTournamentById(row.tournament).name) != -1">{{row.round}}</td>
+                                <td *ngIf="appService.config.roundRobinTournaments.indexOf(appService.getTournamentById(row.tournament).name) == -1">{{appService.getRoundName(row)}}</td>
+                                <td *ngIf="appService.getTournamentById(row.tournament).name != appService.config.tournamentGeneralInfo.nationsLeague.name">{{appService.getTeamById(row.local).name}}</td>
+                                <td *ngIf="appService.getTournamentById(row.tournament).name == appService.config.tournamentGeneralInfo.nationsLeague.name">{{appService.getTeamById(row.local).nation}}</td>
+                                <td>-</td>
+                                <td *ngIf="appService.getTournamentById(row.tournament).name != appService.config.tournamentGeneralInfo.nationsLeague.name">{{appService.getTeamById(row.away).name}}</td>
+                                <td *ngIf="appService.getTournamentById(row.tournament).name == appService.config.tournamentGeneralInfo.nationsLeague.name">{{appService.getTeamById(row.away).nation}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div *ngIf="adminMatchesTable.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                    No hay Partidos
                 </div>
             </div>
-        </div>
-    </div>-->
-</div>
-
-<!--<div>
-    <br/><br/>
-    <span style="display:block;">Jugadores</span>
-    <div>
-        <ul class="heroes">
-            <li style="list-style: none;" *ngFor="let pcsAdded of offer.players">{{getPlayerById(pcsAdded.player).name}} <i class="ti-close" (click)="removePCS($index)"></i></li>
-        </ul>
-        <select *ngIf="playersOfMyTeam" [(ngModel)]="pcsToAdd">
-            <option *ngFor="let teamPlayer of playersOfMyTeam" 
-            [ngValue]="teamPlayer.id">{{teamPlayer.name}}</option>
-        </select>
+        </section>
+        <section class="col-md-12 col-sm-12" *ngIf="showModule.noPlayed">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Resolver No Presentados</h4>
+                </div>
+                <div class="content" style="min-height: 150px">
+                    <select class="col-md-12 col-sm-12" [(ngModel)]="matchToResolve" (ngModelChange)="setMatchToResolve()">
+                        <option *ngFor="let match of adminMatchesTable.dataRows" 
+                            [ngValue]="match">{{appService.getTeamById(match.local).name}} - {{appService.getTeamById(match.away).name}} ({{appService.getTournamentById(match.tournament).name}})</option>
+                    </select>
+                    <div class="col-md-12 col-sm-12" style="margin-top: 16px" *ngIf="showMatchToResolve">
+                        <span class="col-md-12 col-sm-12">{{appService.getTeamById(matchToResolve.local).name}}</span> - <span>{{appService.getTeamById(matchToResolve.away).name}}</span>
+                        <button style="margin-top: 16px" class="col-md-4 col-sm-12" (click)="resolveMatchNonPlayed(1)">Local NP</button>
+                        <button style="margin-top: 16px" class="col-md-4 col-sm-12" (click)="resolveMatchNonPlayed(2)">Ambos NP</button>
+                        <button style="margin-top: 16px" class="col-md-4 col-sm-12" (click)="resolveMatchNonPlayed(3)">Visitante NP</button>
+                    </div>
+                </div>
+            </div>
+            
+        </section>
     </div>
-    <button (click)="addPCS()" style="margin-top: 4px;">Añadir</button>
 </div>
-
-    
-<div class="row">
-    <button class="col-md-12" (click)="sendOffer()">Enviar Oferta</button>
-</div>-->

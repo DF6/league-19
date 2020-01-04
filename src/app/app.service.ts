@@ -32,6 +32,7 @@ export class AppService {
         matches: undefined,
         players: undefined,
         signins: undefined,
+        standings: undefined,
         teams: undefined,
         tournaments: undefined,
         user: undefined,
@@ -140,6 +141,12 @@ export class AppService {
         return ret;
     }
 
+    public getMatches() {
+        this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
+            this.data.matches = response.json() ? response.json().matches : [];
+        });
+    }
+
     public getMatchesObservable(): Observable<any> {
         return this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'M'});
     }
@@ -180,22 +187,22 @@ export class AppService {
                 if (match.round < 7) { return this.config.roundNames.groupStage;
                 }else if (match.round >= 7 && match.round < 9) { return this.config.roundNames.quarterFinals;
                 }else if (match.round >= 9 && match.round < 11) { return this.config.roundNames.semifinals;
-                }else if (match.round == 12) { return this.config.roundNames.thirdAndFourthPlace;
-                }else if (match.round == 11) { return this.config.roundNames.final; }
+                }else if (match.round == 12) { return this.config.roundNames.final;
+                }else if (match.round == 11) { return this.config.roundNames.thirdAndFourthPlace; }
                 break;
             case this.config.tournamentGeneralInfo.europaLeague.name:
                 if (match.round < 3) { return this.config.roundNames.quarterFinals;
                 }else if (match.round >= 3 && match.round < 5) { return this.config.roundNames.semifinals;
-                }else if (match.round == 6) { return this.config.roundNames.thirdAndFourthPlace;
-                }else if (match.round == 5) { return this.config.roundNames.final; }
+                }else if (match.round == 6) { return this.config.roundNames.final;
+                }else if (match.round == 5) { return this.config.roundNames.thirdAndFourthPlace; }
                 break;
             case this.config.tournamentGeneralInfo.copaMugre.name:
                 if (match.round < 3) { return this.config.roundNames.semifinals;
-                }else if (match.round == 4) { return this.config.roundNames.thirdAndFourthPlace;
-                }else if (match.round == 3) { return this.config.roundNames.final; }
+                }else if (match.round == 4) { return this.config.roundNames.final;
+                }else if (match.round == 3) { return this.config.roundNames.thirdAndFourthPlace; }
                 break;
-            case this.config.tournamentGeneralInfo.clubSupercup.name:
-            case this.config.tournamentGeneralInfo.europeSupercup.name:
+            case this.config.tournamentGeneralInfo.supercopaDeClubes.name:
+            case this.config.tournamentGeneralInfo.supercopaEuropea.name:
                 return this.config.roundNames.final;
         }
     }
@@ -208,6 +215,16 @@ export class AppService {
 
     public getSigninsObservable(): Observable<any> {
         return this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'S'});
+    }
+
+    public getStandings() {
+        this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'ST'}).subscribe( (response) => {
+            this.data.standings = response.json() ? response.json().standings : [];
+        });
+    }
+
+    public getStandingsObservable(): Observable<any> {
+        return this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'ST'});
     }
 
     public getSuggestions() {
@@ -307,10 +324,19 @@ export class AppService {
                     });
                 }
                 return null;
-            case this.config.tournamentGeneralInfo.clubSupercup.name:
-            case this.config.tournamentGeneralInfo.europeSupercup.name:
+            case this.config.tournamentGeneralInfo.supercopaDeClubes.name:
+            case this.config.tournamentGeneralInfo.supercopaEuropea.name:
                 return null;
         }
+    }
+
+    public increaseSalaries(match) {
+        this.data.players.filter( (playerFiltered) => {
+            return playerFiltered.teamID == match.local || playerFiltered.teamID == match.away;
+        })
+        .forEach( (value) => {
+            this.http.post('./test_CMDataRequesting.php', {type: 'guaSal', salary: parseFloat(value.salary) + this.config.salaryIncreaseRate, player: value.id, team: value.teamID}).subscribe( () => {});
+        });
     }
 
     public insertLog(log) {
@@ -393,6 +419,103 @@ export class AppService {
     public resetSalary(player) {
         this.http.post('./test_CMDataRequesting.php', {type: 'guaSal', salary: parseInt(player.overage)/100, player: player.id, team: player.teamID}).subscribe( (response) => {
             if(response.json().success) { alert('Reseteado'); }
+        });
+    }
+
+    public sendActionsOfTheMatch(match, localInfo, awayInfo) {
+        let query = '';
+        localInfo.scorers.forEach( (value) => {
+            query += this.mountAction(match, 'G', value);
+        });
+        localInfo.assistants.forEach( (value) => {
+            query += this.mountAction(match, 'A', value);
+        });
+        localInfo.yellowCards.forEach( (value) => {
+            query += this.mountAction(match, 'Y', value);
+        });
+        localInfo.redCards.forEach( (value) => {
+            query += this.mountAction(match, 'R', value);
+        });
+        localInfo.injuries.forEach( (value) => {
+            query += this.mountAction(match, 'I', value);
+        });
+        localInfo.mvp.forEach( (value) => {
+            query += this.mountAction(match, 'M', value);
+        });
+        awayInfo.scorers.forEach( (value) => {
+            query += this.mountAction(match, 'G', value);
+        });
+        awayInfo.assistants.forEach( (value) => {
+            query += this.mountAction(match, 'A', value);
+        });
+        awayInfo.yellowCards.forEach( (value) => {
+            query += this.mountAction(match, 'Y', value);
+        });
+        awayInfo.redCards.forEach( (value) => {
+            query += this.mountAction(match, 'R', value);
+        });
+        awayInfo.injuries.forEach( (value) => {
+            query += this.mountAction(match, 'I', value);
+        });
+        awayInfo.mvp.forEach( (value) => {
+            query += this.mountAction(match, 'M', value);
+        });
+        if (query != '') {
+            this.http.post('./test_CMDataRequesting.php', {type: 'insAct', query: query}).subscribe( () => {}, () => { alert('Error al insertar acción');});
+        }
+        this.insertLog({logType: this.config.logTypes.matchFilled, logInfo: 'Partido insertado: ' + match.id + ''});
+        alert('Partido insertado');
+    }
+
+    public mountAction(match, type, player) {
+        return "INSERT INTO test_actions (match_id, type, player) values ("
+         + match.id + ", '"
+         + type + "', "
+         + player + "); ";
+    }
+
+    public sendMatchInfo(match, localInfo, awayInfo) {
+
+        this.http.post('./test_CMDataRequesting.php', {type: 'setRes', localGoals: localInfo.score, awayGoals: awayInfo.score, matchID: match.id}).subscribe( (response) => {
+            if (response.json().success) {
+                let local = {points: 0, won: 0, draw: 0, lost: 0, nonPlayed: 0};
+                let away = {points: 0, won: 0, draw: 0, lost: 0, nonPlayed: 0};
+                if ((localInfo.score > awayInfo.score) || (awayInfo.score == -2 && localInfo.score != -2)) {
+                    local.points = 3;
+                    local.won = 1;
+                    if(awayInfo.score == -2) {
+                        away.nonPlayed = 1;
+                    }else {
+                        away.lost = 1;
+                    }
+                }else if (localInfo.score < awayInfo.score || (localInfo.score == -2 && awayInfo.score != -2)) {
+                    away.points = 3;
+                    away.won = 1;
+                    if(localInfo.score == -2) {
+                        local.nonPlayed = 1;
+                    }else {
+                        local.lost = 1;
+                    }
+                } else if(localInfo.score == -2 && awayInfo.score == -2) {
+                    local.nonPlayed = 1;
+                    away.nonPlayed = 1;
+                } else {
+                    local.points = 1;
+                    away.points = 1;
+                    local.draw = 1;
+                    away.draw = 1;
+                }
+                if(this.isUpdatableStanding(this.getMatchById(match.id))) {
+                    if(localInfo.score == -2) { localInfo.score = 0; }
+                    if(awayInfo.score == -2) { awayInfo.score = 0; }
+                    this.http.post('./test_CMDataRequesting.php', {type: 'updSta', points: local.points, won: local.won, draw: local.draw, lost: local.lost, nonPlayed: local.nonPlayed, goalsFor: localInfo.score, goalsAgainst: awayInfo.score, tournamentID: match.tournament, team: match.local}).subscribe( () => {});
+                    this.http.post('./test_CMDataRequesting.php', {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, nonPlayed: away.nonPlayed, goalsFor: awayInfo.score, goalsAgainst: localInfo.score, tournamentID: match.tournament, team: match.away}).subscribe( () => {});
+                }
+                this.increaseSalaries(match);
+                this.sendActionsOfTheMatch(match, localInfo,awayInfo);
+            } else {
+                alert(response.json().message);
+            }
         });
     }
 

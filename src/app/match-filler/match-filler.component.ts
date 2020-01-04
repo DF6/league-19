@@ -181,104 +181,14 @@ export class MatchFillerComponent implements OnInit{
         this.away.mvp = [];
     }
 
-    public increaseSalaries() {
-        this.appService.data.players.filter( (playerFiltered) => {
-            return playerFiltered.teamID == this.data.local || playerFiltered.teamID == this.data.away;
-        })
-        .forEach( (value) => {
-            this.http.post('./test_CMDataRequesting.php', {type: 'guaSal', salary: parseFloat(value.salary) + this.appService.config.salaryIncreaseRate, player: value.id, team: value.teamID}).subscribe( () => {});
-        });
-    }
-
     public sendMatchInfo() {
         if (!this.sent) {
             this.sent = true;
-            this.http.post('./test_CMDataRequesting.php', {type: 'setRes', localGoals: this.local.score, awayGoals: this.away.score, matchID: this.data.id}).subscribe( (response) => {
-                if (response.json().success) {
-                    let local = {points: 0, won: 0, draw: 0, lost: 0};
-                    let away = {points: 0, won: 0, draw: 0, lost: 0};
-                    if (this.local.score > this.away.score) {
-                        local.points = 3;
-                        local.won = 1;
-                        away.lost = 1;
-                    }else if (this.local.score < this.away.score) {
-                        away.points = 3;
-                        away.won = 1;
-                        local.lost = 1;
-                    } else {
-                        local.points = 1;
-                        away.points = 1;
-                        local.draw = 1;
-                        away.draw = 1;
-                    }
-                    if(this.appService.isUpdatableStanding(this.appService.getMatchById(this.data.id))) {
-                        this.http.post('./test_CMDataRequesting.php', {type: 'updSta', points: local.points, won: local.won, draw: local.draw, lost: local.lost, goalsFor: this.local.score, goalsAgainst: this.away.score, tournamentID: this.data.tournament, team: this.data.local}).subscribe( () => {});
-                        this.http.post('./test_CMDataRequesting.php', {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, goalsFor: this.away.score, goalsAgainst: this.local.score, tournamentID: this.data.tournament, team: this.data.away}).subscribe( () => {});
-                    }
-                    this.increaseSalaries();
-                    this.sendActionsOfTheMatch();
-                } else {
-                    alert(response.json().message);
-                }
-            });
+            this.appService.sendMatchInfo(this.data, this.local, this.away);
+            this.matchFilled.emit();
         } else {
             alert('Resultado ya introducido');
         }
-    }
-
-    public sendActionsOfTheMatch() {
-        let query = '';
-        this.local.scorers.forEach( (value) => {
-            query += this.mountAction('G', value);
-        });
-        this.local.assistants.forEach( (value) => {
-            query += this.mountAction('A', value);
-        });
-        this.local.yellowCards.forEach( (value) => {
-            query += this.mountAction('Y', value);
-        });
-        this.local.redCards.forEach( (value) => {
-            query += this.mountAction('R', value);
-        });
-        this.local.injuries.forEach( (value) => {
-            query += this.mountAction('I', value);
-        });
-        this.local.mvp.forEach( (value) => {
-            query += this.mountAction('M', value);
-        });
-        this.away.scorers.forEach( (value) => {
-            query += this.mountAction('G', value);
-        });
-        this.away.assistants.forEach( (value) => {
-            query += this.mountAction('A', value);
-        });
-        this.away.yellowCards.forEach( (value) => {
-            query += this.mountAction('Y', value);
-        });
-        this.away.redCards.forEach( (value) => {
-            query += this.mountAction('R', value);
-        });
-        this.away.injuries.forEach( (value) => {
-            query += this.mountAction('I', value);
-        });
-        this.away.mvp.forEach( (value) => {
-            query += this.mountAction('M', value);
-        });
-        if (query != '') {
-            this.http.post('./test_CMDataRequesting.php', {type: 'insAct', query: query}).subscribe( () => {
-                this.matchFilled.emit();
-            });
-        } else {
-            this.matchFilled.emit();
-        }
-        this.appService.insertLog({logType: this.appService.config.logTypes.matchFilled, logInfo: 'Partido insertado: ' + this.data.id + ''});
-    }
-
-    public mountAction(type, player) {
-        return "INSERT INTO test_actions (match_id, type, player) values ("
-         + this.data.id + ", '"
-         + type + "', "
-         + player + "); ";
     }
 
     public isNationsLeague(tournament) {

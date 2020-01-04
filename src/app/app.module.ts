@@ -12,7 +12,6 @@ import { NavbarModule} from './shared/navbar/navbar.module';
 import { FixedPluginModule} from './shared/fixedplugin/fixedplugin.module';
 import { NguiMapModule} from '@ngui/map';
 
-import { AdminMatchesComponent } from './adminmatches/adminmatches.component';
 import { AdminPageComponent } from './adminpage/adminpage.component';
 import { AppService } from './app.service';
 import { AuctionsComponent } from './auctions/auctions.component';
@@ -40,16 +39,18 @@ import { RegistroComponent } from './registro/registro.component';
 import { RoundkeysModule } from './roundkeys/roundkeys.module';
 import { RulesComponent } from './rules/rules.component';
 import { StatisticsComponent } from './statistics/statistics.component';
-import { TableComponent } from './table/table.component';
+import { PremierComponent } from './premier/premier.component';
 import { TypographyComponent } from './typography/typography.component';
 import { UserComponent } from './user/user.component';
+import { SecondComponent } from './second/second.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     UserComponent,
-    TableComponent,
+    PremierComponent,
+    SecondComponent,
     TypographyComponent,
     IconsComponent,
     MapsComponent,
@@ -64,7 +65,6 @@ import { UserComponent } from './user/user.component';
     ChampionsComponent,
     NationsComponent,
     ClubSupercupComponent,
-    AdminMatchesComponent,
     PenaltiesComponent,
     FreePlayersComponent,
     AuctionsComponent,
