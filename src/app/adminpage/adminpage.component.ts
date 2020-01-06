@@ -231,7 +231,10 @@ export class AdminPageComponent implements OnInit{
             discountSalaries: false,
             editMatch: false,
             insertMatch: false,
+            insertPlayer: false,
+            nonPlayed: false,
             recalculateStandings: false,
+            showPendingMatches: false,
             suggestions: false
         };
         this.resetNewMatch();

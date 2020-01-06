@@ -162,10 +162,10 @@
         </section>
     </div>
     <div class="row">
-        <div class="col-md-4 col-sm-12" (click)="resetView();showModule.insertTeams = true">
+        <div class="col-md-4 col-sm-12" (click)="resetView();showModule.insertPlayer = true">
             <div style="cursor: pointer" class="card">
                 <div class="header text-center">
-                    <p style="font-weight: bold" class="category">Realizar Sorteo<br/><br/></p>
+                    <p style="font-weight: bold" class="category">Insertar Jugador<br/><br/></p>
                 </div>
             </div>
         </div>
@@ -176,7 +176,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col-sm-12" (click)="resetView();showModule.noPlayed = true">
+        <div class="col-md-4 col-sm-12" (click)="resetView();showModule.nonPlayed = true">
             <div style="cursor: pointer" class="card">
                 <div class="header text-center">
                     <p style="font-weight: bold" class="category">Resolver Partido No Presentado<br/><br/></p>
@@ -185,7 +185,7 @@
         </div>
     </div>
     <div class="row">
-        <section class="col-md-12 col-sm-12" *ngIf="showModule.insertTeams">
+        <section class="col-md-12 col-sm-12" *ngIf="showModule.insertPlayer">
             Nombre <input type="text" [(ngModel)]="insertPlayer.name">
             Posición <input type="text" [(ngModel)]="insertPlayer.position" maxlength="3">
             Media <input type="number" [(ngModel)]="insertPlayer.overage" min="40" max="99" step="1">
@@ -231,7 +231,7 @@
                 </div>
             </div>
         </section>
-        <section class="col-md-12 col-sm-12" *ngIf="showModule.noPlayed">
+        <section class="col-md-12 col-sm-12" *ngIf="showModule.nonPlayed">
             <div class="card">
                 <div class="header">
                     <h4 class="title">Resolver No Presentados</h4>
