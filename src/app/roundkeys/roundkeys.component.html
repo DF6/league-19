@@ -1,8 +1,8 @@
-<div class="container-fluid" *ngIf="showElement">
+<div class="container-fluid" *ngIf="roundConfig">
     <div class="row">
-        <h3 *ngIf="config[0].showTitle">{{appService.getRoundName(config[0].round)}}</h3>
-        <div *ngFor="let newKey of config">
-            <tournament-key config="newKey"></tournament-key>
-        </div>
+        <h3 *ngIf="roundConfig[0].showTitle">{{appService.getRoundName(roundConfig[0])}}</h3>
+        <section *ngFor="let newKey of roundConfig">
+            <tournament-key [keyConfig]="newKey" [shownRound]="true"></tournament-key>
+        </section>
     </div>
 </div>

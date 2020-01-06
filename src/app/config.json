@@ -47,11 +47,16 @@
     "logTypes": {
         "auctionRaised": "AR",
         "closedAuction": "CA",
+        "createPlayer": "CP",
+        "createTournament": "CT",
+        "insertMatch": "IM",
         "login": "LI",
         "logout": "LO",
         "matchFilled": "MF",
         "playerAddedInAuction": "PA",
+        "resetAllSalaries": "RA",
         "resetStandings": "RS",
+        "salariesDiscounted": "SD",
         "sendSuggestion": "SS"
     },
     "roundNames": {
@@ -63,10 +68,22 @@
         "thirdAndFourthPlace": "Tercer y Cuarto Puesto"
     },
     "roundRobinTournaments": [ "Primera", "Segunda", "Nations League"],
+    "roundSetter": [
+        { "name": "Primera", "round": 14 },
+        { "name": "Segunda", "round": 14 },
+        { "name": "Champions League", "round": 12 },
+        { "name": "Europa League", "round": 6 },
+        { "name": "Copa Mugre", "round": 4 },
+        { "name": "Supercopa Europea", "round": 1 },
+        { "name": "Supercopa de Clubes", "round": 1 },
+        { "name": "Copa", "round": 5 },
+        { "name": "Nations League", "round": 3 }
+    ],
     "routes": {
         "admin": [
             { "path": "panelcontrol", "title": "Panel de Control", "icon": "ti-panel", "class": "hidden" },
-            { "path": "liga", "title": "Liga", "icon": "ti-calendar", "class": "" },
+            { "path": "primera", "title": "Primera", "icon": "ti-calendar", "class": "" },
+            { "path": "segunda", "title": "Segunda", "icon": "ti-calendar", "class": "" },
             { "path": "copa", "title": "Copa", "icon": "ti-vector", "class": "" },
             { "path": "champions", "title": "Champions", "icon": "ti-cup", "class": "" },
             { "path": "el", "title": "Europa League", "icon": "ti-cup", "class": "" },
@@ -76,7 +93,6 @@
             { "path": "europesupercup", "title": "Supercopa de Europa", "icon": "ti-crown", "class": "" },
             { "path": "estadisticas", "title": "Estadisticas", "icon": "ti-bar-chart", "class": "" },
             { "path": "sanciones", "title": "Sanciones", "icon": "ti-wheelchair", "class": "" },
-            { "path": "partidospendientestotales", "title": "Partidos Pendientes", "icon": "ti-text", "class": "" },
             { "path": "adminpage", "title": "Administracion", "icon": "ti-text", "class": "" },
             { "path": "jugadoreslibres", "title": "Libres", "icon": "ti-text", "class": "" },
             { "path": "subastas", "title": "Subastas", "icon": "ti-text", "class": "" },
@@ -92,7 +108,8 @@
             { "path": "login", "title": "Entrar", "icon": "ti-user", "class": "" },
             { "path": "normas", "title": "Normas", "icon": "ti-view-list-alt", "class": "" },
             { "path": "logout", "title": "Cerrar Sesion", "icon": "ti-user", "class": "" },
-            { "path": "liga", "title": "Liga", "icon": "ti-calendar", "class": "" },
+            { "path": "primera", "title": "Primera", "icon": "ti-calendar", "class": "" },
+            { "path": "segunda", "title": "Segunda", "icon": "ti-calendar", "class": "" },
             { "path": "copa", "title": "Copa", "icon": "ti-vector", "class": "" },
             { "path": "champions", "title": "Champions", "icon": "ti-cup", "class": "" },
             { "path": "el", "title": "Europa League", "icon": "ti-cup", "class": "" },
@@ -109,12 +126,12 @@
             { "path": "patrocinadores", "title": "Patrocinadores", "icon": "ti-money", "class": "hidden" },
             { "path": "usuario", "title": "Perfil", "icon": "ti-user", "class": "" },
             { "path": "plantillas", "title": "Plantillas", "icon": "ti-pencil-alt2", "class": "" },
-            { "path": "partidospendientestotales", "title": "Partidos Pendientes", "icon": "ti-text", "class": "" },
             { "path": "adminpage", "title": "Administracion", "icon": "ti-text", "class": "" },
             { "path": "panelcontrol", "title": "Panel de Control", "icon": "ti-panel", "class": "hidden" }
         ],
         "logged": [
-            { "path": "liga", "title": "Liga", "icon": "ti-calendar", "class": "" },
+            { "path": "primera", "title": "Primera", "icon": "ti-calendar", "class": "" },
+            { "path": "segunda", "title": "Segunda", "icon": "ti-calendar", "class": "" },
             { "path": "copa", "title": "Copa", "icon": "ti-vector", "class": "" },
             { "path": "champions", "title": "Champions", "icon": "ti-cup", "class": "" },
             { "path": "el", "title": "Europa League", "icon": "ti-cup", "class": "" },
@@ -132,7 +149,8 @@
             { "path": "logout", "title": "Cerrar Sesion", "icon": "ti-user", "class": "" }
         ],
         "loggedInMarket": [
-            { "path": "liga", "title": "Liga", "icon": "ti-calendar", "class": "" },
+            { "path": "primera", "title": "Primera", "icon": "ti-calendar", "class": "" },
+            { "path": "segunda", "title": "Segunda", "icon": "ti-calendar", "class": "" },
             { "path": "copa", "title": "Copa", "icon": "ti-vector", "class": "" },
             { "path": "champions", "title": "Champions", "icon": "ti-cup", "class": "" },
             { "path": "el", "title": "Europa League", "icon": "ti-cup", "class": "" },
@@ -163,9 +181,11 @@
             { "path": "normas", "title": "Normas", "icon": "ti-view-list-alt", "class": "" }
         ]
     },
+    "salaryIncreaseRate": 0.05,
     "signinTypes": {
         "auction": "A",
         "discard": "D",
+        "freeAuction": "L",
         "forcedSign": "F",
         "freePlayer": "W"
     },
@@ -173,6 +193,8 @@
         "adminMatches": [ "tournament", "round", "local", "", "away" ],
         "adminSalaries": [ "team", "salaries"],
         "auctions": [ "name", "position", "overage", "team", "amount", "state", "time", "raise"],
+        "leagueMatches": [ "round", "local", "result", "away", "summary"],
+        "leagueTable": [ "position", "team", "round", "won", "draw", "lost", "nonPlayed", "goalsFor", "goalsAgainst", "goalsDifference", "points"],
         "offers": [ "type", "player", "team", "amount", "players", "actions"],
         "suggestions": [ "user", "suggestion"],
         "userInfo": [ "name", "team", "nation", "psnID", "twitch"]
@@ -181,9 +203,9 @@
         "championsLeague": {
             "name": "Champions League",
             "KORound": 7,
-            "finalRound": 11
+            "finalRound": 12
         },
-        "clubSupercup": {
+        "supercopaDeClubes": {
             "name": "Supercopa de Clubes",
             "KORound": 1,
             "finalRound": 1
@@ -191,9 +213,9 @@
         "europaLeague": {
             "name": "Europa League",
             "KORound": 1,
-            "finalRound": 5
+            "finalRound": 6
         },
-        "europeSupercup": {
+        "supercopaEuropea": {
             "name": "Supercopa Europea",
             "KORound": 1,
             "finalRound": 1
@@ -201,12 +223,12 @@
         "generalCup": {
             "name": "Copa",
             "KORound": 1,
-            "finalRound": 7
+            "finalRound": 5
         },
-        "intertoto": {
-            "name": "Intertoto",
+        "copaMugre": {
+            "name": "Copa Mugre",
             "KORound": 1,
-            "finalRound": 3
+            "finalRound": 4
         },
         "nationsLeague": {
             "name": "Nations League",

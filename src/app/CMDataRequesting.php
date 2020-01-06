@@ -234,35 +234,8 @@
     $data = array();
     $data['success'] = true;
     $data['message'] = "Salario actualizado";
-    $consult = "SELECT * from players where team_id=" . $params->team;
-    $consultResult = mysqli_query($con, $consult) or die ("Error consultando salarios");
-    $salaries = 0;
-    $untouchables = 0;
-    while($row = mysqli_fetch_array($consultResult)) {
-      $salaries = $salaries + $row['salary'];
-      if($row['salary'] == 10) {
-        $untouchables++;
-      }
-    }
-    $consult2 = "SELECT * from teams where id=" . $params->team;
-    $consult2Result = mysqli_query($con, $consult2) or die ("Error consult2ando salarios");
-    $untouchablesOfTeam = 0;
-    while($row2 = mysqli_fetch_array($consult2Result)) {
-      $untouchablesOfTeam = $row2['untouchables'];
-    }
-    if(($salaries + $params->salary) > 100) {
-      $data['success'] = false;
-      $data['message'] = "Límite de sueldos alcanzado";
-    } else if($params->salary > 10 || $params->salary <= 0) {
-      $data['success'] = false;
-      $data['message'] = "Límite de sueldo individual alcanzado";
-    } else if ($untouchables == $untouchablesOfTeam && $params->salary == 10) {
-      $data['success'] = false;
-      $data['message'] = "Ya tienes el máximo de intocables";
-    } else {
-      $query="UPDATE players SET salary=".$params->salary." where id=".$params->player;
-      $resultado=mysqli_query($con, $query) or die("Error actualizando salario");
-    }
+    $query="UPDATE players SET salary=".$params->salary." where id=".$params->player;
+    $resultado=mysqli_query($con, $query) or die("Error actualizando salario");
     echo json_encode($data);
     exit;
   }
@@ -477,12 +450,13 @@
   function insertNewPlayer($con, $params)
   {
     $data = array();
-    $query="INSERT INTO players (name,salary,team_id,position) values ('".$params->name."', 0.1, '".$params->teamID."', '".$params->position."')";
+    $query="INSERT INTO players (name,salary,team_id,position,overage) values ('".$params->name."', ".$params->salary.", ".$params->team.", '".$params->position."', ".$params->overage.")";
     $resultado=mysqli_query($con, $query) or die("Error insertando jugador");
-    $query2="INSERT INTO signins (player,buyer_team,amount,type,market,accepted) values (".mysqli_insert_id($con).",".$params->teamID.", 0, 'C', 0, true)";
-    $resultado2=mysqli_query($con, $query2) or die("Error insertando signin");
+    /*$query2="INSERT INTO signins (player,buyer_team,amount,type,market,accepted) values (".mysqli_insert_id($con).",".$params->teamID.", 0, 'C', 0, true)";
+    $resultado2=mysqli_query($con, $query2) or die("Error insertando signin");*/
     $data['success'] = true;
     $data['message'] = "Jugador creado";
+    $data['newID']=mysqli_insert_id($con);
     echo json_encode($data);
     exit;
   }
@@ -536,22 +510,6 @@
     $data = array();
     $data['success'] = true;
     $data['message'] = "Subasta creada";
-    $consult = "SELECT * from players";
-    $consultResult = mysqli_query($con, $consult) or die("Error consultando nuevo jugador");
-    while($row = mysqli_fetch_array($consultResult)) {
-      if(strtolower($row['name']) == strtolower($params->playerName)) {
-        $data['success'] = false;
-        $data['message'] = "El jugador ya existe";
-      }
-    }
-    $consult2 = "SELECT * from teams where id=" . $params->buyerTeam;
-    $consult2Result = mysqli_query($con, $consult2) or die("Error consultando subastas");
-    while($row2 = mysqli_fetch_array($consult2Result)) {
-      if($row2['auctions_available'] == 0) {
-        $data['success'] = false;
-        $data['message'] = "Máximo de subastas alcanzado";
-      }
-    }
     $consult3 = "SELECT * from constants";
     $consult3Result = mysqli_query($con, $consult3) or die("Error consultando mercado");
     while($row3 = mysqli_fetch_array($consult3Result)) {
@@ -560,13 +518,36 @@
         $data['message'] = "Subastas cerradas";
       }
     }
-    if ($data['success'] == true) {
-      $query="INSERT INTO players (name,team_id,position,overage) values ('".$params->playerName."', -1, '".$params->position."', " . $params->overage . ")";
-      $resultado=mysqli_query($con, $query) or die("Error insertando jugador");
-      $query2="INSERT INTO signins (player,buyer_team,amount,signin_type,market,accepted,limit_date) values (".mysqli_insert_id($con).",".$params->buyerTeam.", ".$params->amount.", 'A', ".$params->market.", false, DATE_ADD(NOW(), INTERVAL 13 HOUR))";
+    if($params->auctionType == 'A') {
+      $consult = "SELECT * from players";
+      $consultResult = mysqli_query($con, $consult) or die("Error consultando nuevo jugador");
+      while($row = mysqli_fetch_array($consultResult)) {
+        if(strtolower($row['name']) == strtolower($params->playerName)) {
+          $data['success'] = false;
+          $data['message'] = "El jugador ya existe";
+        }
+      }
+      $consult2 = "SELECT * from teams where id=" . $params->buyerTeam;
+      $consult2Result = mysqli_query($con, $consult2) or die("Error consultando subastas");
+      while($row2 = mysqli_fetch_array($consult2Result)) {
+        if($row2['auctions_available'] == 0) {
+          $data['success'] = false;
+          $data['message'] = "Máximo de subastas alcanzado";
+        }
+      }
+      if ($data['success'] == true) {
+        $query="INSERT INTO players (name,team_id,position,overage) values ('".$params->playerName."', -1, '".$params->position."', " . $params->overage . ")";
+        $resultado=mysqli_query($con, $query) or die("Error insertando jugador");
+        $query2="INSERT INTO signins (player, buyer_team,amount,signin_type,market,accepted,limit_date) values (".mysqli_insert_id($con).",".$params->buyerTeam.", ".$params->amount.", 'A', ".$params->market.", false, DATE_ADD(NOW(), INTERVAL 13 HOUR))";
+        $resultado2=mysqli_query($con, $query2) or die("Error insertando subasta");
+        $data['newID']=mysqli_insert_id($con);
+      }  
+    }else if($params->auctionType == 'L'){
+      $query2="INSERT INTO signins (player, first_team, buyer_team,amount,signin_type,market,accepted,limit_date) values (".$params->player.",".$params->firstTeam.", 0, ".$params->amount.", 'L', ".$params->market.", false, DATE_ADD(NOW(), INTERVAL 37 HOUR))";
       $resultado2=mysqli_query($con, $query2) or die("Error insertando subasta");
       $data['newID']=mysqli_insert_id($con);
     }
+    
     echo json_encode($data);
     exit;
   }
@@ -580,12 +561,13 @@
     $result = mysqli_query($con, $consult) or die("Error comparando fechas");
     while($row = mysqli_fetch_array($result)) {
       $fecha_limite = strtotime($row['limit_date']);
+      $fecha_limite_time = $row['limit_date'];
       $amount = $row['amount'];
     }
     $consult2 = "SELECT * from teams where id=" . $params->newTeam;
     $consult2Result = mysqli_query($con, $consult2) or die("Error consultando nuevo jugador");
     while($row2 = mysqli_fetch_array($consult2Result)) {
-      if($row2['auctions_available'] == 0) {
+      if($row2['auctions_available'] == 0 && $params->auctionType == 'A') {
         $data['success'] = false;
         $data['message'] = "Máximo de subastas alcanzado";
       }
@@ -598,15 +580,27 @@
         $data['message'] = "Subastas cerradas";
       }
     }
-    $fecha_actual = strtotime(date("d-m-Y H:i:00", time()));
+    $fecha_actual = strtotime(date("d-m-Y H:i:s", time()));
+    $fecha_dos_min_menos = strtotime(date("d-m-Y H:i:s", time()+120));
+    $fecha_cinco_min_tanteo = $fecha_limite+300;
     if($fecha_actual > $fecha_limite) {
-      $data['success'] = false;
-      $data['message'] = "Puja acabada";
+      if($fecha_actual > $fecha_cinco_min_tanteo && $params->auctionType == 'A' && $params->newTeam == $params->firstTeam) {
+        $query="UPDATE signins SET buyer_team=". $params->newTeam .", amount=".$params->amount." where id=" . $params->id;
+        $resultado=mysqli_query($con, $query) or die("Error incrementando puja");
+      }else {
+        $data['success'] = false;
+        $data['message'] = "Puja acabada";
+      }
     } else if($amount >= $params->amount) {
       $data['success'] = false;
       $data['message'] = "La puja ha sido aumentada POR OTRO JUGADOR ANTES";
     } else {
       if($data['success'] == true) {
+        if($fecha_dos_min_menos > $fecha_limite) {
+          $query="UPDATE signins SET buyer_team=". $params->newTeam .", amount=".$params->amount.",  where id=" . $params->id;
+        } else {
+          $query="UPDATE signins SET buyer_team=". $params->newTeam .", amount=".$params->amount." where id=" . $params->id;
+        }
         $query="UPDATE signins SET buyer_team=". $params->newTeam .", amount=".$params->amount." where id=" . $params->id;
         $resultado=mysqli_query($con, $query) or die("Error incrementando puja");
       }
@@ -683,7 +677,7 @@
   function updateStandings($con, $params)
   {
     $data = array();
-    $query="UPDATE standings SET points=points+". $params->points .", round=round+1, won=won+".$params->won.", draw=draw+".$params->draw.", lost=lost+".$params->lost.", goals_for=goals_for+".$params->goalsFor.", goals_against=goals_against+".$params->goalsAgainst." where tournament_id=" . $params->tournamentID ." and team=".$params->team;
+    $query="UPDATE standings SET points=points+". $params->points .", round=round+1, won=won+".$params->won.", draw=draw+".$params->draw.", lost=lost+".$params->lost.", non_played=non_played+".$params->nonPlayed.", goals_for=goals_for+".$params->goalsFor.", goals_against=goals_against+".$params->goalsAgainst." where tournament_id=" . $params->tournamentID ." and team=".$params->team;
     $resultado=mysqli_query($con, $query) or die("Error actualizando tabla");
     $data['success'] = true;
     $data['message'] = "Tabla actualizando";
@@ -693,7 +687,7 @@
 
   function resetStandings($con, $params)
   {
-    $query="UPDATE standings SET round=0, points=0, won=0, draw=0, lost=0, goals_for=0, goals_against=0 WHERE tournament_id=" . $params->tournament;
+    $query="UPDATE standings SET round=0, points=0, won=0, draw=0, lost=0, non_played=0, goals_for=0, goals_against=0 WHERE tournament_id=" . $params->tournament;
     $resultado6=mysqli_query($con, $query) or die("Error reiniciando clasificaciones");
     $data['success'] = true;
     $data['message'] = "Tabla reseteada";
@@ -957,6 +951,7 @@
     {
         $id=$row['id'];
         $player=$row['player'];
+        $firstTeam=$row['first_team'];
         $oldTeam=$row['old_team'];
         $buyerTeam=$row['buyer_team'];
         $amount=$row['amount'];
@@ -964,7 +959,15 @@
         $market=$row['market'];
         $accepted=$row['accepted'];
         $limitDate=$row['limit_date'];
-        $signins[] = array('id'=> $id, 'amount'=> $amount, 'player'=> $player, 'oldTeam'=> $oldTeam, 'buyerTeam'=> $buyerTeam, 'signinType'=> $type, 'market'=> $market, 'accepted'=> $accepted, 'limitDate'=> $limitDate);
+        $fecha_limite = strtotime($row['limit_date']);
+        $fecha_actual = strtotime(date("d-m-Y H:i:s", time()));
+        $fecha_cinco_min_tanteo = $fecha_limite+300;
+        if($fecha_cinco_min_tanteo > $fecha_actual && $fecha_actual > $fecha_limite && $type == 'A') {
+          $amplifiedState=2;
+        }else {
+          $amplifiedState=-1;
+        }
+        $signins[] = array('id'=> $id, 'amount'=> $amount, 'player'=> $player, 'firstTeam'=> $firstTeam, 'oldTeam'=> $oldTeam, 'buyerTeam'=> $buyerTeam, 'signinType'=> $type, 'market'=> $market, 'accepted'=> $accepted, 'amplifiedState'=> $amplifiedState, 'limitDate'=> $limitDate);
     }
     $data['signins']=$signins;
     $data['success'] = true;
@@ -1032,9 +1035,10 @@
         $won=$row['won'];
         $draw=$row['draw'];
         $lost=$row['lost'];
+        $nonPlayed=$row['non_played'];
         $goalsFor=$row['goals_for'];
         $goalsAgainst=$row['goals_against'];
-        $standings[] = array('tournamentID'=> $tournamentID, 'round'=> $round, 'team'=> $team, 'points'=> $points, 'won'=> $won, 'draw'=> $draw, 'lost'=> $lost, 'goalsFor'=> $goalsFor, 'goalsAgainst'=> $goalsAgainst);
+        $standings[] = array('tournamentID'=> $tournamentID, 'round'=> $round, 'team'=> $team, 'points'=> $points, 'won'=> $won, 'draw'=> $draw, 'lost'=> $lost, 'nonPlayed'=>$nonPlayed, 'goalsFor'=> $goalsFor, 'goalsAgainst'=> $goalsAgainst);
     }
     $data['standings']=$standings;
     $data['success'] = true;
@@ -1180,4 +1184,42 @@
   }
 
   mysql_close($link);
+
+  /*function saveSalary($con, $params)
+  {
+    $data = array();
+    $data['success'] = true;
+    $data['message'] = "Salario actualizado";
+    /*$consult = "SELECT * from players where team_id=" . $params->team;
+    $consultResult = mysqli_query($con, $consult) or die ("Error consultando salarios");
+    //$salaries = 0;
+    $untouchables = 0;
+    while($row = mysqli_fetch_array($consultResult)) {
+      //$salaries = $salaries + $row['salary'];
+      if($row['salary'] == 10) {
+        $untouchables++;
+      }
+    }
+    $consult2 = "SELECT * from teams where id=" . $params->team;
+    $consult2Result = mysqli_query($con, $consult2) or die ("Error consultando salarios 2");
+    $untouchablesOfTeam = 0;
+    while($row2 = mysqli_fetch_array($consult2Result)) {
+      $untouchablesOfTeam = $row2['untouchables'];
+    }
+    if(($salaries + $params->salary) > 100) {
+      $data['success'] = false;
+      $data['message'] = "Límite de sueldos alcanzado";
+    } else if($params->salary > 10 || $params->salary <= 0) {
+      $data['success'] = false;
+      $data['message'] = "Límite de sueldo individual alcanzado";
+    } else if ($untouchables == $untouchablesOfTeam && $params->salary == 10) {
+      $data['success'] = false;
+      $data['message'] = "Ya tienes el máximo de intocables";
+    } else {
+      $query="UPDATE players SET salary=".$params->salary." where id=".$params->player;
+      $resultado=mysqli_query($con, $query) or die("Error actualizando salario");
+    //}
+    echo json_encode($data);
+    exit;
+  }*/
 ?>

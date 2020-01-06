@@ -1,86 +1,86 @@
 <div class="container-fluid" *ngIf="showElement">
     <div class="row">
-        <h3 *ngIf="config.showTitle">{{appService.getRoundName(config.matches[0])}}</h3>
-        <div class="col-lg-{{config.classNames.large}} col-md-{{config.classNames.medium}}" *ngIf="config.matches.length == 1">
+        <h3 *ngIf="!shownRound && keyConfig.showTitle">{{appService.getRoundName(keyConfig.matches[0])}}</h3>
+        <div style="min-width:16.6%;min-height:14.65%;" class="col-lg-12 col-md-12 col-sm-12" *ngIf="keyConfig.matches.length == 1">
             <div class="well" style="border-radius: 5%;background-color: #ccc5b9;text-align:right;">
-                <span style="float:left;">{{appService.getTeamById(config.local).name}}</span>
+                <span style="float:left;">{{appService.getTeamById(keyConfig.local).name}}</span>
                 <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                *ngIf="config.matches[0].localGoals != -1">
-                {{config.matches[0].localGoals}}</span>
+                *ngIf="keyConfig.matches[0].localGoals != -1">
+                {{keyConfig.matches[0].localGoals}}</span>
                 <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                *ngIf="config.matches[0].localGoals == -1">-</span>
+                *ngIf="keyConfig.matches[0].localGoals == -1">-</span>
                 <br><br>
-                <span style="float:left;">{{appService.getTeamById(config.away).name}}</span>
+                <span style="float:left;">{{appService.getTeamById(keyConfig.away).name}}</span>
                 <span style="display:inline-block;margin-right: 8px;margin-left: 5px;"
-                *ngIf="config.matches[0].awayGoals != -1">
-                {{config.matches[0].awayGoals}}</span>
+                *ngIf="keyConfig.matches[0].awayGoals != -1">
+                {{keyConfig.matches[0].awayGoals}}</span>
                 <span style="display:inline-block;margin-right: 8px;margin-left: 5px;"
-                *ngIf="config.matches[0].awayGoals == -1">-</span>
+                *ngIf="keyConfig.matches[0].awayGoals == -1">-</span>
             </div>
         </div>
-        <div class="col-lg-{{config.classNames.large}} col-md-{{config.classNames.medium}}" *ngIf="config.matches.length == 2">
-                <div class="well" style="border-radius: 5%;background-color: #ccc5b9;text-align:right;">
-                    <span style="float:left;">{{appService.getTeamById(config.local).name}}</span>
-                    <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                    *ngIf="config.matches[0].localGoals != -1">
-                    {{config.matches[0].localGoals}}</span>
-                    <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                    *ngIf="config.matches[0].localGoals == -1">-</span>
-                    <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                    *ngIf="config.matches[1].awayGoals != -1">
-                    {{config.matches[1].awayGoals}}</span>
-                    <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                    *ngIf="config.matches[1].awayGoals == -1">-</span>
-                    <br><br>
-                    <span style="float:left;">{{appService.getTeamById(config.away).name}}</span>
-                    <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                    *ngIf="config.matches[0].awayGoals != -1">
-                    {{config.matches[0].awayGoals}}</span>
-                    <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                    *ngIf="config.matches[0].awayGoals == -1">-</span>
-                    <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                    *ngIf="config.matches[1].localGoals != -1">
-                    {{config.matches[1].localGoals}}</span>
-                    <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                    *ngIf="config.matches[1].localGoals == -1">-</span>
-                </div>
+        <div style="min-width:16.6%;min-height:14.65%;" class="col-lg-12 col-md-12 col-sm-12" *ngIf="keyConfig.matches.length == 2">
+            <div class="well" style="border-radius: 5%;background-color: #ccc5b9;text-align:right;min-width:16.6%;min-height:14.65%;">
+                <span style="float:left;">{{appService.getTeamById(keyConfig.local).name}}</span>
+                <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
+                *ngIf="keyConfig.matches[0].localGoals != -1">
+                {{keyConfig.matches[0].localGoals}}</span>
+                <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
+                *ngIf="keyConfig.matches[0].localGoals == -1">-</span>
+                <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
+                *ngIf="keyConfig.matches[1].awayGoals != -1">
+                {{keyConfig.matches[1].awayGoals}}</span>
+                <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
+                *ngIf="keyConfig.matches[1].awayGoals == -1">-</span>
+                <br><br>
+                <span style="float:left;">{{appService.getTeamById(keyConfig.away).name}}</span>
+                <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
+                *ngIf="keyConfig.matches[0].awayGoals != -1">
+                {{keyConfig.matches[0].awayGoals}}</span>
+                <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
+                *ngIf="keyConfig.matches[0].awayGoals == -1">-</span>
+                <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
+                *ngIf="keyConfig.matches[1].localGoals != -1">
+                {{keyConfig.matches[1].localGoals}}</span>
+                <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
+                *ngIf="keyConfig.matches[1].localGoals == -1">-</span>
+            </div>
         </div>
-        <div class="col-lg-{{config.classNames.large}} col-md-{{config.classNames.medium}}" *ngIf="config.matches.length == 3">
-                <div class="well" style="border-radius: 5%;background-color: #ccc5b9;text-align:right;">
-                    <span style="float:left;">{{appService.getTeamById(config.local).name}}</span>
-                    <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                    *ngIf="config.matches[0].localGoals != -1">
-                    {{config.matches[0].localGoals}}</span>
-                    <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                    *ngIf="config.matches[0].localGoals == -1">-</span>
-                    <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                    *ngIf="config.matches[1].awayGoals != -1">
-                    {{config.matches[1].awayGoals}}</span>
-                    <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                    *ngIf="config.matches[1].awayGoals == -1">-</span>
-                    <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                    *ngIf="config.matches[2].localGoals != -1">
-                    {{config.matches[2].localGoals}}</span>
-                    <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                    *ngIf="config.matches[2].localGoals == -1">-</span>
-                    <br><br>
-                    <span style="float:left;">{{appService.getTeamById(config.away).name}}</span>
-                    <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                    *ngIf="config.matches[0].awayGoals != -1">
-                    {{config.matches[0].awayGoals}}</span>
-                    <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                    *ngIf="config.matches[0].awayGoals == -1">-</span>
-                    <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                    *ngIf="config.matches[1].localGoals != -1">
-                    {{config.matches[1].localGoals}}</span>
-                    <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                    *ngIf="config.matches[1].localGoals == -1">-</span>
-                    <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                    *ngIf="config.matches[2].awayGoals != -1">
-                    {{config.matches[2].awayGoals}}</span>
-                    <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
-                    *ngIf="config.matches[2].awayGoals == -1">-</span>
-                </div>
+        <div style="min-width:16.6%;min-height:14.65%;" class="col-lg-12 col-md-12 col-sm-12" *ngIf="keyConfig.matches.length == 3">
+            <div class="well" style="border-radius: 5%;background-color: #ccc5b9;text-align:right;min-width:16.6%;min-height:14.65%;">
+                <span style="float:left;">{{appService.getTeamById(keyConfig.local).name}}</span>
+                <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
+                *ngIf="keyConfig.matches[0].localGoals != -1">
+                {{keyConfig.matches[0].localGoals}}</span>
+                <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
+                *ngIf="keyConfig.matches[0].localGoals == -1">-</span>
+                <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
+                *ngIf="keyConfig.matches[1].awayGoals != -1">
+                {{keyConfig.matches[1].awayGoals}}</span>
+                <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
+                *ngIf="keyConfig.matches[1].awayGoals == -1">-</span>
+                <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
+                *ngIf="keyConfig.matches[2].localGoals != -1">
+                {{keyConfig.matches[2].localGoals}}</span>
+                <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
+                *ngIf="keyConfig.matches[2].localGoals == -1">-</span>
+                <br><br>
+                <span style="float:left;">{{appService.getTeamById(keyConfig.away).name}}</span>
+                <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
+                *ngIf="keyConfig.matches[0].awayGoals != -1">
+                {{keyConfig.matches[0].awayGoals}}</span>
+                <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
+                *ngIf="keyConfig.matches[0].awayGoals == -1">-</span>
+                <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
+                *ngIf="keyConfig.matches[1].localGoals != -1">
+                {{keyConfig.matches[1].localGoals}}</span>
+                <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
+                *ngIf="keyConfig.matches[1].localGoals == -1">-</span>
+                <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
+                *ngIf="keyConfig.matches[2].awayGoals != -1">
+                {{keyConfig.matches[2].awayGoals}}</span>
+                <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
+                *ngIf="keyConfig.matches[2].awayGoals == -1">-</span>
+            </div>
         </div>
     </div>
 </div>

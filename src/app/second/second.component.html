@@ -1,0 +1,94 @@
+<div class="container-fluid">
+    <div class="row" *ngIf="leagueMatches">
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Segunda División</h4>
+                    <p *ngIf="season%2 != 0" class="category">Edición {{season}} (Apertura)</p>
+                    <p *ngIf="season%2 == 0" class="category">Edición {{season}} (Clausura)</p>
+                </div>
+                <div *ngIf="leagueTable.dataRows.length !=0" class="content table-responsive table-full-width">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>POS</th>
+                                <th>Equipo</th>
+                                <th>PJ</th>
+                                <th>G</th>
+                                <th>E</th>
+                                <th>P</th>
+                                <th>NP</th>
+                                <th>GF</th>
+                                <th>GC</th>
+                                <th>DG</th>
+                                <th>PTS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of leagueTable.dataRows">
+                                <td>{{row.position}}</td>
+                                <td>{{row.team}}</td>
+                                <td>{{row.round}}</td>
+                                <td>{{row.won}}</td>
+                                <td>{{row.draw}}</td>
+                                <td>{{row.lost}}</td>
+                                <td>{{row.nonPlayed}}</td>
+                                <td>{{row.goalsFor}}</td>
+                                <td>{{row.goalsAgainst}}</td>
+                                <td>{{row.goalDifference}}</td>
+                                <td>{{row.points}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a style="cursor:pointer;margin-left: 15px;" *ngIf="!visibleLegend" (click)="visibleLegend = true">Ver Leyenda</a>
+                    <a style="cursor:pointer;margin-left: 15px;" *ngIf="visibleLegend" (click)="visibleLegend = false">Esconder Leyenda</a>
+                    <span *ngIf="visibleLegend" style="margin-left: 15px;">POS = Posición  PJ - Partidos Jugados  G - Ganados  E - Empatados  P - Perdidos  NP - No Presentado GF - Goles a Favor  GC - Goles en Contra  DG - Diferencia de goles  PTS - Puntos</span>
+                </div>
+                <div *ngIf="leagueTable.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                    Clasificación no disponible
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Partidos</h4>
+                    <p *ngIf="season%2 != 0" class="category">Edición {{season}} (Apertura)</p>
+                    <p *ngIf="season%2 == 0" class="category">Edición {{season}} (Clausura)</p>
+                </div>
+                <div *ngIf="leagueMatches.dataRows.length != 0" class="content table-responsive table-full-width">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Jornada</th>
+                                <th>Local</th>
+                                <th>Resultado</th>
+                                <th>Visitante</th>
+                                <th>Resumen</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of leagueMatches.dataRows">
+                                <td style="text-align: center;">{{row.round}}</td>
+                                <td style="text-align: center;">{{appService.getTeamById(row.local).name}}</td>
+                                <td style="text-align: center;">
+                                    <span *ngIf="row.localGoals > -1 && row.awayGoals > -1">{{row.localGoals}} - {{row.awayGoals}}</span>
+                                    <span *ngIf="row.localGoals == -1">-</span>
+                                    <span *ngIf="row.localGoals == -2 && row.awayGoals != -2">NP - X</span>
+                                    <span *ngIf="row.awayGoals == -2 && row.localGoals != -2">X - NP</span>
+                                    <span *ngIf="row.localGoals == -2 && row.awayGoals == -2">NP - NP</span>
+                                </td>
+                                <td style="text-align: center;">{{appService.getTeamById(row.away).name}}</td>
+                                <td style="text-align: center;"><a *ngIf="row.localGoals != -1" style="cursor:pointer;" (click)="showSummary(row.id)">Resumen</a><span *ngIf="row.localGoals == -1">Por jugar</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div *ngIf="leagueMatches.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                    Partidos no disponibles
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
