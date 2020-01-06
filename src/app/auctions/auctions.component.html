@@ -18,6 +18,7 @@
                                 <th>Posición</th>
                                 <th>Media</th>
                                 <th>Coste</th>
+                                <th>Origen</th>
                                 <th>Ganador</th>
                                 <th>Estado</th>
                                 <th>Tiempo</th>
@@ -39,11 +40,17 @@
                                 <td>{{row.position}}</td>
                                 <td>{{row.overage}}</td>
                                 <td>{{row.amount}}M€</td>
+                                <td *ngIf="row.type == appService.config.signinTypes.freeAuction">{{appService.getTeamById(row.firstTeam).name}}</td>
+                                <td *ngIf="row.type == appService.config.signinTypes.auction">NUEVO</td>
+                                <td *ngIf="row.type != appService.config.signinTypes.freeAuction && row.type != appService.config.signinTypes.auction">{{appService.getTeamById(row.oldTeam).name}}</td>
                                 <td>{{appService.getTeamById(row.team).name}}</td>
                                 <td *ngIf="row.state == 0" style="color: green;font-weight: bold;">ABIERTA</td>
-                                <td *ngIf="row.state == 1" style="color: red;font-weight: bold;">CERRADA</td>
+                                <td *ngIf="row.state == 1 && row.amplifiedState == -1" style="color: red;font-weight: bold;">CERRADA</td>
+                                <td *ngIf="row.state == 1 && row.amplifiedState == 2" style="color: orange;font-weight: bold;">EN TANTEO</td>
                                 <td *ngIf="row.state == 0">{{row.time}}</td>
-                                <td *ngIf="row.state == 1" colspan="2">00:00:00</td>
+                                <td *ngIf="row.state == 1 && row.amplifiedState == -1" colspan="2">00:00:00</td>
+                                <td *ngIf="row.state == 1 && row.amplifiedState == 2 && row.firstTeam != appService.data.user.teamID">EN TANTEO</td>
+                                <td *ngIf="row.state == 1 && row.amplifiedState == 2 && row.firstTeam == appService.data.user.teamID">¡¡CORRE!!</td>
                                 <td *ngIf="row.state == 0"><input type="number" [(ngModel)]="amountsRaised[$index]" min="{{row.amount}}" max="100" step="{{appService.config.auctionsRaisingStep}}">
                                 <a style="cursor:pointer;" (click)="raiseAuction(row.id, $index)">Pujar</a></td>
                             </tr>

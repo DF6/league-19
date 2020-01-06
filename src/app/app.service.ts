@@ -86,6 +86,17 @@ export class AppService {
         return this.data.users.filter( (user) => { return user.teamID != 0 && user.teamID != -1 });
     }
 
+    public getAuctionInitialAmount(player) {
+        this.config.auctionInitialAmounts
+            .filter( (amount) => {
+                return player.overage >= amount.min && player.overage < amount.max;
+            })
+            .map( (value) => {
+                player.amount = value.amount;
+            });
+        return player;
+    }
+
     public getClassNames(size) {
         return {
             small: this.config.classNameSizes.all,
@@ -165,7 +176,7 @@ export class AppService {
     }
 
     public getPlayersByTeam(team) {
-        return this.data.players.filter( (filteredPlayer) => { return filteredPlayer.teamID == team });
+        return this.data.players.filter( (filteredPlayer) => { return filteredPlayer.teamID == team && !this.data.signins.some((filteredSignin) => { return filteredSignin.player == filteredPlayer.teamID }) });
     }
 
     public getPlayersObservable() {
@@ -207,6 +218,10 @@ export class AppService {
         }
     }
 
+    public getSigninById(signin) {
+        return this.data.signins.filter( (filteredSignin) => { return filteredSignin.id == signin })[0];
+    }
+
     public getSignins() {
         this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
             this.data.signins = response.json() ? response.json().signins : [];
@@ -241,7 +256,12 @@ export class AppService {
     }
 
     public getTeamById(team) {
-        return this.data.teams.filter( (filteredTeam) => { return filteredTeam.id == team })[0];
+        const filteredTeams = this.data.teams.filter( (filteredTeam) => { return filteredTeam.id == team });
+        if(filteredTeams.length == 0) {
+            return { name: '-', nation: '-', imageRoute: '-'};
+        }else {
+            return filteredTeams[0];
+        }
     }
 
     public getTeams() {

@@ -51,7 +51,9 @@ export class UserComponent{
             alert(response.json().message);
             if(response.json().success) {
                 player.salaryMode = false;
-                this.appService.getPlayersByTeam(this.appService.data.user.teamID);
+                this.showPlayersTable = false;
+                this.playersOfMyTeam = this.appService.getPlayersByTeam(this.appService.data.user.teamID);
+                this.showPlayersTable = true;
                 this.appService.getTotalSalariesByTeam(this.playersOfMyTeam);
             }
         });
@@ -61,7 +63,9 @@ export class UserComponent{
         this.http.post('./test_CMDataRequesting.php', {type: 'hacEmb', player: player, team: this.appService.data.user.teamID}).subscribe( (response) => {
             alert(response.json().message);
             if(response.json().success) {
-                this.appService.getPlayersByTeam(this.appService.data.user.teamID);
+                this.showPlayersTable = false;
+                this.playersOfMyTeam = this.appService.getPlayersByTeam(this.appService.data.user.teamID);
+                this.showPlayersTable = true;
             }
         });
     }
@@ -100,15 +104,17 @@ export class UserComponent{
                             this.http.post('./test_CMDataRequesting.php', {type: 'traJug', player: value.player, oldTeam: value.originTeam, newTeam: value.newTeam, market: this.appService.data.constants.marketEdition, signinType: offer.signinType, cedido: this.appService.getPlayerById(offer.player).cedido}).subscribe( (response) => {
                                 alert(response.json().message);
                                 if(response.json().success) {
-                                    this.appService.getPlayersByTeam(this.appService.data.user.teamID);
+                                    this.showPlayersTable = false;
+                                    this.playersOfMyTeam = this.appService.getPlayersByTeam(this.appService.data.user.teamID);
+                                    this.showPlayersTable = true;
                                     this.setOffersOfMyTeam();
                                 }
                             });
                         });
-                        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
-                            this.signins = response.json().signins;
+                        this.appService.getSigninsObservable().subscribe( (response) => {
+                            this.appService.data.signins = response.json().signins;
                             this.setOffersOfMyTeam();
-                            this.appService.getPlayersByTeam(this.appService.data.user.teamID);
+                            this.playersOfMyTeam = this.appService.getPlayersByTeam(this.appService.data.user.teamID);
                         });
                     } else {
                         this.router.navigateByUrl('plantillas');
@@ -120,8 +126,8 @@ export class UserComponent{
                 this.http.post('./test_CMDataRequesting.php', {type: 'recOfe', id: offer.id}).subscribe( (response) => {
                     alert(response.json().message);
                     if(response.json().success) {
-                        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
-                            this.signins = response.json().signins;
+                        this.appService.getSigninsObservable().subscribe( (response) => {
+                            this.appService.data.signins = response.json().signins;
                             this.setOffersOfMyTeam();
                         });
                     }
@@ -150,10 +156,12 @@ export class UserComponent{
     }
 
     public giveWildCard(player) {
-        if(confirm('¿Liberar a ' + this.appService.getPlayerById(player).name + '?')) {
-            this.http.post('./test_CMDataRequesting.php', {type: 'disPla', player: player, market: this.appService.data.constants.marketEdition}).subscribe( (response) => {
+        if(confirm('¿Liberar a ' + this.appService.getPlayerById(player).name + '? Saldrá a subasta las próximas 36 horas')) {
+            this.http.post('./test_CMDataRequesting.php', {type: 'nueSub', player: player, auctionType: this.appService.config.signinTypes.freeAuction, firstTeam: this.appService.getPlayerById(player).teamID, amount: this.appService.getAuctionInitialAmount({overage: parseInt(this.appService.getPlayerById(player).overage), amount: undefined}).amount, market: this.appService.data.constants.marketEdition}).subscribe( (response) => {
                 if(response.json().success) {
+                    this.showPlayersTable = false;
                     this.playersOfMyTeam = this.appService.getPlayersByTeam(this.appService.data.user.teamID);
+                    this.showPlayersTable = true;
                 }
                 alert(response.json().message);
             });

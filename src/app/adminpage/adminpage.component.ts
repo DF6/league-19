@@ -44,6 +44,7 @@ export class AdminPageComponent implements OnInit{
     public suggestionsTable;
     public adminMatchesTable;
     public insertMatch;
+    public insertPlayer;
     public showNewRound = false;
     public showMatchToResolve;
 
@@ -53,6 +54,7 @@ export class AdminPageComponent implements OnInit{
         this.appService.getTeams();
         this.appService.getTournaments();
         this.appService.getSuggestions();
+        this.appService.getSignins();
     }
 
     ngOnInit() {
@@ -78,6 +80,16 @@ export class AdminPageComponent implements OnInit{
             this.getTotalSalaries();
             this.getSuggestions();
             this.setUndisputedMatches();
+        });
+    }
+
+    public addPlayer() {
+        this.http.post(PHPFILENAME, {type: 'newPla', name: this.insertPlayer.name, salary: (parseFloat(this.insertPlayer.overage)/100).toFixed(2), position: this.insertPlayer.position, overage: this.insertPlayer.overage, team: this.insertPlayer.team.id}).subscribe( (response) => {
+            if(response.json().success) {
+                this.appService.insertLog({logType: this.appService.config.logTypes.createPlayer, logInfo: 'Creado jugador ' + this.insertPlayer.name + ' (ID '+ response.json().newID + ')'});
+                this.resetNewPlayer();
+                alert(response.json().message);
+            }
         });
     }
 
@@ -187,6 +199,11 @@ export class AdminPageComponent implements OnInit{
         }
     }
 
+    public resetMatchToResolve() {
+        this.matchToResolve = undefined;
+        this.showMatchToResolve = false;
+    }
+
     public resetNewMatch() {
         this.insertMatch = {
             tournament: undefined,
@@ -197,9 +214,14 @@ export class AdminPageComponent implements OnInit{
         this.showNewRound = false;
     }
 
-    public resetMatchToResolve() {
-        this.matchToResolve = undefined;
-        this.showMatchToResolve = false;
+    public resetNewPlayer() {
+        this.insertPlayer = {
+            name: undefined,
+            salary: undefined,
+            position: undefined,
+            overage: undefined,
+            team: undefined
+        };
     }
 
     public resetView() {
@@ -213,6 +235,7 @@ export class AdminPageComponent implements OnInit{
             suggestions: false
         };
         this.resetNewMatch();
+        this.resetNewPlayer();
         this.resetMatchToResolve();
     }
 

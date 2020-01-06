@@ -34,10 +34,11 @@ export class MatchFillerComponent implements OnInit{
     public models: any;
     public sent = false;
 
-    constructor(private http: Http, private appService: AppService){
+    constructor(private appService: AppService){
         this.appService.getPlayers();
         this.appService.getTournaments();
         this.appService.getTeams();
+        this.appService.getSignins();
     }
 
     ngOnInit() {

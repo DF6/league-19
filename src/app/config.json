@@ -47,6 +47,7 @@
     "logTypes": {
         "auctionRaised": "AR",
         "closedAuction": "CA",
+        "createPlayer": "CP",
         "createTournament": "CT",
         "insertMatch": "IM",
         "login": "LI",
@@ -184,6 +185,7 @@
     "signinTypes": {
         "auction": "A",
         "discard": "D",
+        "freeAuction": "L",
         "forcedSign": "F",
         "freePlayer": "W"
     },

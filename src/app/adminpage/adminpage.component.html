@@ -162,7 +162,7 @@
         </section>
     </div>
     <div class="row">
-        <div class="col-md-4 col-sm-12" (click)="resetView();showModule.createTournamentMatches = true">
+        <div class="col-md-4 col-sm-12" (click)="resetView();showModule.insertTeams = true">
             <div style="cursor: pointer" class="card">
                 <div class="header text-center">
                     <p style="font-weight: bold" class="category">Realizar Sorteo<br/><br/></p>
@@ -185,8 +185,16 @@
         </div>
     </div>
     <div class="row">
-        <section class="col-md-12 col-sm-12" *ngIf="showModule.createTournamentMatches">
-        
+        <section class="col-md-12 col-sm-12" *ngIf="showModule.insertTeams">
+            Nombre <input type="text" [(ngModel)]="insertPlayer.name">
+            Posición <input type="text" [(ngModel)]="insertPlayer.position" maxlength="3">
+            Media <input type="number" [(ngModel)]="insertPlayer.overage" min="40" max="99" step="1">
+            <span class="col-md-12 col-sm-12">Equipo</span>
+            <select class="col-md-12 col-sm-12" [(ngModel)]="insertPlayer.team">
+                <option *ngFor="let team of appService.data.teams" 
+                    [ngValue]="team">{{team.name}}</option>
+            </select>
+            <a style="cursor:pointer;" (click)="addPlayer()">Crear Jugador</a>
         </section>
         <section class="col-md-12 col-sm-12" *ngIf="showModule.showPendingMatches">
             <div class="card" *ngIf="adminMatchesTable">
