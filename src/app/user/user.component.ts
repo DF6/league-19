@@ -111,13 +111,8 @@ export class UserComponent{
                                 }
                             });
                         });
-<<<<<<< HEAD
-                        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
-                            this.signins = response.json().signins;
-=======
                         this.appService.getSigninsObservable().subscribe( (response) => {
                             this.appService.data.signins = response.json().signins;
->>>>>>> e60890945880dfbe59904574b718545f76b88b39
                             this.setOffersOfMyTeam();
                             this.playersOfMyTeam = this.appService.getPlayersByTeam(this.appService.data.user.teamID);
                         });
@@ -131,13 +126,8 @@ export class UserComponent{
                 this.http.post('./CMDataRequesting.php', {type: 'recOfe', id: offer.id}).subscribe( (response) => {
                     alert(response.json().message);
                     if(response.json().success) {
-<<<<<<< HEAD
-                        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
-                            this.signins = response.json().signins;
-=======
                         this.appService.getSigninsObservable().subscribe( (response) => {
                             this.appService.data.signins = response.json().signins;
->>>>>>> e60890945880dfbe59904574b718545f76b88b39
                             this.setOffersOfMyTeam();
                         });
                     }
