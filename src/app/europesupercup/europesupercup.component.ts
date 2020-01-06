@@ -28,11 +28,10 @@ export class EuropeSupercupComponent implements OnInit {
         let finalTableMatches = [];
         this.appService.getMatchesObservable().subscribe( (response) => {
             const matchesArray = response.json().matches;
-            const tournament = this.appService.getLastEdition(this.appService.config.tournamentGeneralInfo.europeSupercup.name);
+            const tournament = this.appService.getLastEdition(this.appService.config.tournamentGeneralInfo.supercopaEuropea.name);
             this.season = tournament.edition;
             matchesArray.forEach( (value) => {
                 if (value.tournament == tournament.id) {
-                    value.filling = false;
                     if (this.appService.whoWon(value)) {
                         this.champion = this.appService.whoWon(value);
                     }

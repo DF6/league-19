@@ -174,72 +174,69 @@
             <div *ngIf="showPlayersTable" class="card">
                 <div class="header">
                     <h4 class="title">Mi plantilla - {{playersOfMyTeam.length}} jugadores</h4>
-                    <!--<span 
-                        style="float:right;font-weight: bold; padding: 8px;border: 2pt solid black; background-color: #ccc; border-radius: 5px;" 
-                        (click)="player.salaryMode = true">Cambiar Salarios</span>-->
                 </div>
                 <div class="content">
                     <ul class="list-unstyled team-members">
-                                <li *ngFor="let player of playersOfMyTeam">
-                                    <div class="row" *ngIf="player.emblem == '0'">
-                                        <div class="col-xs-4">
-                                            {{player.name}}
-                                            <br />
-                                            <span><small>{{player.position}}</small></span>
-                                        </div>
-                                        <div class="col-xs-1">
-                                            {{player.overage}}
-                                        </div>
-                                        <div class="col-xs-2" *ngIf="!player.salaryMode && player.salary != 10 && player.cedido == 0">
-                                            {{player.salary}}M€ <a *ngIf="appService.data.constants.salaryTime == 1" style="cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a>
-                                        </div>
-                                        <div class="col-xs-2" *ngIf="!player.salaryMode && player.salary == 10 && player.cedido == 0">
-                                            INTOCABLE <a *ngIf="appService.data.constants.salaryTime == 1" style="cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a>
-                                        </div>
-                                        <div class="col-xs-2 text-right" *ngIf="player.buyedThisMarket == 0 && player.cedido == 0 && !player.salaryMode">
-                                            <a style="cursor:pointer;" (click)="giveWildCard(player.id)">Liberar</a> - <a style="cursor:pointer;" (click)="setEmblem(player.id)">Emblema</a>
-                                        </div>
-                                        <div class="col-xs-2 text-right" *ngIf="player.buyedThisMarket == 1 && player.cedido == 0 && !player.salaryMode">
-                                            ALTA - <a style="cursor:pointer;" (click)="setEmblem(player.id)">Emblema</a>
-                                        </div>
-                                        <div class="col-xs-2 text-right" *ngIf="player.cedido != 0 && !player.salaryMode">
-                                            CEDIDO
-                                        </div>
-                                        <div class="col-xs-3 text-right" *ngIf="player.salaryMode">
-                                            Cláusula <input type="number" [(ngModel)]="player.newSalary" step="1" min="1" max="100"> <a style="cursor:pointer;" (click)="setSalary(player)">Grabar</a>
-                                        </div>
-                                    </div>
-                                    <div class="row" *ngIf="player.emblem == '1'" style="background-color:rgb(255, 212, 160);">
-                                        <div class="col-xs-4">
-                                            {{player.name}}
-                                            <br />
-                                            <span><small>{{player.position}}</small></span>
-                                        </div>
-                                        <div class="col-xs-1">
-                                            {{player.overage}}
-                                        </div>
-                                        <div class="col-xs-2" *ngIf="!player.salaryMode && player.salary != 10 && player.cedido == 0">
-                                            {{player.salary}}M€ <a *ngIf="appService.data.constants.salaryTime" style="cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a> 
-                                        </div>
-                                        <div class="col-xs-2" *ngIf="!player.salaryMode && player.salary == 10 && player.cedido == 0">
-                                            INTOCABLE <a *ngIf="appService.data.constants.salaryTime" style="cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a>
-                                        </div>
-                                        <div class="col-xs-2 text-right" *ngIf="player.buyedThisMarket == 0 && player.cedido == 0 && !player.salaryMode">
-                                            <a style="cursor:pointer;" (click)="giveWildCard(player.id)">Liberar</a>
-                                        </div>
-                                        <div class="col-xs-2 text-right" *ngIf="player.buyedThisMarket == 1 && player.cedido == 0 && !player.salaryMode">
-                                            ALTA
-                                        </div>
-                                        <div class="col-xs-2 text-right" *ngIf="player.cedido != 0 && !player.salaryMode">
-                                            CEDIDO
-                                        </div>
-                                        <div class="col-xs-3 text-right" *ngIf="player.salaryMode">
-                                            Cláusula <input type="number" [(ngModel)]="player.newSalary" step="1" min="1" max="100"> <a style="cursor:pointer;" (click)="setSalary(player)">Grabar</a>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        <span *ngIf="totalSalaries" style="margin-left: 1%;">Total Sueldos: {{totalSalaries}}M€ (Límite 100M€)</span>
+                        <li *ngFor="let player of playersOfMyTeam">
+                            <div class="row" *ngIf="player.emblem == '0'">
+                                <div class="col-xs-4">
+                                    {{player.name}}
+                                    <br />
+                                    <span><small>{{player.position}}</small></span>
+                                </div>
+                                <div class="col-xs-1">
+                                    {{player.overage}}
+                                </div>
+                                <div class="col-xs-2" *ngIf="!player.salaryMode && player.salary != 10 && player.cedido == 0">
+                                    {{player.salary}}M€ <!--<a *ngIf="appService.data.constants.salaryTime == 1" style="cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a>-->
+                                </div>
+                                <div class="col-xs-2" *ngIf="!player.salaryMode && player.salary == 10 && player.cedido == 0">
+                                    INTOCABLE <!--<a *ngIf="appService.data.constants.salaryTime == 1" style="cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a>-->
+                                </div>
+                                <div class="col-xs-2 text-right" *ngIf="player.buyedThisMarket == 0 && player.cedido == 0">
+                                    <a style="cursor:pointer;" (click)="giveWildCard(player.id)">Liberar</a> - <a style="cursor:pointer;" (click)="setEmblem(player.id)">Emblema</a>
+                                </div>
+                                <div class="col-xs-2 text-right" *ngIf="player.buyedThisMarket == 1 && player.cedido == 0">
+                                    ALTA - <a style="cursor:pointer;" (click)="setEmblem(player.id)">Emblema</a>
+                                </div>
+                                <div class="col-xs-2 text-right" *ngIf="player.cedido != 0">
+                                    CEDIDO
+                                </div>
+                                <!--<div class="col-xs-3 text-right" *ngIf="player.salaryMode">
+                                    Cláusula <input type="number" [(ngModel)]="player.newSalary" step="1" min="1" max="100"> <a style="cursor:pointer;" (click)="setSalary(player)">Grabar</a>
+                                </div>-->
+                            </div>
+                            <div class="row" *ngIf="player.emblem == '1'" style="background-color:rgb(255, 212, 160);">
+                                <div class="col-xs-4">
+                                    {{player.name}}
+                                    <br />
+                                    <span><small>{{player.position}}</small></span>
+                                </div>
+                                <div class="col-xs-1">
+                                    {{player.overage}}
+                                </div>
+                                <div class="col-xs-2" *ngIf="!player.salaryMode && player.salary != 10 && player.cedido == 0">
+                                    {{player.salary}}M€ <!--<a *ngIf="appService.data.constants.salaryTime" style="cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a> -->
+                                </div>
+                                <div class="col-xs-2" *ngIf="!player.salaryMode && player.salary == 10 && player.cedido == 0">
+                                    INTOCABLE <!--<a *ngIf="appService.data.constants.salaryTime" style="cursor:pointer;" (click)="player.salaryMode = true">Cambiar</a>-->
+                                </div>
+                                <div class="col-xs-2 text-right" *ngIf="player.buyedThisMarket == 0 && player.cedido == 0">
+                                    <a style="cursor:pointer;" (click)="giveWildCard(player.id)">Liberar</a>
+                                </div>
+                                <div class="col-xs-2 text-right" *ngIf="player.buyedThisMarket == 1 && player.cedido == 0">
+                                    ALTA
+                                </div>
+                                <div class="col-xs-2 text-right" *ngIf="player.cedido != 0">
+                                    CEDIDO
+                                </div>
+                                <!--<div class="col-xs-3 text-right" *ngIf="player.salaryMode">
+                                    Cláusula <input type="number" [(ngModel)]="player.newSalary" step="1" min="1" max="100"> <a style="cursor:pointer;" (click)="setSalary(player)">Grabar</a>
+                                </div>-->
+                            </div>
+                        </li>
+                    </ul>
+                    <span *ngIf="totalSalaries" style="margin-left: 1%;">Total Sueldos: {{totalSalaries}}M€ (Límite 100M€)</span>
                 </div>
             </div>
             </div>

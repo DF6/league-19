@@ -9,14 +9,15 @@ import { AppService, KeyConfig } from 'app/app.service';
 
 export class KeyComponent {
 
-    @Input() config: KeyConfig | null;
+    @Input() keyConfig: KeyConfig | null;
+    @Input() shownRound: Boolean;
     public showElement = false;
 
     constructor(private appService: AppService) {
         this.appService.getTeams();
         this.appService.getMatchesObservable().subscribe( (response) => {
-            this.appService.setMatches = response.json().matches;
-            if (this.config) { this.showElement = true; }
+            this.appService.data.matches = response.json().matches;
+            if (this.keyConfig) { this.showElement = true; }
         });
     }
 }

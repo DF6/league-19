@@ -12,7 +12,6 @@ import { NavbarModule} from './shared/navbar/navbar.module';
 import { FixedPluginModule} from './shared/fixedplugin/fixedplugin.module';
 import { NguiMapModule} from '@ngui/map';
 
-import { AdminMatchesComponent } from './adminmatches/adminmatches.component';
 import { AdminPageComponent } from './adminpage/adminpage.component';
 import { AppService } from './app.service';
 import { AuctionsComponent } from './auctions/auctions.component';
@@ -31,7 +30,7 @@ import { MapsComponent } from './maps/maps.component';
 import { MarketComponent } from './market/market.component';
 import { MatchFillerModule } from './match-filler/match-filler.module';
 import { NationsComponent } from './nations/nations.component';
-import { NotificationsComponent } from './notifications/notifications.component';
+import { GeneralCupComponent } from './generalcup/generalcup.component';
 import { OfferComponent } from './offer/offer.component';
 import { OfferFillerModule } from './offer-filler/offer-filler.module';
 import { PartnersComponent } from './partners/partners.component';
@@ -40,20 +39,22 @@ import { RegistroComponent } from './registro/registro.component';
 import { RoundkeysModule } from './roundkeys/roundkeys.module';
 import { RulesComponent } from './rules/rules.component';
 import { StatisticsComponent } from './statistics/statistics.component';
-import { TableComponent } from './table/table.component';
+import { PremierComponent } from './premier/premier.component';
 import { TypographyComponent } from './typography/typography.component';
 import { UserComponent } from './user/user.component';
+import { SecondComponent } from './second/second.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     UserComponent,
-    TableComponent,
+    PremierComponent,
+    SecondComponent,
     TypographyComponent,
     IconsComponent,
     MapsComponent,
-    NotificationsComponent,
+    GeneralCupComponent,
     RulesComponent,
     LoginComponent,
     RegistroComponent,
@@ -64,7 +65,6 @@ import { UserComponent } from './user/user.component';
     ChampionsComponent,
     NationsComponent,
     ClubSupercupComponent,
-    AdminMatchesComponent,
     PenaltiesComponent,
     FreePlayersComponent,
     AuctionsComponent,
