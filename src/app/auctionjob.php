@@ -22,25 +22,30 @@
       $fecha_limite = strtotime($row['limit_date']);
       $tipo = utf8_decode($row['signin_type']);
       $equipo = $row['buyer_team'];
+      $origen = $row['first_team'];
       $jugador = $row['player'];
       $id = $row['id'];
       $amount = $row['amount'];
-      if($fecha_actual > $fecha_limite && strcmp($tipo, "A") == 0) {
+      if($fecha_actual > $fecha_limite && (strcmp($tipo, "A") == 0 || strcmp($tipo, "L") == 0)) {
         $consult5 = "SELECT * from teams";
         $result5 = mysqli_query($link, $consult5) or die("Error consultando equipo");
         $resolver = true;
         while($row2 = mysqli_fetch_array($result5)) {
-            if($row2['id'] == $equipo && $row2['auctions_available'] == 0) {
+            if($row2['id'] == $equipo && strcmp($tipo, "A") == 0 && $row2['auctions_available'] == 0) {
                 $resolver = false;
             }
         }
         if($resolver == true) {
             $consult2 = "UPDATE signins SET accepted=1 where id=". $id;
             $result2 = mysqli_query($link, $consult2) or die("Error cerrando subasta");
-            $consult3 = "UPDATE players SET team_id=" . $equipo . " where id=" . $jugador;
+            $consult3 = "UPDATE players SET team_id=" . $equipo . ", buyed_this_market=1 where id=" . $jugador;
             $result3 = mysqli_query($link, $consult3) or die("Error asignando jugador");
             $consult4 = "UPDATE teams SET auctions_available=auctions_available-1, budget=budget-" . $amount . " where id=" . $equipo;
             $result4 = mysqli_query($link, $consult4) or die("Error asignando presupuesto");
+            if(strcmp($tipo, "L") == 0) {
+              $consult8 = "UPDATE teams SET budget=budget+" . ($amount/2) . " where id=" . $origen;
+              $result8 = mysqli_query($link, $consult4) or die("Error asignando presupuesto2");
+            }
             insertLog($link, $equipo, $jugador, $amount, $id);
         }else {
             $consult6 = "DELETE from signins where id=". $id;

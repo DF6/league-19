@@ -158,6 +158,12 @@ export class AppService {
         });
     }
 
+    public getMatchesByTeam(team) {
+        return this.data.matches.filter( (filteredMatch) => {
+            return filteredMatch.local == team || filteredMatch.away == team;
+        })
+    }
+
     public getMatchesObservable(): Observable<any> {
         return this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'M'});
     }
@@ -176,7 +182,7 @@ export class AppService {
     }
 
     public getPlayersByTeam(team) {
-        return this.data.players.filter( (filteredPlayer) => { return filteredPlayer.teamID == team && !this.data.signins.some((filteredSignin) => { return filteredSignin.player == filteredPlayer.teamID }) });
+        return this.data.players.filter( (filteredPlayer) => { return filteredPlayer.teamID == team && !this.data.signins.some((filteredSignin) => { return filteredSignin.player == filteredPlayer.id && filteredSignin.market == this.data.constants.marketEdition && filteredSignin.signinType == 'L'; }) });
     }
 
     public getPlayersObservable() {

@@ -3,8 +3,8 @@ import { Routes } from '@angular/router';
 import { DashboardComponent }   from './dashboard/dashboard.component';
 import { UserComponent }   from './user/user.component';
 import { PremierComponent }   from './premier/premier.component';
-import { TypographyComponent }   from './typography/typography.component';
-import { IconsComponent }   from './icons/icons.component';
+import { PendingMatchesComponent }   from './pendingmatches/pendingmatches.component';
+import { SquadsComponent }   from './squads/squads.component';
 import { MapsComponent }   from './maps/maps.component';
 import { GeneralCupComponent }   from './generalcup/generalcup.component';
 import { RulesComponent }   from './rules/rules.component';
@@ -37,8 +37,8 @@ export const AppRoutes: Routes = [
     { path: 'usuario', component: UserComponent },
     { path: 'primera', component: PremierComponent },
     { path: 'segunda', component: SecondComponent },
-    { path: 'partidospendientes', component: TypographyComponent },
-    { path: 'plantillas', component: IconsComponent },
+    { path: 'partidospendientes', component: PendingMatchesComponent },
+    { path: 'plantillas', component: SquadsComponent },
     { path: 'copa', component: GeneralCupComponent },
     { path: 'normas', component: RulesComponent },
     { path: 'login', component: LoginComponent },

@@ -1,0 +1,52 @@
+<div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12" *ngIf="pendingMatchesTable">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Partidos pendientes</h4>
+                    </div>
+                    <div *ngIf="pendingMatchesTable.dataRows.length !=0" class="content table-responsive table-full-width">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Torneo</th>
+                                    <th>Ronda</th>
+                                    <th>Local</th>
+                                    <th></th>
+                                    <th>Visitante</th>
+                                    <th>Rellenar</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of pendingMatchesTable.dataRows">
+                                    <td *ngIf="!row.filling">{{appService.getTournamentById(row.tournament).name}}</td>
+                                    <td *ngIf="!row.filling && 
+                                    (appService.getTournamentById(row.tournament).name == this.appService.config.tournamentGeneralInfo.primera.name ||
+                                    appService.getTournamentById(row.tournament).name == this.appService.config.tournamentGeneralInfo.segunda.name ||
+                                    appService.getTournamentById(row.tournament).name == this.appService.config.tournamentGeneralInfo.nationsLeague.name)">{{row.round}}</td>
+                                    <td *ngIf="!row.filling && appService.getTournamentById(row.tournament).name != this.appService.config.tournamentGeneralInfo.primera.name &&
+                                    appService.getTournamentById(row.tournament).name != this.appService.config.tournamentGeneralInfo.segunda.name &&
+                                    appService.getTournamentById(row.tournament).name != this.appService.config.tournamentGeneralInfo.nationsLeague.name">{{appService.getRoundName(row)}}</td>
+                                    <td *ngIf="!row.filling && appService.getTournamentById(row.tournament).name != this.appService.config.tournamentGeneralInfo.nationsLeague.name">{{appService.getTeamById(row.local).name}}</td>
+                                    <td *ngIf="!row.filling && appService.getTournamentById(row.tournament).name == this.appService.config.tournamentGeneralInfo.nationsLeague.name">{{appService.getTeamById(row.local).nation}}</td>
+                                    <td *ngIf="!row.filling">-</td>
+                                    <td *ngIf="!row.filling && appService.getTournamentById(row.tournament).name != this.appService.config.tournamentGeneralInfo.nationsLeague.name">{{appService.getTeamById(row.away).name}}</td>
+                                    <td *ngIf="!row.filling && appService.getTournamentById(row.tournament).name == this.appService.config.tournamentGeneralInfo.nationsLeague.name">{{appService.getTeamById(row.away).nation}}</td>
+                                    <td *ngIf="!row.filling"><a style="cursor:pointer;" (click)="row.filling = true">Rellenar</a></td>
+                                    <td *ngIf="row.filling" colspan="6">
+                                        <match-filler *ngIf="row.filling" [data]="row" (matchFilled)="refreshMatches()"></match-filler>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+    
+                    </div>
+                    <div *ngIf="pendingMatchesTable.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                        Partidos no disponibles
+                    </div>
+                </div>
+            </div>
+    </div>
+</div>
+
+
