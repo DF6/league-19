@@ -196,6 +196,7 @@
         "leagueMatches": [ "round", "local", "result", "away", "summary"],
         "leagueTable": [ "position", "team", "round", "won", "draw", "lost", "nonPlayed", "goalsFor", "goalsAgainst", "goalsDifference", "points"],
         "offers": [ "type", "player", "team", "amount", "players", "actions"],
+        "pendingMatches": [ "tournament", "round", "local", "", "away", "fill"],
         "suggestions": [ "user", "suggestion"],
         "userInfo": [ "name", "team", "nation", "psnID", "twitch"]
     },

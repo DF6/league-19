@@ -10,7 +10,7 @@ declare var $:any;
     templateUrl: 'auctions.component.html'
 })
 
-export class AuctionsComponent {
+export class AuctionsComponent implements OnInit{
     public tableData1: TableData;
     public amountsRaised = [];
     public new = false;
@@ -23,16 +23,23 @@ export class AuctionsComponent {
 
     constructor(private http: Http, private appService: AppService) {
         this.tableData1 = this.appService.getTableConfig(this.appService.config.tableHeaders.auctions);
-        this.appService.getPlayers();
         this.appService.getConstants();
         this.appService.getTeams();
-        this.appService.getSigninsObservable().subscribe( (response) => {
-            this.appService.setSignins(response.json().signins);
-            this.setTable();
+        
+    }
+
+    ngOnInit() {
+        this.appService.getPlayersObservable().subscribe( (response2) => {
+            this.appService.data.players = response2.json().players;
+            this.appService.getSigninsObservable().subscribe( (response) => {
+                this.appService.setSignins(response.json().signins);
+                this.setTable();
+            });
         });
     }
 
     public setTable() {
+        for(let i = 0; i < 10000; i++) { window.clearInterval(i); }
         this.tableData1.dataRows = [];
         const dataRows = this.appService.data.signins
         .filter( (signin) => {
@@ -46,9 +53,10 @@ export class AuctionsComponent {
                 position: player.position,
                 overage: player.overage,
                 firstTeam: filteredSignins.firstTeam,
-                oldTeam: filteredSignins.type == this.appService.config.signinTypes.auction ? undefined : player.teamID,
+                oldTeam: filteredSignins.signinType == this.appService.config.signinTypes.auction ? undefined : player.teamID,
                 team: filteredSignins.buyerTeam,
                 amount: filteredSignins.amount,
+                type: filteredSignins.signinType,
                 state: filteredSignins.accepted,
                 amplifiedState: filteredSignins.amplifiedState,
                 time: filteredSignins.limitDate
@@ -89,19 +97,19 @@ export class AuctionsComponent {
                                 this.appService.addZero(date.getHours()) + ":" + 
                                 this.appService.addZero(date.getMinutes()) + ":" + 
                                 this.appService.addZero(date.getSeconds());
-            this.http.post('./CMDataRequesting.php', {type: 'nueSub', auctionType: this.appService.config.signinTypes.auction, playerName: this.appService.removeAccents(this.newPlayer.name), position: this.newPlayer.position.toUpperCase(), amount: this.newPlayer.amount, overage: this.newPlayer.overage, buyerTeam: this.appService.data.user.teamID, market: this.appService.data.constants.marketEdition, limitDate: formattedDate}).subscribe( (response) => {
+            this.http.post('./test_CMDataRequesting.php', {type: 'nueSub', auctionType: this.appService.config.signinTypes.auction, playerName: this.appService.removeAccents(this.newPlayer.name), position: this.newPlayer.position.toUpperCase(), amount: this.newPlayer.amount, overage: this.newPlayer.overage, firstTeam: this.appService.data.user.teamID, buyerTeam: this.appService.data.user.teamID, market: this.appService.data.constants.marketEdition, limitDate: formattedDate}).subscribe( (response) => {
                 if(response.json().success) {
                     this.appService.getPlayersObservable().subscribe( (response2) => {
                         this.appService.setPlayers(response2.json().players);
                         this.setTable();
                         this.new = false;
+                        this.appService.insertLog({logType: this.appService.config.logTypes.playerAddedInAuction, logInfo: 'Nuevo jugador en subasta: ' + this.appService.getPlayerById(response.json().newID).name + ' por ' + this.newPlayer.amount + 'M€ (ID ' + response.json().newID + ')'});
                         this.newPlayer = {
                             name: '',
                             position: '',
                             overage: this.appService.config.auctionDefaultOverage,
                             amount: 0
                         };
-                        this.appService.insertLog({logType: this.appService.config.logTypes.playerAddedInAuction, logInfo: 'Nuevo jugador en subasta: ' + this.appService.getPlayerById(response.json().newID).name + ' por ' + this.newPlayer.amount + 'M€ (ID ' + response.json().newID + ')'});
                     })
                 }
                 alert(response.json().message);
