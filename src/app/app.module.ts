@@ -21,7 +21,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { EuropaLeagueComponent } from './europaleague/europaleague.component';
 import { EuropeSupercupComponent } from './europesupercup/europesupercup.component';
 import { FreePlayersComponent } from './freeplayers/freeplayers.component';
-import { IconsComponent } from './icons/icons.component';
+import { SquadsComponent } from './squads/squads.component';
 import { IntertotoComponent } from './intertoto/intertoto.component';
 import { KeyModule } from './key/key.module';
 import { LoginComponent } from './login/login.component';
@@ -40,7 +40,7 @@ import { RoundkeysModule } from './roundkeys/roundkeys.module';
 import { RulesComponent } from './rules/rules.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { PremierComponent } from './premier/premier.component';
-import { TypographyComponent } from './typography/typography.component';
+import { PendingMatchesComponent } from './pendingmatches/pendingmatches.component';
 import { UserComponent } from './user/user.component';
 import { SecondComponent } from './second/second.component';
 
@@ -51,8 +51,8 @@ import { SecondComponent } from './second/second.component';
     UserComponent,
     PremierComponent,
     SecondComponent,
-    TypographyComponent,
-    IconsComponent,
+    PendingMatchesComponent,
+    SquadsComponent,
     MapsComponent,
     GeneralCupComponent,
     RulesComponent,

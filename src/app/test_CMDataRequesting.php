@@ -538,7 +538,7 @@
       if ($data['success'] == true) {
         $query="INSERT INTO test_players (name,team_id,position,overage) values ('".$params->playerName."', -1, '".$params->position."', " . $params->overage . ")";
         $resultado=mysqli_query($con, $query) or die("Error insertando jugador");
-        $query2="INSERT INTO test_signins (player, buyer_team,amount,signin_type,market,accepted,limit_date) values (".mysqli_insert_id($con).",".$params->buyerTeam.", ".$params->amount.", 'A', ".$params->market.", false, DATE_ADD(NOW(), INTERVAL 13 HOUR))";
+        $query2="INSERT INTO test_signins (player, first_team, buyer_team,amount,signin_type,market,accepted,limit_date) values (".mysqli_insert_id($con).",".$params->firstTeam.",".$params->buyerTeam.", ".$params->amount.", 'A', ".$params->market.", false, DATE_ADD(NOW(), INTERVAL 13 HOUR))";
         $resultado2=mysqli_query($con, $query2) or die("Error insertando subasta");
         $data['newID']=mysqli_insert_id($con);
       }  
@@ -597,7 +597,7 @@
     } else {
       if($data['success'] == true) {
         if($fecha_dos_min_menos > $fecha_limite) {
-          $query="UPDATE test_signins SET buyer_team=". $params->newTeam .", amount=".$params->amount.",  where id=" . $params->id;
+          $query="UPDATE test_signins SET buyer_team=". $params->newTeam .", amount=".$params->amount.", limit_date=DATE_ADD(limit_date, INTERVAL 2 MINUTE) where id=" . $params->id;
         } else {
           $query="UPDATE test_signins SET buyer_team=". $params->newTeam .", amount=".$params->amount." where id=" . $params->id;
         }

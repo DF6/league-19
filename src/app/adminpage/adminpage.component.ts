@@ -60,7 +60,7 @@ export class AdminPageComponent implements OnInit{
     ngOnInit() {
         this.appService.getMatchesObservable().subscribe( (response) => {
             this.appService.data.matches = response.json().matches;
-            this.tournamentToReset = this.appService.getLastEdition(this.appService.data.tournaments[0].name).id;
+            // this.tournamentToReset = this.appService.getLastEdition(this.appService.data.tournaments[0].name).id;
             this.matchToAdd = {
                 local: -1,
                 away: -1,

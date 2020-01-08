@@ -1,15 +1,15 @@
 <div class="container-fluid">
-        <div *ngIf="teams" class="row">
+        <div *ngIf="appService.data.teams && appService.data.players" class="row">
             <div>
                 Nombre <input type="text" [(ngModel)]="filters.name" style="padding: 16px;"/>
             </div>
-            <div *ngFor="let team of teams" class="col-md-12">
-                <div class="card">
+            <div *ngFor="let team of appService.data.teams" class="col-md-12">
+                <div *ngIf="isThereAnyPlayer(team.id)" class="card">
                     <div class="header">
                         <img src="{{team.imageRoute}}"/><h4 class="title">{{team.name}}</h4>
                         <p class="category">{{team.shortName}}</p>
                     </div>
-                    <div *ngIf="isThereAnyPlayer(team.id)" class="content table-responsive table-full-width">
+                    <div class="content table-responsive table-full-width">
                         <table class="table table-striped">
                             <thead>
                                 <tr>
@@ -20,11 +20,16 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let row of getPlayersByTeam(team.id)">
+                                <tr *ngFor="let row of appService.getPlayersByTeam(team.id)">
                                     <td *ngIf="!row.filling && row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1">{{row.position}}</td>
                                     <td *ngIf="!row.filling && row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1">{{row.name}}</td>
                                     <td *ngIf="!row.filling && row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1">{{row.overage}}</td>
-                                    <td *ngIf="!row.filling && row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.salary<10 && row.buyedThisMarket == '0'">{{(row.salary*10)}} M€ <span *ngIf="user.teamID != team.id">-</span> <a style="cursor:pointer;" (click)="forceSignin(row)" *ngIf="user.teamID != team.id">Clausulazo</a> <span *ngIf="user.teamID != team.id">-</span> <a style="cursor:pointer;" (click)="setOfferToRedirect(row)" *ngIf="user.teamID != team.id">Oferta</a></td>
+                                    <td *ngIf="!row.filling && row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.salary<10 && row.buyedThisMarket == '0'">{{row.overage}} M€ 
+                                        <span *ngIf="appService.data.user.teamID != team.id && appService.data.constants.marketOpened == '1' && row.buyedThisMarket == '0'">-</span> 
+                                        <a style="cursor:pointer;" (click)="forceSignin(row)" *ngIf="appService.data.user.teamID != team.id && appService.data.constants.marketOpened == '1' && row.buyedThisMarket == '0'">Clausulazo</a> 
+                                        <span *ngIf="appService.data.user.teamID != team.id && appService.data.constants.marketOpened == '1' && row.buyedThisMarket == '0'">-</span> 
+                                        <a style="cursor:pointer;" (click)="setOfferToRedirect(row)" *ngIf="appService.data.user.teamID != team.id && appService.data.constants.marketOpened == '1' && row.buyedThisMarket == '0'">Oferta</a>
+                                    </td>
                                     <td *ngIf="!row.filling && row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.salary>=10 && row.buyedThisMarket == '0'">INTOCABLE</td>
                                     <td *ngIf="!row.filling && row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.buyedThisMarket == '1'">COMPRADO</td>
                                 </tr>
@@ -32,8 +37,8 @@
                         </table>
     
                     </div>
-                    <div *ngIf="!isThereAnyPlayer(team.id)" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
-                        Plantilla no disponible
+                    <div *ngIf="appService.getPlayersByTeam(team.id).length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                        No hay jugadores para {{team.name}}
                     </div>
                 </div>
             </div>
