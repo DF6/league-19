@@ -84,7 +84,7 @@ export class AdminPageComponent implements OnInit{
     }
 
     public addPlayer() {
-        this.http.post(PHPFILENAME, {type: 'newPla', name: this.insertPlayer.name, salary: (parseFloat(this.insertPlayer.overage)/100).toFixed(2), position: this.insertPlayer.position, overage: this.insertPlayer.overage, team: this.insertPlayer.team.id}).subscribe( (response) => {
+        this.http.post(PHPFILENAME, {type: 'newPla', name: this.appService.removeAccents(this.insertPlayer.name), salary: (parseFloat(this.insertPlayer.overage)/100).toFixed(2), position: this.insertPlayer.position, overage: this.insertPlayer.overage, team: this.insertPlayer.team.id}).subscribe( (response) => {
             if(response.json().success) {
                 this.appService.insertLog({logType: this.appService.config.logTypes.createPlayer, logInfo: 'Creado jugador ' + this.insertPlayer.name + ' (ID '+ response.json().newID + ')'});
                 this.resetNewPlayer();
