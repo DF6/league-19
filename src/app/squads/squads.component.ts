@@ -38,7 +38,7 @@ export class SquadsComponent{
     }
     
     public forceSignin(player) {
-        this.http.post('./test_CMDataRequesting.php', {type: 'claJug', player: player.id, oldTeam: player.teamID, buyerTeam: this.appService.data.user.teamID, amount: parseInt(player.overage), market: this.appService.data.constants.marketEdition}).subscribe( (response) => {
+        this.http.post('./CMDataRequesting.php', {type: 'claJug', player: player.id, oldTeam: player.teamID, buyerTeam: this.appService.data.user.teamID, amount: parseInt(player.overage), market: this.appService.data.constants.marketEdition}).subscribe( (response) => {
             alert(response.json().message);
             if(response.json().success) {
                 this.router.navigateByUrl('usuario');

@@ -97,7 +97,7 @@ export class AuctionsComponent implements OnInit{
                                 this.appService.addZero(date.getHours()) + ":" + 
                                 this.appService.addZero(date.getMinutes()) + ":" + 
                                 this.appService.addZero(date.getSeconds());
-            this.http.post('./test_CMDataRequesting.php', {type: 'nueSub', auctionType: this.appService.config.signinTypes.auction, playerName: this.appService.removeAccents(this.newPlayer.name), position: this.newPlayer.position.toUpperCase(), amount: this.newPlayer.amount, overage: this.newPlayer.overage, firstTeam: this.appService.data.user.teamID, buyerTeam: this.appService.data.user.teamID, market: this.appService.data.constants.marketEdition, limitDate: formattedDate}).subscribe( (response) => {
+            this.http.post('./CMDataRequesting.php', {type: 'nueSub', auctionType: this.appService.config.signinTypes.auction, playerName: this.appService.removeAccents(this.newPlayer.name), position: this.newPlayer.position.toUpperCase(), amount: this.newPlayer.amount, overage: this.newPlayer.overage, firstTeam: this.appService.data.user.teamID, buyerTeam: this.appService.data.user.teamID, market: this.appService.data.constants.marketEdition, limitDate: formattedDate}).subscribe( (response) => {
                 if(response.json().success) {
                     this.appService.getPlayersObservable().subscribe( (response2) => {
                         this.appService.setPlayers(response2.json().players);
