@@ -58,28 +58,30 @@ export class AdminPageComponent implements OnInit{
     }
 
     ngOnInit() {
-        this.appService.getMatchesObservable().subscribe( (response) => {
-            this.appService.data.matches = response.json().matches;
-            // this.tournamentToReset = this.appService.getLastEdition(this.appService.data.tournaments[0].name).id;
-            this.matchToAdd = {
-                local: -1,
-                away: -1,
-                tournament: -1,
-                round: -1
-            };
-            this.prizes = {
-                first: -1,
-                second: -1,
-                third: -1,
-                fourth: -1,
-                fifth: -1,
-                sixth: -1,
-                seventh: -1,
-                eight: -1
-            };
-            this.getTotalSalaries();
-            this.getSuggestions();
-            this.setUndisputedMatches();
+        this.appService.getSigninsObservable().subscribe( (response2) => {
+            this.appService.data.signins = response2.json().signins;    
+            this.appService.getMatchesObservable().subscribe( (response) => {
+                this.appService.data.matches = response.json().matches;
+                this.matchToAdd = {
+                    local: -1,
+                    away: -1,
+                    tournament: -1,
+                    round: -1
+                };
+                this.prizes = {
+                    first: -1,
+                    second: -1,
+                    third: -1,
+                    fourth: -1,
+                    fifth: -1,
+                    sixth: -1,
+                    seventh: -1,
+                    eight: -1
+                };
+                this.getTotalSalaries();
+                this.getSuggestions();
+                this.setUndisputedMatches();
+            });
         });
     }
 

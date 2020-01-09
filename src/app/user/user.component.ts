@@ -35,14 +35,16 @@ export class UserComponent{
         this.appService.getConstants();
         this.appService.getTeams();
         this.appService.getUsers();
-        this.appService.getSignins();
-        this.appService.getPlayersObservable().subscribe( (response) => {
-            this.appService.setPlayers(response.json().players);
-            this.showMyPlayerTable = true;
-            this.playersOfMyTeam = this.appService.getPlayersByTeam(this.appService.data.user.teamID);
-            this.getAdditionalPlayerInfo();
-            this.usersTable = this.appService.getTableConfig(this.appService.config.tableHeaders.userInfo, this.appService.getActiveUsers());
-            this.setOffersOfMyTeam();
+        this.appService.getSigninsObservable().subscribe( (response2) => {
+            this.appService.data.signins = response2.json().signins;
+            this.appService.getPlayersObservable().subscribe( (response) => {
+                this.appService.setPlayers(response.json().players);
+                this.showMyPlayerTable = true;
+                this.playersOfMyTeam = this.appService.getPlayersByTeam(this.appService.data.user.teamID);
+                this.getAdditionalPlayerInfo();
+                this.usersTable = this.appService.getTableConfig(this.appService.config.tableHeaders.userInfo, this.appService.getActiveUsers());
+                this.setOffersOfMyTeam();
+            });
         });
     }
 

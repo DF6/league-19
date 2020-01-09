@@ -16,19 +16,22 @@ export class SquadsComponent{
     constructor(private http: Http, private router: Router, private appService: AppService) {
         this.appService.getConstants();
         this.appService.getTeams();
-        this.appService.getPlayersObservable().subscribe( (response) => {
-            this.appService.data.players = response.json().players.map( (player) => {
-                player.filling = false;
-                return player;
+        this.appService.getSigninsObservable().subscribe( (response2) => {
+            this.appService.data.signins = response2.json().signins;
+            this.appService.getPlayersObservable().subscribe( (response) => {
+                this.appService.data.players = response.json().players.map( (player) => {
+                    player.filling = false;
+                    return player;
+                });
+                this.filters = {
+                    name: '',
+                    position: '',
+                    overageMin: 0,
+                    overageMax: 99,
+                    loan: false,
+                    emblem: false
+                };
             });
-            this.filters = {
-                name: '',
-                position: '',
-                overageMin: 0,
-                overageMax: 99,
-                loan: false,
-                emblem: false
-            };
         });
     }
 
