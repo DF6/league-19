@@ -30,6 +30,7 @@ export class AppService {
         },
         constants: undefined,
         matches: undefined,
+        playerChangeSignins: undefined,
         players: undefined,
         signins: undefined,
         standings: undefined,
@@ -172,6 +173,10 @@ export class AppService {
         return this.data.players.filter( (filteredPlayer) => { return filteredPlayer.id == player })[0];
     }
 
+    public getPlayerChangeSigninsObservable() {
+        return this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'PCS'});
+    }
+
     public getPlayers() {
         this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
             this.data.players = response.json() ? response.json().players : [];
@@ -288,6 +293,16 @@ export class AppService {
         playersOfTheTeam.forEach( (value) => {
             if(value.cedido == 0) {
                 total += parseFloat(value.salary);
+            }
+        });
+        return Math.round(total * 100) / 100;
+    }
+
+    public getTotalEstimatedSalariesByTeam(playersOfTheTeam) {
+        let total = 0;
+        playersOfTheTeam.forEach( (value) => {
+            if(value.cedido == 0) {
+                total += parseFloat(value.salary) + 0.5;
             }
         });
         return Math.round(total * 100) / 100;
