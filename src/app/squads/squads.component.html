@@ -1,6 +1,6 @@
 <div class="container-fluid">
         <div *ngIf="appService.data.teams && appService.data.players" class="row">
-            <div>
+            <div *ngIf="filters">
                 Nombre <input type="text" [(ngModel)]="filters.name" style="padding: 16px;"/>
             </div>
             <div *ngFor="let team of appService.data.teams" class="col-md-12">
