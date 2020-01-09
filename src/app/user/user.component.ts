@@ -25,6 +25,7 @@ export class UserComponent{
     public pass2;
     public holidaysMessage;
     public totalSalaries;
+    public totalNextSalaries;
     public salaryMode = false;
     public signins;
     public playerChangeSignins;
@@ -56,7 +57,8 @@ export class UserComponent{
                 this.showPlayersTable = false;
                 this.playersOfMyTeam = this.appService.getPlayersByTeam(this.appService.data.user.teamID);
                 this.showPlayersTable = true;
-                this.appService.getTotalSalariesByTeam(this.playersOfMyTeam);
+                this.totalSalaries = this.appService.getTotalSalariesByTeam(this.playersOfMyTeam);
+                this.totalNextSalaries = this.appService.getTotalEstimatedSalariesByTeam(this.playersOfMyTeam);
             }
         });
     }
@@ -73,50 +75,45 @@ export class UserComponent{
     }
 
     public setOffersOfMyTeam() {
-        if(this.offersTable) { this.offersTable.dataRows = []; }
-        let myOffers = [];
-        this.appService.data.signins.forEach( (value) => {
-            if (value.market == this.appService.data.constants.marketEdition &&
-                (value.signinType == 'G' || value.signinType == 'C') && value.accepted == 0 &&
-                value.oldTeam == this.appService.data.user.teamID) {
+        if (this.offersTable) { this.offersTable.dataRows = []; }
+        this.appService.getPlayerChangeSigninsObservable().subscribe( (response) => {
+            this.appService.data.playerChangeSignins = response.json().playerChangeSignins;
+            const myOffers = this.appService.data.signins.filter( (filteredSignins) => {
+                return filteredSignins.market == this.appService.data.constants.marketEdition &&
+                (filteredSignins.signinType == this.appService.config.signinTypes.agreement ||
+                filteredSignins.signinType == this.appService.config.signinTypes.loanAgreement) &&
+                filteredSignins.accepted == 0 && filteredSignins.oldTeam == this.appService.data.user.teamID;
+            })
+            .map( (value) => {
                 value.playersOffered = [];
-                this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'PCS'}).subscribe( (response) => {
-                    this.playerChangeSignins = response.json().playerChangeSignins;
-                    this.playerChangeSignins.forEach( (value2) => {
-                        if(value2.signinID == value.id) {
-                            value.playersOffered.push(value2);
-                        }
-                    });
-                    myOffers.push(value);
-                    if(myOffers.length != 0) {
-                        this.appService.getTableConfig(this.appService.config.tableHeaders.offers, myOffers);
-                    }
+                value.playersOffered = this.appService.data.playerChangeSignins.filter( (filteredPCS) => {
+                    return filteredPCS.signinID == value.id;
                 });
+                return value;
+            });
+            if (myOffers.length != 0) {
+                this.offersTable = this.appService.getTableConfig(this.appService.config.tableHeaders.offers, myOffers);
             }
         });
     }
 
     public resolveOffer(offer, result) {
-        if(result) {
-            if(confirm('¿Aceptar?')) {
+        if (result) {
+            if (confirm('¿Aceptar?')) {
                 this.http.post('./test_CMDataRequesting.php', {type: 'aceOfe', id: offer.id, player: offer.player, newTeam: offer.buyerTeam, oldTeam: offer.oldTeam, amount: offer.amount, signinType: offer.signinType, cedido: this.appService.getPlayerById(offer.player).cedido}).subscribe( (response) => {
                     alert(response.json().message) 
-                    if(response.json().success) {
+                    if (response.json().success) {
                         offer.playersOffered.forEach( (value) => {
                             this.http.post('./test_CMDataRequesting.php', {type: 'traJug', player: value.player, oldTeam: value.originTeam, newTeam: value.newTeam, market: this.appService.data.constants.marketEdition, signinType: offer.signinType, cedido: this.appService.getPlayerById(offer.player).cedido}).subscribe( (response) => {
                                 alert(response.json().message);
-                                if(response.json().success) {
-                                    this.showPlayersTable = false;
-                                    this.playersOfMyTeam = this.appService.getPlayersByTeam(this.appService.data.user.teamID);
-                                    this.showPlayersTable = true;
-                                    this.setOffersOfMyTeam();
-                                }
                             });
                         });
                         this.appService.getSigninsObservable().subscribe( (response) => {
                             this.appService.data.signins = response.json().signins;
+                            this.showPlayersTable = false;
                             this.setOffersOfMyTeam();
                             this.playersOfMyTeam = this.appService.getPlayersByTeam(this.appService.data.user.teamID);
+                            this.showPlayersTable = true;
                         });
                     } else {
                         this.router.navigateByUrl('plantillas');
@@ -124,10 +121,10 @@ export class UserComponent{
                 });
             }
         } else {
-            if(confirm('¿Rechazar?')) {
+            if (confirm('¿Rechazar?')) {
                 this.http.post('./test_CMDataRequesting.php', {type: 'recOfe', id: offer.id}).subscribe( (response) => {
                     alert(response.json().message);
-                    if(response.json().success) {
+                    if (response.json().success) {
                         this.appService.getSigninsObservable().subscribe( (response) => {
                             this.appService.data.signins = response.json().signins;
                             this.setOffersOfMyTeam();
@@ -137,20 +134,21 @@ export class UserComponent{
             }
         }
     }
-    
+
     public getAdditionalPlayerInfo() {
         this.playersOfMyTeam.forEach( (value) => {
             value.newSalary = value.salary*10;
             value.salaryMode = false;
         });
-        if(!this.totalSalaries) { this.appService.getTotalSalariesByTeam(this.playersOfMyTeam); }
+        if (!this.totalSalaries) { this.totalSalaries = this.appService.getTotalSalariesByTeam(this.playersOfMyTeam); }
+        if (!this.totalNextSalaries) { this.totalNextSalaries = this.appService.getTotalEstimatedSalariesByTeam(this.playersOfMyTeam); }
         this.showPlayersTable = true;
     }
 
     public changePass() {
-        if(this.pass != this.pass2) {
+        if (this.pass != this.pass2) {
             alert('Las contraseñas no coinciden');
-        }else{
+        }else {
             this.http.post('./test_CMDataRequesting.php', {type: 'updUsu', teamID: this.appService.data.user.teamID, pass: this.pass, email: this.appService.data.user.email, id: this.appService.data.user.id, user: this.appService.data.user.user}).subscribe( (response) => {
                 alert('Contraseña cambiada');
               });
@@ -158,9 +156,9 @@ export class UserComponent{
     }
 
     public giveWildCard(player) {
-        if(confirm('¿Liberar a ' + this.appService.getPlayerById(player).name + '? Saldrá a subasta las próximas 36 horas')) {
+        if (confirm('¿Liberar a ' + this.appService.getPlayerById(player).name + '? Saldrá a subasta las próximas 36 horas')) {
             this.http.post('./test_CMDataRequesting.php', {type: 'nueSub', player: player, auctionType: this.appService.config.signinTypes.freeAuction, firstTeam: this.appService.getPlayerById(player).teamID, amount: this.appService.getAuctionInitialAmount({overage: parseInt(this.appService.getPlayerById(player).overage), amount: undefined}).amount, market: this.appService.data.constants.marketEdition}).subscribe( (response) => {
-                if(response.json().success) {
+                if (response.json().success) {
                     this.showPlayersTable = false;
                     this.playersOfMyTeam = this.appService.getPlayersByTeam(this.appService.data.user.teamID);
                     this.showPlayersTable = true;
@@ -169,11 +167,11 @@ export class UserComponent{
             });
         }
     }
-    
+
     public getType(type) {
-        switch(type) {
-            case 'G': return 'Compra';
-            case 'C': return 'Cesión';
+        switch (type) {
+            case this.appService.config.signinTypes.agreement: return 'Compra';
+            case this.appService.config.signinTypes.loanAgreement: return 'Cesión';
         }
     }
 

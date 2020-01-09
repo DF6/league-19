@@ -280,7 +280,7 @@
       $data['message'] = "El equipo recibió todas sus cláusulas";
     }
     if($data['success'] == true) {
-      $query="UPDATE test_players SET team_id=".$params->buyerTeam.", buyed_this_market=1 where id=".$params->player;
+      $query="UPDATE test_players SET team_id=".$params->buyerTeam.", salary=overage/100, buyed_this_market=1 where id=".$params->player;
       $resultado=mysqli_query($con, $query) or die("Error realizando cláusula");
       $query2="INSERT INTO test_signins (player,old_team,buyer_team,amount,signin_type,market,accepted) values (".$params->player.", " . $params->oldTeam . ", ".$params->buyerTeam.",".$params->amount.", 'F', ".$params->market.", true)";
       $resultado2=mysqli_query($con, $query2) or die("Error insertando fichaje");
@@ -356,8 +356,13 @@
       }
     }
     if($data['success'] == true) {
-      $query="UPDATE test_players SET buyed_this_market=1, team_id=".$params->newTeam." where id=".$params->player;
-      $resultado=mysqli_query($con, $query) or die("Error realizando fichaje");
+      if($params->signinType == "C") {
+        $query="UPDATE test_players SET buyed_this_market=1, team_id=".$params->newTeam." where id=".$params->player;
+        $resultado=mysqli_query($con, $query) or die("Error realizando fichaje");
+      } else {
+        $query="UPDATE test_players SET buyed_this_market=1, salary=overage/100, team_id=".$params->newTeam." where id=".$params->player;
+        $resultado=mysqli_query($con, $query) or die("Error realizando fichaje");
+      }
       $query2="UPDATE test_signins SET accepted=1 where id=". $params->id;
       $resultado2=mysqli_query($con, $query2) or die("Error actualizando fichaje");
       $query3="UPDATE test_teams SET budget=budget-" . $params->amount . " where id=". $params->newTeam;
@@ -408,7 +413,7 @@
       }
     }
     if($data['success'] == true) {
-      $query="UPDATE test_players SET buyed_this_market=1, team_id=".$params->newTeam." where id=".$params->player."";
+      $query="UPDATE test_players SET buyed_this_market=1, salary=overage/100, team_id=".$params->newTeam." where id=".$params->player."";
       $resultado=mysqli_query($con, $query) or die("Error transfiriendo cambio");
       $query2="INSERT INTO test_signins (player,old_team, buyer_team,amount,signin_type,market,accepted) values (".$params->player."," . $params->oldTeam . ", ".$params->newTeam.", 0, '" . $params->signinType . "', ".$params->market.", true)";
       $resultado2=mysqli_query($con, $query2) or die("Error insertando fichaje");
@@ -581,7 +586,7 @@
       }
     }
     $fecha_actual = strtotime(date("d-m-Y H:i:s", time()));
-    $fecha_dos_min_menos = strtotime(date("d-m-Y H:i:s", time()+120));
+    $fecha_dos_min_menos = strtotime(date("d-m-Y H:i:s", time()+3720));
     $fecha_cinco_min_tanteo = $fecha_limite+300;
     if($fecha_actual > $fecha_limite) {
       if($fecha_actual > $fecha_cinco_min_tanteo && $params->auctionType == 'A' && $params->newTeam == $params->firstTeam) {
@@ -601,7 +606,6 @@
         } else {
           $query="UPDATE test_signins SET buyer_team=". $params->newTeam .", amount=".$params->amount." where id=" . $params->id;
         }
-        $query="UPDATE test_signins SET buyer_team=". $params->newTeam .", amount=".$params->amount." where id=" . $params->id;
         $resultado=mysqli_query($con, $query) or die("Error incrementando puja");
       }
     }
@@ -960,7 +964,7 @@
         $accepted=$row['accepted'];
         $limitDate=$row['limit_date'];
         $fecha_limite = strtotime($row['limit_date']);
-        $fecha_actual = strtotime(date("d-m-Y H:i:s", time()));
+        $fecha_actual = strtotime(date("d-m-Y H:i:s", time()+3600));
         $fecha_cinco_min_tanteo = $fecha_limite+300;
         if($fecha_cinco_min_tanteo > $fecha_actual && $fecha_actual > $fecha_limite && $type == 'A') {
           $amplifiedState=2;

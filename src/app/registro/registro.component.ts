@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Http } from '@angular/http';
 import { Router } from '@angular/router';
+import { AppService } from 'app/app.service';
 
 @Component({
     selector: 'registro-cmp',
@@ -8,7 +9,7 @@ import { Router } from '@angular/router';
     templateUrl: 'registro.component.html'
 })
 
-export class RegistroComponent implements OnInit {
+export class RegistroComponent{
 
     public users;
     public user: String;
@@ -17,10 +18,8 @@ export class RegistroComponent implements OnInit {
     public email: String;
     public disable = false;
 
-    constructor(private http: Http, private router: Router) {}
-
-    ngOnInit() {
-        this.users = JSON.parse(sessionStorage.getItem('users')).users;
+    constructor(private http: Http, private router: Router, private appService: AppService) {
+        this.appService.getUsers();
     }
 
     public register() {
@@ -29,7 +28,7 @@ export class RegistroComponent implements OnInit {
             alert('Las contraseñas no coinciden');
             registering = false;
         }
-        this.users.forEach( (value, key) => {
+        this.appService.data.users.forEach( (value, key) => {
             if (value.user == this.user) {
                 alert('El usuario ya existe');
                 registering = false;
@@ -41,10 +40,13 @@ export class RegistroComponent implements OnInit {
         });
         if (registering) {
             this.http.post('./test_CMDataRequesting.php', {type: 'regUsu', user: this.user, pass: this.pass, email: this.email}).subscribe( (response) => {
-                const users = response.json() ? response.json().users : null;
-                sessionStorage.setItem('users', JSON.stringify({users: users}));
+                if (response.json().success) {
+                    this.appService.data.users = response.json().users;
+                    alert('¡Registrado!');
+                } else {
+                    alert('Error en el registro');
+                }
               });
-            alert('¡Registrado!');
             this.disable = true;
         }
     }

@@ -51,7 +51,11 @@
                                 <td *ngIf="row.state == 1 && row.amplifiedState == -1" colspan="2">00:00:00</td>
                                 <td *ngIf="row.state == 1 && row.amplifiedState == 2 && row.firstTeam != appService.data.user.teamID">EN TANTEO</td>
                                 <td *ngIf="row.state == 1 && row.amplifiedState == 2 && row.firstTeam == appService.data.user.teamID">¡¡CORRE!!</td>
-                                <td *ngIf="row.state == 0 || (row.state == 1 && row.amplifiedState == 2 && row.firstTeam == appService.data.user.teamID)">
+                                <td *ngIf="row.type != appService.config.signinTypes.freeAuction && row.state == 0 || (row.state == 1 && row.amplifiedState == 2 && row.firstTeam == appService.data.user.teamID)">
+                                    <input type="number" [(ngModel)]="amountsRaised[$index]" min="{{row.amount}}" max="100" step="{{appService.config.auctionsRaisingStep}}">
+                                    <a style="cursor:pointer;" (click)="raiseAuction(row.id, $index)">Pujar</a>
+                                </td>
+                                <td *ngIf="row.type == appService.config.signinTypes.freeAuction && row.state == 0 && row.firstTeam != appService.data.user.teamID">
                                     <input type="number" [(ngModel)]="amountsRaised[$index]" min="{{row.amount}}" max="100" step="{{appService.config.auctionsRaisingStep}}">
                                     <a style="cursor:pointer;" (click)="raiseAuction(row.id, $index)">Pujar</a>
                                 </td>
