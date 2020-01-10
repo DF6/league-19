@@ -66,21 +66,28 @@
               $consult4 = "UPDATE test_teams SET auctions_available=auctions_available-1, budget=budget-" . $amount . " where id=" . $equipo;
               $result4 = mysqli_query($link, $consult4) or die("Error asignando presupuesto");
             }
-
-            insertLog($link, $equipo, $jugador, $amount, $id);
+            insertLog($link, $tipo, $equipo, $jugador, $amount, $id);
         }else {
             $consult6 = "DELETE from test_signins where id=". $id;
             $result6 = mysqli_query($link, $consult6) or die("Error borrando subasta");
             $consult7 = "DELETE from test_players where id=". $jugador;
             $result7 = mysqli_query($link, $consult7) or die("Error borrando jugador");
+            insertDeleteLog($link, $tipo, $equipo, $jugador, $id);
         }
       }
     }
 
-    function insertLog($con, $equipo, $jugador, $amount, $id)
+    function insertLog($con, $tipo, $equipo, $jugador, $amount, $id)
     {
       $data = array();
       $query="INSERT INTO test_log (user, type, log_information) VALUES (0, 'CA', 'Subasta ".$tipo." cerrada por " . $jugador . ": vendido al " . $equipo . " por " . $amount . "M€ (ID " . $id . ")";
+      $resultado=mysqli_query($con, $query) or die("Error insertando log");
+    }
+    
+    function insertDeleteLog($con, $tipo, $equipo, $jugador, $id)
+    {
+      $data = array();
+      $query="INSERT INTO log (user, type, log_information) VALUES (0, 'SB', 'Subasta ".$tipo." borrada por " . $jugador . ": ganada por " . $equipo . " (ID " . $id . ")";
       $resultado=mysqli_query($con, $query) or die("Error insertando log");
     }
 

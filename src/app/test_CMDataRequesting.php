@@ -560,9 +560,17 @@
         $data['newID']=mysqli_insert_id($con);
       }  
     }else if($params->auctionType == 'L'){
-      $query2="INSERT INTO test_signins (player, first_team, buyer_team,amount,signin_type,market,accepted,limit_date) values (".$params->player.",".$params->firstTeam.", 0, ".$params->amount.", 'L', ".$params->market.", false, DATE_ADD(NOW(), INTERVAL 37 HOUR))";
-      $resultado2=mysqli_query($con, $query2) or die("Error insertando subasta");
-      $data['newID']=mysqli_insert_id($con);
+      $consult28 = "SELECT * from test_signins where signin_type='L' and market=" . $params->market . " and player=" . $params->player;
+      $consult28Result = mysqli_query($con, $consult28) or die("Error consultando subastas");
+      while($row28 = mysqli_fetch_array($consult28Result)) {
+        $data['success'] = false;
+        $data['message'] = "Ya se liberó";
+      }
+      if($data['success'] == true) {
+        $query2="INSERT INTO test_signins (player, first_team, buyer_team,amount,signin_type,market,accepted,limit_date) values (".$params->player.",".$params->firstTeam.", 0, ".$params->amount.", 'L', ".$params->market.", false, DATE_ADD(NOW(), INTERVAL 37 HOUR))";
+        $resultado2=mysqli_query($con, $query2) or die("Error insertando subasta");
+        $data['newID']=mysqli_insert_id($con);
+      }
     }
     
     echo json_encode($data);
