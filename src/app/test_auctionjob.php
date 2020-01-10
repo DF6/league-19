@@ -46,7 +46,7 @@
         if($resolver == true) {
             $consult2 = "UPDATE test_signins SET accepted=1 where id=". $id;
             $result2 = mysqli_query($link, $consult2) or die("Error cerrando subasta");
-            $consult3 = "UPDATE test_players SET team_id=" . $equipo . ", salary=overage/100, buyed_this_market=1 where id=" . $jugador;
+            $consult3 = "UPDATE test_players SET team_id=" . $equipo . ", salary=overage/100, emblem=0, buyed_this_market=1 where id=" . $jugador;
             $result3 = mysqli_query($link, $consult3) or die("Error asignando jugador");
 
             if(strcmp($tipo, "L") == 0 && $equipo == 0) {

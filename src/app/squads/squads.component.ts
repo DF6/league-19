@@ -19,7 +19,11 @@ export class SquadsComponent{
         this.appService.getSigninsObservable().subscribe( (response2) => {
             this.appService.data.signins = response2.json().signins;
             this.appService.getPlayersObservable().subscribe( (response) => {
-                this.appService.data.players = response.json().players.map( (player) => {
+                this.appService.data.players = response.json().players;
+                this.appService.data.players.forEach( (value) => {
+                    value.name = this.appService.convertNToÑ(value.name);
+                });
+                this.appService.data.players = this.appService.data.players.map( (player) => {
                     player.filling = false;
                     return player;
                 });
@@ -42,6 +46,7 @@ export class SquadsComponent{
     
     public forceSignin(player) {
         this.http.post('./test_CMDataRequesting.php', {type: 'claJug', player: player.id, oldTeam: player.teamID, buyerTeam: this.appService.data.user.teamID, amount: parseInt(player.overage), market: this.appService.data.constants.marketEdition}).subscribe( (response) => {
+            this.appService.insertLog({logType: this.appService.config.logTypes.forceSignin, logInfo: 'Clausulazo: compra a ' + player.name + ' por ' + player.overage + 'M€ (ID ' + player.id + ')'});
             alert(response.json().message);
             if(response.json().success) {
                 this.router.navigateByUrl('usuario');
