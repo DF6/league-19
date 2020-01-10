@@ -67,6 +67,9 @@ export class AuctionsComponent implements OnInit{
             this.amountsRaised.push(auction.amount);
             auction.time = this.getFormattedTime(auction);
             return auction;
+        })
+        .sort( (a, b) => {
+            return parseInt(b.overage) - parseInt(a.overage);
         });
         this.tableData1.dataRows = dataRows;
     }
