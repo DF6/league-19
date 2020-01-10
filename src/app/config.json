@@ -209,6 +209,7 @@
         "auctions": [ "name", "position", "overage", "team", "amount", "state", "time", "raise"],
         "leagueMatches": [ "round", "local", "result", "away", "summary"],
         "leagueTable": [ "position", "team", "round", "won", "draw", "lost", "nonPlayed", "goalsFor", "goalsAgainst", "goalsDifference", "points"],
+        "marketResume": [ "name", "position", "overage", "type", "amount", "oldTeam", "newTeam"],
         "offers": [ "type", "player", "team", "amount", "players", "actions"],
         "pendingMatches": [ "tournament", "round", "local", "", "away", "fill"],
         "suggestions": [ "user", "suggestion"],

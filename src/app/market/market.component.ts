@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { AngularWaitBarrier } from 'blocking-proxy/built/lib/angular_wait_barrier';
 import { constants } from 'os';
+import { AppService } from 'app/app.service';
 
 declare interface TableData {
     headerRow: string[];
@@ -17,70 +18,55 @@ declare var $:any;
 })
 
 export class MarketComponent implements OnInit{
-    public tableData1: TableData;
-    public players;
-    public signins;
-    public user;
-    public teams;
-    public constants;
+    public marketTable: TableData;
     public edition;
 
-    constructor(private http: Http){}
-
-    ngOnInit() {
-        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
-            this.constants = response.json().constants[0];
-            this.edition = this.constants.marketEdition;
-            this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
-            this.setTableConfig();
-            this.setTable();
-        });
+    constructor(private http: Http, private appService: AppService){
+        this.appService.getTeams();
+        this.appService.getConstants();
     }
 
-    public setTable() {
-        this.tableData1.dataRows = [];
-        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'S'}).subscribe( (response) => {
-            this.signins = response.json().signins;
-            this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
-                this.players = response.json().players;
-                let marketResume = [];
-                this.signins.forEach( (value) => {
-                    if (value.market == this.constants.marketEdition && value.accepted == '1') {
-                        let player = this.getPlayerById(value.player);
-                        let type = '';
-                        let oldTeam = '-';
-                        switch(value.signinType) {
-                            case 'A': type = 'Subasta'; oldTeam = 'Subasta'; break;
-                            case 'G': type = 'Acuerdo'; oldTeam = this.getTeamById(value.oldTeam).name; break;
-                            case 'C': type = 'Cesión'; oldTeam = this.getTeamById(value.oldTeam).name; break;
-                            case 'F': type = 'Cláusula'; oldTeam = this.getTeamById(value.oldTeam).name; break;
-                            case 'W': type = 'Libre'; oldTeam = 'Libre'; break;
-                            case 'D': type = 'Descarte'; oldTeam = this.getTeamById(value.oldTeam).name; break;
-                        }
-                        let auction = { id: value.id, 
-                            name: player.name,
-                            position: player.position,
-                            overage: player.overage,
-                            type: type,
-                            amount: value.amount + 'M€',
-                            oldTeam: oldTeam,
-                            newTeam: this.getTeamById(value.buyerTeam).name};
-                        marketResume.push(auction);
-                    }
+    ngOnInit() {
+        this.appService.getSigninsObservable().subscribe( (response) => {
+            this.appService.data.signins = response.json().signins;
+            this.appService.getPlayersObservable().subscribe( (response2) => {
+                this.appService.data.players = response2.json().players;
+                this.appService.data.players.forEach( (value) => {
+                    value.name = this.appService.convertNToÑ(value.name);
                 });
-                this.tableData1.dataRows = marketResume;
+                this.setTable();
+                this.edition = this.appService.data.constants.marketEdition;
             });
         });
     }
 
-    public getPlayerById(player) {
-        let playerToReturn = null;
-        this.players.forEach( (value) => {
-            if (value.id == player) {
-                playerToReturn = value;
-            }
+    public setTable() {
+        if(this.marketTable) { this.marketTable.dataRows = []; }
+        const marketRows = this.appService.data.signins.filter( (filteredSignin) => {
+            return filteredSignin.market == this.appService.data.constants.marketEdition && filteredSignin.accepted == '1';
+        })
+        .map( (value) => {
+                let player = this.appService.getPlayerById(value.player);
+                let type = '';
+                let oldTeam = '-';
+                switch(value.signinType) {
+                    case this.appService.config.signinTypes.auction: type = 'Subasta nueva'; oldTeam = 'NUEVO'; break;
+                    case this.appService.config.signinTypes.agreement: type = 'Acuerdo'; oldTeam = this.getTeamById(value.oldTeam).name; break;
+                    case this.appService.config.signinTypes.loanAgreement: type = 'Cesión'; oldTeam = this.getTeamById(value.oldTeam).name; break;
+                    case this.appService.config.signinTypes.forcedSign: type = 'Cláusula'; oldTeam = this.getTeamById(value.oldTeam).name; break;
+                    case this.appService.config.signinTypes.freeAuction: type = 'Subasta de jugador libre'; oldTeam = this.getTeamById(value.firstTeam).name; break;
+                }
+                let auction = { id: value.id, 
+                    name: player.name,
+                    position: player.position,
+                    overage: player.overage,
+                    type: type,
+                    amount: value.amount + 'M€',
+                    oldTeam: oldTeam,
+                    newTeam: this.getTeamById(value.buyerTeam).name};
+                return auction;
         });
-        return playerToReturn;
+        this.marketTable = this.appService.getTableConfig(this.appService.config.tableHeaders.marketResume, marketRows);
     }
 
     public getTeamById(team) {
@@ -95,19 +81,9 @@ export class MarketComponent implements OnInit{
                 name: 'N/D'
             }
         } else {
-            this.teams.forEach( (value) => {
-                if (value.id == team) {
-                    teamToReturn = value;
-                }
-            });
+            teamToReturn = this.appService.getTeamById(team);
         }
         return teamToReturn;
     }
 
-    private setTableConfig() {
-        this.tableData1 = {
-            headerRow: [ 'name', 'position', 'overage', 'type', 'amount', 'oldTeam', 'newTeam'],
-            dataRows: []
-        };
-    }
 }
