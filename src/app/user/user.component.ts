@@ -91,7 +91,7 @@ export class UserComponent{
         this.http.post('./test_CMDataRequesting.php', {type: 'hacEmb', player: player}).subscribe( (response) => {
             alert(response.json().message);
             if(response.json().success) {
-                this.appService.insertLog({logType: this.appService.config.logTypes.setEmblem, logInformation: 'Nuevo emblema: ' + player});
+                this.appService.insertLog({logType: this.appService.config.logTypes.setEmblem, logInfo: 'Nuevo emblema: ' + this.appService.getPlayerById(player).name});
                 this.showPlayersTable = false;
                 this.playersOfMyTeam = this.appService.getPlayersByTeam(this.appService.data.user.teamID);
                 this.showPlayersTable = true;
@@ -135,7 +135,7 @@ export class UserComponent{
                         });
                         this.appService.getSigninsObservable().subscribe( (response) => {
                             this.appService.data.signins = response.json().signins;
-                            this.appService.insertLog({logType: this.appService.config.logTypes.acceptOffer, logInformation: 'Oferta aceptada: ' + offer.id});
+                            this.appService.insertLog({logType: this.appService.config.logTypes.acceptOffer, logInfo: 'Oferta aceptada: ' + offer.id});
                             this.showPlayersTable = false;
                             this.setOffersOfMyTeam();
                             this.playersOfMyTeam = this.appService.getPlayersByTeam(this.appService.data.user.teamID);
@@ -153,7 +153,7 @@ export class UserComponent{
                     if (response.json().success) {
                         this.appService.getSigninsObservable().subscribe( (response) => {
                             this.appService.data.signins = response.json().signins;
-                            this.appService.insertLog({logType: this.appService.config.logTypes.rejectOffer, logInformation: 'Oferta rechazada: ' + offer.id});
+                            this.appService.insertLog({logType: this.appService.config.logTypes.rejectOffer, logInfo: 'Oferta rechazada: ' + offer.id});
                             this.setOffersOfMyTeam();
                         });
                     }
@@ -177,7 +177,7 @@ export class UserComponent{
             alert('Las contraseñas no coinciden');
         }else {
             this.http.post('./test_CMDataRequesting.php', {type: 'updUsu', teamID: this.appService.data.user.teamID, pass: this.pass, email: this.appService.data.user.email, id: this.appService.data.user.id, user: this.appService.data.user.user}).subscribe( (response) => {
-                this.appService.insertLog({logType: this.appService.config.logTypes.changePass, logInformation: 'Cambio de contraseña'});
+                this.appService.insertLog({logType: this.appService.config.logTypes.changePass, logInfo: 'Cambio de contraseña'});
                 alert('Contraseña cambiada');
               });
         }
@@ -187,7 +187,7 @@ export class UserComponent{
         if (confirm('¿Liberar a ' + this.appService.getPlayerById(player).name + '? Saldrá a subasta las próximas 36 horas')) {
             this.http.post('./test_CMDataRequesting.php', {type: 'nueSub', player: player, auctionType: this.appService.config.signinTypes.freeAuction, firstTeam: this.appService.getPlayerById(player).teamID, amount: this.appService.getAuctionInitialAmount({overage: parseInt(this.appService.getPlayerById(player).overage), amount: undefined}).amount, market: this.appService.data.constants.marketEdition}).subscribe( (response) => {
                 if (response.json().success) {
-                    this.appService.insertLog({logType: this.appService.config.logTypes.freePlayer, logInformation: 'Jugador liberado: ' + this.appService.getPlayerById(player).name});
+                    this.appService.insertLog({logType: this.appService.config.logTypes.freePlayer, logInfo: 'Jugador liberado: ' + this.appService.getPlayerById(player).name});
                     this.showPlayersTable = false;
                     this.playersOfMyTeam = this.appService.getPlayersByTeam(this.appService.data.user.teamID);
                     this.showPlayersTable = true;
@@ -207,7 +207,7 @@ export class UserComponent{
     public changeHolidaysMode(result) {
         this.http.post('./test_CMDataRequesting.php', {type: 'setHol', user: this.appService.data.user.id, holidaysMode: result, holidaysMessage: result ? this.holidaysMessage : '' }).subscribe( (response) => {
             if(response.json().success) {
-                this.appService.insertLog({logType: this.appService.config.logTypes.setHolidaysMode, logInformation: 'Modo vacaciones: ' + result});
+                this.appService.insertLog({logType: this.appService.config.logTypes.setHolidaysMode, logInfo: 'Modo vacaciones: ' + result});
                 result ? alert('Modo vacaciones activado') : alert('Modo vacaciones desactivado');
                 this.appService.data.user.holidaysMode = result;
             }
