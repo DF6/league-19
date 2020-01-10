@@ -134,6 +134,9 @@
        case "insTou":
           insertTournament($link, $params);
             break;
+       case "borEmb":
+          deleteEmblem($link, $params);
+            break;
        case "hacEmb":
           makeEmblem($link, $params);
             break;
@@ -280,7 +283,7 @@
       $data['message'] = "El equipo recibió todas sus cláusulas";
     }
     if($data['success'] == true) {
-      $query="UPDATE players SET team_id=".$params->buyerTeam.", salary=overage/100, buyed_this_market=1 where id=".$params->player;
+      $query="UPDATE players SET team_id=".$params->buyerTeam.", salary=overage/100, emblem=0, buyed_this_market=1 where id=".$params->player;
       $resultado=mysqli_query($con, $query) or die("Error realizando cláusula");
       $query2="INSERT INTO signins (player,old_team,buyer_team,amount,signin_type,market,accepted) values (".$params->player.", " . $params->oldTeam . ", ".$params->buyerTeam.",".$params->amount.", 'F', ".$params->market.", true)";
       $resultado2=mysqli_query($con, $query2) or die("Error insertando fichaje");
@@ -357,10 +360,10 @@
     }
     if($data['success'] == true) {
       if($params->signinType == "C") {
-        $query="UPDATE players SET buyed_this_market=1, team_id=".$params->newTeam." where id=".$params->player;
+        $query="UPDATE players SET buyed_this_market=1, emblem=0, team_id=".$params->newTeam." where id=".$params->player;
         $resultado=mysqli_query($con, $query) or die("Error realizando fichaje");
       } else {
-        $query="UPDATE players SET buyed_this_market=1, salary=overage/100, team_id=".$params->newTeam." where id=".$params->player;
+        $query="UPDATE players SET buyed_this_market=1, emblem=0, salary=overage/100, team_id=".$params->newTeam." where id=".$params->player;
         $resultado=mysqli_query($con, $query) or die("Error realizando fichaje");
       }
       $query2="UPDATE signins SET accepted=1 where id=". $params->id;
@@ -413,12 +416,12 @@
       }
     }
     if($data['success'] == true) {
-      $query="UPDATE players SET buyed_this_market=1, salary=overage/100, team_id=".$params->newTeam." where id=".$params->player."";
+      $query="UPDATE players SET emblem=0, buyed_this_market=1, salary=overage/100, team_id=".$params->newTeam." where id=".$params->player."";
       $resultado=mysqli_query($con, $query) or die("Error transfiriendo cambio");
       $query2="INSERT INTO signins (player,old_team, buyer_team,amount,signin_type,market,accepted) values (".$params->player."," . $params->oldTeam . ", ".$params->newTeam.", 0, '" . $params->signinType . "', ".$params->market.", true)";
       $resultado2=mysqli_query($con, $query2) or die("Error insertando fichaje");
       if($params->signinType == "C") {
-        $query5="UPDATE players SET cedido=".$params->oldTeam." where id=".$params->player;
+        $query5="UPDATE players SET emblem=0, cedido=".$params->oldTeam." where id=".$params->player;
         $resultado5=mysqli_query($con, $query5) or die("Error realizando fichaje");
       }
     }
@@ -429,12 +432,21 @@
   function makeEmblem($con, $params)
   {
     $data = array();
-    $query="UPDATE players SET emblem=0 where team_id=".$params->team;
-    $resultado=mysqli_query($con, $query) or die("Error quitando emblema");
     $query2="UPDATE players SET emblem=1 where id=".$params->player;
     $resultado2=mysqli_query($con, $query2) or die("Error poniendo emblema");
     $data['success'] = true;
     $data['message'] = "Nuevo emblema";
+    echo json_encode($data);
+    exit;
+  }
+
+  function deleteEmblem($con, $params)
+  {
+    $data = array();
+    $query="UPDATE players SET emblem=0 where id=".$params->player;
+    $resultado=mysqli_query($con, $query) or die("Error quitando emblema");
+    $data['success'] = true;
+    $data['message'] = "Borrado emblema";
     echo json_encode($data);
     exit;
   }

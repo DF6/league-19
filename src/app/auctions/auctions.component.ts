@@ -31,6 +31,9 @@ export class AuctionsComponent implements OnInit{
     ngOnInit() {
         this.appService.getPlayersObservable().subscribe( (response2) => {
             this.appService.data.players = response2.json().players;
+            this.appService.data.players.forEach( (value) => {
+                value.name = this.appService.convertNToÑ(value.name);
+            });
             this.appService.getSigninsObservable().subscribe( (response) => {
                 this.appService.setSignins(response.json().signins);
                 this.setTable();
@@ -100,7 +103,10 @@ export class AuctionsComponent implements OnInit{
             this.http.post('./CMDataRequesting.php', {type: 'nueSub', auctionType: this.appService.config.signinTypes.auction, playerName: this.appService.removeAccents(this.newPlayer.name), position: this.newPlayer.position.toUpperCase(), amount: this.newPlayer.amount, overage: this.newPlayer.overage, firstTeam: this.appService.data.user.teamID, buyerTeam: this.appService.data.user.teamID, market: this.appService.data.constants.marketEdition, limitDate: formattedDate}).subscribe( (response) => {
                 if(response.json().success) {
                     this.appService.getPlayersObservable().subscribe( (response2) => {
-                        this.appService.setPlayers(response2.json().players);
+                        this.appService.data.players = response2.json().players;
+                        this.appService.data.players.forEach( (value) => {
+                            value.name = this.appService.convertNToÑ(value.name);
+                        });
                         this.setTable();
                         this.new = false;
                         this.appService.insertLog({logType: this.appService.config.logTypes.playerAddedInAuction, logInfo: 'Nuevo jugador en subasta: ' + this.appService.getPlayerById(response.json().newID).name + ' por ' + this.newPlayer.amount + 'M€ (ID ' + response.json().newID + ')'});

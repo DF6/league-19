@@ -1,11 +1,11 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-12">
+        <div class="col-md-12" *ngIf="appService.data.teams && appService.data.players">
             <div class="card" style="padding: 16px;" *ngIf="offer">
                 <h1>Oferta por {{player.name}}</h1>
                 <select [(ngModel)]="signType">
-                    <option value="G">Compra</option>
-                    <option value="C">Cesión</option>
+                    <option [ngValue]="appService.config.signinTypes.agreement">Compra</option>
+                    <option [ngValue]="appService.config.signinTypes.loanAgreement">Cesión</option>
                 </select>
                 <br/><br/>
                 <span>Importe</span> <input type="number" step="1" min="0" [(ngModel)]="offer.amount">
@@ -14,7 +14,7 @@
                     <span style="display:block;">Jugadores</span>
                     <div>
                         <ul class="heroes">
-                            <li style="list-style: none;" *ngFor="let pcsAdded of offer.players">{{getPlayerById(pcsAdded.player).name}} <i class="ti-close" (click)="removePCS($index)"></i></li>
+                            <li style="list-style: none;" *ngFor="let pcsAdded of offer.players">{{appService.getPlayerById(pcsAdded.player).name}} <i class="ti-close" (click)="removePCS($index)"></i></li>
                         </ul>
                         <select *ngIf="playersOfMyTeam" [(ngModel)]="pcsToAdd">
                             <option *ngFor="let teamPlayer of playersOfMyTeam" 
