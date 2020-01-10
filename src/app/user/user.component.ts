@@ -39,7 +39,10 @@ export class UserComponent{
         this.appService.getSigninsObservable().subscribe( (response2) => {
             this.appService.data.signins = response2.json().signins;
             this.appService.getPlayersObservable().subscribe( (response) => {
-                this.appService.setPlayers(response.json().players);
+                this.appService.data.players = response.json().players;
+                this.appService.data.players.forEach( (value) => {
+                    value.name = this.appService.convertNToÑ(value.name);
+                });
                 this.showMyPlayerTable = true;
                 this.playersOfMyTeam = this.appService.getPlayersByTeam(this.appService.data.user.teamID);
                 this.getAdditionalPlayerInfo();
@@ -64,9 +67,31 @@ export class UserComponent{
     }
 
     public setEmblem(player) {
-        this.http.post('./CMDataRequesting.php', {type: 'hacEmb', player: player, team: this.appService.data.user.teamID}).subscribe( (response) => {
+        let fieldMarkers = {
+            goalkeeper: [],
+            defense: [],
+            midfield: [],
+            striker: []
+        }
+        this.playersOfMyTeam.forEach( (myPlayer) => {
+            if(this.appService.config.fieldLines.goalkeeper.find( (position) => { return myPlayer.position == position; }) != undefined && myPlayer.emblem == '1') { fieldMarkers.goalkeeper.push(myPlayer.id); }
+            else if(this.appService.config.fieldLines.defense.find( (position) => { return myPlayer.position == position; }) != undefined && myPlayer.emblem == '1') { fieldMarkers.defense.push(myPlayer.id); }
+            else if(this.appService.config.fieldLines.midfield.find( (position) => { return myPlayer.position == position; }) != undefined && myPlayer.emblem == '1') { fieldMarkers.midfield.push(myPlayer.id); }
+            else if(this.appService.config.fieldLines.striker.find( (position) => { return myPlayer.position == position; }) != undefined && myPlayer.emblem == '1') { fieldMarkers.striker.push(myPlayer.id); }
+        });
+        if(this.appService.config.fieldLines.goalkeeper.find( (position) => { return this.appService.getPlayerById(player).position == position; }) != undefined && fieldMarkers.goalkeeper.length > 0) {
+            this.http.post('./CMDataRequesting.php', {type: 'borEmb', player: fieldMarkers.goalkeeper[0]}).subscribe( () => {});
+        } else if (this.appService.config.fieldLines.defense.find( (position) => { return this.appService.getPlayerById(player).position == position; }) != undefined && fieldMarkers.defense.length > 0) {
+            this.http.post('./CMDataRequesting.php', {type: 'borEmb', player: fieldMarkers.defense[0]}).subscribe( () => {});
+        } else if (this.appService.config.fieldLines.midfield.find( (position) => { return this.appService.getPlayerById(player).position == position; }) != undefined && fieldMarkers.midfield.length > 0) {
+            this.http.post('./CMDataRequesting.php', {type: 'borEmb', player: fieldMarkers.midfield[0]}).subscribe( () => {});
+        } else if (this.appService.config.fieldLines.striker.find( (position) => { return this.appService.getPlayerById(player).position == position; }) != undefined && fieldMarkers.striker.length > 0) {
+            this.http.post('./CMDataRequesting.php', {type: 'borEmb', player: fieldMarkers.striker[0]}).subscribe( () => {});
+        }
+        this.http.post('./CMDataRequesting.php', {type: 'hacEmb', player: player}).subscribe( (response) => {
             alert(response.json().message);
             if(response.json().success) {
+                this.appService.insertLog({logType: this.appService.config.logTypes.setEmblem, logInformation: 'Nuevo emblema: ' + player});
                 this.showPlayersTable = false;
                 this.playersOfMyTeam = this.appService.getPlayersByTeam(this.appService.data.user.teamID);
                 this.showPlayersTable = true;
@@ -110,6 +135,7 @@ export class UserComponent{
                         });
                         this.appService.getSigninsObservable().subscribe( (response) => {
                             this.appService.data.signins = response.json().signins;
+                            this.appService.insertLog({logType: this.appService.config.logTypes.acceptOffer, logInformation: 'Oferta aceptada: ' + offer.id});
                             this.showPlayersTable = false;
                             this.setOffersOfMyTeam();
                             this.playersOfMyTeam = this.appService.getPlayersByTeam(this.appService.data.user.teamID);
@@ -127,6 +153,7 @@ export class UserComponent{
                     if (response.json().success) {
                         this.appService.getSigninsObservable().subscribe( (response) => {
                             this.appService.data.signins = response.json().signins;
+                            this.appService.insertLog({logType: this.appService.config.logTypes.rejectOffer, logInformation: 'Oferta rechazada: ' + offer.id});
                             this.setOffersOfMyTeam();
                         });
                     }
@@ -150,6 +177,7 @@ export class UserComponent{
             alert('Las contraseñas no coinciden');
         }else {
             this.http.post('./CMDataRequesting.php', {type: 'updUsu', teamID: this.appService.data.user.teamID, pass: this.pass, email: this.appService.data.user.email, id: this.appService.data.user.id, user: this.appService.data.user.user}).subscribe( (response) => {
+                this.appService.insertLog({logType: this.appService.config.logTypes.changePass, logInformation: 'Cambio de contraseña'});
                 alert('Contraseña cambiada');
               });
         }
@@ -159,6 +187,7 @@ export class UserComponent{
         if (confirm('¿Liberar a ' + this.appService.getPlayerById(player).name + '? Saldrá a subasta las próximas 36 horas')) {
             this.http.post('./CMDataRequesting.php', {type: 'nueSub', player: player, auctionType: this.appService.config.signinTypes.freeAuction, firstTeam: this.appService.getPlayerById(player).teamID, amount: this.appService.getAuctionInitialAmount({overage: parseInt(this.appService.getPlayerById(player).overage), amount: undefined}).amount, market: this.appService.data.constants.marketEdition}).subscribe( (response) => {
                 if (response.json().success) {
+                    this.appService.insertLog({logType: this.appService.config.logTypes.freePlayer, logInformation: 'Jugador liberado: ' + this.appService.getPlayerById(player).name});
                     this.showPlayersTable = false;
                     this.playersOfMyTeam = this.appService.getPlayersByTeam(this.appService.data.user.teamID);
                     this.showPlayersTable = true;
@@ -178,6 +207,7 @@ export class UserComponent{
     public changeHolidaysMode(result) {
         this.http.post('./CMDataRequesting.php', {type: 'setHol', user: this.appService.data.user.id, holidaysMode: result, holidaysMessage: result ? this.holidaysMessage : '' }).subscribe( (response) => {
             if(response.json().success) {
+                this.appService.insertLog({logType: this.appService.config.logTypes.setHolidaysMode, logInformation: 'Modo vacaciones: ' + result});
                 result ? alert('Modo vacaciones activado') : alert('Modo vacaciones desactivado');
                 this.appService.data.user.holidaysMode = result;
             }
