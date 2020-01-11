@@ -77,18 +77,14 @@
       }
     }
 
-    function insertLog($con, $tipo, $equipo, $jugador, $amount, $id)
-    {
-      $data = array();
-      $query="INSERT INTO test_log (user, type, log_information) VALUES (0, 'CA', 'Subasta ".$tipo." cerrada por " . $jugador . ": vendido al " . $equipo . " por " . $amount . "M€ (ID " . $id . ")";
+    function insertLog($con, $tipo, $equipo, $jugador, $amount, $id) {
+      $query="INSERT INTO test_log (user, type, log_information) VALUES (0, 'CA', 'Subasta ".$tipo." cerrada por " . $jugador . ": vendido al " . $equipo . " por " . $amount . "M€ ID " . $id . "')";
       $resultado=mysqli_query($con, $query) or die("Error insertando log");
     }
     
-    function insertDeleteLog($con, $tipo, $equipo, $jugador, $id)
-    {
-      $data = array();
-      $query="INSERT INTO log (user, type, log_information) VALUES (0, 'SB', 'Subasta ".$tipo." borrada por " . $jugador . ": ganada por " . $equipo . " (ID " . $id . ")";
-      $resultado=mysqli_query($con, $query) or die("Error insertando log");
+    function insertDeleteLog($con, $tipo, $equipo, $jugador, $id) {
+      $query="INSERT INTO test_log (user, type, log_information) VALUES (0, 'SB', 'Subasta ".$tipo." borrada por " . $jugador . ": ganada por " . $equipo . " ID " . $id . "')";
+      $resultado=mysqli_query($con, $query) or die("Error insertando log2");
     }
 
 ?>
