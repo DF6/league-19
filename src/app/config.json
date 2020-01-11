@@ -1,4 +1,12 @@
 {
+    "actionTypes": {
+        "assist": "A",
+        "goal": "G",
+        "injury": "I",
+        "mvp": "M",
+        "redCard": "R",
+        "yellowCard": "Y",
+    },
     "auctionDefaultOverage": 40,
     "auctionInitialAmounts": [
         {
@@ -212,6 +220,14 @@
         "marketResume": [ "name", "position", "overage", "type", "amount", "oldTeam", "newTeam"],
         "offers": [ "type", "player", "team", "amount", "players", "actions"],
         "pendingMatches": [ "tournament", "round", "local", "", "away", "fill"],
+        "statistics": {
+            "scorers": [ "position", "name", "goals"],
+            "assistants": [ "position", "name", "assistances"],
+            "yellowCards": [ "position", "name", "yellowCards"],
+            "redCards": [ "position", "name", "redCards"],
+            "injuries": [ "position", "name", "injuries"],
+            "mvp": [ "position", "name", "mvps"]
+        },
         "suggestions": [ "user", "suggestion"],
         "userInfo": [ "name", "team", "nation", "psnID", "twitch"]
     },

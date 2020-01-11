@@ -25,6 +25,7 @@ const PHPFILENAME = './test_CMDataRequesting.php';
 export class AppService {
 
     public data = {
+        actions: undefined,
         adminData: {
             suggestions: undefined
         },
@@ -82,6 +83,16 @@ export class AppService {
             ret.push(value.matches);
         });
         return ret;
+    }
+
+    public getActions() {
+        this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'A'}).subscribe( (response) => {
+            this.data.actions = response.json() ? response.json().actions : [];
+        });
+    }
+
+    public getActionsObservable(): Observable<any> {
+        return this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'A'});
     }
 
     public getActiveUsers() {
