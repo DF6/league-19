@@ -29,7 +29,7 @@ export class RulesComponent{
     }
 
     public sendSuggestion() {
-        this.appService.sendSuggestion(this.suggestion);
+        this.appService.sendSuggestion(this.appService.removeAccents(this.suggestion));
         alert('Sugerencia enviada');
     }
 }

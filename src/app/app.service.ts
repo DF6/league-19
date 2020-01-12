@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 export interface TableData {
     headerRow: string[];
     dataRows: string[][];
+    collapsed?: Boolean;
 }
 
 export interface KeyConfig {
@@ -25,6 +26,7 @@ const PHPFILENAME = './CMDataRequesting.php';
 export class AppService {
 
     public data = {
+        actions: undefined,
         adminData: {
             suggestions: undefined
         },
@@ -82,6 +84,16 @@ export class AppService {
             ret.push(value.matches);
         });
         return ret;
+    }
+
+    public getActions() {
+        this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'A'}).subscribe( (response) => {
+            this.data.actions = response.json() ? response.json().actions : [];
+        });
+    }
+
+    public getActionsObservable(): Observable<any> {
+        return this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'A'});
     }
 
     public getActiveUsers() {
@@ -207,11 +219,12 @@ export class AppService {
         switch (this.getTournamentById(match.tournament).name) {
             case this.config.tournamentGeneralInfo.generalCup.name:
                 switch(parseInt(match.round)) {
-                    case 1: return this.config.roundNames.outOf16;
-                    case 2: return this.config.roundNames.quarterFinals;
-                    case 3: return this.config.roundNames.semifinals;
-                    case 4: return this.config.roundNames.thirdAndFourthPlace;
-                    case 5: return this.config.roundNames.final;
+                    case 1: return this.config.roundNames.previousRound;
+                    case 2: return this.config.roundNames.outOf16;
+                    case 3: return this.config.roundNames.quarterFinals;
+                    case 4: return this.config.roundNames.semifinals;
+                    case 5: return this.config.roundNames.thirdAndFourthPlace;
+                    case 6: return this.config.roundNames.final;
                 }
                 break;
             case this.config.tournamentGeneralInfo.championsLeague.name:
@@ -268,8 +281,13 @@ export class AppService {
         });
     }
 
-    public getTableConfig(tableFields, rows?) {
-        return {
+    public getTableConfig(tableFields, rows?, extraField?) {
+        return extraField ? {
+            headerRow: tableFields,
+            dataRows: rows ? rows : [],
+            collapsed: true
+        } : 
+        {
             headerRow: tableFields,
             dataRows: rows ? rows : []
         };
