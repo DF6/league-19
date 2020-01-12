@@ -5,7 +5,7 @@
         "injury": "I",
         "mvp": "M",
         "redCard": "R",
-        "yellowCard": "Y",
+        "yellowCard": "Y"
     },
     "auctionDefaultOverage": 40,
     "auctionInitialAmounts": [
@@ -80,6 +80,7 @@
         "setHolidaysMode": "SH"
     },
     "roundNames": {
+        "previousRound": "Ronda Previa",
         "groupStage": "Fase de Grupos",
         "outOf16": "Octavos de Final",
         "quarterFinals": "Cuartos de Final",
@@ -255,7 +256,7 @@
         "generalCup": {
             "name": "Copa",
             "KORound": 1,
-            "finalRound": 5
+            "finalRound": 6
         },
         "copaMugre": {
             "name": "Copa Mugre",

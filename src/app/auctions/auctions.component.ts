@@ -69,6 +69,7 @@ export class AuctionsComponent implements OnInit{
             return auction;
         })
         .sort( (a, b) => {
+            if(parseInt(a.state) - parseInt(b.state) != 0) { return parseInt(a.state) - parseInt(b.state); }
             return parseInt(b.overage) - parseInt(a.overage);
         });
         this.tableData1.dataRows = dataRows;

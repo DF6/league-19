@@ -1,10 +1,10 @@
-<div class="container-fluid">
+<div class="container-fluid" *ngIf="appService.data.matches && appService.data.actions">
     <select (ngModelChange)="fillTables($event)" [(ngModel)]="actualTournament">
-        <option *ngFor="let tournament of tournaments" 
+        <option *ngFor="let tournament of appService.data.tournaments" 
         [ngValue]="tournament">{{tournament.name}} edición {{tournament.edition}}</option>
     </select>
     <div style="margin-top: 20px;" class="row">
-        <div class="col-md-6" *ngIf="scorers.dataRows">
+        <div class="col-md-6" *ngIf="scorers">
             <div class="card">
                 <div class="header">
                     <h4 class="title">{{actualTournament.name}} - Goleadores</h4>
@@ -21,22 +21,27 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let row of scorers.dataRows">
+                            <tr *ngFor="let row of getRows(scorers)">
                                 <td>{{row.position}}</td>
                                 <td>{{row.name}}</td>
                                 <td>{{row.team}}</td>
                                 <td>{{row.quantity}}</td>
                             </tr>
+                            <tr *ngIf="scorers.collapsed">
+                                <td colspan="4" (click)="show(scorers)" style="text-align: center; cursor: pointer;">MOSTRAR MÁS</td>
+                            </tr>
+                            <tr *ngIf="!scorers.collapsed">
+                                <td colspan="4" (click)="show(scorers)" style="text-align: center; cursor: pointer;">MOSTRAR MENOS</td>
+                            </tr>
                         </tbody>
                     </table>
-
                 </div>
                 <div *ngIf="scorers.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
                     No hay goleadores
                 </div>
             </div>
         </div>
-        <div class="col-md-6" *ngIf="assistants.dataRows">
+        <div class="col-md-6" *ngIf="assistants">
             <div class="card">
                 <div class="header">
                     <h4 class="title">{{actualTournament.name}} - Asistentes</h4>
@@ -48,20 +53,25 @@
                             <tr>
                                 <th>POS</th>
                                 <th>Nombre</th>
-                                        <th>Equipo</th>
+                                <th>Equipo</th>
                                 <th>Asistencias</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let row of assistants.dataRows">
+                            <tr *ngFor="let row of getRows(assistants)">
                                 <td>{{row.position}}</td>
                                 <td>{{row.name}}</td>
-                                        <td>{{row.team}}</td>
+                                <td>{{row.team}}</td>
                                 <td>{{row.quantity}}</td>
+                            </tr>
+                            <tr *ngIf="assistants.collapsed">
+                                <td colspan="4" (click)="show(assistants)" style="text-align: center; cursor: pointer;">MOSTRAR MÁS</td>
+                            </tr>
+                            <tr *ngIf="!assistants.collapsed">
+                                <td colspan="4" (click)="show(assistants)" style="text-align: center; cursor: pointer;">MOSTRAR MENOS</td>
                             </tr>
                         </tbody>
                     </table>
-
                 </div>
                 <div *ngIf="assistants.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
                     No hay asistentes
@@ -70,135 +80,155 @@
         </div>
     </div>
     <div class="row">
-            <div class="col-md-6" *ngIf="yellowCards.dataRows">
-                <div class="card">
-                    <div class="header">
-                        <h4 class="title">{{actualTournament.name}} - Tarjetas Amarillas</h4>
-                        <p class="category">Edición {{actualTournament.edition}}</p>
-                    </div>
-                    <div *ngIf="yellowCards.dataRows.length !=0" class="content table-responsive table-full-width">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>POS</th>
-                                    <th>Nombre</th>
-                                        <th>Equipo</th>
-                                    <th>Tarjetas Amarillas</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let row of yellowCards.dataRows">
-                                    <td>{{row.position}}</td>
-                                    <td>{{row.name}}</td>
-                                        <td>{{row.team}}</td>
-                                    <td>{{row.quantity}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-    
-                    </div>
-                    <div *ngIf="yellowCards.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
-                        No hay amarillas
-                    </div>
+        <div class="col-md-6" *ngIf="yellowCards">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">{{actualTournament.name}} - Tarjetas Amarillas</h4>
+                    <p class="category">Edición {{actualTournament.edition}}</p>
                 </div>
-            </div>
-            <div class="col-md-6" *ngIf="redCards.dataRows">
-                <div class="card">
-                    <div class="header">
-                        <h4 class="title">{{actualTournament.name}} - Tarjetas Rojas</h4>
-                        <p class="category">Edición {{actualTournament.edition}}</p>
-                    </div>
-                    <div *ngIf="redCards.dataRows.length !=0" class="content table-responsive table-full-width">
-                        <table class="table table-hover">
-                            <thead>
-                                <tr>
-                                    <th>POS</th>
-                                    <th>Nombre</th>
-                                        <th>Equipo</th>
-                                    <th>Tarjetas Rojas</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr *ngFor="let row of redCards.dataRows">
-                                    <td>{{row.position}}</td>
-                                    <td>{{row.name}}</td>
-                                        <td>{{row.team}}</td>
-                                    <td>{{row.quantity}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-    
-                    </div>
-                    <div *ngIf="redCards.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
-                        No hay goleadores
-                    </div>
+                <div *ngIf="yellowCards.dataRows.length !=0" class="content table-responsive table-full-width">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>POS</th>
+                                <th>Nombre</th>
+                                <th>Equipo</th>
+                                <th>Tarjetas Amarillas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of getRows(yellowCards)">
+                                <td>{{row.position}}</td>
+                                <td>{{row.name}}</td>
+                                <td>{{row.team}}</td>
+                                <td>{{row.quantity}}</td>
+                            </tr>
+                            <tr *ngIf="yellowCards.collapsed">
+                                <td colspan="4" (click)="show(yellowCards)" style="text-align: center; cursor: pointer;">MOSTRAR MÁS</td>
+                            </tr>
+                            <tr *ngIf="!yellowCards.collapsed">
+                                <td colspan="4" (click)="show(yellowCards)" style="text-align: center; cursor: pointer;">MOSTRAR MENOS</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div *ngIf="yellowCards.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                    No hay amarillas
                 </div>
             </div>
         </div>
-        <div class="row">
-                <div class="col-md-6" *ngIf="injuries.dataRows">
-                    <div class="card">
-                        <div class="header">
-                            <h4 class="title">{{actualTournament.name}} - Lesiones</h4>
-                            <p class="category">Edición {{actualTournament.edition}}</p>
-                        </div>
-                        <div *ngIf="injuries.dataRows.length !=0" class="content table-responsive table-full-width">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>POS</th>
-                                        <th>Nombre</th>
-                                        <th>Equipo</th>
-                                        <th>Lesiones</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let row of injuries.dataRows">
-                                        <td>{{row.position}}</td>
-                                        <td>{{row.name}}</td>
-                                        <td>{{row.team}}</td>
-                                        <td>{{row.quantity}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-        
-                        </div>
-                        <div *ngIf="injuries.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
-                            No hay lesiones
-                        </div>
-                    </div>
+        <div class="col-md-6" *ngIf="redCards">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">{{actualTournament.name}} - Tarjetas Rojas</h4>
+                    <p class="category">Edición {{actualTournament.edition}}</p>
                 </div>
-                <div class="col-md-6" *ngIf="mvp.dataRows">
-                    <div class="card">
-                        <div class="header">
-                            <h4 class="title">{{actualTournament.name}} - MVPs</h4>
-                            <p class="category">Edición {{actualTournament.edition}}</p>
-                        </div>
-                        <div *ngIf="mvp.dataRows.length !=0" class="content table-responsive table-full-width">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th>POS</th>
-                                        <th>Nombre</th>
-                                        <th>Equipo</th>
-                                        <th>MVPs</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr *ngFor="let row of mvp.dataRows">
-                                        <td>{{row.position}}</td>
-                                        <td>{{row.name}}</td>
-                                        <td>{{row.team}}</td>
-                                        <td>{{row.quantity}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-        
-                        </div>
-                        <div *ngIf="mvp.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
-                            No hay MVPs
-                        </div>
-                    </div>
+                <div *ngIf="redCards.dataRows.length !=0" class="content table-responsive table-full-width">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>POS</th>
+                                <th>Nombre</th>
+                                <th>Equipo</th>
+                                <th>Tarjetas Rojas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of getRows(redCards)">
+                                <td>{{row.position}}</td>
+                                <td>{{row.name}}</td>
+                                <td>{{row.team}}</td>
+                                <td>{{row.quantity}}</td>
+                            </tr>
+                            <tr *ngIf="redCards.collapsed">
+                                <td colspan="4" (click)="show(redCards)" style="text-align: center; cursor: pointer;">MOSTRAR MÁS</td>
+                            </tr>
+                            <tr *ngIf="!redCards.collapsed">
+                                <td colspan="4" (click)="show(redCards)" style="text-align: center; cursor: pointer;">MOSTRAR MENOS</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div *ngIf="redCards.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                    No hay goleadores
                 </div>
             </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6" *ngIf="injuries">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">{{actualTournament.name}} - Lesiones</h4>
+                    <p class="category">Edición {{actualTournament.edition}}</p>
+                </div>
+                <div *ngIf="injuries.dataRows.length !=0" class="content table-responsive table-full-width">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>POS</th>
+                                <th>Nombre</th>
+                                <th>Equipo</th>
+                                <th>Lesiones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of getRows(injuries)">
+                                <td>{{row.position}}</td>
+                                <td>{{row.name}}</td>
+                                <td>{{row.team}}</td>
+                                <td>{{row.quantity}}</td>
+                            </tr>
+                            <tr *ngIf="injuries.collapsed">
+                                <td colspan="4" (click)="show(injuries)" style="text-align: center; cursor: pointer;">MOSTRAR MÁS</td>
+                            </tr>
+                            <tr *ngIf="!injuries.collapsed">
+                                <td colspan="4" (click)="show(injuries)" style="text-align: center; cursor: pointer;">MOSTRAR MENOS</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div *ngIf="injuries.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                    No hay lesiones
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6" *ngIf="mvp">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">{{actualTournament.name}} - MVPs</h4>
+                    <p class="category">Edición {{actualTournament.edition}}</p>
+                </div>
+                <div *ngIf="mvp.dataRows.length !=0" class="content table-responsive table-full-width">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>POS</th>
+                                <th>Nombre</th>
+                                <th>Equipo</th>
+                                <th>MVPs</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of getRows(mvp)">
+                                <td>{{row.position}}</td>
+                                <td>{{row.name}}</td>
+                                <td>{{row.team}}</td>
+                                <td>{{row.quantity}}</td>
+                            </tr>
+                            <tr *ngIf="mvp.collapsed">
+                                <td colspan="4" (click)="show(mvp)" style="text-align: center; cursor: pointer;">MOSTRAR MÁS</td>
+                            </tr>
+                            <tr *ngIf="!mvp.collapsed">
+                                <td colspan="4" (click)="show(mvp)" style="text-align: center; cursor: pointer;">MOSTRAR MENOS</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div *ngIf="mvp.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                    No hay MVPs
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

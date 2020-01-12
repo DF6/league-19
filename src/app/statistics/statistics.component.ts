@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { AngularWaitBarrier } from 'blocking-proxy/built/lib/angular_wait_barrier';
 import { AppService } from 'app/app.service';
 
 declare interface TableData {
     headerRow: string[];
     dataRows: string[][];
+    collapsed?: Boolean;
 }
 
 declare var $:any;
@@ -33,13 +32,16 @@ export class StatisticsComponent implements OnInit{
     }
 
     ngOnInit() {
-        this.appService.getActionsObservable().subscribe( (response) => {
-            this.appService.data.actions = response.json().actions;
-            this.appService.data.tournaments = this.appService.data.tournaments.filter( (filteredTournament) => {
-                return filteredTournament.edition == this.appService.getLastEdition(filteredTournament.name).edition && filteredTournament.name != this.appService.config.tournamentGeneralInfo.nationsLeague.name
+        this.appService.getMatchesObservable().subscribe( (response2) => {
+            this.appService.data.matches = response2.json().matches;
+            this.appService.getActionsObservable().subscribe( (response) => {
+                this.appService.data.actions = response.json().actions;
+                this.appService.data.tournaments = this.appService.data.tournaments.filter( (filteredTournament) => {
+                    return filteredTournament.edition == this.appService.getLastEdition(filteredTournament.name).edition && filteredTournament.name != this.appService.config.tournamentGeneralInfo.nationsLeague.name
+                });
+                this.actualTournament = this.appService.data.tournaments[0];
+                this.fillTables();
             });
-            this.actualTournament = this.appService.data.tournaments[0];
-            this.fillTables();
         });
     }
 
@@ -62,7 +64,8 @@ export class StatisticsComponent implements OnInit{
         };
 
         this.appService.data.actions.filter( (filteredAction) => {
-            return this.appService.getMatchById(filteredAction.matchID).tournament == tournamentToFill.id;
+            return this.appService.getMatchById(filteredAction.matchID) ? 
+                   this.appService.getMatchById(filteredAction.matchID).tournament == tournamentToFill.id : false;
         })
         .forEach( (value) => {
             switch (value.type) {
@@ -80,16 +83,27 @@ export class StatisticsComponent implements OnInit{
                         break;
             }
         });
-        this.scorers = this.appService.getTableConfig(this.appService.config.tableHeaders.statistics.scorers, this.orderStandings(data.scorers));
-        this.assistants = this.appService.getTableConfig(this.appService.config.tableHeaders.statistics.assistants, this.orderStandings(data.assistants));
-        this.yellowCards = this.appService.getTableConfig(this.appService.config.tableHeaders.statistics.yellowCards, this.orderStandings(data.yellowCards));
-        this.redCards = this.appService.getTableConfig(this.appService.config.tableHeaders.statistics.redCards, this.orderStandings(data.redCards));
-        this.injuries = this.appService.getTableConfig(this.appService.config.tableHeaders.statistics.injuries, this.orderStandings(data.injuries));
-        this.mvp = this.appService.getTableConfig(this.appService.config.tableHeaders.statistics.mvp, this.orderStandings(data.mvps));
+        this.scorers = this.appService.getTableConfig(this.appService.config.tableHeaders.statistics.scorers, this.orderStandings(data.scorers), true);
+        this.assistants = this.appService.getTableConfig(this.appService.config.tableHeaders.statistics.assistants, this.orderStandings(data.assistants), true);
+        this.yellowCards = this.appService.getTableConfig(this.appService.config.tableHeaders.statistics.yellowCards, this.orderStandings(data.yellowCards), true);
+        this.redCards = this.appService.getTableConfig(this.appService.config.tableHeaders.statistics.redCards, this.orderStandings(data.redCards), true);
+        this.injuries = this.appService.getTableConfig(this.appService.config.tableHeaders.statistics.injuries, this.orderStandings(data.injuries), true);
+        this.mvp = this.appService.getTableConfig(this.appService.config.tableHeaders.statistics.mvp, this.orderStandings(data.mvps), true);
+    }
+
+    public getRows(table) {
+        if(table.collapsed) {
+            return table.dataRows.slice(0, 3);
+        }else {
+            return table.dataRows;
+        }
+    }
+    
+    public show(table) {
+        table.collapsed = !table.collapsed;
     }
 
     private orderStandings(standing) {
-
         let position = 1;
         let pStands = [];
         while(standing.length != 0) {
@@ -114,15 +128,16 @@ export class StatisticsComponent implements OnInit{
     }
 
     private updateStandings(action, data) {
-        data = data.filter( (filteredData) => {
-            return filteredData.playerID == action.player && filteredData.playerID > 0; 
-        })
-        .map.forEach( (value) => {
-            value.quantity += 1;
+        let updated = false;
+        data.forEach( (value) => {
+            if (value.playerID == action.player && value.playerID > 0) {
+                value.quantity += 1;
+                updated = true;
+            }
         });
-        if (action.player > 0) {
-            const teamShortName = this.appService.getPlayerById(action.player).teamID != 0 ? this.appService.getTeamById(this.appService.getPlayerById(action.player).teamID).shortName : 'LIB';
-            data.push({position: -1, team: teamShortName, playerID: action.player, name: this.appService.getPlayerById(action.player).name, quantity: 1});
+        if (!updated && action.player > 0 && this.appService.getPlayerById(action.player)) {
+            const tt = this.appService.getPlayerById(action.player).teamID !=0 ? this.appService.getTeamById(this.appService.getPlayerById(action.player).teamID).shortName : 'LIB';
+            data.push({position: -1, team: tt, playerID: action.player, name: this.appService.getPlayerById(action.player).name, quantity: 1});
         }
         return data;
     }
