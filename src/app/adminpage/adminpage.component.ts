@@ -39,6 +39,7 @@ export class AdminPageComponent implements OnInit{
     public salaryData;
     public tournamentToReset;
     public tournamentToCreate;
+    public tournamentToRandomize;
     public matchToResolve;
     public showModule;
     public suggestionsTable;
@@ -144,10 +145,42 @@ export class AdminPageComponent implements OnInit{
         this.http.post(PHPFILENAME, {type: 'insMat', local: this.insertMatch.local.id, away: this.insertMatch.away.id, tournament: this.insertMatch.tournament.id, round: this.insertMatch.round}).subscribe( (response) => {
             if (response.json().success) {
                 this.resetNewMatch();
-                this.appService.insertLog({logType: this.appService.config.logTypes.insertMatch, logInfo: 'Partido creado'});
+                this.appService.insertLog({logType: this.appService.config.logTypes.insertMatch, logInfo: 'Partido creado: ' + this.insertMatch.tournament.name + ' - ' + this.insertMatch.local.name + ' - ' + this.insertMatch.away.name});
                 alert('Partido creado');
             }
         });
+    }
+
+    private randomGeneralCupDraw(tournament) {
+        let teamsSecond = this.appService.data.teams;
+        let teamsFirst = [];
+        while(teamsFirst.length < 8) {
+            teamsFirst.push(teamsSecond.splice(Math.floor(Math.random() * teamsSecond.length), 1)[0]);
+        }
+        while(teamsFirst.length > 0) {
+            const local = teamsFirst.splice(Math.floor(Math.random() * teamsFirst.length), 1);
+            const away = teamsFirst.splice(Math.floor(Math.random() * teamsFirst.length), 1);
+            this.http.post(PHPFILENAME, {type: 'insMat', local: local[0].id, away: away[0].id, tournament: tournament.id, round: 1}).subscribe( (response) => {
+                if (response.json().success) {
+                    this.appService.insertLog({logType: this.appService.config.logTypes.insertMatch, logInfo: 'Partido creado: ' + tournament.name + ' - ' + local + ' - ' + away});
+                }
+            });
+        }
+        while(teamsSecond.length > 0) {
+            const local = teamsSecond.splice(Math.floor(Math.random() * teamsSecond.length), 1);
+            const away = teamsSecond.length > 4  ? teamsSecond.splice(Math.floor(Math.random() * teamsSecond.length), 1) : [{id: 0}];
+            this.http.post(PHPFILENAME, {type: 'insMat', local: local[0].id, away: away[0].id, tournament: tournament.id, round: 2}).subscribe( (response) => {
+                if (response.json().success) {
+                    this.appService.insertLog({logType: this.appService.config.logTypes.insertMatch, logInfo: 'Partido creado: ' + tournament.name + ' - ' + local + ' - ' + away});
+                }
+            });
+        }
+    }
+
+    public randomDraw() {
+        switch (this.tournamentToRandomize.name) {
+            case this.appService.config.tournamentGeneralInfo.generalCup.name: this.randomGeneralCupDraw(this.tournamentToRandomize);
+        }
     }
 
     public recalculateStandings() {
@@ -235,6 +268,7 @@ export class AdminPageComponent implements OnInit{
             insertMatch: false,
             insertPlayer: false,
             nonPlayed: false,
+            randomize: false,
             recalculateStandings: false,
             showPendingMatches: false,
             suggestions: false

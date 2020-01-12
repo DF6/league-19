@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { AngularWaitBarrier } from 'blocking-proxy/built/lib/angular_wait_barrier';
+import { AppService } from 'app/app.service';
 
 declare interface TableData {
     headerRow: string[];
     dataRows: string[][];
+    collapsed?: Boolean;
 }
 
 declare var $:any;
@@ -23,64 +23,37 @@ export class StatisticsComponent implements OnInit{
     public injuries: TableData;
     public mvp: TableData;
     public actualTournament: any;
-    public tournaments: any[];
-    public teams: any[];
-    public players: any[];
-    public matches: any[];
-    public actionsArray;
-    public season;
 
-    constructor(private http: Http){}
-
-    ngOnInit() {
-        this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
-        let finalTournaments = [];
-        this.tournaments.forEach( (value) => {
-            if(value.edition == this.getLastEdition(value.name) && value.name != 'Nations League') {
-                finalTournaments.push(value);
-            }
-        });
-        this.tournaments = finalTournaments;
-        this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
-            this.players = response.json().players;
-            this.players.forEach( (value) => {
-                while (value.name.indexOf('/n') != -1) {
-                  value.name = value.name.replace('/n', 'ñ');
-                }
-            });
-            this.actualTournament = this.tournaments[0];
-            this.setTableConfig();
-            this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
-                this.matches = response.json().matches;
-                this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'A'}).subscribe( (response) => {
-                    this.actionsArray = response.json().actions;
-                    this.fillTables();
-                });
-            });
-        });
-        
+    constructor(private appService: AppService){
+        this.appService.getTournaments();
+        this.appService.getTeams();
+        this.appService.getPlayers();
+        this.appService.getMatches();
     }
 
-    private getLastEdition(league) {
-        let lastEdition = -1;
-        for (let i = 0; i < this.tournaments.length; i++) {
-            if (this.tournaments[i].name == league) {
-                lastEdition = this.tournaments[i].edition;
-            }
-        }
-        return lastEdition;
+    ngOnInit() {
+        this.appService.getMatchesObservable().subscribe( (response2) => {
+            this.appService.data.matches = response2.json().matches;
+            this.appService.getActionsObservable().subscribe( (response) => {
+                this.appService.data.actions = response.json().actions;
+                this.appService.data.tournaments = this.appService.data.tournaments.filter( (filteredTournament) => {
+                    return filteredTournament.edition == this.appService.getLastEdition(filteredTournament.name).edition && filteredTournament.name != this.appService.config.tournamentGeneralInfo.nationsLeague.name
+                });
+                this.actualTournament = this.appService.data.tournaments[0];
+                this.fillTables();
+            });
+        });
     }
 
     private fillTables(e?) {
         let tournamentToFill;
         e ? tournamentToFill = e : tournamentToFill = this.actualTournament;
-        this.scorers.dataRows = [];
-        this.assistants.dataRows = [];
-        this.yellowCards.dataRows = [];
-        this.redCards.dataRows = [];
-        this.injuries.dataRows = [];
-        this.mvp.dataRows = [];
+        if(this.scorers) {this.scorers.dataRows = []; }
+        if(this.assistants) {this.assistants.dataRows = []; }
+        if(this.yellowCards) {this.yellowCards.dataRows = []; }
+        if(this.redCards) {this.redCards.dataRows = []; }
+        if(this.injuries) {this.injuries.dataRows = []; }
+        if(this.mvp) {this.mvp.dataRows = []; }
         let data = {
             scorers: [],
             assistants: [],
@@ -90,34 +63,47 @@ export class StatisticsComponent implements OnInit{
             mvps: []
         };
 
-        this.actionsArray.forEach( (value) => {
-            if (this.getMatchById(value.matchID).tournament == tournamentToFill.id) {
-                switch (value.type) {
-                    case 'G': data.scorers = this.updateStandings(value, data.scorers);
-                            break;
-                    case 'A': data.assistants = this.updateStandings(value, data.assistants);
-                            break;
-                    case 'Y': data.yellowCards = this.updateStandings(value, data.yellowCards);
-                            break;
-                    case 'R': data.redCards = this.updateStandings(value, data.redCards);
-                            break;
-                    case 'I': data.injuries = this.updateStandings(value, data.injuries);
-                            break;
-                    case 'M': data.mvps = this.updateStandings(value, data.mvps);
-                            break;
-                }
+        this.appService.data.actions.filter( (filteredAction) => {
+            return this.appService.getMatchById(filteredAction.matchID) ? 
+                   this.appService.getMatchById(filteredAction.matchID).tournament == tournamentToFill.id : false;
+        })
+        .forEach( (value) => {
+            switch (value.type) {
+                case this.appService.config.actionTypes.goal: data.scorers = this.updateStandings(value, data.scorers);
+                        break;
+                case this.appService.config.actionTypes.assist: data.assistants = this.updateStandings(value, data.assistants);
+                        break;
+                case this.appService.config.actionTypes.yellowCard: data.yellowCards = this.updateStandings(value, data.yellowCards);
+                        break;
+                case this.appService.config.actionTypes.redCard: data.redCards = this.updateStandings(value, data.redCards);
+                        break;
+                case this.appService.config.actionTypes.injury: data.injuries = this.updateStandings(value, data.injuries);
+                        break;
+                case this.appService.config.actionTypes.mvp: data.mvps = this.updateStandings(value, data.mvps);
+                        break;
             }
         });
-        this.scorers.dataRows = this.orderStandings(data.scorers);
-        this.assistants.dataRows = this.orderStandings(data.assistants);
-        this.yellowCards.dataRows = this.orderStandings(data.yellowCards);
-        this.redCards.dataRows = this.orderStandings(data.redCards);
-        this.injuries.dataRows = this.orderStandings(data.injuries);
-        this.mvp.dataRows = this.orderStandings(data.mvps);
+        this.scorers = this.appService.getTableConfig(this.appService.config.tableHeaders.statistics.scorers, this.orderStandings(data.scorers), true);
+        this.assistants = this.appService.getTableConfig(this.appService.config.tableHeaders.statistics.assistants, this.orderStandings(data.assistants), true);
+        this.yellowCards = this.appService.getTableConfig(this.appService.config.tableHeaders.statistics.yellowCards, this.orderStandings(data.yellowCards), true);
+        this.redCards = this.appService.getTableConfig(this.appService.config.tableHeaders.statistics.redCards, this.orderStandings(data.redCards), true);
+        this.injuries = this.appService.getTableConfig(this.appService.config.tableHeaders.statistics.injuries, this.orderStandings(data.injuries), true);
+        this.mvp = this.appService.getTableConfig(this.appService.config.tableHeaders.statistics.mvp, this.orderStandings(data.mvps), true);
+    }
+
+    public getRows(table) {
+        if(table.collapsed) {
+            return table.dataRows.slice(0, 3);
+        }else {
+            return table.dataRows;
+        }
+    }
+    
+    public show(table) {
+        table.collapsed = !table.collapsed;
     }
 
     private orderStandings(standing) {
-
         let position = 1;
         let pStands = [];
         while(standing.length != 0) {
@@ -149,67 +135,10 @@ export class StatisticsComponent implements OnInit{
                 updated = true;
             }
         });
-        if (!updated && action.player > 0) {
-            const tt = this.getPlayerById(action.player).teamID !=0 ? this.getTeamById(this.getPlayerById(action.player).teamID).shortName : 'LIB';
-            data.push({position: -1, team: tt, playerID: action.player, name: this.getPlayerById(action.player).name, quantity: 1});
+        if (!updated && action.player > 0 && this.appService.getPlayerById(action.player)) {
+            const tt = this.appService.getPlayerById(action.player).teamID !=0 ? this.appService.getTeamById(this.appService.getPlayerById(action.player).teamID).shortName : 'LIB';
+            data.push({position: -1, team: tt, playerID: action.player, name: this.appService.getPlayerById(action.player).name, quantity: 1});
         }
         return data;
-    }
-
-    public getTeamById(team) {
-        let teamToReturn = null;
-        this.teams.forEach( (value) => {
-            if (value.id == team) {
-                teamToReturn = value;
-            }
-        });
-        return teamToReturn;
-    }
-
-    public getMatchById(match) {
-        let matchToReturn = null;
-        this.matches.forEach( (value) => {
-            if (value.id == match) {
-                matchToReturn = value;
-            }
-        });
-        return matchToReturn;
-    }
-
-    public getPlayerById(player) {
-        let playerToReturn = null;
-        this.players.forEach( (value) => {
-            if (value.id == player) {
-                playerToReturn = value;
-            }
-        });
-        return playerToReturn;
-    }
-
-    private setTableConfig() {
-        this.scorers = {
-            headerRow: [ 'position', 'name', 'goals'],
-            dataRows: []
-        };
-        this.assistants = {
-            headerRow: [ 'position', 'name', 'assistances'],
-            dataRows: []
-        };
-        this.yellowCards = {
-            headerRow: [ 'position', 'name', 'yellowCards'],
-            dataRows: []
-        };
-        this.redCards = {
-            headerRow: [ 'position', 'name', 'redCards'],
-            dataRows: []
-        };
-        this.injuries = {
-            headerRow: [ 'position', 'name', 'injuries'],
-            dataRows: []
-        };
-        this.mvp = {
-            headerRow: [ 'position', 'name', 'mvps'],
-            dataRows: []
-        };
     }
 }

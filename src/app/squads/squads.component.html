@@ -1,7 +1,12 @@
 <div class="container-fluid">
         <div *ngIf="appService.data.teams && appService.data.players" class="row">
             <div *ngIf="filters">
-                Nombre <input type="text" [(ngModel)]="filters.name" style="padding: 16px;"/>
+                Nombre <input type="text" [(ngModel)]="filters.name" style="margin: 16px;"/>
+                Posición <input type="text" [(ngModel)]="filters.position" style="margin: 16px;"/>
+                Media desde <input type="number" [(ngModel)]="filters.overageMin" min="0" max="99" step="1" style="margin: 16px;"/>
+                Media hasta <input type="number" [(ngModel)]="filters.overageMax" min="0" max="99" step="1" style="margin: 16px;"/>
+                <!--<input type="checkbox" [checked]="filters.loan" (change)="checkLoanFilter($event)"> Cedido
+                <input type="checkbox" [checked]="filters.emblem" (change)="checkEmblemFilter($event)"> Emblema-->
             </div>
             <div *ngFor="let team of appService.data.teams" class="col-md-12">
                 <div *ngIf="isThereAnyPlayer(team.id)" class="card">
@@ -21,17 +26,17 @@
                             </thead>
                             <tbody>
                                 <tr *ngFor="let row of appService.getPlayersByTeam(team.id)">
-                                    <td *ngIf="!row.filling && row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1">{{row.position}}</td>
-                                    <td *ngIf="!row.filling && row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1">{{row.name}}</td>
-                                    <td *ngIf="!row.filling && row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1">{{row.overage}}</td>
-                                    <td *ngIf="!row.filling && row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.salary<10 && row.buyedThisMarket == '0'">{{row.overage}} M€ 
+                                    <td *ngIf="!row.filling && row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.position.toLowerCase().indexOf(filters.position.toLowerCase()) != -1 && row.overageFilter <= filters.overageMax && row.overageFilter >= filters.overageMin">{{row.position}}</td>
+                                    <td *ngIf="!row.filling && row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.position.toLowerCase().indexOf(filters.position.toLowerCase()) != -1 && row.overageFilter <= filters.overageMax && row.overageFilter >= filters.overageMin">{{row.name}}</td>
+                                    <td *ngIf="!row.filling && row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.position.toLowerCase().indexOf(filters.position.toLowerCase()) != -1 && row.overageFilter <= filters.overageMax && row.overageFilter >= filters.overageMin">{{row.overage}}</td>
+                                    <td *ngIf="!row.filling && row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.position.toLowerCase().indexOf(filters.position.toLowerCase()) != -1 && row.overageFilter <= filters.overageMax && row.overageFilter >= filters.overageMin && row.salary<10 && row.buyedThisMarket == '0'">{{row.overage}} M€ 
                                         <span *ngIf="appService.data.user.teamID != team.id && appService.data.constants.marketOpened == '1' && row.buyedThisMarket == '0'">-</span> 
                                         <a style="cursor:pointer;" (click)="forceSignin(row)" *ngIf="appService.data.user.teamID != team.id && appService.data.constants.marketOpened == '1' && row.buyedThisMarket == '0'">Clausulazo</a> 
                                         <span *ngIf="appService.data.user.teamID != team.id && appService.data.constants.marketOpened == '1' && row.buyedThisMarket == '0'">-</span> 
                                         <a style="cursor:pointer;" (click)="setOfferToRedirect(row)" *ngIf="appService.data.user.teamID != team.id && appService.data.constants.marketOpened == '1' && row.buyedThisMarket == '0'">Oferta</a>
                                     </td>
-                                    <td *ngIf="!row.filling && row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.salary>=10 && row.buyedThisMarket == '0'">INTOCABLE</td>
-                                    <td *ngIf="!row.filling && row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.buyedThisMarket == '1'">COMPRADO</td>
+                                    <td *ngIf="!row.filling && row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.position.toLowerCase().indexOf(filters.position.toLowerCase()) != -1 && row.overageFilter <= filters.overageMax && row.overageFilter >= filters.overageMin && row.salary>=10 && row.buyedThisMarket == '0'">INTOCABLE</td>
+                                    <td *ngIf="!row.filling && row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.position.toLowerCase().indexOf(filters.position.toLowerCase()) != -1 && row.overageFilter <= filters.overageMax && row.overageFilter >= filters.overageMin && row.buyedThisMarket == '1'">COMPRADO</td>
                                 </tr>
                             </tbody>
                         </table>

@@ -22,6 +22,7 @@ export class SquadsComponent{
                 this.appService.data.players = response.json().players;
                 this.appService.data.players.forEach( (value) => {
                     value.name = this.appService.convertNToÑ(value.name);
+                    value.overageFilter = parseInt(value.overage);
                 });
                 this.appService.data.players = this.appService.data.players.map( (player) => {
                     player.filling = false;
@@ -57,5 +58,13 @@ export class SquadsComponent{
     public isThereAnyPlayer(team) {
         return this.appService.data.players.some( (player) => { return player.teamID == team;});
     }
+
+    /*public checkLoanFilter(e) {
+        this.filters.loan = e.target.checked;
+    }
+
+    public checkEmblemFilter(e) {
+        this.filters.emblem = e.target.checked;
+    }*/
 
 }
