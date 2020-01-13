@@ -34,7 +34,7 @@ export class MatchFillerComponent implements OnInit{
     public models: any;
     public sent = false;
 
-    constructor(private appService: AppService){
+    constructor(private http: Http, private appService: AppService){
         this.appService.getPlayers();
         this.appService.getTournaments();
         this.appService.getTeams();
@@ -182,10 +182,31 @@ export class MatchFillerComponent implements OnInit{
         this.away.mvp = [];
     }
 
+    private resolveKO(match) {
+        const almostFilledMatches = this.appService.data.matches.filter( (filteredMatch) => {
+            return filteredMatch.tournament == match.tournament && parseInt(filteredMatch.round) == parseInt(match.round) + 1 && filteredMatch.away == '0';
+        })
+        if(almostFilledMatches.length > 0) {
+            const chosenMatch = almostFilledMatches.splice(Math.floor(Math.random() * almostFilledMatches.length), 1);
+            this.http.post('./test_CMDataRequesting.php', {type: 'ediMat', id: chosenMatch.id, local: chosenMatch.local, away: this.appService.whoWon(match), tournament: chosenMatch.tournament, round: chosenMatch.round + 1}).subscribe( (response) => {
+                if (response.json().success) {
+                    this.appService.insertLog({logType: this.appService.config.logTypes.ediMatch, logInfo: 'Partido editado: ' + this.appService.getTournamentById(match.tournament).name + ' - ' + this.appService.getTeamById(match.local).name + ' - ' + this.appService.getTeamById(match.away).name});
+                }
+            });
+        } else {
+            this.http.post('./test_CMDataRequesting.php', {type: 'insMat', local: this.appService.whoWon(match), away: 0, tournament: match.tournament, round: match.round + 1}).subscribe( (response) => {
+                if (response.json().success) {
+                    this.appService.insertLog({logType: this.appService.config.logTypes.insertMatch, logInfo: 'Partido creado: ' + this.appService.getTournamentById(match.tournament).name + ' - ' + this.appService.getTeamById(match.local).name + ' - ' + this.appService.getTeamById(match.away).name});
+                }
+            });
+        }
+    }
+
     public sendMatchInfo() {
         if (!this.sent) {
             this.sent = true;
             this.appService.sendMatchInfo(this.data, this.local, this.away);
+            if(this.appService.getTournamentById(this.data.tournament).name == this.appService.config.tournamentGeneralInfo.generalCup.name) { this.resolveKO(this.data); }
             this.matchFilled.emit();
         } else {
             alert('Resultado ya introducido');
