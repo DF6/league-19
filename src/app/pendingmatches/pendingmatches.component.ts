@@ -34,9 +34,19 @@ export class PendingMatchesComponent implements OnInit{
         });
     }
 
+    private isCalendarMatch(match) {
+        switch(this.appService.getTournamentById(match.tournament).name) {
+            case this.appService.config.tournamentGeneralInfo.generalCup.name: return parseInt(match.round) == 1;
+            case this.appService.config.tournamentGeneralInfo.primera.name:
+            case this.appService.config.tournamentGeneralInfo.segunda.name: return parseInt(match.round) < 4;
+            case this.appService.config.tournamentGeneralInfo.supercopaDeClubes.name:
+            case this.appService.config.tournamentGeneralInfo.supercopaEuropea.name: return true;
+        }
+    }
+
     private setUndisputedMatches(teamMatches) {
         let finalTableMatches = teamMatches.filter( (filteredMatch) => {
-            return filteredMatch.localGoals == '-1' && filteredMatch.awayGoals == '-1';
+            return filteredMatch.localGoals == '-1' && filteredMatch.awayGoals == '-1' && this.isCalendarMatch(filteredMatch);
         })
         .map( (value) => {
             value.filling = false;
