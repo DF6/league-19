@@ -213,7 +213,7 @@ export class AppService {
 
     public getRoundName(match) {
         switch (this.getTournamentById(match.tournament).name) {
-            case this.config.tournamentGeneralInfo.generalCup.name:
+            case this.config.tournamentGeneralInfo.copa.name:
                 switch(parseInt(match.round)) {
                     case 1: return this.config.roundNames.previousRound;
                     case 2: return this.config.roundNames.outOf16;
@@ -368,7 +368,7 @@ export class AppService {
 
     public hasPreviousMatch(match, matchesToSearch) {
         switch (this.getTournamentById(match.tournament).name) {
-            case this.config.tournamentGeneralInfo.generalCup.name:
+            case this.config.tournamentGeneralInfo.copa.name:
             case this.config.tournamentGeneralInfo.europaLeague.name:
             case this.config.tournamentGeneralInfo.copaMugre.name:
                 if (match.round % 2 == 0) {

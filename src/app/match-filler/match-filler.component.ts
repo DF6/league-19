@@ -35,49 +35,51 @@ export class MatchFillerComponent implements OnInit{
     public sent = false;
 
     constructor(private http: Http, private appService: AppService){
-        this.appService.getPlayers();
         this.appService.getTournaments();
         this.appService.getTeams();
         this.appService.getSignins();
     }
 
     ngOnInit() {
-        this.appService.getMatchesObservable().subscribe( (response) => {
-            this.appService.setMatches(response.json().matches);
-            this.local = {
-                score: 0,
-                scorers: [],
-                assistants: [],
-                yellowCards: [],
-                redCards: [],
-                injuries: [],
-                mvp: []
-            };
-            this.away = {
-                score: 0,
-                scorers: [],
-                assistants: [],
-                yellowCards: [],
-                redCards: [],
-                injuries: [],
-                mvp: []
-            };
-            this.models = {
-                localScorer: null,
-                awayScorer: null,
-                localAssistant: null,
-                awayAssistant: null,
-                localYellowCard: null,
-                awayYellowCard: null,
-                localRedCard: null,
-                awayRedCard: null,
-                localinjury: null,
-                awayinjury: null,
-                localmvp: null,
-                awaymvp: null
-            };
-            this.localPlayers = this.appService.getPlayersByTeam(this.data.local);
-            this.awayPlayers = this.appService.getPlayersByTeam(this.data.away);
+        this.appService.getPlayersObservable().subscribe( (response2) => {
+            this.appService.data.players = response2.json().players;
+            this.appService.getMatchesObservable().subscribe( (response) => {
+                this.appService.setMatches(response.json().matches);
+                this.local = {
+                    score: 0,
+                    scorers: [],
+                    assistants: [],
+                    yellowCards: [],
+                    redCards: [],
+                    injuries: [],
+                    mvp: []
+                };
+                this.away = {
+                    score: 0,
+                    scorers: [],
+                    assistants: [],
+                    yellowCards: [],
+                    redCards: [],
+                    injuries: [],
+                    mvp: []
+                };
+                this.models = {
+                    localScorer: null,
+                    awayScorer: null,
+                    localAssistant: null,
+                    awayAssistant: null,
+                    localYellowCard: null,
+                    awayYellowCard: null,
+                    localRedCard: null,
+                    awayRedCard: null,
+                    localinjury: null,
+                    awayinjury: null,
+                    localmvp: null,
+                    awaymvp: null
+                };
+                this.localPlayers = this.appService.getPlayersByTeam(this.data.local);
+                this.awayPlayers = this.appService.getPlayersByTeam(this.data.away);
+            });
         });
     }
 
@@ -182,13 +184,13 @@ export class MatchFillerComponent implements OnInit{
         this.away.mvp = [];
     }
 
-    private resolveKO(match) {
+    private resolveKO(match, local, away) {
         const almostFilledMatches = this.appService.data.matches.filter( (filteredMatch) => {
             return filteredMatch.tournament == match.tournament && parseInt(filteredMatch.round) == parseInt(match.round) + 1 && filteredMatch.away == '0';
         })
         if(almostFilledMatches.length > 0) {
-            const chosenMatch = almostFilledMatches.splice(Math.floor(Math.random() * almostFilledMatches.length), 1);
-            this.http.post('./test_CMDataRequesting.php', {type: 'ediMat', id: chosenMatch.id, local: chosenMatch.local, away: this.appService.whoWon(match), tournament: chosenMatch.tournament, round: chosenMatch.round + 1}).subscribe( (response) => {
+            const chosenMatch = almostFilledMatches.splice(Math.floor(Math.random() * almostFilledMatches.length), 1)[0];
+            this.http.post('./CMDataRequesting.php', {type: 'ediMat', id: chosenMatch.id, local: chosenMatch.local, away: this.appService.whoWon({local: match.local, localGoals: local.score, away: match.away, awayGoals: away.score}), tournament: chosenMatch.tournament, round: chosenMatch.round}).subscribe( (response) => {
                 if (response.json().success) {
                     this.appService.insertLog({logType: this.appService.config.logTypes.ediMatch, logInfo: 'Partido editado: ' + this.appService.getTournamentById(match.tournament).name + ' - ' + this.appService.getTeamById(match.local).name + ' - ' + this.appService.getTeamById(match.away).name});
                 }
@@ -206,7 +208,7 @@ export class MatchFillerComponent implements OnInit{
         if (!this.sent) {
             this.sent = true;
             this.appService.sendMatchInfo(this.data, this.local, this.away);
-            if(this.appService.getTournamentById(this.data.tournament).name == this.appService.config.tournamentGeneralInfo.generalCup.name) { this.resolveKO(this.data); }
+            if(this.appService.getTournamentById(this.data.tournament).name == this.appService.config.tournamentGeneralInfo.copa.name) { this.resolveKO(this.data, this.local, this.away); }
             this.matchFilled.emit();
         } else {
             alert('Resultado ya introducido');

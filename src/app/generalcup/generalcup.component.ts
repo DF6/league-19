@@ -30,12 +30,12 @@ export class GeneralCupComponent{
 
     private getMatches() {
         let finalMatches = [];
-        const tournament = this.appService.getLastEdition(this.appService.config.tournamentGeneralInfo.generalCup.name);
+        const tournament = this.appService.getLastEdition(this.appService.config.tournamentGeneralInfo.copa.name);
         this.season = tournament.edition;
         const allMatches = this.appService.data.matches.filter( (filteredMatch) => {
             return filteredMatch.tournament == tournament.id;
         });
-        for(let i = 1; i <= this.appService.config.tournamentGeneralInfo.generalCup.finalRound; i++) {
+        for(let i = 1; i <= this.appService.config.tournamentGeneralInfo.copa.finalRound; i++) {
             const filteredRound = allMatches.filter( (filteredMatch) => {
                 return filteredMatch.round == i;
             })
@@ -46,7 +46,7 @@ export class GeneralCupComponent{
         }
         this.matches = finalMatches;
         this.champion = this.appService.whoWon(this.appService.data.matches.filter( (filteredMatch) => {
-            return filteredMatch.tournament == tournament.id && filteredMatch.round == this.appService.config.tournamentGeneralInfo.generalCup.finalRound;
+            return filteredMatch.tournament == tournament.id && filteredMatch.round == this.appService.config.tournamentGeneralInfo.copa.finalRound;
         })[0]);
     }
 
