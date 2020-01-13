@@ -39,6 +39,8 @@ export class PendingMatchesComponent implements OnInit{
             case this.appService.config.tournamentGeneralInfo.generalCup.name: return parseInt(match.round) == 1;
             case this.appService.config.tournamentGeneralInfo.primera.name:
             case this.appService.config.tournamentGeneralInfo.segunda.name: return parseInt(match.round) < 4;
+            case this.appService.config.tournamentGeneralInfo.supercopaDeClubes.name:
+            case this.appService.config.tournamentGeneralInfo.supercopaEuropea.name: return true;
         }
     }
 
