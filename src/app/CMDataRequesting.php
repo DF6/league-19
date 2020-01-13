@@ -131,6 +131,9 @@
        case "insMat":
           insertMatch($link, $params);
             break;
+       case "ediMat":
+          editMatch($link, $params);
+            break;
        case "insTou":
           insertTournament($link, $params);
             break;
@@ -651,6 +654,16 @@
     $resultado=mysqli_query($con, $query) or die("Error insertando partido");
     $data['success'] = true;
     $data['message'] = "Partido creado";
+    echo json_encode($data);
+    exit;
+  }
+  
+  function editMatch($con, $params) {
+    $data = array();
+    $query="UPDATE matches SET local=".$params->local.", away=".$params->away.", tournament=".$params->tournament.", round=".$params->round." WHERE id=".$params->id;
+    $resultado=mysqli_query($con, $query) or die("Error editando partido");
+    $data['success'] = true;
+    $data['message'] = "Partido editado";
     echo json_encode($data);
     exit;
   }

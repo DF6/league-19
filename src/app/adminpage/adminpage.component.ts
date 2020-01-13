@@ -326,6 +326,85 @@ export class AdminPageComponent implements OnInit{
         })[0].round;
     }
 
+    public setPendingEmblems() {
+        this.appService.data.teams.forEach( (team) => {
+            const playersOfTheTeam = this.appService.getPlayersByTeam(team.id);
+            let lines = {
+                goalkeeper: [],
+                defense: [],
+                midfield: [],
+                striker: []
+            };
+            playersOfTheTeam.forEach( (player) => {
+                if(this.appService.config.fieldLines.goalkeeper.find( (position) => { return player.position == position; }) != undefined) { lines.goalkeeper.push(player); }
+                else if(this.appService.config.fieldLines.defense.find( (position) => { return player.position == position; }) != undefined) { lines.defense.push(player); }
+                else if(this.appService.config.fieldLines.midfield.find( (position) => { return player.position == position; }) != undefined) { lines.midfield.push(player); }
+                else if(this.appService.config.fieldLines.striker.find( (position) => { return player.position == position; }) != undefined) { lines.striker.push(player); }
+            });
+            let emblemSet = false;
+            let maxPlayer = { id: undefined, overage: '0', name: '' };
+            lines.goalkeeper.forEach( (player) => {
+                if(parseInt(player.emblem) == 1) { emblemSet = true; }
+                if(parseInt(player.overage) > parseInt(maxPlayer.overage)) {
+                    maxPlayer = player;
+                }
+            });
+            if(!emblemSet && maxPlayer.id != undefined) {
+                this.http.post(PHPFILENAME, {type: 'hacEmb', player: maxPlayer.id}).subscribe( (response) => {
+                    if(response.json().success) {
+                        this.appService.insertLog({logType: this.appService.config.logTypes.setEmblem, logInfo: 'Nuevo emblema: ' + maxPlayer.name});
+                    }
+                });
+            }
+            emblemSet = false;
+            maxPlayer = { id: undefined, overage: '0', name: '' };
+            lines.defense.forEach( (player) => {
+                if(parseInt(player.emblem) == 1) { emblemSet = true; }
+                if(parseInt(player.overage) > parseInt(maxPlayer.overage)) {
+                    maxPlayer = player;
+                }
+            });
+            if(!emblemSet && maxPlayer.id != undefined) {
+                this.http.post(PHPFILENAME, {type: 'hacEmb', player: maxPlayer.id}).subscribe( (response) => {
+                    if(response.json().success) {
+                        this.appService.insertLog({logType: this.appService.config.logTypes.setEmblem, logInfo: 'Nuevo emblema: ' + maxPlayer.name});
+                    }
+                });
+            }
+            emblemSet = false;
+            maxPlayer = { id: undefined, overage: '0', name: '' };
+            lines.midfield.forEach( (player) => {
+                if(parseInt(player.emblem) == 1) { emblemSet = true; }
+                if(parseInt(player.overage) > parseInt(maxPlayer.overage)) {
+                    maxPlayer = player;
+                }
+            });
+            if(!emblemSet && maxPlayer.id != undefined) {
+                this.http.post(PHPFILENAME, {type: 'hacEmb', player: maxPlayer.id}).subscribe( (response) => {
+                    if(response.json().success) {
+                        this.appService.insertLog({logType: this.appService.config.logTypes.setEmblem, logInfo: 'Nuevo emblema: ' + maxPlayer.name});
+                    }
+                });
+            }
+            emblemSet = false;
+            maxPlayer = { id: undefined, overage: '0', name: '' };
+            lines.striker.forEach( (player) => {
+                if(parseInt(player.emblem) == 1) { emblemSet = true; }
+                if(parseInt(player.overage) > parseInt(maxPlayer.overage)) {
+                    maxPlayer = player;
+                }
+            });
+            if(!emblemSet && maxPlayer.id != undefined) {
+                this.http.post(PHPFILENAME, {type: 'hacEmb', player: maxPlayer.id}).subscribe( (response) => {
+                    if(response.json().success) {
+                        this.appService.insertLog({logType: this.appService.config.logTypes.setEmblem, logInfo: 'Nuevo emblema: ' + maxPlayer.name});
+                    }
+                });
+            }
+            alert('Hecho');
+        });
+    }
+
     private setUndisputedMatches() {
         const finalTableMatches = this.appService.data.matches.filter( (filteredMatch) => {
             return filteredMatch.localGoals == "-1" && filteredMatch.awayGoals == "-1";
