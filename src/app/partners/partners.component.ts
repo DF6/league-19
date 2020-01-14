@@ -13,6 +13,7 @@ export class PartnersComponent{
 
     public partners;
     public partnerChosen;
+    public showPartners = false;
 
     constructor(private http: Http, private router: Router, private appService: AppService) {
         this.appService.getUsers();
@@ -20,9 +21,10 @@ export class PartnersComponent{
                 this.appService.data.partners = response.json().partners;
                 this.appService.data.partners.forEach( (value) => {
                     if(value.team == this.appService.data.user.teamID) {
-                        this.partnerChosen = (value.partner != 0);
+                        this.partnerChosen = parseInt(value.partner);
                     }
                 });
+                this.showPartners = true;
         });
     }
 
