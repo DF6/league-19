@@ -401,8 +401,8 @@ export class AdminPageComponent implements OnInit{
                     }
                 });
             }
-            alert('Hecho');
         });
+        alert('Hecho');
     }
 
     private setUndisputedMatches() {
