@@ -80,7 +80,7 @@
                                     <span *ngIf="row.localGoals == -2 && row.awayGoals == -2">NP - NP</span>
                                 </td>
                                 <td style="text-align: center;">{{appService.getTeamById(row.away).name}}</td>
-                                <td style="text-align: center;"><a *ngIf="row.localGoals > -1" style="cursor:pointer;" (click)="showSummary(row.id)">Resumen</a><span *ngIf="row.localGoals == -1">Por jugar</span></td>
+                                <td style="text-align: center;"><a *ngIf="row.localGoals > -1" style="cursor:pointer;" (click)="showResume(row)">Resumen</a><span *ngIf="row.localGoals == -1">Por jugar</span></td>
                             </tr>
                         </tbody>
                     </table>

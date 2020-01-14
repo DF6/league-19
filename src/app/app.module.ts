@@ -22,7 +22,7 @@ import { EuropaLeagueComponent } from './europaleague/europaleague.component';
 import { EuropeSupercupComponent } from './europesupercup/europesupercup.component';
 import { FreePlayersComponent } from './freeplayers/freeplayers.component';
 import { SquadsComponent } from './squads/squads.component';
-import { IntertotoComponent } from './intertoto/intertoto.component';
+import { CopaMugreComponent } from './copamugre/copamugre.component';
 import { KeyModule } from './key/key.module';
 import { LoginComponent } from './login/login.component';
 import { LogoutComponent } from './logout/logout.component';
@@ -61,7 +61,7 @@ import { SecondComponent } from './second/second.component';
     LogoutComponent,
     StatisticsComponent,
     EuropaLeagueComponent,
-    IntertotoComponent,
+    CopaMugreComponent,
     ChampionsComponent,
     NationsComponent,
     ClubSupercupComponent,

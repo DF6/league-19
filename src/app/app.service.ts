@@ -19,6 +19,8 @@ export interface KeyConfig {
     showTitle: boolean;
 }
 
+declare var $: any;
+
 const PHPFILENAME = './CMDataRequesting.php';
 
 @Injectable()
@@ -51,6 +53,15 @@ export class AppService {
 
     public addZero(number) {
         return number < 10 ? '0' + number : number;
+    }
+
+    private concatMessage(arr) {
+        let message = '';
+        arr.forEach( (value, key) => {
+            message += this.getPlayerById(value.player).name;
+            if(key != arr.length - 1) { message += ', '; }
+        });
+        return message == '' ? 'Ninguno' : message;
     }
 
     public convertNToÑ(name) {
@@ -217,7 +228,7 @@ export class AppService {
 
     public getRoundName(match) {
         switch (this.getTournamentById(match.tournament).name) {
-            case this.config.tournamentGeneralInfo.generalCup.name:
+            case this.config.tournamentGeneralInfo.copa.name:
                 switch(parseInt(match.round)) {
                     case 1: return this.config.roundNames.previousRound;
                     case 2: return this.config.roundNames.outOf16;
@@ -372,7 +383,7 @@ export class AppService {
 
     public hasPreviousMatch(match, matchesToSearch) {
         switch (this.getTournamentById(match.tournament).name) {
-            case this.config.tournamentGeneralInfo.generalCup.name:
+            case this.config.tournamentGeneralInfo.copa.name:
             case this.config.tournamentGeneralInfo.europaLeague.name:
             case this.config.tournamentGeneralInfo.copaMugre.name:
                 if (match.round % 2 == 0) {
@@ -428,6 +439,13 @@ export class AppService {
             ret = true;
         }
         return ret;
+    }
+
+    public mountAction(match, type, player) {
+        return "INSERT INTO actions (match_id, type, player) values ("
+         + match.id + ", '"
+         + type + "', "
+         + player + "); ";
     }
 
     public refreshConfig() {
@@ -535,13 +553,6 @@ export class AppService {
         alert('Partido insertado');
     }
 
-    public mountAction(match, type, player) {
-        return "INSERT INTO actions (match_id, type, player) values ("
-         + match.id + ", '"
-         + type + "', "
-         + player + "); ";
-    }
-
     public sendMatchInfo(match, localInfo, awayInfo) {
 
         this.http.post(PHPFILENAME, {type: 'setRes', localGoals: localInfo.score, awayGoals: awayInfo.score, matchID: match.id}).subscribe( (response) => {
@@ -628,6 +639,92 @@ export class AppService {
 
     public setUsers(users) {
         this.data.users = users;
+    }
+
+    public showResume(match, matchActions) {
+        let actions = {
+            localGoals: [],
+            awayGoals: [],
+            localAssists: [],
+            awayAssists: [],
+            localYellowCards: [],
+            awayYellowCards: [],
+            localRedCards: [],
+            awayRedCards: [],
+            localInjuries: [],
+            awayInjuries: [],
+            localMVP: [],
+            awayMVP: []
+        };
+        matchActions.forEach( (action) => {
+            if(this.getTeamById(this.getPlayerById(action.player).teamID).id == match.local) {
+                switch(action.type) {
+                    case this.config.actionTypes.goal: actions.localGoals.push(action);
+                        break;
+                    case this.config.actionTypes.assist: actions.localAssists.push(action);
+                        break;
+                    case this.config.actionTypes.yellowCard: actions.localYellowCards.push(action);
+                        break;
+                    case this.config.actionTypes.redCard: actions.localRedCards.push(action);
+                        break;
+                    case this.config.actionTypes.injury: actions.localInjuries.push(action);
+                        break;
+                    case this.config.actionTypes.mvp: actions.localMVP.push(action);
+                        break;
+                }
+            } else {
+                switch(action.type) {
+                    case this.config.actionTypes.goal: actions.awayGoals.push(action);
+                        break;
+                    case this.config.actionTypes.assist: actions.awayAssists.push(action);
+                        break;
+                    case this.config.actionTypes.yellowCard: actions.awayYellowCards.push(action);
+                        break;
+                    case this.config.actionTypes.redCard: actions.awayRedCards.push(action);
+                        break;
+                    case this.config.actionTypes.injury: actions.awayInjuries.push(action);
+                        break;
+                    case this.config.actionTypes.mvp: actions.awayMVP.push(action);
+                        break;
+                }
+            }
+        });
+        const message = 'Goles ' + this.getTeamById(match.local).name + ': ' +
+        this.concatMessage(actions.localGoals) + '<br/>' +
+        'Goles ' + this.getTeamById(match.away).name + ': ' +
+        this.concatMessage(actions.awayGoals) + '<br/>' +
+        'Asistencias ' + this.getTeamById(match.local).name + ': ' +
+        this.concatMessage(actions.localAssists) + '<br/>' +
+        'Asistencias ' + this.getTeamById(match.away).name + ': ' +
+        this.concatMessage(actions.awayAssists) + '<br/>' +
+        'Amarillas ' + this.getTeamById(match.local).name + ': ' +
+        this.concatMessage(actions.localYellowCards) + '<br/>' +
+        'Amarillas ' + this.getTeamById(match.away).name + ': ' +
+        this.concatMessage(actions.awayYellowCards) + '<br/>' +
+        'Rojas ' + this.getTeamById(match.local).name + ': ' +
+        this.concatMessage(actions.localRedCards) + '<br/>' +
+        'Rojas ' + this.getTeamById(match.away).name + ': ' +
+        this.concatMessage(actions.awayRedCards) + '<br/>' +
+        'Lesiones ' + this.getTeamById(match.local).name + ': ' +
+        this.concatMessage(actions.localInjuries) + '<br/>' +
+        'Lesiones ' + this.getTeamById(match.away).name + ': ' +
+        this.concatMessage(actions.awayInjuries) + '<br/>' +
+        'MVP ' + this.getTeamById(match.local).name + ': ' +
+        this.concatMessage(actions.localMVP) + '<br/>' +
+        'MVP ' + this.getTeamById(match.away).name + ': ' +
+        this.concatMessage(actions.awayMVP);
+        $.notify({
+            title: this.getTeamById(match.local).name + ' ' + match.localGoals + ' - ' + match.awayGoals + ' ' + this.getTeamById(match.away).name,
+            message: message
+        },{
+            type: 'minimalist',
+            delay: 0,
+            template: '<div data-notify="container" class="col-xs-11 col-sm-11 col-lg-6 col-md-6 alert-{0}" role="alert" style="background-color: rgb(241, 242, 240);border-color: rgba(149, 149, 149, 0.3);border-radius: 3px;color: rgb(149, 149, 149);padding: 10px;">' +
+                '<button type="button" aria-hidden="true" class="close" data-notify="dismiss">×</button>' +
+                '<span data-notify="title" style="color: rgb(51, 51, 51);display: block;font-weight: bold;margin-bottom: 5px;">{1}</span>' +
+                '<span data-notify="message" style="font-size: 80%;">{2}</span>' +
+            '</div>'
+        });
     }
 
     private toCamelCase(param) {

@@ -179,7 +179,7 @@ export class AdminPageComponent implements OnInit{
 
     public randomDraw() {
         switch (this.tournamentToRandomize.name) {
-            case this.appService.config.tournamentGeneralInfo.generalCup.name: this.randomGeneralCupDraw(this.tournamentToRandomize);
+            case this.appService.config.tournamentGeneralInfo.copa.name: this.randomGeneralCupDraw(this.tournamentToRandomize);
         }
     }
 
@@ -401,8 +401,8 @@ export class AdminPageComponent implements OnInit{
                     }
                 });
             }
-            alert('Hecho');
         });
+        alert('Hecho');
     }
 
     private setUndisputedMatches() {
