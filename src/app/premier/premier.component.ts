@@ -21,6 +21,8 @@ export class PremierComponent implements OnInit{
     public visibleLegend = false;
 
     constructor(private appService: AppService){
+        this.appService.getPlayers();
+        this.appService.getActions();
         this.appService.getTournaments();
         this.appService.getTeams();
     }
@@ -96,20 +98,9 @@ export class PremierComponent implements OnInit{
         });
     }
 
-    public showSummary(match) {
-        let matchSummary = this.appService.getMatchById(match);
-        let message = this.appService.getTeamById(matchSummary.local).name + ' ' + matchSummary.localGoals + ' - ';
-        message += this.appService.getTeamById(matchSummary.away).name + ' ' + matchSummary.awayGoals;
-        $.notify({
-        	icon: "ti-gift",
-        	message: message
-        },{
-            type: 'success',
-            timer: 4000,
-            placement: {
-                from: 'top',
-                align: 'center'
-            }
-        });
+    public showResume(match) {
+        this.appService.showResume(match, this.appService.data.actions.filter( (filteredAction) => {
+            return filteredAction.matchID == match.id;
+        }));
     }
 }

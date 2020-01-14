@@ -1,7 +1,10 @@
     <div class="container-fluid">
-        <div class="row" *ngIf="!partnerChosen">
+        <div class="row" *ngIf="showPartners">
             <div>
-                <div class="card card-user" class="col-lg-3 col-md-12 col-sm-12" style="background-color:white;margin-left: 20px;margin-right: 10px;">
+                <div class="row" *ngIf="partnerChosen != 0">
+                    <h1 style="text-align: center">Ya has elegido un patrocinador para esta temporada</h1>
+                </div>
+                <div *ngIf="partnerChosen == 0 || partnerChosen == 1 || partnerChosen == 2" class="card card-user" class="col-lg-3 col-md-12 col-sm-12" style="background-color:white;margin-left: 20px;margin-right: 10px;">
                     <div class="image">
                         <img src="assets/img/background.jpg" style="width: 100%"/>
                     </div>
@@ -25,8 +28,9 @@
                             Obtén menos de 7 tarjetas (cuentan amarilla x1 y roja x2) en todas las competiciones en una vuelta - 2M€ 
                             <span style="color: red; font-weight: bold;">(BOOST: Menos de 14 tarjetas en toda la temporada - 6M€)</span><br/><br/>
                             <span style="font-weight: bold;">ESPECIAL - Si todos los miembros de tu equipo de la Team Cup tenéis Movistar + como patrocinador y ganáis al menos una eliminatoria, todos recibiréis 10M€ extra</span><br/><br/>
-                            <a style="text-align:center;cursor: pointer;font-size:24px" (click)="choosePartner(1)">Elegir</a><br/><br/>
-                            <a style="text-align:center;cursor: pointer;font-size:24px" (click)="choosePartner(2)">Elegir con Boost</a>
+                            <a *ngIf="partnerChosen == 0" style="text-align:center;cursor: pointer;font-size:24px" (click)="choosePartner(1)">Elegir</a><br/><br/>
+                            <a *ngIf="partnerChosen == 0" style="text-align:center;cursor: pointer;font-size:24px" (click)="choosePartner(2)">Elegir con Boost</a>
+                            <span *ngIf="partnerChosen != 0" style="text-align: center;font-size: 24px; font-weight: bold;color: red; border: 5pt solid red;padding: 5px;">FIRMADO</span>
                           </span>
                         </div>
                     </div>
@@ -39,72 +43,34 @@
                         </div>
                     </div>
                 </div>
-                <div class="card card-user" class="col-lg-3 col-sm-12 col-md-12" style="background-color:white;margin-left: 20px;margin-right: 10px;">
-                        <div class="image">
-                            <img src="assets/img/background.jpg" style="width: 100%"/>
-                        </div>
-                        <div class="content">
-                            <div class="author">
-                              <img class="avatar border-black" src="assets/img/netflix.jpg" style="width: 20%"/>   
-                              <span><span style="font-size:18px; font-weight: bold;">NETFLIX</span><br />
-                                Queda 5º o mejor en el torneo Apertura de Liga - 8M€ 
-                                <span style="color:red; font-weight: bold;">(BOOST: Queda 5º o mejor en ambas, Apertura y Clausura - 18M€, pero si lo consigues sólo en una, serán 6M€)</span><br/><br/>
-                                Llega a Semifinales en Copa - 5M€<br/><br/>
-                                Clasifícate para la Champions League - 5M€<br/><br/>
-                                Elimina jugadores por valor de 320 puntos en la Team Cup - 4M€<br/><br/>
-                                Gana al menos tres partidos en el Golden Trophy - 3M€ 
-                                <span style="color: red; font-weight: bold;">(BOOST: Gana cada partido en el minuto 30 o menos - 8M€, pero si ganas después, será 2M€)</span><br/><br/>
-                                Acción con Emblema en Liga, Copa y competiciones europeas - 0,4M€<br/><br/>
-                                Derechos de TV por Retransmisión - 0,3M€ por partido<br/><br/>
-                                Portería imbatida en al menos 5 partidos en una vuelta - 4M€ 
-                                <span style="color: red; font-weight: bold;">(BOOST: Al menos 5 partidos en cada vuelta - 8M€)</span><br/><br/>
-                                Marcar al menos 15 goles en torneo Apertura de Liga - 5M€ 
-                                <span style="color: red; font-weight: bold;">(BOOST: 15 goles en cada vuelta - 9M€)</span><br/><br/>
-                                Obtén menos de 5 tarjetas (cuentan amarilla x1 y roja x2) en todas las competiciones en una vuelta - 3M€ 
-                                <span style="color: red; font-weight: bold;">(BOOST: Menos de 10 tarjetas en toda la temporada - 7M€)</span><br/><br/>
-                                <span style="font-weight: bold;">ESPECIAL - Si tus 4 emblemas elegidos (uno por línea) ejecutan su acción en el mismo partido durante 3 partidos diferentes, te llevas 10M€</span><br/><br/>
-                                <a style="text-align:center;cursor: pointer;font-size:24px" (click)="choosePartner(3)">Elegir</a><br/><br/>
-                                <a style="text-align:center;cursor: pointer;font-size:24px" (click)="choosePartner(4)">Elegir con Boost</a>
-                              </span>
-                            </div>
-                        </div>
-                        <hr>
-                        <div class="text-center">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <h5>10M€<br /><small>Por firmar</small></h5>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-            </div>
-            <div class="card card-user" class="col-lg-3 col-sm-12 col-md-12" style="background-color:white;margin-left: 20px;margin-right: 10px;">
+                <div *ngIf="partnerChosen == 0 || partnerChosen == 3 || partnerChosen == 4" class="card card-user" class="col-lg-3 col-sm-12 col-md-12" style="background-color:white;margin-left: 20px;margin-right: 10px;">
                     <div class="image">
                         <img src="assets/img/background.jpg" style="width: 100%"/>
                     </div>
                     <div class="content">
                         <div class="author">
-                          <img class="avatar border-black" src="assets/img/skysports.png" style="width: 20%"/>   
-                          <span><span style="font-size:18px; font-weight: bold;">SKY SPORTS</span><br />
-                            Clasificar para Play-offs - 11M€ 
-                            <span style="color:red; font-weight: bold;">(BOOST: Gana la liga - 20M€, pero si no lo consigues y te quedas en Play-offs, serán 8M€)</span><br/><br/>
-                            Llega a la Final en Copa - 7M€<br/><br/>
-                            Llega a la Final de Champions League - 8M€<br/><br/>
-                            Elimina jugadores por valor de 480 puntos en la Team Cup - 5M€<br/><br/>
-                            Gana al menos cuatro partidos en el Golden Trophy - 4M€ 
-                            <span style="color: red; font-weight: bold;">(BOOST: Gana cada partido en el minuto 30 o menos - 10M€, pero si ganas después, será 3M€)</span><br/><br/>
-                            Acción con Emblema en Liga y competiciones Europeas - 0,6M€<br/><br/>
-                            Derechos de TV por Retransmisión - 0,4M€ por partido<br/><br/>
-                            Portería imbatida en al menos 7 partidos en una vuelta - 6M€ 
-                            <span style="color: red; font-weight: bold;">(BOOST: Al menos 7 partidos en cada vuelta - 12M€)</span><br/><br/>
-                            Marcar al menos 22 goles en torneo Apertura de Liga - 7M€ 
-                            <span style="color: red; font-weight: bold;">(BOOST: 22 goles en cada vuelta - 12M€)</span><br/><br/>
-                            Obtén menos de 3 tarjetas (cuentan amarilla x1 y roja x2) en todas las competiciones en una vuelta - 4M€ 
-                            <span style="color: red; font-weight: bold;">(BOOST: Menos de 6 tarjetas en toda la temporada - 9M€)</span><br/><br/>
-                            <span style="font-weight: bold;">ESPECIAL - Si eres finalista en cualquier competición y ambos contendientes tienen como patrocinador Sky Sports, cada gol en la final reportará 5M€ a cada uno</span><br/><br/>
-                            <a style="text-align:center;cursor: pointer;font-size:24px" (click)="choosePartner(5)">Elegir</a><br/><br/>
-                            <a style="text-align:center;cursor: pointer;font-size:24px" (click)="choosePartner(6)">Elegir con Boost</a>
-                          </span>
+                            <img class="avatar border-black" src="assets/img/netflix.jpg" style="width: 20%"/>   
+                            <span><span style="font-size:18px; font-weight: bold;">NETFLIX</span><br />
+                            Queda 5º o mejor en el torneo Apertura de Liga - 8M€ 
+                            <span style="color:red; font-weight: bold;">(BOOST: Queda 5º o mejor en ambas, Apertura y Clausura - 18M€, pero si lo consigues sólo en una, serán 6M€)</span><br/><br/>
+                            Llega a Semifinales en Copa - 5M€<br/><br/>
+                            Clasifícate para la Champions League - 5M€<br/><br/>
+                            Elimina jugadores por valor de 320 puntos en la Team Cup - 4M€<br/><br/>
+                            Gana al menos tres partidos en el Golden Trophy - 3M€ 
+                            <span style="color: red; font-weight: bold;">(BOOST: Gana cada partido en el minuto 30 o menos - 8M€, pero si ganas después, será 2M€)</span><br/><br/>
+                            Acción con Emblema en Liga, Copa y competiciones europeas - 0,4M€<br/><br/>
+                            Derechos de TV por Retransmisión - 0,3M€ por partido<br/><br/>
+                            Portería imbatida en al menos 5 partidos en una vuelta - 4M€ 
+                            <span style="color: red; font-weight: bold;">(BOOST: Al menos 5 partidos en cada vuelta - 8M€)</span><br/><br/>
+                            Marcar al menos 15 goles en torneo Apertura de Liga - 5M€ 
+                            <span style="color: red; font-weight: bold;">(BOOST: 15 goles en cada vuelta - 9M€)</span><br/><br/>
+                            Obtén menos de 5 tarjetas (cuentan amarilla x1 y roja x2) en todas las competiciones en una vuelta - 3M€ 
+                            <span style="color: red; font-weight: bold;">(BOOST: Menos de 10 tarjetas en toda la temporada - 7M€)</span><br/><br/>
+                            <span style="font-weight: bold;">ESPECIAL - Si tus 4 emblemas elegidos (uno por línea) ejecutan su acción en el mismo partido durante 3 partidos diferentes, te llevas 10M€</span><br/><br/>
+                            <a *ngIf="partnerChosen == 0" style="text-align:center;cursor: pointer;font-size:24px" (click)="choosePartner(3)">Elegir</a><br/><br/>
+                            <a *ngIf="partnerChosen == 0" style="text-align:center;cursor: pointer;font-size:24px" (click)="choosePartner(4)">Elegir con Boost</a>
+                            <span *ngIf="partnerChosen != 0" style="text-align: center;font-size: 24px; font-weight: bold;color: red; border: 5pt solid red;padding: 5px;">FIRMADO</span>
+                            </span>
                         </div>
                     </div>
                     <hr>
@@ -116,8 +82,45 @@
                         </div>
                     </div>
                 </div>
-        </div>
-        <div class="row" *ngIf="partnerChosen">
-            <h1 style="text-align: center">Ya has elegido un patrocinador para esta temporada</h1>
+            </div>
+            <div *ngIf="partnerChosen == 0 || partnerChosen == 5 || partnerChosen == 6" class="card card-user" class="col-lg-3 col-sm-12 col-md-12" style="background-color:white;margin-left: 20px;margin-right: 10px;">
+                <div class="image">
+                    <img src="assets/img/background.jpg" style="width: 100%"/>
+                </div>
+                <div class="content">
+                    <div class="author">
+                        <img class="avatar border-black" src="assets/img/skysports.png" style="width: 20%"/>   
+                        <span><span style="font-size:18px; font-weight: bold;">SKY SPORTS</span><br />
+                        Clasificar para Play-offs - 11M€ 
+                        <span style="color:red; font-weight: bold;">(BOOST: Gana la liga - 20M€, pero si no lo consigues y te quedas en Play-offs, serán 8M€)</span><br/><br/>
+                        Llega a la Final en Copa - 7M€<br/><br/>
+                        Llega a la Final de Champions League - 8M€<br/><br/>
+                        Elimina jugadores por valor de 480 puntos en la Team Cup - 5M€<br/><br/>
+                        Gana al menos cuatro partidos en el Golden Trophy - 4M€ 
+                        <span style="color: red; font-weight: bold;">(BOOST: Gana cada partido en el minuto 30 o menos - 10M€, pero si ganas después, será 3M€)</span><br/><br/>
+                        Acción con Emblema en Liga y competiciones Europeas - 0,6M€<br/><br/>
+                        Derechos de TV por Retransmisión - 0,4M€ por partido<br/><br/>
+                        Portería imbatida en al menos 7 partidos en una vuelta - 6M€ 
+                        <span style="color: red; font-weight: bold;">(BOOST: Al menos 7 partidos en cada vuelta - 12M€)</span><br/><br/>
+                        Marcar al menos 22 goles en torneo Apertura de Liga - 7M€ 
+                        <span style="color: red; font-weight: bold;">(BOOST: 22 goles en cada vuelta - 12M€)</span><br/><br/>
+                        Obtén menos de 3 tarjetas (cuentan amarilla x1 y roja x2) en todas las competiciones en una vuelta - 4M€ 
+                        <span style="color: red; font-weight: bold;">(BOOST: Menos de 6 tarjetas en toda la temporada - 9M€)</span><br/><br/>
+                        <span style="font-weight: bold;">ESPECIAL - Si eres finalista en cualquier competición y ambos contendientes tienen como patrocinador Sky Sports, cada gol en la final reportará 5M€ a cada uno</span><br/><br/>
+                        <a *ngIf="partnerChosen == 0" style="text-align:center;cursor: pointer;font-size:24px" (click)="choosePartner(5)">Elegir</a><br/><br/>
+                        <a *ngIf="partnerChosen == 0" style="text-align:center;cursor: pointer;font-size:24px" (click)="choosePartner(6)">Elegir con Boost</a>
+                        <span *ngIf="partnerChosen != 0" style="text-align: center;font-size: 24px; font-weight: bold;color: red; border: 5pt solid red;padding: 5px;">FIRMADO</span>
+                        </span>
+                    </div>
+                </div>
+                <hr>
+                <div class="text-center">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h5>10M€<br /><small>Por firmar</small></h5>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>

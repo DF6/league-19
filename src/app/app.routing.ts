@@ -13,7 +13,7 @@ import { RegistroComponent } from './registro/registro.component';
 import { LogoutComponent } from './logout/logout.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { EuropaLeagueComponent } from './europaleague/europaleague.component';
-import { IntertotoComponent } from './intertoto/intertoto.component';
+import { CopaMugreComponent } from './copamugre/copamugre.component';
 import { ChampionsComponent } from './champions/champions.component';
 import { NationsComponent } from './nations/nations.component';
 import { ClubSupercupComponent } from './clubsupercup/clubsupercup.component';
@@ -47,7 +47,7 @@ export const AppRoutes: Routes = [
     { path: 'estadisticas', component: StatisticsComponent },
     { path: 'champions', component: ChampionsComponent },
     { path: 'el', component: EuropaLeagueComponent },
-    { path: 'intertoto', component: IntertotoComponent },
+    { path: 'copamugre', component: CopaMugreComponent },
     { path: 'nations', component: NationsComponent },
     { path: 'clubsupercup', component: ClubSupercupComponent },
     { path: 'sanciones', component: PenaltiesComponent },

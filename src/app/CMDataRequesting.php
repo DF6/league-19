@@ -435,10 +435,20 @@
   function makeEmblem($con, $params)
   {
     $data = array();
-    $query2="UPDATE players SET emblem=1 where id=".$params->player;
-    $resultado2=mysqli_query($con, $query2) or die("Error poniendo emblema");
     $data['success'] = true;
     $data['message'] = "Nuevo emblema";
+    $consult2 = "SELECT * from constants";
+    $consult2Result = mysqli_query($con, $consult2) or die("Error consult2ando constantes");
+    while($row = mysqli_fetch_array($consult2Result)) {
+      if($row['market_opened'] == 0) {
+        $data['success'] = false;
+        $data['message'] = "Mercado cerrado";
+      }
+    }
+    if($data['success'] == true) {
+      $query2="UPDATE players SET emblem=1 where id=".$params->player;
+      $resultado2=mysqli_query($con, $query2) or die("Error poniendo emblema");
+    }
     echo json_encode($data);
     exit;
   }
@@ -457,12 +467,22 @@
   function setPartner($con, $params)
   {
     $data = array();
-    $query="UPDATE partners SET partner=".$params->partner." where team=".$params->team;
-    $resultado=mysqli_query($con, $query) or die("Error de patrocinador");
-    $query2="UPDATE teams SET budget=budget+10 where id=".$params->team;
-    $resultado2=mysqli_query($con, $query2) or die("Error de patrocinador2");
     $data['success'] = true;
     $data['message'] = "Nuevo patrocinador";
+    $consult2 = "SELECT * from constants";
+    $consult2Result = mysqli_query($con, $consult2) or die("Error consult2ando constantes");
+    while($row = mysqli_fetch_array($consult2Result)) {
+      if($row['market_opened'] == 0) {
+        $data['success'] = false;
+        $data['message'] = "Mercado cerrado";
+      }
+    }
+    if($data['success'] == true) {
+      $query="UPDATE partners SET partner=".$params->partner." where team=".$params->team;
+      $resultado=mysqli_query($con, $query) or die("Error de patrocinador");
+      $query2="UPDATE teams SET budget=budget+10 where id=".$params->team;
+      $resultado2=mysqli_query($con, $query2) or die("Error de patrocinador2");
+    }
     echo json_encode($data);
     exit;
   }
