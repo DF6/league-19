@@ -221,6 +221,7 @@
         "leagueTable": [ "position", "team", "round", "won", "draw", "lost", "nonPlayed", "goalsFor", "goalsAgainst", "goalsDifference", "points"],
         "marketResume": [ "name", "position", "overage", "type", "amount", "oldTeam", "newTeam"],
         "offers": [ "type", "player", "team", "amount", "players", "actions"],
+        "penaltiesTable": [ "teamFor", "player", "cause", "round", "teamAgainst"],
         "pendingMatches": [ "tournament", "round", "local", "", "away", "fill"],
         "statistics": {
             "scorers": [ "position", "name", "goals"],
@@ -279,5 +280,16 @@
             "KORound": 15,
             "finalRound": 14
         }
+    },
+    "validRounds": {
+        "championsLeague": 0,
+        "supercopaDeClubes": 1,
+        "europaLeague": 0,
+        "supercopaEuropea": 1,
+        "copa": 1,
+        "copaMugre": 0,
+        "nationsLeague": 0,
+        "primera": 3,
+        "segunda": 3
     }
 }

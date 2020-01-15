@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Http, Response, Headers, RequestOptions } from '@angular/http';
-import { AngularWaitBarrier } from 'blocking-proxy/built/lib/angular_wait_barrier';
+import { AppService } from 'app/app.service';
 
 declare interface TableData {
     headerRow: string[];
@@ -16,97 +15,60 @@ declare var $:any;
 })
 
 export class PenaltiesComponent implements OnInit{
-    public tableData1: TableData;
-    public tournaments: any[];
-    public teams: any[];
-    public players: any[];
-    public actions;
+    public penaltiesTable: TableData;
     public penalties;
-    public matches;
     public yellowCardsCount = [];
 
-    constructor(private http: Http){}
+    constructor(private appService: AppService){
+        this.appService.getPlayers();
+        this.appService.getTournaments();
+        this.appService.getTeams();
+    }
 
     ngOnInit() {
-        this.tournaments = JSON.parse(sessionStorage.getItem('tournaments')).tournaments;
-        this.teams = JSON.parse(sessionStorage.getItem('teams')).teams;
-        this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
-            this.players = response.json().players;
-            this.players.forEach( (value) => {
-                while (value.name.indexOf('/n') != -1) {
-                  value.name = value.name.replace('/n', 'ñ');
-                }
-              });
-            this.setTableConfig();
-            this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'A'}).subscribe( (response) => {
-                this.actions = response.json().actions;
-                this.http.post('./test_CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
-                    this.matches = response.json().matches;
-                    let penalties = [];
-
-                    this.actions.forEach( (value) => {
-                        switch(value.type) {
-                            case 'Y':
-                                    if(this.updateYellowCount(value)) {
-                                        let penalty = this.getPenalty(value);
-                                        penalty.forEach( (value) => {
-                                            if (this.roundValid(value)) {
-                                                penalties.push(value);
-                                            }
-                                        });
-                                    }
-                                    break;
-                            case 'R':
-                            case 'I':
+        this.appService.getActionsObservable().subscribe( (response2) => {
+            this.appService.data.actions = response2.json().actions;
+            this.appService.getMatchesObservable().subscribe( (response) => {
+                this.appService.data.matches = response.json().matches;
+                let penalties = [];
+                this.appService.data.actions.forEach( (value) => {
+                    switch(value.type) {
+                        case this.appService.config.actionTypes.yellowCard:
+                                if(this.updateYellowCount(value)) {
                                     let penalty = this.getPenalty(value);
-                                    penalty.forEach( (value) => {
-                                        if (this.roundValid(value)) {
-                                            penalties.push(value);
-                                        }
-                                    });
-                                    break;
-                        }
-                    });
-
-                    this.tableData1.dataRows = penalties;
+                                    penalties = penalty.filter( (filteredPenalty) => { return this.roundValid(filteredPenalty); });
+                                }
+                                break;
+                        case this.appService.config.actionTypes.redCard:
+                        case this.appService.config.actionTypes.injury:
+                                let penalty = this.getPenalty(value);
+                                penalties = penalty.filter( (filteredPenalty) => { return this.roundValid(filteredPenalty); });
+                                break;
+                    }
                 });
+                this.penaltiesTable = this.appService.getTableConfig(this.appService.config.tableHeaders.penaltiesTable, penalties);
             });
         });
     }
 
     private roundValid(penalty) {
-        let ret = false;
-
         switch (penalty.tournament) {
-                case 'Primera':
-                case 'Segunda':
-                    ret = (penalty.round > 7);
-                    break;
-                case 'Copa':
-                    ret = (penalty.round > 4 && penalty.round < 7);
-                    break;
-                case 'Champions League':
-                    ret = (penalty.round > 8 && penalty.round < 11);
-                    break;
-                case 'Europa League':
-                    ret = (penalty.round > 2 && penalty.round < 5);
-                    break;
-                case 'Intertoto':
-                    ret = (penalty.round > 0);
-                    break;
-                case 'Supercopa de Clubes':
-                case 'Supercopa de Europa':
-                    break;
+            case this.appService.config.tournamentGeneralInfo.primera.name: return (penalty.round > this.appService.config.validRounds.primera);
+            case this.appService.config.tournamentGeneralInfo.segunda.name: return (penalty.round > this.appService.config.validRounds.segunda);
+            case this.appService.config.tournamentGeneralInfo.copa.name: return (penalty.round > this.appService.config.validRounds.copa);
+            case this.appService.config.tournamentGeneralInfo.championsLeague.name: return (penalty.round > this.appService.config.validRounds.championsLeague);
+            case this.appService.config.tournamentGeneralInfo.europaLeague.name: return (penalty.round > this.appService.config.validRounds.europaLeague);
+            case this.appService.config.tournamentGeneralInfo.copaMugre.name: return (penalty.round > this.appService.config.validRounds.copaMugre);
+            case this.appService.config.tournamentGeneralInfo.supercopaDeClubes.name:
+            case this.appService.config.tournamentGeneralInfo.supercopaEuropea.name: return;
         }
-
-        return ret;
     }
 
     private updateYellowCount(action) {
         let updated = false;
         let isPenalty = false;
         this.yellowCardsCount.forEach( (value) => {
-            if (value.tournament == this.getTournamentByMatch(action.matchID) && value.playerID == action.player && value.playerID > 0) {
+            if (value.tournament == this.appService.getTournamentByMatch(action.matchID) && value.playerID == action.player && value.playerID > 0) {
                 value.quantity += 1;
                 updated = true;
                 if (value.quantity % 2 == 0) {
@@ -115,65 +77,45 @@ export class PenaltiesComponent implements OnInit{
             }
         });
         if (!updated && action.player > 0) {
-            this.yellowCardsCount.push({playerID: action.player, tournament: this.getTournamentByMatch(action.matchID), quantity: 1});
+            this.yellowCardsCount.push({playerID: action.player, tournament: this.appService.getTournamentByMatch(action.matchID), quantity: 1});
         }
         return isPenalty;
     }
 
     private getPenalty(action) {
-        switch (this.getTournamentById(this.getTournamentByMatch(action.matchID)).name) {
-            case 'Primera':
-            case 'Segunda':
-                return this.getPenaltyAmount(action, this.getTournamentById(this.getTournamentByMatch(action.matchID)).name, 3);
-            case 'Copa':
-            case 'Champions League':
-            case 'Europa League':
-            case 'Intertoto':
-                return this.getPenaltyAmount(action, this.getTournamentById(this.getTournamentByMatch(action.matchID)).name, 1);
-            case 'Supercopa de Clubes':
-            case 'Supercopa de Europa':
+        switch (this.appService.getTournamentById(this.appService.getTournamentByMatch(action.matchID)).name) {
+            case this.appService.config.tournamentGeneralInfo.primera.name:
+            case this.appService.config.tournamentGeneralInfo.segunda.name:
+                return this.getPenaltyAmount(action, this.appService.getTournamentById(this.appService.getTournamentByMatch(action.matchID)).name, 3);
+            case this.appService.config.tournamentGeneralInfo.copa.name:
+            case this.appService.config.tournamentGeneralInfo.championsLeague.name:
+            case this.appService.config.tournamentGeneralInfo.europaLeague.name:
+            case this.appService.config.tournamentGeneralInfo.copaMugre.name:
+                return this.getPenaltyAmount(action, this.appService.getTournamentById(this.appService.getTournamentByMatch(action.matchID)).name, 1);
+            case this.appService.config.tournamentGeneralInfo.supercopaDeClubes.name:
+            case this.appService.config.tournamentGeneralInfo.supercopaEuropea.name:
                 return [{ teamFor: null, teamAgainst: null, player: null, round: 0, cause: '' }];
         }
-        
         return action;
     }
 
     private getPenaltyAmount(action, tournamentName, amountTo) {
-        let roundTo = 0;
-        if ((tournamentName == 'Primera' || tournamentName == 'Segunda') && parseInt(this.getMatchById(action.matchID).round) == 4) {
-            roundTo = 8;
-        } else if (tournamentName == 'Champions League' && parseInt(this.getMatchById(action.matchID).round) < 7) {
-            roundTo = 7;
-        }else if (tournamentName != 'Primera' && tournamentName != 'Segunda' && parseInt(this.getMatchById(action.matchID).round) % 2 != 0) {
-            roundTo = parseInt(this.getMatchById(action.matchID).round) + 2;
-        } else {
-            roundTo = parseInt(this.getMatchById(action.matchID).round) + amountTo;
-        }
+        let roundTo = parseInt(this.appService.getMatchById(action.matchID).round) + amountTo;
         switch (action.type) {
-            case 'Y': 
-                    return this.correctPenalty([{ tournament: tournamentName, teamFor: this.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo), player: action.player, round: roundTo, cause: 'Amarillas'}]);
-            case 'R': 
-                    return this.correctPenalty([{ tournament: tournamentName, teamFor: this.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo), player: action.player, round: roundTo, cause: 'Roja'},
-                            { tournament: tournamentName, teamFor: this.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo + 1), player: action.player, round: roundTo + 1, cause: 'Roja'}]);
-            case 'I': 
-                    return this.correctPenalty([{ tournament: tournamentName, teamFor: this.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo), player: action.player, round: roundTo, cause: 'Lesión'}]);
+            case this.appService.config.actionTypes.yellowCard: 
+                    return [{ tournament: tournamentName, teamFor: this.appService.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo), player: action.player, round: roundTo, cause: 'Amarillas'}];
+            case this.appService.config.actionTypes.redCard: 
+                    return [{ tournament: tournamentName, teamFor: this.appService.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo), player: action.player, round: roundTo, cause: 'Roja'},
+                            { tournament: tournamentName, teamFor: this.appService.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo + 1), player: action.player, round: roundTo + 1, cause: 'Roja'}];
+            case this.appService.config.actionTypes.injury: 
+                    return [{ tournament: tournamentName, teamFor: this.appService.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo), player: action.player, round: roundTo, cause: 'Lesión'}];
         }
     }
 
-    private getLowerTournament(tournament) {
-        switch (tournament) {
-            case 'Champions League': return 'Europa League';
-            case 'Europa League': return 'Intertoto';
-            case 'Intertoto':
-            case 'Copa':
-                return 'NO APLICA';
-        }
-    }
-
-    private correctPenalty(actions) {
+    /*private correctPenalty(actions) {
         for (let i = 0; i < actions.length; i++) {
             if (actions[i].teamAgainst == -1) {
-                actions[i].tournament = this.getLowerTournament(actions[i].tournament);
+                actions[i].tournament = this.getCorrectTournament(actions[i]);
                 if (actions[i].tournament == 'NO APLICA') {
                     actions.splice(i, 1);
                     i--;
@@ -186,130 +128,43 @@ export class PenaltiesComponent implements OnInit{
         return actions;
     }
 
-    private getLastEdition(league) {
-        let lastEdition = -1;
-        for (let i = 0; i < this.tournaments.length; i++) {
-            if (this.tournaments[i].name == league) {
-                lastEdition = this.tournaments[i].id;
-            }
+    private getCorrectTournament(penaltyData) {
+        switch(penaltyData.tournament) {
+            case this.appService.config.tournamentGeneralInfo.primera.name:
+            case this.appService.config.tournamentGeneralInfo.segunda.name:
+                if(penaltyData.roundTo < 9) { return ''}
+            case this.appService.config.tournamentGeneralInfo.copa.name:
+            case this.appService.config.tournamentGeneralInfo.championsLeague.name:
+            case this.appService.config.tournamentGeneralInfo.europaLeague.name:
+            case this.appService.config.tournamentGeneralInfo.copaMugre.name:
+                return null;
+            case this.appService.config.tournamentGeneralInfo.supercopaDeClubes.name:
+            case this.appService.config.tournamentGeneralInfo.supercopaEuropea.name:
+                return [{ teamFor: null, teamAgainst: null, player: null, round: 0, cause: '' }];
         }
-        return lastEdition;
-    }
+        return 'NO APLICA';
+    }*/
 
     private getRival(action, round) {
-        let teamFor = this.getPlayerById(action.player).teamID;
-        let tournament = this.getTournamentByMatch(action.matchID);
-        if (tournament == null) {
-            tournament = this.getLastEdition(action.tournament);
-        }
+        let teamFor = this.appService.getPlayerById(action.player).teamID;
+        let tournament = this.appService.getTournamentByMatch(action.matchID);
+        if (tournament == null) { tournament = this.appService.getLastEdition(action.tournament).id; }
         let teamToReturn = 0;
         let passRound = -1;
-        this.matches.forEach( (value) => {
-            if (value.tournament == tournament && value.round == round) {
-                if (passRound == -1) { passRound = 0; }
-                if (value.local == teamFor) {
-                    teamToReturn = value.away;
-                    passRound = 1;
-                } else if(value.away == teamFor) {
-                    teamToReturn = value.local;
-                    passRound = 1;
-                }
+        this.appService.data.matches.filter( (filteredMatch) => {
+            return filteredMatch.tournament == tournament && filteredMatch.round == round;
+        })
+        .forEach( (value) => {
+            if (passRound == -1) { passRound = 0; }
+            if (value.local == teamFor) {
+                teamToReturn = value.away;
+                passRound = 1;
+            } else if(value.away == teamFor) {
+                teamToReturn = value.local;
+                passRound = 1;
             }
         });
         if (passRound == 0) { teamToReturn = -1; }
         return teamToReturn;
-    }
-
-    public getTournamentByMatch(match) {
-        let tournamentToReturn = null;
-        this.matches.forEach( (value) => {
-            if (value.id == match) {
-                tournamentToReturn = value.tournament
-            }
-        });
-        return tournamentToReturn;
-    }
-
-    public getMatchById(match) {
-        let matchToReturn = null;
-        this.matches.forEach( (value) => {
-            if (value.id == match) {
-                matchToReturn = value;
-            }
-        });
-        return matchToReturn;
-    }
-
-    public getTeamById(team) {
-        let teamToReturn = null;
-        this.teams.forEach( (value) => {
-            if (value.id == team) {
-                teamToReturn = value;
-            }
-        });
-        return teamToReturn;
-    }
-
-    public getTournamentById(tournament) {
-        let tournamentToReturn = null;
-        this.tournaments.forEach( (value) => {
-            if (value.id == tournament) {
-                tournamentToReturn = value;
-            }
-        });
-        return tournamentToReturn;
-    }
-
-    public getPlayerById(player) {
-        let playerToReturn = null;
-        this.players.forEach( (value) => {
-            if (value.id == player) {
-                playerToReturn = value;
-            }
-        });
-        return playerToReturn;
-    }
-
-    private setTableConfig() {
-        this.tableData1 = {
-            headerRow: [ 'teamFor', 'player', 'cause', 'round', 'teamAgainst'],
-            dataRows: []
-        };
-    }
-
-    public getRoundName(tournament, round) {
-        switch (tournament) {
-            case 'Primera':
-            case 'Segunda':
-                return round;
-            case 'Copa':
-                if (round < 3) { return 'Octavos de Final'; }
-                else if (round >= 3 && round < 5) { return 'Cuartos de Final'; }
-                else if (round >= 5 && round < 7) { return 'Semifinales'; }
-                else if (round == 9) { return 'Tercer y Cuarto Puesto'; }
-                else if (round == 8) { return 'Final'; }
-                break;
-            case 'Champions League':
-                if (round < 7) { return 'Fase de Grupos'; }
-                else if (round >= 7 && round < 9) { return 'Cuartos de Final'; }
-                else if (round >= 9 && round < 11) { return 'Semifinales'; }
-                else if (round == 12) { return 'Tercer y Cuarto Puesto'; }
-                else if (round == 11) { return 'Final'; }
-                break;
-            case 'Europa League':
-                if (round < 3) { return 'Cuartos de Final'; }
-                else if (round >= 3 && round < 5) { return 'Semifinales'; }
-                else if (round == 6) { return 'Tercer y Cuarto Puesto'; }
-                else if (round == 5) { return 'Final'; }
-                break;
-            case 'Intertoto':
-                if (round < 3) { return 'Semifinales'; }
-                else if (round == 4) { return 'Tercer y Cuarto Puesto'; }
-                else if (round == 3) { return 'Final'; }
-                break;
-            case 'Supercopa de Clubes':
-            case 'Supercopa Europea': 
-                if (round == 1) { return 'Final'; } break;
-        }
     }
 }

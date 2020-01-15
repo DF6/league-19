@@ -354,14 +354,10 @@ export class AppService {
         return this.data.tournaments.filter( (filteredTournament) => { return filteredTournament.id == id })[0];
     }
 
-    private getTournamentByNameAndEdition(name, edition) {
-        let tournament = -1;
-        for (let i = 0; i < this.data.tournaments.length; i++) {
-            if (this.data.tournaments[i].name == name && edition == this.data.tournaments[i].edition) {
-                tournament = this.data.tournaments[i].id;
-            }
-        }
-        return tournament;
+    public getTournamentByMatch(matchID) {
+        return this.getTournamentById(this.data.matches.filter( (filteredMatch) => {
+            return filteredMatch.id == matchID;
+        })[0].tournament);
     }
 
     public getTournaments() {
