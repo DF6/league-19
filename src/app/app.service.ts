@@ -111,6 +111,16 @@ export class AppService {
         return this.data.users.filter( (user) => { return user.teamID != 0 && user.teamID != -1 });
     }
 
+    public getAnotherMatchOfRound(currentMatches, roundMatches) {
+        const anotherMatch = roundMatches.filter( (filteredMatch) => {
+            return filteredMatch.tournament == currentMatches[0].tournament &&
+                (currentMatches.filter( (curr) => { return filteredMatch.local == curr.local || filteredMatch.local == curr.away; }).length > 0) &&
+                (currentMatches.filter( (curr) => { return filteredMatch.local == curr.local || filteredMatch.away == curr.away; }).length > 0) &&
+                (currentMatches.filter( (curr) => { return filteredMatch.round == curr.round; }).length == 0);
+        });
+        return anotherMatch.length > 0 ? anotherMatch[0] : undefined;
+    }
+
     public getAuctionInitialAmount(player) {
         this.config.auctionInitialAmounts
             .filter( (amount) => {
@@ -155,6 +165,7 @@ export class AppService {
     }
 
     public getMatchConfiguration(match, classNames, showTitle, previousConfig?: KeyConfig): KeyConfig {
+        if(!match) { return null; }
         if (previousConfig) {
             previousConfig.matches.push(match);
         }

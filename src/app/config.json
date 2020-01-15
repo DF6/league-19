@@ -216,6 +216,7 @@
         "adminMatches": [ "tournament", "round", "local", "", "away" ],
         "adminSalaries": [ "team", "salaries"],
         "auctions": [ "name", "position", "overage", "team", "amount", "state", "time", "raise"],
+        "groupTable": [ "position", "team", "round", "won", "draw", "lost", "goalsFor", "goalsAgainst", "goalsDifference", "points" ],
         "leagueMatches": [ "round", "local", "result", "away", "summary"],
         "leagueTable": [ "position", "team", "round", "won", "draw", "lost", "nonPlayed", "goalsFor", "goalsAgainst", "goalsDifference", "points"],
         "marketResume": [ "name", "position", "overage", "type", "amount", "oldTeam", "newTeam"],
