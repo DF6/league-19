@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Http} from '@angular/http';
 import { AppService } from 'app/app.service';
 
 declare var $: any;
@@ -28,23 +27,37 @@ export class ChampionsComponent implements OnInit {
             this.appService.getMatchesObservable().subscribe( (response) => {
                 this.appService.data.matches = response.json() ? response.json().matches : null;
                 let finalMatches = [];
-                const tournament = this.appService.getLastEdition(this.appService.config.tournamentGeneralInfo.copa.name);
+                const tournament = this.appService.getLastEdition(this.appService.config.tournamentGeneralInfo.championsLeague.name);
                 this.season = tournament.edition;
                 const allMatches = this.appService.data.matches.filter( (filteredMatch) => {
                     return filteredMatch.tournament == tournament.id;
                 });
-                for(let i = 1; i <= this.appService.config.tournamentGeneralInfo.championsLeague.finalRound; i+=2) {
-                    const filteredRound = allMatches.filter( (filteredMatch) => {
-                        return filteredMatch.round == i || filteredMatch.round == i+1;
+                for(let i = 1; i <= this.appService.config.tournamentGeneralInfo.championsLeague.finalRound; i=i) {
+                    const filteredRound1 = allMatches.filter( (filteredMatch) => {
+                        return filteredMatch.round == i;
+                    });
+                    const filteredRound2 = allMatches.filter( (filteredMatch) => {
+                        return filteredMatch.round == i+1;
                     })
-                    .map( (match, key) => {
-                        if (parseInt(match.round) < this.appService.config.tournamentGeneralInfo.championsLeague.KORound - 1) {
-                            return this.appService.getMatchConfiguration(this.appService.getAnotherMatchOfRound([match], filteredRound), this.appService.getClassNames(this.appService.config.classNameSizes.medium), key == 0 ? true : false, this.appService.getMatchConfiguration(match, this.appService.getClassNames(this.appService.config.classNameSizes.medium), key == 0 ? true : false));
+                    const filteredMatches = filteredRound1.map( (match, key) => {
+                        if (parseInt(match.round) < this.appService.config.tournamentGeneralInfo.championsLeague.finalRound - 1) {
+                            return this.appService.getMatchConfiguration(this.appService.getAnotherMatchOfRound([match], filteredRound2), this.appService.getClassNames(this.appService.config.classNameSizes.medium), key == 0 ? true : false, this.appService.getMatchConfiguration(match, this.appService.getClassNames(this.appService.config.classNameSizes.medium), key == 0 ? true : false));
                         } else {
                             return this.appService.getMatchConfiguration(match, this.appService.getClassNames(this.appService.config.classNameSizes.medium), key == 0 ? true : false);
                         }
                     });
-                    if(filteredRound != null && filteredRound.length > 0) { finalMatches.push(filteredRound); }
+                    if(filteredMatches.length > 0) { 
+                        let valid = true;
+                        filteredMatches.forEach( (value) => {
+                            if(value == null) { valid = false; }
+                        });
+                        if(valid) { finalMatches.push(filteredMatches); }
+                    }
+                    if( i+2 < this.appService.config.tournamentGeneralInfo.championsLeague.finalRound - 1 ) {
+                        i+=2;
+                    } else {
+                        i++;
+                    }
                 }
                 this.uclMatches = finalMatches;
                 this.champion = this.appService.whoWon(this.appService.data.matches.filter( (filteredMatch) => {

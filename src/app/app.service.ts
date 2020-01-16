@@ -115,8 +115,8 @@ export class AppService {
         const anotherMatch = roundMatches.filter( (filteredMatch) => {
             return filteredMatch.tournament == currentMatches[0].tournament &&
                 (currentMatches.filter( (curr) => { return filteredMatch.local == curr.local || filteredMatch.local == curr.away; }).length > 0) &&
-                (currentMatches.filter( (curr) => { return filteredMatch.local == curr.local || filteredMatch.away == curr.away; }).length > 0) &&
-                (currentMatches.filter( (curr) => { return filteredMatch.round == curr.round; }).length == 0);
+                (currentMatches.filter( (curr) => { return filteredMatch.away == curr.local || filteredMatch.away == curr.away; }).length > 0) &&
+                (currentMatches.filter( (curr) => { return parseInt(filteredMatch.round) == parseInt(curr.round) + 1 || parseInt(filteredMatch.round) == parseInt(curr.round) + 2; }).length > 0);
         });
         return anotherMatch.length > 0 ? anotherMatch[0] : undefined;
     }
@@ -151,13 +151,18 @@ export class AppService {
     }
 
     public getLastEdition(name) {
-        let lastEdition = null;
-        for (let i = 0; i < this.data.tournaments.length; i++) {
-            if (this.data.tournaments[i].name == name && lastEdition < this.data.tournaments[i].edition) {
-                lastEdition = this.data.tournaments[i];
+        let lastEdition = 0;
+        let tournamentToReturn = undefined;
+        this.data.tournaments.filter( (filteredTournament) => {
+            return filteredTournament.name == name;
+        })
+        .forEach( (value) => {
+            if(parseInt(value.edition) > lastEdition) {
+                lastEdition = parseInt(value.edition);
+                tournamentToReturn = value;
             }
-        }
-        return lastEdition;
+        });
+        return tournamentToReturn;
     }
 
     public getMatchById(match) {
@@ -246,22 +251,35 @@ export class AppService {
                 }
                 break;
             case this.config.tournamentGeneralInfo.championsLeague.name:
-                if (match.round < 7) { return this.config.roundNames.groupStage;
-                }else if (match.round >= 7 && match.round < 9) { return this.config.roundNames.quarterFinals;
-                }else if (match.round >= 9 && match.round < 11) { return this.config.roundNames.semifinals;
-                }else if (match.round == 12) { return this.config.roundNames.final;
-                }else if (match.round == 11) { return this.config.roundNames.thirdAndFourthPlace; }
+                switch(parseInt(match.round)) {
+                    case 1:
+                    case 2: return this.config.roundNames.quarterFinals;
+                    case 3:
+                    case 4: return this.config.roundNames.semifinals;
+                    case 5: return this.config.roundNames.thirdAndFourthPlace;
+                    case 6: return this.config.roundNames.final;
+                }
                 break;
             case this.config.tournamentGeneralInfo.europaLeague.name:
-                if (match.round < 3) { return this.config.roundNames.quarterFinals;
-                }else if (match.round >= 3 && match.round < 5) { return this.config.roundNames.semifinals;
-                }else if (match.round == 6) { return this.config.roundNames.final;
-                }else if (match.round == 5) { return this.config.roundNames.thirdAndFourthPlace; }
+                switch(parseInt(match.round)) {
+                    case 1:
+                    case 2:
+                    case 3: return this.config.roundNames.groupStage;
+                    case 4:
+                    case 5: return this.config.roundNames.quarterFinals;
+                    case 6:
+                    case 7: return this.config.roundNames.semifinals;
+                    case 8: return this.config.roundNames.thirdAndFourthPlace;
+                    case 9: return this.config.roundNames.final;
+                }
                 break;
             case this.config.tournamentGeneralInfo.copaMugre.name:
-                if (match.round < 3) { return this.config.roundNames.semifinals;
-                }else if (match.round == 4) { return this.config.roundNames.final;
-                }else if (match.round == 3) { return this.config.roundNames.thirdAndFourthPlace; }
+                switch(parseInt(match.round)) {
+                    case 1:
+                    case 2: return this.config.roundNames.semifinals;
+                    case 3: return this.config.roundNames.thirdAndFourthPlace;
+                    case 4: return this.config.roundNames.final;
+                }
                 break;
             case this.config.tournamentGeneralInfo.supercopaDeClubes.name:
             case this.config.tournamentGeneralInfo.supercopaEuropea.name:

@@ -54,7 +54,6 @@ export class PremierComponent implements OnInit{
                         };
                     });
                     let pStands = [];
-                    let position = 1;
                     while (mappedTable.length != 0) {
                         let indexToInsert = -1;
                         let maxPoints = -1;
@@ -65,9 +64,7 @@ export class PremierComponent implements OnInit{
                             }
                         });
                         let teamToInsert = mappedTable.splice(indexToInsert, 1);
-                        teamToInsert[0].position = position;
                         pStands.push(teamToInsert[0]);
-                        position++;
                     }
                     let aux = null;
                     for (let i = 0; i < pStands.length; i++) {
@@ -88,6 +85,9 @@ export class PremierComponent implements OnInit{
                             }
                         }
                     }
+                    pStands.forEach( (value, key) => {
+                        value.position = key + 1;
+                    });
                     this.leagueTable = this.appService.getTableConfig(this.appService.config.tableHeaders.leagueTable, pStands);
                     const mappedMatches = this.appService.data.matches.filter( (filteredMatch) => {
                         return filteredMatch.tournament == leagueLastEdition.id;

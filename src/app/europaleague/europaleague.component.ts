@@ -17,27 +17,30 @@ declare interface TableData {
 
 export class EuropaLeagueComponent implements OnInit{
 
-    public groupA: TableData;
-    public groupB: TableData;
-    public groupC: TableData;
-    public groupD: TableData;
+    public groupTables: TableData[];
     public allMatches: TableData;
+    public KOMatches;
     public season;
+    public champion;
 
-    constructor(private http: Http, private appService: AppService) {
+    constructor(private appService: AppService) {
+        this.appService.getPlayers();
+        this.appService.getActions();
         this.appService.getTournaments();
         this.appService.getTeams();
     }
 
     ngOnInit() {
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'M'}).subscribe( (response) => {
-            this.appService.data.matches = response.json().matches;
-            this.getMatches();
+        this.appService.getStandingsObservable().subscribe( (response2) => {
+            this.appService.data.standings = response2.json().standings;
+            this.appService.getMatchesObservable().subscribe( (response) =>     {
+                this.appService.data.matches = response.json().matches;
+                this.getMatches();
+            });
         });
     }
 
     private getMatches() {
-        let finalTableMatches = [];
         const tournament = this.appService.getLastEdition(this.appService.config.tournamentGeneralInfo.europaLeague.name);
         this.season = tournament.edition;
             
@@ -45,221 +48,166 @@ export class EuropaLeagueComponent implements OnInit{
         let groupBStandings = [];
         let groupCStandings = [];
         let groupDStandings = [];
-        let aStands = [];
-        let bStands = [];
-        let cStands = [];
-        let dStands = [];
-            for (let i = 16; i < 32; i++) {
-                if (this.standingsArray[i].tournamentID == championsLastEdition) {
-                    switch(i) {
-                        case 16:
-                        case 17:
-                        case 18:
-                        case 19:
-                            groupAStandings.push([
-                                0,
-                                this.getTeamById(parseInt(this.standingsArray[i].team)).name,
-                                parseInt(this.standingsArray[i].round),
-                                parseInt(this.standingsArray[i].won),
-                                parseInt(this.standingsArray[i].draw),
-                                parseInt(this.standingsArray[i].lost),
-                                parseInt(this.standingsArray[i].goalsFor),
-                                parseInt(this.standingsArray[i].goalsAgainst),
-                                parseInt(this.standingsArray[i].goalsFor) - parseInt(this.standingsArray[i].goalsAgainst),
-                                parseInt(this.standingsArray[i].points)
-                            ]);
-                            break;
-                        case 20:
-                        case 21:
-                        case 22:
-                        case 23:
-                            groupBStandings.push([
-                                0,
-                                this.getTeamById(parseInt(this.standingsArray[i].team)).name,
-                                parseInt(this.standingsArray[i].round),
-                                parseInt(this.standingsArray[i].won),
-                                parseInt(this.standingsArray[i].draw),
-                                parseInt(this.standingsArray[i].lost),
-                                parseInt(this.standingsArray[i].goalsFor),
-                                parseInt(this.standingsArray[i].goalsAgainst),
-                                parseInt(this.standingsArray[i].goalsFor) - parseInt(this.standingsArray[i].goalsAgainst),
-                                parseInt(this.standingsArray[i].points)
-                            ]);
-                            break;
-                        case 24:
-                        case 25:
-                        case 26:
-                        case 27:
-                            groupCStandings.push([
-                                0,
-                                this.getTeamById(parseInt(this.standingsArray[i].team)).name,
-                                parseInt(this.standingsArray[i].round),
-                                parseInt(this.standingsArray[i].won),
-                                parseInt(this.standingsArray[i].draw),
-                                parseInt(this.standingsArray[i].lost),
-                                parseInt(this.standingsArray[i].goalsFor),
-                                parseInt(this.standingsArray[i].goalsAgainst),
-                                parseInt(this.standingsArray[i].goalsFor) - parseInt(this.standingsArray[i].goalsAgainst),
-                                parseInt(this.standingsArray[i].points)
-                            ]);
-                        break;
-                        case 28:
-                        case 29:
-                        case 30:
-                        case 31:
-                            groupDStandings.push([
-                                0,
-                                this.getTeamById(parseInt(this.standingsArray[i].team)).name,
-                                parseInt(this.standingsArray[i].round),
-                                parseInt(this.standingsArray[i].won),
-                                parseInt(this.standingsArray[i].draw),
-                                parseInt(this.standingsArray[i].lost),
-                                parseInt(this.standingsArray[i].goalsFor),
-                                parseInt(this.standingsArray[i].goalsAgainst),
-                                parseInt(this.standingsArray[i].goalsFor) - parseInt(this.standingsArray[i].goalsAgainst),
-                                parseInt(this.standingsArray[i].points)
-                            ]);
-                            break;
-                    }
-                    
-                }
-            }
-
-            let position = 1;
-            while (groupAStandings.length != 0) {
-                let indexToInsert = -1;
-                let maxPoints = -1;
-                groupAStandings.forEach( (value, key) => {
-                    if (value[9] > maxPoints) {
-                        indexToInsert = key;
-                        maxPoints = value[9];
-                    }
-                });
-                let teamToInsert = groupAStandings.splice(indexToInsert, 1);
-                teamToInsert[0][0] = position;
-                aStands.push(teamToInsert[0]);
-                position++;
-            }
-            let aux = null;
-            for (let i = 0; i < aStands.length; i++) {
-                for (let j = 0; j < aStands.length - 1 - i; j++) {
-                    if (aStands[j][9] == aStands[j + 1][9] && aStands[j][8] < aStands[j + 1][8]) {
-                        aStands[j][0]++;
-                        aStands[j + 1][0]--;
-                        aux = aStands[j];
-                        aStands[j] = aStands[j + 1];
-                        aStands[j + 1] = aux;
-                    }
-                }
-            }
-            position = 1;
-            while (groupBStandings.length != 0) {
-                let indexToInsert = -1;
-                let maxPoints = -1;
-                groupBStandings.forEach( (value, key) => {
-                    if (value[9] > maxPoints) {
-                        indexToInsert = key;
-                        maxPoints = value[9];
-                    }
-                });
-                let teamToInsert = groupBStandings.splice(indexToInsert, 1);
-                teamToInsert[0][0] = position;
-                bStands.push(teamToInsert[0]);
-                position++;
-            }
-            for (let i = 0; i < bStands.length; i++) {
-                for (let j = 0; j < bStands.length - 1 - i; j++) {
-                    if (bStands[j][9] == bStands[j + 1][9] && bStands[j][8] < bStands[j + 1][8]) {
-                        bStands[j][0]++;
-                        bStands[j + 1][0]--;
-                        aux = bStands[j];
-                        bStands[j] = bStands[j + 1];
-                        bStands[j + 1] = aux;
-                    }
-                }
-            }
-            position = 1;
-            while (groupCStandings.length != 0) {
-                let indexToInsert = -1;
-                let maxPoints = -1;
-                groupCStandings.forEach( (value, key) => {
-                    if (value[9] > maxPoints) {
-                        indexToInsert = key;
-                        maxPoints = value[9];
-                    }
-                });
-                let teamToInsert = groupCStandings.splice(indexToInsert, 1);
-                teamToInsert[0][0] = position;
-                cStands.push(teamToInsert[0]);
-                position++;
-            }
-            for (let i = 0; i < cStands.length; i++) {
-                for (let j = 0; j < cStands.length - 1 - i; j++) {
-                    if (cStands[j][9] == cStands[j + 1][9] && cStands[j][8] < cStands[j + 1][8]) {
-                        cStands[j][0]++;
-                        cStands[j + 1][0]--;
-                        aux = cStands[j];
-                        cStands[j] = cStands[j + 1];
-                        cStands[j + 1] = aux;
-                    }
-                }
-            }
-            position = 1;
-            while (groupDStandings.length != 0) {
-                let indexToInsert = -1;
-                let maxPoints = -1;
-                groupDStandings.forEach( (value, key) => {
-                    if (value[9] > maxPoints) {
-                        indexToInsert = key;
-                        maxPoints = value[9];
-                    }
-                });
-                let teamToInsert = groupDStandings.splice(indexToInsert, 1);
-                teamToInsert[0][0] = position;
-                dStands.push(teamToInsert[0]);
-                position++;
-            }
-            for (let i = 0; i < dStands.length; i++) {
-                for (let j = 0; j < dStands.length - 1 - i; j++) {
-                    if (dStands[j][9] == dStands[j + 1][9] && dStands[j][8] < dStands[j + 1][8]) {
-                        dStands[j][0]++;
-                        dStands[j + 1][0]--;
-                        aux = dStands[j];
-                        dStands[j] = dStands[j + 1];
-                        dStands[j + 1] = aux;
-                    }
-                }
-            }
-            this.groupA.dataRows = aStands;
-            this.groupB.dataRows = bStands;
-            this.groupC.dataRows = cStands;
-            this.groupD.dataRows = dStands;
-            matchesArray.forEach( (value, key) => {
-                if (value.tournament == tournament) {
-                    value.filling = false;
-                    finalTableMatches.push(value);
+        const tournamentStandings = this.appService.data.standings.filter( (filteredStanding) => {
+            return filteredStanding.tournamentID == tournament.id;
+        });
+        groupAStandings = tournamentStandings.filter( (filteredStanding) => {
+            return filteredStanding.tournamentGroup == '1';
+        })
+        .map( (value) => {
+            return {
+                position: 0,
+                team: this.appService.getTeamById(parseInt(value.team)).name,
+                round: parseInt(value.round),
+                won: parseInt(value.won),
+                draw: parseInt(value.draw),
+                lost: parseInt(value.lost),
+                nonPlayed: parseInt(value.nonPlayed),
+                goalsFor: parseInt(value.goalsFor),
+                goalsAgainst: parseInt(value.goalsAgainst),
+                goalDifference: parseInt(value.goalsFor) - parseInt(value.goalsAgainst),
+                points: parseInt(value.points)
+            };
+        });
+        groupBStandings = tournamentStandings.filter( (filteredStanding) => {
+            return filteredStanding.tournamentGroup == '2';
+        })
+        .map( (value) => {
+            return {
+                position: 0,
+                team: this.appService.getTeamById(parseInt(value.team)).name,
+                round: parseInt(value.round),
+                won: parseInt(value.won),
+                draw: parseInt(value.draw),
+                lost: parseInt(value.lost),
+                nonPlayed: parseInt(value.nonPlayed),
+                goalsFor: parseInt(value.goalsFor),
+                goalsAgainst: parseInt(value.goalsAgainst),
+                goalDifference: parseInt(value.goalsFor) - parseInt(value.goalsAgainst),
+                points: parseInt(value.points)
+            };
+        });
+        groupCStandings = tournamentStandings.filter( (filteredStanding) => {
+            return filteredStanding.tournamentGroup == '3';
+        })
+        .map( (value) => {
+            return {
+                position: 0,
+                team: this.appService.getTeamById(parseInt(value.team)).name,
+                round: parseInt(value.round),
+                won: parseInt(value.won),
+                draw: parseInt(value.draw),
+                lost: parseInt(value.lost),
+                nonPlayed: parseInt(value.nonPlayed),
+                goalsFor: parseInt(value.goalsFor),
+                goalsAgainst: parseInt(value.goalsAgainst),
+                goalDifference: parseInt(value.goalsFor) - parseInt(value.goalsAgainst),
+                points: parseInt(value.points)
+            };
+        });
+        groupDStandings = tournamentStandings.filter( (filteredStanding) => {
+            return filteredStanding.tournamentGroup == '4';
+        })
+        .map( (value) => {
+            return {
+                position: 0,
+                team: this.appService.getTeamById(parseInt(value.team)).name,
+                round: parseInt(value.round),
+                won: parseInt(value.won),
+                draw: parseInt(value.draw),
+                lost: parseInt(value.lost),
+                nonPlayed: parseInt(value.nonPlayed),
+                goalsFor: parseInt(value.goalsFor),
+                goalsAgainst: parseInt(value.goalsAgainst),
+                goalDifference: parseInt(value.goalsFor) - parseInt(value.goalsAgainst),
+                points: parseInt(value.points)
+            };
+        });
+        const groupA = this.appService.getTableConfig(this.appService.config.tableHeaders.leagueTable, this.getOrdenatedStanding(groupAStandings));
+        const groupB = this.appService.getTableConfig(this.appService.config.tableHeaders.leagueTable, this.getOrdenatedStanding(groupBStandings));
+        const groupC = this.appService.getTableConfig(this.appService.config.tableHeaders.leagueTable, this.getOrdenatedStanding(groupCStandings));
+        const groupD = this.appService.getTableConfig(this.appService.config.tableHeaders.leagueTable, this.getOrdenatedStanding(groupDStandings));
+        this.groupTables = [groupA, groupB, groupC, groupD];
+        const finalTableMatches = this.appService.data.matches.filter( (filteredMatch) => {
+            return filteredMatch.tournament == tournament.id;
+        });
+        this.allMatches = this.appService.getTableConfig(this.appService.config.tableHeaders.leagueMatches, finalTableMatches);
+        let finalMatches = [];
+        for(let i = this.appService.config.tournamentGeneralInfo.europaLeague.KORound; i <= this.appService.config.tournamentGeneralInfo.europaLeague.finalRound; i=i) {
+            const filteredRound1 = finalTableMatches.filter( (filteredMatch) => {
+                return filteredMatch.round == i;
+            });
+            const filteredRound2 = finalTableMatches.filter( (filteredMatch) => {
+                return filteredMatch.round == i+1;
+            })
+            const filteredMatches = filteredRound1.map( (match, key) => {
+                if (parseInt(match.round) < this.appService.config.tournamentGeneralInfo.europaLeague.finalRound - 1) {
+                    return this.appService.getMatchConfiguration(this.appService.getAnotherMatchOfRound([match], filteredRound2), this.appService.getClassNames(this.appService.config.classNameSizes.medium), key == 0 ? true : false, this.appService.getMatchConfiguration(match, this.appService.getClassNames(this.appService.config.classNameSizes.medium), key == 0 ? true : false));
+                } else {
+                    return this.appService.getMatchConfiguration(match, this.appService.getClassNames(this.appService.config.classNameSizes.medium), key == 0 ? true : false);
                 }
             });
-            this.matches = finalTableMatches;
-    }
-
-    private getLastEdition(league) {
-        let lastEdition = -1;
-        for (let i = 0; i < this.tournaments.length; i++) {
-            if (this.tournaments[i].name == league && lastEdition < this.tournaments[i].edition) {
-                lastEdition = this.tournaments[i].edition;
+            if(filteredMatches.length > 0) { 
+                let valid = true;
+                filteredMatches.forEach( (value) => {
+                    if(value == null) { valid = false; }
+                });
+                if(valid) { finalMatches.push(filteredMatches); }
+            }
+            if( i+2 < this.appService.config.tournamentGeneralInfo.europaLeague.finalRound - 1 ) {
+                i+=2;
+            } else {
+                i++;
             }
         }
-        return lastEdition;
+        this.KOMatches = finalMatches;
+        this.champion = this.appService.whoWon(this.appService.data.matches.filter( (filteredMatch) => {
+            return filteredMatch.tournament == tournament.id && filteredMatch.round == this.appService.config.tournamentGeneralInfo.europaLeague.finalRound;
+        })[0]);
     }
 
-    private getTournamentByEdition(edition) {
-        let tournament = -1;
-        for (let i = 0; i < this.tournaments.length; i++) {
-            if (this.tournaments[i].name == 'Europa League' && edition == this.tournaments[i].edition) {
-                tournament = this.tournaments[i].id;
+    private getOrdenatedStanding(groupStandings) {
+        let pStands = [];
+        while (groupStandings.length != 0) {
+            let indexToInsert = -1;
+            let maxPoints = -1;
+            groupStandings.forEach( (value, key) => {
+                if (value.points > maxPoints) {
+                    indexToInsert = key;
+                    maxPoints = value.points;
+                }
+            });
+            let teamToInsert = groupStandings.splice(indexToInsert, 1);
+            pStands.push(teamToInsert[0]);
+        }
+        let aux = null;
+        for (let i = 0; i < pStands.length; i++) {
+            for (let j = 0; j < pStands.length - 1 - i; j++) {
+                if (pStands[j].points == pStands[j+1].points && pStands[j].goalDifference < pStands[j+1].goalDifference) {
+                    pStands[j][0]++;
+                    pStands[j+1][0]--;
+                    aux = pStands[j];
+                    pStands[j] = pStands[j+1];
+                    pStands[j+1] = aux;
+                }
+                if (pStands[j].points == pStands[j+1].points && pStands[j].goalDifference == pStands[j+1].goalDifference && pStands[j].goalsFor == pStands[j+1].goalsFor) {
+                    pStands[j][0]++;
+                    pStands[j+1][0]--;
+                    aux = pStands[j];
+                    pStands[j] = pStands[j+1];
+                    pStands[j+1] = aux;
+                }
             }
         }
-        return tournament;
+        pStands.forEach( (value, key) => {
+            value.position = key + 1;
+        });
+        return pStands;
+    }
+
+    public showResume(match) {
+        this.appService.showResume(match, this.appService.data.actions.filter( (filteredAction) => {
+            return filteredAction.matchID == match.id;
+        }));
     }
 }

@@ -184,7 +184,7 @@ export class MatchFillerComponent implements OnInit{
         this.away.mvp = [];
     }
 
-    private resolveKO(match, local, away) {
+    private resolveKOCup(match, local, away) {
         const almostFilledMatches = this.appService.data.matches.filter( (filteredMatch) => {
             return filteredMatch.tournament == match.tournament && parseInt(filteredMatch.round) == parseInt(match.round) + 1 && filteredMatch.away == '0';
         })
@@ -208,7 +208,7 @@ export class MatchFillerComponent implements OnInit{
         if (!this.sent) {
             this.sent = true;
             this.appService.sendMatchInfo(this.data, this.local, this.away);
-            if(this.appService.getTournamentById(this.data.tournament).name == this.appService.config.tournamentGeneralInfo.copa.name) { this.resolveKO(this.data, this.local, this.away); }
+            if(this.appService.getTournamentById(this.data.tournament).name == this.appService.config.tournamentGeneralInfo.copa.name) { this.resolveKOCup(this.data, this.local, this.away); }
             this.matchFilled.emit();
         } else {
             alert('Resultado ya introducido');

@@ -237,8 +237,8 @@
     "tournamentGeneralInfo": {
         "championsLeague": {
             "name": "Champions League",
-            "KORound": 7,
-            "finalRound": 12
+            "KORound": 1,
+            "finalRound": 6
         },
         "supercopaDeClubes": {
             "name": "Supercopa de Clubes",
@@ -247,8 +247,8 @@
         },
         "europaLeague": {
             "name": "Europa League",
-            "KORound": 1,
-            "finalRound": 6
+            "KORound": 4,
+            "finalRound": 9
         },
         "supercopaEuropea": {
             "name": "Supercopa Europea",

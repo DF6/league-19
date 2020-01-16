@@ -1086,6 +1086,7 @@
     while($row = mysqli_fetch_array($resultado))
     {
         $tournamentID=$row['tournament_id'];
+        $tournamentGroup=$row['tournament_group'];
         $team=$row['team'];
         $round=$row['round'];
         $points=$row['points'];
@@ -1095,7 +1096,7 @@
         $nonPlayed=$row['non_played'];
         $goalsFor=$row['goals_for'];
         $goalsAgainst=$row['goals_against'];
-        $standings[] = array('tournamentID'=> $tournamentID, 'round'=> $round, 'team'=> $team, 'points'=> $points, 'won'=> $won, 'draw'=> $draw, 'lost'=> $lost, 'nonPlayed'=>$nonPlayed, 'goalsFor'=> $goalsFor, 'goalsAgainst'=> $goalsAgainst);
+        $standings[] = array('tournamentID'=> $tournamentID, 'tournamentGroup'=> $tournamentGroup, 'round'=> $round, 'team'=> $team, 'points'=> $points, 'won'=> $won, 'draw'=> $draw, 'lost'=> $lost, 'nonPlayed'=>$nonPlayed, 'goalsFor'=> $goalsFor, 'goalsAgainst'=> $goalsAgainst);
     }
     $data['standings']=$standings;
     $data['success'] = true;

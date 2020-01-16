@@ -1,8 +1,8 @@
 <div class="main-content">
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-12 col-sm-12" *ngIf="matches">
-                <section class="col-md-4 col-sm-12" *ngFor="let round of matches">
+            <div class="col-md-12 col-sm-12" *ngIf="uclMatches">
+                <section class="col-md-4 col-sm-12" *ngFor="let round of uclMatches">
                     <roundkeys [roundConfig]="round"></roundkeys>
                 </section>
                 <div style="text-align: center;" *ngIf="champion">
@@ -11,7 +11,7 @@
                     <h3>{{appService.getTeamById(champion).name}}</h3>
                 </div>
             </div>
-            <div *ngIf="!matches" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+            <div *ngIf="!uclMatches" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
                 Partidos no disponibles
             </div>
         </div>
