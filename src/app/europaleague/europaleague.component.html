@@ -42,7 +42,7 @@
                             <tbody>
                                 <tr *ngFor="let row of group.dataRows">
                                     <td>{{row.position}}</td>
-                                    <td>{{row.team}}</td>
+                                    <td><img src="{{row.team.teamImage}}" style="width: 13%;margin-right: 8px;">{{row.team.name}}</td>
                                     <td>{{row.round}}</td>
                                     <td>{{row.won}}</td>
                                     <td>{{row.draw}}</td>
@@ -84,9 +84,15 @@
                             <tbody>
                                 <tr *ngFor="let row of allMatches.dataRows">
                                     <td style="text-align: center;">{{row.round}}</td>
-                                    <td style="text-align: center;">{{appService.getTeamById(row.local).name}}</td>
+                                    <td style="text-align: center;">
+                                        <img src="{{appService.getTeamById(row.local).teamImage}}" style="width: 13%;margin-right: 8px;">
+                                        {{appService.getTeamById(row.local).name}}
+                                    </td>
                                     <td style="text-align: center;"><span *ngIf="row.localGoals != -1">{{row.localGoals}} - {{row.awayGoals}}</span><span *ngIf="row.localGoals == -1">-</span></td>
-                                    <td style="text-align: center;">{{appService.getTeamById(row.away).name}}</td>
+                                    <td style="text-align: center;">
+                                        {{appService.getTeamById(row.away).name}}
+                                        <img src="{{appService.getTeamById(row.away).teamImage}}" style="width: 13%;margin-left: 8px;">
+                                    </td>
                                     <td style="text-align: center;"><a *ngIf="row.localGoals != -1" style="cursor:pointer;" (click)="showResume(row)">Resumen</a><span *ngIf="row.localGoals == -1">Por jugar</span></td>
                                 </tr>
                             </tbody>

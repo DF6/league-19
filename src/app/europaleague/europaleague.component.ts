@@ -57,7 +57,7 @@ export class EuropaLeagueComponent implements OnInit{
         .map( (value) => {
             return {
                 position: 0,
-                team: this.appService.getTeamById(parseInt(value.team)).name,
+                team: this.appService.getTeamById(parseInt(value.team)),
                 round: parseInt(value.round),
                 won: parseInt(value.won),
                 draw: parseInt(value.draw),
@@ -75,7 +75,7 @@ export class EuropaLeagueComponent implements OnInit{
         .map( (value) => {
             return {
                 position: 0,
-                team: this.appService.getTeamById(parseInt(value.team)).name,
+                team: this.appService.getTeamById(parseInt(value.team)),
                 round: parseInt(value.round),
                 won: parseInt(value.won),
                 draw: parseInt(value.draw),
@@ -93,7 +93,7 @@ export class EuropaLeagueComponent implements OnInit{
         .map( (value) => {
             return {
                 position: 0,
-                team: this.appService.getTeamById(parseInt(value.team)).name,
+                team: this.appService.getTeamById(parseInt(value.team)),
                 round: parseInt(value.round),
                 won: parseInt(value.won),
                 draw: parseInt(value.draw),
@@ -111,7 +111,7 @@ export class EuropaLeagueComponent implements OnInit{
         .map( (value) => {
             return {
                 position: 0,
-                team: this.appService.getTeamById(parseInt(value.team)).name,
+                team: this.appService.getTeamById(parseInt(value.team)),
                 round: parseInt(value.round),
                 won: parseInt(value.won),
                 draw: parseInt(value.draw),
