@@ -27,7 +27,7 @@
                         <tbody>
                             <tr *ngFor="let row of leagueTable.dataRows">
                                 <td>{{row.position}}</td>
-                                <td><img src="{{row.team.teamImage}}" style="width: 13%;margin-right: 8px;">{{row.team.name}}</td>
+                                <td><img src="{{row.team.teamImage}}" style="width: 20px;margin-right: 8px;">{{row.team.name}}</td>
                                 <td>{{row.round}}</td>
                                 <td>{{row.won}}</td>
                                 <td>{{row.draw}}</td>
@@ -72,7 +72,7 @@
                             <tr *ngFor="let row of leagueMatches.dataRows">
                                 <td style="text-align: center;">{{row.round}}</td>
                                 <td style="text-align: center;">
-                                    <img src="{{appService.getTeamById(row.local).teamImage}}" style="width: 13%;margin-right: 8px;">
+                                    <img src="{{appService.getTeamById(row.local).teamImage}}" style="width: 20px;float:left;margin-right: 8px;">
                                     {{appService.getTeamById(row.local).name}}
                                 </td>
                                 <td style="text-align: center;">
@@ -84,7 +84,7 @@
                                 </td>
                                 <td style="text-align: center;">
                                     {{appService.getTeamById(row.away).name}}
-                                    <img src="{{appService.getTeamById(row.away).teamImage}}" style="width: 13%;margin-left: 8px;">
+                                    <img src="{{appService.getTeamById(row.away).teamImage}}" style="width: 20px;float:right;margin-left: 8px;">
                                 </td>
                                 <td style="text-align: center;"><a *ngIf="row.localGoals > -1" style="cursor:pointer;" (click)="showResume(row)">Resumen</a><span *ngIf="row.localGoals == -1">Por jugar</span></td>
                             </tr>
