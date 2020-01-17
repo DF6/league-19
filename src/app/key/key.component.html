@@ -3,7 +3,7 @@
         <h3 *ngIf="!shownRound && keyConfig.showTitle">{{appService.getRoundName(keyConfig.matches[0])}}</h3>
         <div style="min-width:16.6%;min-height:14.65%;" class="col-lg-12 col-md-12 col-sm-12" *ngIf="keyConfig.matches.length == 1">
             <div class="well" style="border-radius: 5%;background-color: #ccc5b9;text-align:right;">
-                <img src="{{appService.getTeamById(keyConfig.local).teamImage}}" style="width: 20px;margin-right: 5px;float: left;"/>
+                <!--<img src="{{appService.getTeamById(keyConfig.local).teamImage}}" style="width: 20px;margin-right: 5px;float: left;"/>-->
                 <span style="float:left;">{{appService.getTeamById(keyConfig.local).name}}</span>
                 <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
                 *ngIf="keyConfig.matches[0].localGoals != -1">
@@ -11,7 +11,7 @@
                 <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
                 *ngIf="keyConfig.matches[0].localGoals == -1">-</span>
                 <br><br>
-                <img src="{{appService.getTeamById(keyConfig.away).teamImage}}" style="width: 20px;margin-right: 5px;float: left;"/>
+                <!--<img src="{{appService.getTeamById(keyConfig.away).teamImage}}" style="width: 20px;margin-right: 5px;float: left;"/>-->
                 <span style="float:left;">{{appService.getTeamById(keyConfig.away).name}}</span>
                 <span style="display:inline-block;margin-right: 8px;margin-left: 5px;"
                 *ngIf="keyConfig.matches[0].awayGoals != -1">
@@ -22,7 +22,7 @@
         </div>
         <div style="min-width:16.6%;min-height:14.65%;" class="col-lg-12 col-md-12 col-sm-12" *ngIf="keyConfig.matches.length == 2">
             <div class="well" style="border-radius: 5%;background-color: #ccc5b9;text-align:right;min-width:16.6%;min-height:14.65%;">
-                <img src="{{appService.getTeamById(keyConfig.local).teamImage}}" style="width: 20px;margin-right: 5px;float: left;"/>
+                <!--<img src="{{appService.getTeamById(keyConfig.local).teamImage}}" style="width: 20px;margin-right: 5px;float: left;"/>-->
                 <span style="float:left;">{{appService.getTeamById(keyConfig.local).name}}</span>
                 <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
                 *ngIf="keyConfig.matches[0].localGoals != -1">
@@ -35,7 +35,7 @@
                 <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
                 *ngIf="keyConfig.matches[1].awayGoals == -1">-</span>
                 <br><br>
-                <img src="{{appService.getTeamById(keyConfig.away).teamImage}}" style="width: 20px;margin-right: 5px;float: left;"/>
+                <!--<img src="{{appService.getTeamById(keyConfig.away).teamImage}}" style="width: 20px;margin-right: 5px;float: left;"/>-->
                 <span style="float:left;">{{appService.getTeamById(keyConfig.away).name}}</span>
                 <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
                 *ngIf="keyConfig.matches[0].awayGoals != -1">
@@ -51,7 +51,7 @@
         </div>
         <div style="min-width:16.6%;min-height:14.65%;" class="col-lg-12 col-md-12 col-sm-12" *ngIf="keyConfig.matches.length == 3">
             <div class="well" style="border-radius: 5%;background-color: #ccc5b9;text-align:right;min-width:16.6%;min-height:14.65%;">
-                <img src="{{appService.getTeamById(keyConfig.local).teamImage}}" style="width: 20px;margin-right: 5px;float: left;"/>
+                <!--<img src="{{appService.getTeamById(keyConfig.local).teamImage}}" style="width: 20px;margin-right: 5px;float: left;"/>-->
                 <span style="float:left;">{{appService.getTeamById(keyConfig.local).name}}</span>
                 <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
                 *ngIf="keyConfig.matches[0].localGoals != -1">
@@ -69,7 +69,7 @@
                 <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
                 *ngIf="keyConfig.matches[2].localGoals == -1">-</span>
                 <br><br>
-                <img src="{{appService.getTeamById(keyConfig.away).teamImage}}" style="width: 20px;margin-right: 5px;float: left;"/>
+                <!--<img src="{{appService.getTeamById(keyConfig.away).teamImage}}" style="width: 20px;margin-right: 5px;float: left;"/>-->
                 <span style="float:left;">{{appService.getTeamById(keyConfig.away).name}}</span>
                 <span style="display:inline-block;margin-right: 5px;margin-left: 5px;"
                 *ngIf="keyConfig.matches[0].awayGoals != -1">
