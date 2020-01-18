@@ -284,6 +284,9 @@ export class AppService {
             case this.config.tournamentGeneralInfo.supercopaDeClubes.name:
             case this.config.tournamentGeneralInfo.supercopaEuropea.name:
                 return this.config.roundNames.final;
+            case this.config.tournamentGeneralInfo.primera.name:
+            case this.config.tournamentGeneralInfo.segunda.name:
+                return match.round;
         }
     }
 

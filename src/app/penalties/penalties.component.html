@@ -19,11 +19,11 @@
                         </thead>
                         <tbody>
                             <tr *ngFor="let row of penaltiesTable.dataRows">
-                                <td>{{row.tournament}}</td>
+                                <td>{{row.tournament.name}}</td>
                                 <td>{{appService.getTeamById(row.teamFor).name}}</td>
                                 <td>{{appService.getPlayerById(row.player).name}}</td>
                                 <td>{{row.cause}}</td>
-                                <td>{{appService.getRoundName({ tournament: row.tournament, round: row.round})}}</td>
+                                <td>{{appService.getRoundName({ tournament: row.tournament.id, round: row.round})}}</td>
                                 <td *ngIf="row.teamAgainst == 0">Por determinar</td>
                                 <td *ngIf="row.teamAgainst != 0">{{appService.getTeamById(row.teamAgainst).name}}</td>
                             </tr>

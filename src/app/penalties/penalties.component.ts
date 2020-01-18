@@ -34,16 +34,22 @@ export class PenaltiesComponent implements OnInit{
                 this.appService.data.actions.forEach( (value) => {
                     switch(value.type) {
                         case this.appService.config.actionTypes.yellowCard:
-                                if(this.updateYellowCount(value)) {
-                                    let penalty = this.getPenalty(value);
-                                    penalties = penalty.filter( (filteredPenalty) => { return this.roundValid(filteredPenalty); });
-                                }
-                                break;
-                        case this.appService.config.actionTypes.redCard:
-                        case this.appService.config.actionTypes.injury:
+                            if(this.updateYellowCount(value)) {
                                 let penalty = this.getPenalty(value);
-                                penalties = penalty.filter( (filteredPenalty) => { return this.roundValid(filteredPenalty); });
-                                break;
+                                penalty ? penalty.filter( (filteredPenalty) => { return this.roundValid(filteredPenalty); })
+                                .forEach( (value2) => {
+                                    penalties.push(value2);
+                                }) : null;
+                            }
+                            break;
+                        case this.appService.config.actionTypes.injury:
+                        case this.appService.config.actionTypes.redCard:
+                            let penalty = this.getPenalty(value);
+                            penalty ? penalty.filter( (filteredPenalty) => { return this.roundValid(filteredPenalty); })
+                            .forEach( (value2) => {
+                                penalties.push(value2);
+                            }) : null;
+                            break;
                     }
                 });
                 this.penaltiesTable = this.appService.getTableConfig(this.appService.config.tableHeaders.penaltiesTable, penalties);
@@ -52,7 +58,7 @@ export class PenaltiesComponent implements OnInit{
     }
 
     private roundValid(penalty) {
-        switch (penalty.tournament) {
+        switch (penalty.tournament.name) {
             case this.appService.config.tournamentGeneralInfo.primera.name: return (penalty.round > this.appService.config.validRounds.primera);
             case this.appService.config.tournamentGeneralInfo.segunda.name: return (penalty.round > this.appService.config.validRounds.segunda);
             case this.appService.config.tournamentGeneralInfo.copa.name: return (penalty.round > this.appService.config.validRounds.copa);
@@ -83,15 +89,15 @@ export class PenaltiesComponent implements OnInit{
     }
 
     private getPenalty(action) {
-        switch (this.appService.getTournamentById(this.appService.getTournamentByMatch(action.matchID)).name) {
+        switch (this.appService.getTournamentByMatch(action.matchID).name) {
             case this.appService.config.tournamentGeneralInfo.primera.name:
             case this.appService.config.tournamentGeneralInfo.segunda.name:
-                return this.getPenaltyAmount(action, this.appService.getTournamentById(this.appService.getTournamentByMatch(action.matchID)).name, 3);
+                return this.getPenaltyAmount(action, this.appService.getTournamentByMatch(action.matchID), 3);
             case this.appService.config.tournamentGeneralInfo.copa.name:
             case this.appService.config.tournamentGeneralInfo.championsLeague.name:
             case this.appService.config.tournamentGeneralInfo.europaLeague.name:
             case this.appService.config.tournamentGeneralInfo.copaMugre.name:
-                return this.getPenaltyAmount(action, this.appService.getTournamentById(this.appService.getTournamentByMatch(action.matchID)).name, 1);
+                return this.getPenaltyAmount(action, this.appService.getTournamentByMatch(action.matchID), 1);
             case this.appService.config.tournamentGeneralInfo.supercopaDeClubes.name:
             case this.appService.config.tournamentGeneralInfo.supercopaEuropea.name:
                 return [{ teamFor: null, teamAgainst: null, player: null, round: 0, cause: '' }];
@@ -99,16 +105,16 @@ export class PenaltiesComponent implements OnInit{
         return action;
     }
 
-    private getPenaltyAmount(action, tournamentName, amountTo) {
+    private getPenaltyAmount(action, tournamentTo, amountTo) {
         let roundTo = parseInt(this.appService.getMatchById(action.matchID).round) + amountTo;
         switch (action.type) {
             case this.appService.config.actionTypes.yellowCard: 
-                    return [{ tournament: tournamentName, teamFor: this.appService.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo), player: action.player, round: roundTo, cause: 'Amarillas'}];
+                    return this.getRival(action, roundTo) != '-1' ? [{ tournament: tournamentTo, teamFor: this.appService.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo), player: action.player, round: roundTo, cause: 'Amarillas'}] : undefined;
             case this.appService.config.actionTypes.redCard: 
-                    return [{ tournament: tournamentName, teamFor: this.appService.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo), player: action.player, round: roundTo, cause: 'Roja'},
-                            { tournament: tournamentName, teamFor: this.appService.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo + 1), player: action.player, round: roundTo + 1, cause: 'Roja'}];
+                    return this.getRival(action, roundTo) != '-1' ? [{ tournament: tournamentTo, teamFor: this.appService.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo), player: action.player, round: roundTo, cause: 'Roja'},
+                            { tournament: tournamentTo, teamFor: this.appService.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo + 1), player: action.player, round: roundTo + 1, cause: 'Roja'}] : undefined;
             case this.appService.config.actionTypes.injury: 
-                    return [{ tournament: tournamentName, teamFor: this.appService.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo), player: action.player, round: roundTo, cause: 'Lesión'}];
+                    return this.getRival(action, roundTo) != '-1' ? [{ tournament: tournamentTo, teamFor: this.appService.getPlayerById(action.player).teamID, teamAgainst: this.getRival(action, roundTo), player: action.player, round: roundTo, cause: 'Lesión'}] : undefined;
         }
     }
 
@@ -148,11 +154,11 @@ export class PenaltiesComponent implements OnInit{
     private getRival(action, round) {
         let teamFor = this.appService.getPlayerById(action.player).teamID;
         let tournament = this.appService.getTournamentByMatch(action.matchID);
-        if (tournament == null) { tournament = this.appService.getLastEdition(action.tournament).id; }
-        let teamToReturn = 0;
+        if (tournament == null) { tournament = this.appService.getLastEdition(action.tournament); }
+        let teamToReturn: any = '-1';
         let passRound = -1;
         this.appService.data.matches.filter( (filteredMatch) => {
-            return filteredMatch.tournament == tournament && filteredMatch.round == round;
+            return filteredMatch.tournament == tournament.id && filteredMatch.round == round;
         })
         .forEach( (value) => {
             if (passRound == -1) { passRound = 0; }
@@ -164,7 +170,7 @@ export class PenaltiesComponent implements OnInit{
                 passRound = 1;
             }
         });
-        if (passRound == 0) { teamToReturn = -1; }
+        if (passRound == 0) { teamToReturn = '-1'; }
         return teamToReturn;
     }
 }

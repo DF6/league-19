@@ -36,11 +36,11 @@ export class PendingMatchesComponent implements OnInit{
 
     private isCalendarMatch(match) {
         switch(this.appService.getTournamentById(match.tournament).name) {
-            case this.appService.config.tournamentGeneralInfo.copa.name: return parseInt(match.round) == 1;
-            case this.appService.config.tournamentGeneralInfo.primera.name:
-            case this.appService.config.tournamentGeneralInfo.segunda.name: return parseInt(match.round) < 4;
-            case this.appService.config.tournamentGeneralInfo.supercopaDeClubes.name:
-            case this.appService.config.tournamentGeneralInfo.supercopaEuropea.name: return true;
+            case this.appService.config.tournamentGeneralInfo.copa.name: return parseInt(match.round) <= this.appService.config.validRounds.copa;
+            case this.appService.config.tournamentGeneralInfo.primera.name:return parseInt(match.round) <= this.appService.config.validRounds.primera;
+            case this.appService.config.tournamentGeneralInfo.segunda.name: return parseInt(match.round) <= this.appService.config.validRounds.segunda;
+            case this.appService.config.tournamentGeneralInfo.supercopaDeClubes.name: return parseInt(match.round) <= this.appService.config.validRounds.supercopaDeClubes;
+            case this.appService.config.tournamentGeneralInfo.supercopaEuropea.name: return parseInt(match.round) <= this.appService.config.validRounds.supercopaEuropea;
         }
     }
 
@@ -52,13 +52,6 @@ export class PendingMatchesComponent implements OnInit{
             value.filling = false;
             return value;
         });
-        /*for (let i = 0; i < finalTableMatches.length; i++) {
-            if ((this.appService.getTournamentById(finalTableMatches[i].tournament).name == this.appService.config.tournamentGeneralInfo.primera.name ||
-               this.appService.getTournamentById(finalTableMatches[i].tournament).name == this.appService.config.tournamentGeneralInfo.segunda.name) && finalTableMatches[i].round > parseInt(this.appService.data.constants.intervalActual)) {
-                 finalTableMatches.splice(i, 1);
-                 i--;
-            }
-        }*/
         this.pendingMatchesTable = this.appService.getTableConfig(this.appService.config.tableHeaders.pendingMatches, finalTableMatches);
     }
 }
