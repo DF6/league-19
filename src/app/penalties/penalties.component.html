@@ -1,11 +1,11 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-12">
-            <div class="card" *ngIf="tableData1">
+            <div class="card" *ngIf="penaltiesTable">
                 <div class="header">
-                    <h4 class="title">Sancionados y lesionados</h4>
+                    <h4 class="title">Sancionados y Lesionados</h4>
                 </div>
-                <div *ngIf="tableData1.dataRows.length !=0" class="content table-responsive table-full-width">
+                <div *ngIf="penaltiesTable.dataRows.length !=0" class="content table-responsive table-full-width">
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -18,20 +18,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr *ngFor="let row of tableData1.dataRows">
-                                <td>{{row.tournament}}</td>
-                                <td>{{getTeamById(row.teamFor).name}}</td>
-                                <td>{{getPlayerById(row.player).name}}</td>
+                            <tr *ngFor="let row of penaltiesTable.dataRows">
+                                <td>{{row.tournament.name}}</td>
+                                <td>{{appService.getTeamById(row.teamFor).name}}</td>
+                                <td>{{appService.getPlayerById(row.player).name}}</td>
                                 <td>{{row.cause}}</td>
-                                <td>{{getRoundName(row.tournament, row.round)}}</td>
+                                <td>{{appService.getRoundName({ tournament: row.tournament.id, round: row.round})}}</td>
                                 <td *ngIf="row.teamAgainst == 0">Por determinar</td>
-                                <td *ngIf="row.teamAgainst != 0">{{getTeamById(row.teamAgainst).name}}</td>
+                                <td *ngIf="row.teamAgainst != 0">{{appService.getTeamById(row.teamAgainst).name}}</td>
                             </tr>
                         </tbody>
                     </table>
 
                 </div>
-                <div *ngIf="tableData1.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                <div *ngIf="penaltiesTable.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
                     Sancionados no disponibles
                 </div>
             </div>

@@ -144,8 +144,8 @@ export class AdminPageComponent implements OnInit{
         if (!this.insertMatch) { return; }
         this.http.post(PHPFILENAME, {type: 'insMat', local: this.insertMatch.local.id, away: this.insertMatch.away.id, tournament: this.insertMatch.tournament.id, round: this.insertMatch.round}).subscribe( (response) => {
             if (response.json().success) {
-                this.resetNewMatch();
                 this.appService.insertLog({logType: this.appService.config.logTypes.insertMatch, logInfo: 'Partido creado: ' + this.insertMatch.tournament.name + ' - ' + this.insertMatch.local.name + ' - ' + this.insertMatch.away.name});
+                this.resetNewMatch();
                 alert('Partido creado');
             }
         });
