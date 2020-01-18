@@ -216,10 +216,12 @@
         "adminMatches": [ "tournament", "round", "local", "", "away" ],
         "adminSalaries": [ "team", "salaries"],
         "auctions": [ "name", "position", "overage", "team", "amount", "state", "time", "raise"],
+        "groupTable": [ "position", "team", "round", "won", "draw", "lost", "goalsFor", "goalsAgainst", "goalsDifference", "points" ],
         "leagueMatches": [ "round", "local", "result", "away", "summary"],
         "leagueTable": [ "position", "team", "round", "won", "draw", "lost", "nonPlayed", "goalsFor", "goalsAgainst", "goalsDifference", "points"],
         "marketResume": [ "name", "position", "overage", "type", "amount", "oldTeam", "newTeam"],
         "offers": [ "type", "player", "team", "amount", "players", "actions"],
+        "penaltiesTable": [ "teamFor", "player", "cause", "round", "teamAgainst"],
         "pendingMatches": [ "tournament", "round", "local", "", "away", "fill"],
         "statistics": {
             "scorers": [ "position", "name", "goals"],
@@ -235,8 +237,8 @@
     "tournamentGeneralInfo": {
         "championsLeague": {
             "name": "Champions League",
-            "KORound": 7,
-            "finalRound": 12
+            "KORound": 1,
+            "finalRound": 6
         },
         "supercopaDeClubes": {
             "name": "Supercopa de Clubes",
@@ -245,8 +247,8 @@
         },
         "europaLeague": {
             "name": "Europa League",
-            "KORound": 1,
-            "finalRound": 6
+            "KORound": 4,
+            "finalRound": 9
         },
         "supercopaEuropea": {
             "name": "Supercopa Europea",
@@ -278,5 +280,16 @@
             "KORound": 15,
             "finalRound": 14
         }
+    },
+    "validRounds": {
+        "championsLeague": 0,
+        "supercopaDeClubes": 1,
+        "europaLeague": 0,
+        "supercopaEuropea": 1,
+        "copa": 1,
+        "copaMugre": 0,
+        "nationsLeague": 0,
+        "primera": 3,
+        "segunda": 3
     }
 }
