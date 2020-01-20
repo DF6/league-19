@@ -300,15 +300,28 @@ export class AppService {
                 return this.config.roundNames.final;
             case this.config.tournamentGeneralInfo.primera.name:
             case this.config.tournamentGeneralInfo.segunda.name:
-                case 10: 
-                case 11: return this.config.roundNames.semifinals;
-                case 12: 
-                case 13: return this.config.roundNames.final;
-                default: return match.round;
+                switch(parseInt(match.round)) {
+                    case 10: 
+                    case 11: return this.config.roundNames.semifinals;
+                    case 12: 
+                    case 13: return this.config.roundNames.final;
+                    default: return match.round;
+                }
             case this.config.tournamentGeneralInfo.teamCup.name:
-                case 1: return this.config.roundNames.semifinals; 
-                case 2: return this.config.roundNames.thirdAndFourthPlace; 
-                case 3: return this.config.roundNames.final; 
+                switch(parseInt(match.round)) {
+                    case 1: return this.config.roundNames.semifinals; 
+                    case 2: return this.config.roundNames.thirdAndFourthPlace; 
+                    case 3: return this.config.roundNames.final;
+                }
+                break;
+            case this.config.tournamentGeneralInfo.goldenTrophy.name: return match.round;
+            case this.config.tournamentGeneralInfo.nationsLeague.name:
+                switch(parseInt(match.round)) {
+                    case 4: return this.config.roundNames.semifinals; 
+                    case 5: return this.config.roundNames.thirdAndFourthPlace; 
+                    case 6: return this.config.roundNames.final;
+                    default: return match.round;
+                }
         }
     }
 
