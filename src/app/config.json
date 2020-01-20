@@ -117,6 +117,7 @@
             { "path": "clubsupercup", "title": "Supercopa de Clubes", "icon": "ti-crown", "class": "" },
             { "path": "europesupercup", "title": "Supercopa de Europa", "icon": "ti-crown", "class": "" },
             { "path": "teamcup", "title": "Team Cup", "icon": "ti-cup", "class": "" },
+            { "path": "goldentrophy", "title": "Golden Trophy", "icon": "ti-cup", "class": "" },
             { "path": "estadisticas", "title": "Estadisticas", "icon": "ti-bar-chart", "class": "" },
             { "path": "sanciones", "title": "Sanciones", "icon": "ti-wheelchair", "class": "" },
             { "path": "adminpage", "title": "Administracion", "icon": "ti-text", "class": "" },
@@ -144,6 +145,7 @@
             { "path": "clubsupercup", "title": "Supercopa de Clubes", "icon": "ti-crown", "class": "" },
             { "path": "europesupercup", "title": "Supercopa de Europa", "icon": "ti-crown", "class": "" },
             { "path": "teamcup", "title": "Team Cup", "icon": "ti-cup", "class": "hidden" },
+            { "path": "goldentrophy", "title": "Golden Trophy", "icon": "ti-cup", "class": "hidden" },
             { "path": "estadisticas", "title": "Estadisticas", "icon": "ti-bar-chart", "class": "" },
             { "path": "sanciones", "title": "Sanciones", "icon": "ti-wheelchair", "class": "" },
             { "path": "partidospendientes", "title": "Partidos Pendientes", "icon":"ti-text", "class": "" },
@@ -167,6 +169,7 @@
             { "path": "clubsupercup", "title": "Supercopa de Clubes", "icon": "ti-crown", "class": "" },
             { "path": "europesupercup", "title": "Supercopa de Europa", "icon": "ti-crown", "class": "" },
             { "path": "teamcup", "title": "Team Cup", "icon": "ti-cup", "class": "hidden" },
+            { "path": "goldentrophy", "title": "Golden Trophy", "icon": "ti-cup", "class": "hidden" },
             { "path": "estadisticas", "title": "Estadisticas", "icon": "ti-bar-chart", "class": "" },
             { "path": "sanciones", "title": "Sanciones", "icon": "ti-wheelchair", "class": "" },
             { "path": "partidospendientes", "title": "Partidos Pendientes", "icon":"ti-text", "class": "" },
@@ -187,6 +190,7 @@
             { "path": "clubsupercup", "title": "Supercopa de Clubes", "icon": "ti-crown", "class": "" },
             { "path": "europesupercup", "title": "Supercopa de Europa", "icon": "ti-crown", "class": "" },
             { "path": "teamcup", "title": "Team Cup", "icon": "ti-cup", "class": "hidden" },
+            { "path": "goldentrophy", "title": "Golden Trophy", "icon": "ti-cup", "class": "hidden" },
             { "path": "estadisticas", "title": "Estadisticas", "icon": "ti-bar-chart", "class": "" },
             { "path": "sanciones", "title": "Sanciones", "icon": "ti-wheelchair", "class": "" },
             { "path": "partidospendientes", "title": "Partidos Pendientes", "icon":"ti-text", "class": "" },
@@ -277,7 +281,7 @@
         "nationsLeague": {
             "name": "Nations League",
             "KORound": 4,
-            "finalRound": 3
+            "finalRound": 6
         },
         "primera": {
             "name": "Primera",
@@ -294,6 +298,11 @@
             "KORound": 1,
             "finalRound": 3,
             "clubSize": 5
+        },
+        "goldenTrophy": {
+            "name": "Golden Trophy",
+            "KORound": 7,
+            "finalRound": 6
         }
     },
     "validRounds": {
@@ -306,6 +315,7 @@
         "nationsLeague": 0,
         "primera": 6,
         "segunda": 6,
-        "teamCup": 0
+        "teamCup": 0,
+        "goldenTrophy": 0
     }
 }

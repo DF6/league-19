@@ -44,6 +44,7 @@ import { PendingMatchesComponent } from './pendingmatches/pendingmatches.compone
 import { UserComponent } from './user/user.component';
 import { SecondComponent } from './second/second.component';
 import { TeamCupComponent } from './teamcup/teamcup.component';
+import { GoldenTrophyComponent } from './goldentrophy/goldentrophy.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { TeamCupComponent } from './teamcup/teamcup.component';
     NationsComponent,
     ClubSupercupComponent,
     TeamCupComponent,
+    GoldenTrophyComponent,
     PenaltiesComponent,
     FreePlayersComponent,
     AuctionsComponent,

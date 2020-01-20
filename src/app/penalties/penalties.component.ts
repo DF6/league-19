@@ -59,12 +59,12 @@ export class PenaltiesComponent implements OnInit{
 
     private roundValid(penalty) {
         switch (penalty.tournament.name) {
-            case this.appService.config.tournamentGeneralInfo.primera.name: return (penalty.round > this.appService.config.validRounds.primera);
-            case this.appService.config.tournamentGeneralInfo.segunda.name: return (penalty.round > this.appService.config.validRounds.segunda);
-            case this.appService.config.tournamentGeneralInfo.copa.name: return (penalty.round > this.appService.config.validRounds.copa);
-            case this.appService.config.tournamentGeneralInfo.championsLeague.name: return (penalty.round > this.appService.config.validRounds.championsLeague);
-            case this.appService.config.tournamentGeneralInfo.europaLeague.name: return (penalty.round > this.appService.config.validRounds.europaLeague);
-            case this.appService.config.tournamentGeneralInfo.copaMugre.name: return (penalty.round > this.appService.config.validRounds.copaMugre);
+            case this.appService.config.tournamentGeneralInfo.primera.name: return (penalty.round <= this.appService.config.validRounds.primera && penalty.round > this.appService.config.validRounds.primera - 3);
+            case this.appService.config.tournamentGeneralInfo.segunda.name: return (penalty.round <= this.appService.config.validRounds.segunda && penalty.round > this.appService.config.validRounds.segunda - 3);
+            case this.appService.config.tournamentGeneralInfo.copa.name: return (penalty.round <= this.appService.config.validRounds.copa && penalty.round > this.appService.config.validRounds.copa - 1);
+            case this.appService.config.tournamentGeneralInfo.championsLeague.name: return (penalty.round <= this.appService.config.validRounds.championsLeague);
+            case this.appService.config.tournamentGeneralInfo.europaLeague.name: return (penalty.round <= this.appService.config.validRounds.europaLeague);
+            case this.appService.config.tournamentGeneralInfo.copaMugre.name: return (penalty.round <= this.appService.config.validRounds.copaMugre);
             case this.appService.config.tournamentGeneralInfo.supercopaDeClubes.name:
             case this.appService.config.tournamentGeneralInfo.supercopaEuropea.name: return;
         }
