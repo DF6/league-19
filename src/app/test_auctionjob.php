@@ -50,16 +50,18 @@
             $result3 = mysqli_query($link, $consult3) or die("Error asignando jugador");
 
             if(strcmp($tipo, "L") == 0 && $equipo == 0) {
-              if($media < 85) {
+              if($media < 85 && $origen != 0) {
                 $consult19 = "UPDATE test_teams SET budget=budget+" . ($media/100) . " where id=" . $origen;
                 $result19 = mysqli_query($link, $consult19) or die("Error asignando presupuesto2");
-              } else {
+              } else if ($media >= 85 && $origen != 0) { 
                 $consult20 = "UPDATE test_teams SET budget=budget+" . $media . " where id=" . $origen;
                 $result20 = mysqli_query($link, $consult20) or die("Error asignando presupuesto2");
               }
             } else if(strcmp($tipo, "L") == 0 && $equipo != 0){
-              $consult8 = "UPDATE test_teams SET budget=budget+" . ($amount/2) . " where id=" . $origen;
-              $result8 = mysqli_query($link, $consult8) or die("Error asignando presupuesto2");
+              if($origen != 0) {
+                $consult8 = "UPDATE test_teams SET budget=budget+" . ($amount/2) . " where id=" . $origen;
+                $result8 = mysqli_query($link, $consult8) or die("Error asignando presupuesto2");
+              }
               $consult18 = "UPDATE test_teams SET budget=budget-" . $amount . " where id=" . $equipo;
               $result18 = mysqli_query($link, $consult18) or die("Error asignando presupuesto3");
             } else {

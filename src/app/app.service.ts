@@ -39,6 +39,7 @@ export class AppService {
         players: undefined,
         signins: undefined,
         standings: undefined,
+        teamCupTeams: undefined,
         teams: undefined,
         tournaments: undefined,
         user: undefined,
@@ -138,6 +139,15 @@ export class AppService {
             medium: size,
             large: size
         }
+    }
+
+    public getClubByTeam(team) {
+        const myClub = this.data.teamCupTeams.filter( (filteredClub) => {
+            return filteredClub.team == team.id;
+        })[0];
+        return this.data.teamCupTeams.filter( (filteredClub) => {
+            return filteredClub.club == myClub.club;
+        })
     }
 
     public getConfigObservable(): Observable<any> {
@@ -286,7 +296,15 @@ export class AppService {
                 return this.config.roundNames.final;
             case this.config.tournamentGeneralInfo.primera.name:
             case this.config.tournamentGeneralInfo.segunda.name:
-                return match.round;
+                case 10: 
+                case 11: return this.config.roundNames.semifinals;
+                case 12: 
+                case 13: return this.config.roundNames.final;
+                default: return match.round;
+            case this.config.tournamentGeneralInfo.teamCup.name:
+                case 1: return this.config.roundNames.semifinals; 
+                case 2: return this.config.roundNames.thirdAndFourthPlace; 
+                case 3: return this.config.roundNames.final; 
         }
     }
 
@@ -350,6 +368,12 @@ export class AppService {
         });
     }
 
+    public getTeamCupTeams() {
+        this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'TCT'}).subscribe( (response) => {
+            this.data.teamCupTeams = response.json() ? response.json().teamCupTeams : [];
+        });
+    }
+
     public getTotalSalariesByTeam(playersOfTheTeam) {
         let total = 0;
         playersOfTheTeam.forEach( (value) => {
@@ -384,6 +408,16 @@ export class AppService {
     public getTournaments() {
         this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'TO'}).subscribe( (response) => {
             this.data.tournaments = response.json() ? response.json().tournaments : [];
+        });
+    }
+
+    public getUndisputedMatches(teamMatches) {
+        return teamMatches.filter( (filteredMatch) => {
+            return filteredMatch.localGoals == '-1' && filteredMatch.awayGoals == '-1' && this.isCalendarMatch(filteredMatch);
+        })
+        .map( (value) => {
+            value.filling = false;
+            return value;
         });
     }
 
@@ -446,8 +480,24 @@ export class AppService {
         this.http.post(PHPFILENAME, {type: 'log', user: this.data.user ? this.data.user.id : log.id, logType: log.logType, logInfo: log.logInfo}).subscribe(()=>{});
     }
 
+    public isCalendarMatch(match) {
+        switch(this.getTournamentById(match.tournament).name) {
+            case this.config.tournamentGeneralInfo.copa.name: return parseInt(match.round) <= this.config.validRounds.copa;
+            case this.config.tournamentGeneralInfo.primera.name:return parseInt(match.round) <= this.config.validRounds.primera;
+            case this.config.tournamentGeneralInfo.segunda.name: return parseInt(match.round) <= this.config.validRounds.segunda;
+            case this.config.tournamentGeneralInfo.supercopaDeClubes.name: return parseInt(match.round) <= this.config.validRounds.supercopaDeClubes;
+            case this.config.tournamentGeneralInfo.supercopaEuropea.name: return parseInt(match.round) <= this.config.validRounds.supercopaEuropea;
+        }
+    }
+
     public isUpdatableStanding(match) {
         return this.config.tournamentGeneralInfo[this.toCamelCase(this.getTournamentById(match.tournament).name)].KORound >= match.round;
+    }
+
+    public isThePlayerInAuction(player) {
+        return this.data.signins.filter( (filteredSignin) => {
+            return filteredSignin.signinType == this.config.signinTypes.freeAuction && filteredSignin.market == this.data.constants.marketEdition && filteredSignin.player == player.id;
+        }).length > 0;
     }
 
     public isThisInterval(tournament, round) {

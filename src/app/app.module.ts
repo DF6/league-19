@@ -43,6 +43,7 @@ import { PremierComponent } from './premier/premier.component';
 import { PendingMatchesComponent } from './pendingmatches/pendingmatches.component';
 import { UserComponent } from './user/user.component';
 import { SecondComponent } from './second/second.component';
+import { TeamCupComponent } from './teamcup/teamcup.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { SecondComponent } from './second/second.component';
     ChampionsComponent,
     NationsComponent,
     ClubSupercupComponent,
+    TeamCupComponent,
     PenaltiesComponent,
     FreePlayersComponent,
     AuctionsComponent,
