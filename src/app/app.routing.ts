@@ -26,6 +26,8 @@ import { OfferComponent } from './offer/offer.component';
 import { EuropeSupercupComponent } from './europesupercup/europesupercup.component';
 import { AdminPageComponent } from './adminpage/adminpage.component';
 import { SecondComponent } from './second/second.component';
+import { TeamCupComponent } from './teamcup/teamcup.component';
+import { GoldenTrophyComponent } from './goldentrophy/goldentrophy.component';
 
 export const AppRoutes: Routes = [
     {
@@ -50,6 +52,8 @@ export const AppRoutes: Routes = [
     { path: 'copamugre', component: CopaMugreComponent },
     { path: 'nations', component: NationsComponent },
     { path: 'clubsupercup', component: ClubSupercupComponent },
+    { path: 'teamcup', component: TeamCupComponent },
+    { path: 'goldentrophy', component: GoldenTrophyComponent },
     { path: 'sanciones', component: PenaltiesComponent },
     { path: 'jugadoreslibres', component: FreePlayersComponent },
     { path: 'subastas', component: AuctionsComponent },

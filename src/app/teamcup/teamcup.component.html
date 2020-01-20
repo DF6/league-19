@@ -1,0 +1,64 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row" class="col-md-12 col-sm-12" *ngIf="myClub">
+            <span class="col-md-12 col-sm-12" style="font-weight: bold;font-size: 32px;text-align: center;">MI EQUIPO</span>
+            <div class="col-offset-md-2 col-sm-12"></div>
+            <div class="col-md-2 col-sm-12" *ngFor="let team of myClub">
+                <span class="col-md-12 col-sm-12">{{appService.getTeamById(team).name}}</span>
+                <img src="{{appService.getTeamById(team).teamImage}}" style="width: 20%;"/>
+            </div>
+            <div class="col-md-6 col-md-offset-3 col-sm-12" *ngIf="myClubMatchesTable">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title">Partidos</h4>
+                        <p class="category" *ngIf="myClubMatchesTable.dataRows.length != 0">Team Cup - Edición {{season}} Ronda {{myClubMatchesTable.dataRows[0].round}}</p>
+                    </div>
+                    <div *ngIf="myClubMatchesTable.dataRows.length != 0" class="content table-responsive table-full-width">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Local</th>
+                                    <th>Resultado</th>
+                                    <th>Visitante</th>
+                                    <th>Resumen</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let row of myClubMatchesTable.dataRows">
+                                    <td style="text-align: center;">
+                                        <img src="{{appService.getTeamById(row.local).teamImage}}" style="width: 20px;margin-right: 8px;float:left;">
+                                        {{appService.getTeamById(row.local).name}}
+                                    </td>
+                                    <td style="text-align: center;"><span *ngIf="row.localGoals != -1">({{row.localGoals}}) - ({{row.awayGoals}})</span><span *ngIf="row.localGoals == -1">-</span></td>
+                                    <td style="text-align: center;">
+                                        {{appService.getTeamById(row.away).name}}
+                                        <img src="{{appService.getTeamById(row.away).teamImage}}" style="width: 20px;margin-left: 8px;float:right">
+                                    </td>
+                                    <td style="text-align: center;"><a *ngIf="row.localGoals != -1" style="cursor:pointer;" (click)="showResume(row)">Resumen</a><span *ngIf="row.localGoals == -1">Por jugar</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div *ngIf="myClubMatchesTable.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                        Partidos no disponibles
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--<div class="row">
+            <div class="col-md-12 col-sm-12" *ngIf="clubMatches">
+                <section class="col-md-6 col-sm-12" *ngFor="let round of clubMatches">
+                    <roundkeys [roundConfig]="round"></roundkeys>
+                </section>
+                <div style="text-align: center;" *ngIf="champion">
+                    <h2>CAMPEÓN</h2>
+                    <img style="width:20%;" src="{{appService.getTeamById(champion).teamImage}}"/>
+                    <h3>{{appService.getTeamById(champion).name}}</h3>
+                </div>
+            </div>
+            <div *ngIf="!clubMatches" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                Partidos no disponibles
+            </div>
+        </div>-->
+    </div>
+</div>

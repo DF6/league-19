@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { Http } from '@angular/http';
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,7 +11,7 @@ export class OfferComponent{
 
     public player;
 
-    constructor(private http: Http, private router: Router) {
+    constructor(private router: Router) {
         this.player = JSON.parse(sessionStorage.getItem('playerToOffer'));
         sessionStorage.removeItem('playerToOffer');
     }
