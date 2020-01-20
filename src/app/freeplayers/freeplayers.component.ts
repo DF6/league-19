@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { AngularWaitBarrier } from 'blocking-proxy/built/lib/angular_wait_barrier';
 import { constants } from 'os';
+import { AppService } from 'app/app.service';
 
 declare interface TableData {
     headerRow: string[];
@@ -17,59 +18,39 @@ declare var $:any;
 })
 
 export class FreePlayersComponent implements OnInit{
-    public tableData1: TableData;
+    public freePlayersTable: TableData;
     public players;
     public user;
     public constants;
 
-    constructor(private http: Http){}
+    constructor(private http: Http, private appService: AppService){
+        this.appService.getConstants();
+    }
 
     ngOnInit() {
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'CONSTANTS'}).subscribe( (response) => {
-            this.constants = response.json().constants[0];
-            this.user = JSON.parse(sessionStorage.getItem('user'));
-            this.setTableConfig();
-            this.setTable();
-        });
+        this.setTable();
     }
 
     public setTable() {
-        this.tableData1.dataRows = [];
-        this.http.post('./CMDataRequesting.php', {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
-            this.players = response.json().players;
-            let freeplayers = [];
-            this.players.forEach( (value) => {
-                if (value.teamID == 0) {
-                    freeplayers.push(value);
-                }
+        this.appService.getSigninsObservable().subscribe( (response2) => {
+            this.appService.data.signins = response2.json().signins;
+            this.appService.getPlayersObservable().subscribe( (response) => {
+                this.appService.data.players = response.json().players;
+                let freeplayers = this.appService.data.players.filter( (filteredPlayer) => {
+                    return filteredPlayer.teamID == 0 && !this.appService.isThePlayerInAuction(filteredPlayer);
+                })
+                .sort( (a, b) => {
+                    return parseInt(b.overage) - parseInt(a.overage);
+                });
+                this.freePlayersTable = this.appService.getTableConfig(this.appService.config.tableHeaders.freePlayers, freeplayers);
             });
-            this.tableData1.dataRows = freeplayers;
         });
     }
 
     public hireFreePlayer(player) {
-        this.http.post('./CMDataRequesting.php', {type: 'conLib', team: this.user.teamID, player: player, market: this.constants.marketEdition}).subscribe( (response) => {
-            if(response.json().success) {
-                this.setTable();
-            }
+        this.http.post('./CMDataRequesting.php', {type: 'nueSub', player: player.id, auctionType: this.appService.config.signinTypes.freeAuction, firstTeam: 0, amount: this.appService.getAuctionInitialAmount({overage: parseInt(player.overage), amount: undefined}).amount, market: this.appService.data.constants.marketEdition}).subscribe( (response) => {
+            if(response.json().success) { this.setTable(); }
             alert(response.json().message);
         });
-    }
-
-    public getPlayerById(player) {
-        let playerToReturn = null;
-        this.players.forEach( (value) => {
-            if (value.id == player) {
-                playerToReturn = value;
-            }
-        });
-        return playerToReturn;
-    }
-
-    private setTableConfig() {
-        this.tableData1 = {
-            headerRow: [ 'name', 'position', 'overage', 'hire'],
-            dataRows: []
-        };
     }
 }

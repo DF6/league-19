@@ -49,14 +49,6 @@
         "midfield": ["MCD", "MC", "MI", "MD", "MCO"],
         "striker": ["EI", "ED", "DC"]
     },
-    "matchScoreStates": {
-        "absent": "-2",
-        "notPlayed": "-1"
-    },
-    "mobileMenuLimit": 991,
-    "notMobileMenuWidth": 479,
-    "notResolvedMatch": -1,
-    "notTeam": 0,
     "leagues": [ "Primera", "Segunda" ],
     "logTypes": {
         "acceptOffer": "AO",
@@ -66,10 +58,12 @@
         "createPlayer": "CP",
         "createTournament": "CT",
         "freePlayer": "FP",
+        "insertClub": "IC",
         "insertMatch": "IM",
         "login": "LI",
         "logout": "LO",
         "matchFilled": "MF",
+        "nonPlayedPenalty": "NP",
         "playerAddedInAuction": "PA",
         "rejectOffer": "RO",
         "resetAllSalaries": "RA",
@@ -79,6 +73,15 @@
         "setEmblem": "SE",
         "setHolidaysMode": "SH"
     },
+    "matchScoreStates": {
+        "absent": "-2",
+        "notPlayed": "-1"
+    },
+    "mobileMenuLimit": 991,
+    "nonPlayedPenalty": 5,
+    "notMobileMenuWidth": 479,
+    "notResolvedMatch": -1,
+    "notTeam": 0,
     "roundNames": {
         "previousRound": "Ronda Previa",
         "groupStage": "Fase de Grupos",
@@ -90,15 +93,16 @@
     },
     "roundRobinTournaments": [ "Primera", "Segunda", "Nations League"],
     "roundSetter": [
-        { "name": "Primera", "round": 14 },
-        { "name": "Segunda", "round": 14 },
-        { "name": "Champions League", "round": 12 },
-        { "name": "Europa League", "round": 6 },
+        { "name": "Primera", "round": 13 },
+        { "name": "Segunda", "round": 13 },
+        { "name": "Champions League", "round": 6 },
+        { "name": "Europa League", "round": 9 },
         { "name": "Copa Mugre", "round": 4 },
         { "name": "Supercopa Europea", "round": 1 },
         { "name": "Supercopa de Clubes", "round": 1 },
         { "name": "Copa", "round": 5 },
-        { "name": "Nations League", "round": 3 }
+        { "name": "Nations League", "round": 3 },
+        { "name": "Team Cup", "round": 3 }
     ],
     "routes": {
         "admin": [
@@ -112,6 +116,8 @@
             { "path": "nations", "title": "Liga de Naciones", "icon": "ti-flag-alt-2", "class": "" },
             { "path": "clubsupercup", "title": "Supercopa de Clubes", "icon": "ti-crown", "class": "" },
             { "path": "europesupercup", "title": "Supercopa de Europa", "icon": "ti-crown", "class": "" },
+            { "path": "teamcup", "title": "Team Cup", "icon": "ti-cup", "class": "" },
+            { "path": "goldentrophy", "title": "Golden Trophy", "icon": "ti-cup", "class": "" },
             { "path": "estadisticas", "title": "Estadisticas", "icon": "ti-bar-chart", "class": "" },
             { "path": "sanciones", "title": "Sanciones", "icon": "ti-wheelchair", "class": "" },
             { "path": "adminpage", "title": "Administracion", "icon": "ti-text", "class": "" },
@@ -138,6 +144,8 @@
             { "path": "nations", "title": "Liga de Naciones", "icon": "ti-flag-alt-2", "class": "hidden" },
             { "path": "clubsupercup", "title": "Supercopa de Clubes", "icon": "ti-crown", "class": "" },
             { "path": "europesupercup", "title": "Supercopa de Europa", "icon": "ti-crown", "class": "" },
+            { "path": "teamcup", "title": "Team Cup", "icon": "ti-cup", "class": "hidden" },
+            { "path": "goldentrophy", "title": "Golden Trophy", "icon": "ti-cup", "class": "hidden" },
             { "path": "estadisticas", "title": "Estadisticas", "icon": "ti-bar-chart", "class": "" },
             { "path": "sanciones", "title": "Sanciones", "icon": "ti-wheelchair", "class": "" },
             { "path": "partidospendientes", "title": "Partidos Pendientes", "icon":"ti-text", "class": "" },
@@ -160,6 +168,8 @@
             { "path": "nations", "title": "Liga de Naciones", "icon": "ti-flag-alt-2", "class": "hidden" },
             { "path": "clubsupercup", "title": "Supercopa de Clubes", "icon": "ti-crown", "class": "" },
             { "path": "europesupercup", "title": "Supercopa de Europa", "icon": "ti-crown", "class": "" },
+            { "path": "teamcup", "title": "Team Cup", "icon": "ti-cup", "class": "hidden" },
+            { "path": "goldentrophy", "title": "Golden Trophy", "icon": "ti-cup", "class": "hidden" },
             { "path": "estadisticas", "title": "Estadisticas", "icon": "ti-bar-chart", "class": "" },
             { "path": "sanciones", "title": "Sanciones", "icon": "ti-wheelchair", "class": "" },
             { "path": "partidospendientes", "title": "Partidos Pendientes", "icon":"ti-text", "class": "" },
@@ -179,10 +189,12 @@
             { "path": "nations", "title": "Liga de Naciones", "icon": "ti-flag-alt-2", "class": "hidden" },
             { "path": "clubsupercup", "title": "Supercopa de Clubes", "icon": "ti-crown", "class": "" },
             { "path": "europesupercup", "title": "Supercopa de Europa", "icon": "ti-crown", "class": "" },
+            { "path": "teamcup", "title": "Team Cup", "icon": "ti-cup", "class": "hidden" },
+            { "path": "goldentrophy", "title": "Golden Trophy", "icon": "ti-cup", "class": "hidden" },
             { "path": "estadisticas", "title": "Estadisticas", "icon": "ti-bar-chart", "class": "" },
             { "path": "sanciones", "title": "Sanciones", "icon": "ti-wheelchair", "class": "" },
             { "path": "partidospendientes", "title": "Partidos Pendientes", "icon":"ti-text", "class": "" },
-            { "path": "jugadoreslibres", "title": "Libres", "icon": "ti-text", "class": "hidden" },
+            { "path": "jugadoreslibres", "title": "Libres", "icon": "ti-text", "class": "" },
             { "path": "subastas", "title": "Subastas", "icon": "ti-text", "class": "" },
             { "path": "mercado", "title": "Mercado", "icon": "ti-money", "class": "" },
             { "path": "patrocinadores", "title": "Patrocinadores", "icon": "ti-money", "class": "" },
@@ -216,6 +228,7 @@
         "adminMatches": [ "tournament", "round", "local", "", "away" ],
         "adminSalaries": [ "team", "salaries"],
         "auctions": [ "name", "position", "overage", "team", "amount", "state", "time", "raise"],
+        "freePlayers": [ "name", "position", "overage", "hire"],
         "groupTable": [ "position", "team", "round", "won", "draw", "lost", "goalsFor", "goalsAgainst", "goalsDifference", "points" ],
         "leagueMatches": [ "round", "local", "result", "away", "summary"],
         "leagueTable": [ "position", "team", "round", "won", "draw", "lost", "nonPlayed", "goalsFor", "goalsAgainst", "goalsDifference", "points"],
@@ -268,7 +281,7 @@
         "nationsLeague": {
             "name": "Nations League",
             "KORound": 4,
-            "finalRound": 3
+            "finalRound": 6
         },
         "primera": {
             "name": "Primera",
@@ -279,6 +292,17 @@
             "name": "Segunda",
             "KORound": 15,
             "finalRound": 14
+        },
+        "teamCup": {
+            "name": "Team Cup",
+            "KORound": 1,
+            "finalRound": 3,
+            "clubSize": 5
+        },
+        "goldenTrophy": {
+            "name": "Golden Trophy",
+            "KORound": 7,
+            "finalRound": 6
         }
     },
     "validRounds": {
@@ -286,10 +310,12 @@
         "supercopaDeClubes": 1,
         "europaLeague": 0,
         "supercopaEuropea": 1,
-        "copa": 1,
+        "copa": 2,
         "copaMugre": 0,
         "nationsLeague": 0,
-        "primera": 3,
-        "segunda": 3
+        "primera": 6,
+        "segunda": 6,
+        "teamCup": 0,
+        "goldenTrophy": 0
     }
 }

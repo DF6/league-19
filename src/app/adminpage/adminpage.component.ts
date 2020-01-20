@@ -177,9 +177,44 @@ export class AdminPageComponent implements OnInit{
         }
     }
 
+    public randomTeamCupDraw(tournament) {
+        let teams = this.appService.data.teams;
+        let clubs = [];
+        while(teams.length > 0) {
+            let newClub = [];
+            while ( newClub.length < this.appService.config.tournamentGeneralInfo.teamCup.clubSize ) {
+                newClub.push(teams.splice(Math.floor(Math.random() * teams.length), 1)[0]);
+            }
+            clubs.push(newClub);
+        }
+        clubs.forEach( (club, key) => {
+            club.forEach( (team) => {
+                this.http.post(PHPFILENAME, { type: 'insClu', club: key + 1, team: team.id, tournament: tournament.id }).subscribe( (response) => {
+                    if (response.json().success) {
+                        this.appService.insertLog({logType: this.appService.config.logTypes.insertClub, logInfo: 'Club de Team Cup creado: ' + (key + 1) + ' - ' + team.name });
+                    }
+                });
+            });
+        });
+        while(clubs.length > 0) {
+            const localClub = clubs.splice(Math.floor(Math.random() * clubs.length), 1)[0];
+            const awayClub = clubs.splice(Math.floor(Math.random() * clubs.length), 1)[0];
+            while(localClub.length > 0 && awayClub.length > 0) {
+                const localTeam = localClub.splice(Math.floor(Math.random() * localClub.length), 1)[0];
+                const awayTeam = awayClub.splice(Math.floor(Math.random() * awayClub.length), 1)[0];
+                this.http.post(PHPFILENAME, {type: 'insMat', local: localTeam.id, away: awayTeam.id, tournament: tournament.id, round: 1}).subscribe( (response) => {
+                    if (response.json().success) {
+                        this.appService.insertLog({logType: this.appService.config.logTypes.insertMatch, logInfo: 'Partido creado: ' + tournament.name + ' - ' + localTeam.name + ' - ' + awayTeam.name});
+                    }
+                });
+            }
+        }
+    }
+
     public randomDraw() {
         switch (this.tournamentToRandomize.name) {
-            case this.appService.config.tournamentGeneralInfo.copa.name: this.randomGeneralCupDraw(this.tournamentToRandomize);
+            case this.appService.config.tournamentGeneralInfo.copa.name: this.randomGeneralCupDraw(this.tournamentToRandomize); break;
+            case this.appService.config.tournamentGeneralInfo.teamCup.name: this.randomTeamCupDraw(this.tournamentToRandomize); break;
         }
     }
 
@@ -297,16 +332,28 @@ export class AdminPageComponent implements OnInit{
             injuries: [],
             mvp: []
         };
+        let toPenalty = [];
         switch (resolution) {
             case 1: local.score = -2;
+                    toPenalty.push(this.matchToResolve.local);
                 break;
             case 2: local.score = -2;
                     away.score = -2;
+                    toPenalty.push(this.matchToResolve.local);
+                    toPenalty.push(this.matchToResolve.away);
                 break;
             case 3: away.score = -2;
+                    toPenalty.push(this.matchToResolve.away);
                 break;
         }
         this.appService.sendMatchInfo(this.matchToResolve, local, away);
+        toPenalty.forEach( (value) => {
+            this.http.post(PHPFILENAME, {type: 'chaSal', amount: this.appService.config.nonPlayedPenalty, id: value}).subscribe( (response) => {
+                if(response.json().success) {
+                    this.appService.insertLog({logType: this.appService.config.logTypes.nonPlayedPenalty, logInfo: 'Penalizado por no presentado: ' + this.appService.getTeamById(value.team).name });
+                }
+            });
+        });
         this.resetView();
     }
 

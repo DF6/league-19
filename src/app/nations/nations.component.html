@@ -1,190 +1,101 @@
-<div class="container-fluid">
-    <div class="row">
-        <div class="col-md-12">
-            <div class="card">
-                <div class="header">
-                    <h4 class="title">Liga de Naciones División 1</h4>
-                    <p class="category">Edición {{season}}</p>
+<div class="main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 col-sm-12" *ngIf="KOMatches">
+                    <section class="col-md-3 col-sm-12" *ngFor="let round of KOMatches">
+                        <roundkeys [roundConfig]="round"></roundkeys>
+                    </section>
+                    <div style="text-align: center;" *ngIf="champion">
+                        <h2>CAMPEÓN</h2>
+                        <h3>{{appService.getTeamById(champion).nation}}</h3>
+                    </div>
                 </div>
-                <div *ngIf="groupA.dataRows.length !=0" class="content table-responsive table-full-width">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>POS</th>
-                                <th>Nombre</th>
-                                <th>PJ</th>
-                                <th>G</th>
-                                <th>E</th>
-                                <th>P</th>
-                                <th>GF</th>
-                                <th>GC</th>
-                                <th>DG</th>
-                                <th>PTS</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let row of groupA.dataRows">
-                                <td *ngFor="let cell of row">{{cell}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <a style="cursor:pointer;margin-left: 15px;" *ngIf="!visibleLegend" (click)="visibleLegend = true">Ver Leyenda</a>
-                    <a style="cursor:pointer;margin-left: 15px;" *ngIf="visibleLegend" (click)="visibleLegend = false">Esconder Leyenda</a>
-                    <span *ngIf="visibleLegend" style="margin-left: 15px;">POS = Posición  PJ - Partidos Jugados  G - Ganados  E - Empatados  P - Perdidos  GF - Goles a Favor  GC - Goles en Contra  DG - Diferencia de goles  PTS - Puntos</span>
-                </div>
-                <div *ngIf="groupA.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
-                    Clasificación no disponible
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-12">
-            <div class="card">
-                <div class="header">
-                    <h4 class="title">Liga de Naciones División 2</h4>
-                    <p class="category">Edición {{season}}</p>
-                </div>
-                <div *ngIf="groupB.dataRows.length != 0" class="content table-responsive table-full-width">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>POS</th>
-                                <th>Nombre</th>
-                                <th>PJ</th>
-                                <th>G</th>
-                                <th>E</th>
-                                <th>P</th>
-                                <th>GF</th>
-                                <th>GC</th>
-                                <th>DG</th>
-                                <th>PTS</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let row of groupB.dataRows">
-                                <td *ngFor="let cell of row">{{cell}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <a style="cursor:pointer;margin-left: 15px;" *ngIf="!visibleLegend" (click)="visibleLegend = true">Ver Leyenda</a>
-                    <a style="cursor:pointer;margin-left: 15px;" *ngIf="visibleLegend" (click)="visibleLegend = false">Esconder Leyenda</a>
-                    <span *ngIf="visibleLegend" style="margin-left: 15px;">POS = Posición  PJ - Partidos Jugados  G - Ganados  E - Empatados  P - Perdidos  GF - Goles a Favor  GC - Goles en Contra  DG - Diferencia de goles  PTS - Puntos</span>
-                </div>
-                <div *ngIf="groupB.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
-                    Clasificación no disponible
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-12">
-            <div class="card">
-                <div class="header">
-                    <h4 class="title">Liga de Naciones División 3</h4>
-                    <p class="category">Edición {{season}}</p>
-                </div>
-                <div *ngIf="groupC.dataRows.length !=0" class="content table-responsive table-full-width">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>POS</th>
-                                <th>Nombre</th>
-                                <th>PJ</th>
-                                <th>G</th>
-                                <th>E</th>
-                                <th>P</th>
-                                <th>GF</th>
-                                <th>GC</th>
-                                <th>DG</th>
-                                <th>PTS</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let row of groupC.dataRows">
-                                <td *ngFor="let cell of row">{{cell}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <a style="cursor:pointer;margin-left: 15px;" *ngIf="!visibleLegend" (click)="visibleLegend = true">Ver Leyenda</a>
-                    <a style="cursor:pointer;margin-left: 15px;" *ngIf="visibleLegend" (click)="visibleLegend = false">Esconder Leyenda</a>
-                    <span *ngIf="visibleLegend" style="margin-left: 15px;">POS = Posición  PJ - Partidos Jugados  G - Ganados  E - Empatados  P - Perdidos  GF - Goles a Favor  GC - Goles en Contra  DG - Diferencia de goles  PTS - Puntos</span>
-                </div>
-                <div *ngIf="groupC.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
-                    Clasificación no disponible
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-12">
-            <div class="card">
-                <div class="header">
-                    <h4 class="title">Liga de Naciones División 4</h4>
-                    <p class="category">Edición {{season}}</p>
-                </div>
-                <div *ngIf="groupD.dataRows.length !=0" class="content table-responsive table-full-width">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>POS</th>
-                                <th>Nombre</th>
-                                <th>PJ</th>
-                                <th>G</th>
-                                <th>E</th>
-                                <th>P</th>
-                                <th>GF</th>
-                                <th>GC</th>
-                                <th>DG</th>
-                                <th>PTS</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let row of groupD.dataRows">
-                                <td *ngFor="let cell of row">{{cell}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <a style="cursor:pointer;margin-left: 15px;" *ngIf="!visibleLegend" (click)="visibleLegend = true">Ver Leyenda</a>
-                    <a style="cursor:pointer;margin-left: 15px;" *ngIf="visibleLegend" (click)="visibleLegend = false">Esconder Leyenda</a>
-                    <span *ngIf="visibleLegend" style="margin-left: 15px;">POS = Posición  PJ - Partidos Jugados  G - Ganados  E - Empatados  P - Perdidos  GF - Goles a Favor  GC - Goles en Contra  DG - Diferencia de goles  PTS - Puntos</span>
-                </div>
-                <div *ngIf="groupD.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
-                    Clasificación no disponible
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-12">
-            <div class="card">
-                <div class="header">
-                    <h4 class="title">Partidos</h4>
-                    <p class="category">Liga de Naciones - Edición {{season}}</p>
-                </div>
-                <div *ngIf="nationsMatches.dataRows.length != 0" class="content table-responsive table-full-width">
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Jornada</th>
-                                <th>Local</th>
-                                <th>Resultado</th>
-                                <th>Visitante</th>
-                                <th>Resumen</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr *ngFor="let row of nationsMatches.dataRows">
-                                <td style="text-align: center;">{{row.round}}</td>
-                                <td style="text-align: center;"><img src="{{getTeamById(row.local).imageRoute}}"/>{{getTeamById(row.local).nation}}</td>
-                                <td style="text-align: center;"><span *ngIf="row.localGoals != -1">{{row.localGoals}} - {{row.awayGoals}}</span><span *ngIf="row.localGoals == -1">-</span></td>
-                                <td style="text-align: center;">{{getTeamById(row.away).nation}}<img src="{{getTeamById(row.local).imageRoute}}"/></td>
-                                <td style="text-align: center;"><a *ngIf="row.localGoals != -1" style="cursor:pointer;" (click)="showSummary(row.id)">Resumen</a><span *ngIf="row.localGoals == -1">Por jugar</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div *ngIf="nationsMatches.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                <div *ngIf="!KOMatches" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
                     Partidos no disponibles
                 </div>
             </div>
+            <div class="row" *ngIf="groupTables">
+                <div class="col-md-12" *ngFor="let group of groupTables; let i = index">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title">Liga de Naciones División {{i+1}}</h4>
+                            <p class="category">Edición {{season}}</p>
+                        </div>
+                        <div *ngIf="group.dataRows.length !=0" class="content table-responsive table-full-width">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>POS</th>
+                                        <th>Nombre</th>
+                                        <th>PJ</th>
+                                        <th>G</th>
+                                        <th>E</th>
+                                        <th>P</th>
+                                        <th>NP</th>
+                                        <th>GF</th>
+                                        <th>GC</th>
+                                        <th>DG</th>
+                                        <th>PTS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let row of group.dataRows">
+                                        <td>{{row.position}}</td>
+                                        <td>{{row.team.nation}}</td>
+                                        <td>{{row.round}}</td>
+                                        <td>{{row.won}}</td>
+                                        <td>{{row.draw}}</td>
+                                        <td>{{row.lost}}</td>
+                                        <td>{{row.nonPlayed}}</td>
+                                        <td>{{row.goalsFor}}</td>
+                                        <td>{{row.goalsAgainst}}</td>
+                                        <td>{{row.goalDifference}}</td>
+                                        <td>{{row.points}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <a style="cursor:pointer;margin-left: 15px;" *ngIf="!visibleLegend" (click)="visibleLegend = true">Ver Leyenda</a>
+                            <a style="cursor:pointer;margin-left: 15px;" *ngIf="visibleLegend" (click)="visibleLegend = false">Esconder Leyenda</a>
+                            <span *ngIf="visibleLegend">POS = Posición  PJ - Partidos Jugados  G - Ganados  E - Empatados  P - Perdidos  NP - No Presentados  GF - Goles a Favor  GC - Goles en Contra  DG - Diferencia de goles  PTS - Puntos</span>
+                        </div>
+                        <div *ngIf="group.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                            Clasificación no disponible
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-12" *ngIf="allMatches">
+                    <div class="card">
+                        <div class="header">
+                            <h4 class="title">Partidos</h4>
+                            <p class="category">Liga de Naciones - Edición {{season}}</p>
+                        </div>
+                        <div *ngIf="allMatches.dataRows.length != 0" class="content table-responsive table-full-width">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Jornada</th>
+                                        <th>Local</th>
+                                        <th>Resultado</th>
+                                        <th>Visitante</th>
+                                        <th>Resumen</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let row of allMatches.dataRows">
+                                        <td style="text-align: center;">{{row.round}}</td>
+                                        <td style="text-align: center;">{{appService.getTeamById(row.local).nation}}</td>
+                                        <td style="text-align: center;"><span *ngIf="row.localGoals != -1">{{row.localGoals}} - {{row.awayGoals}}</span><span *ngIf="row.localGoals == -1">-</span></td>
+                                        <td style="text-align: center;">{{appService.getTeamById(row.away).nation}}</td>
+                                        <td style="text-align: center;"><a *ngIf="row.localGoals != -1" style="cursor:pointer;" (click)="showResume(row)">Resumen</a><span *ngIf="row.localGoals == -1">Por jugar</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div *ngIf="allMatches.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                            Partidos no disponibles
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
-</div>

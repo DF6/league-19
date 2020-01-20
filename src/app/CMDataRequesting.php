@@ -71,6 +71,9 @@
         case "SUG":
           obtainSuggestions($link);
           break;
+        case "TCT":
+          obtainTeamCupTeams($link);
+          break;
         default:
           invalidRequest();
      }
@@ -137,6 +140,9 @@
        case "insTou":
           insertTournament($link, $params);
             break;
+       case "insClu":
+          insertClub($link, $params);
+              break;
        case "borEmb":
           deleteEmblem($link, $params);
             break;
@@ -587,7 +593,7 @@
       $consult28Result = mysqli_query($con, $consult28) or die("Error consultando subastas");
       while($row28 = mysqli_fetch_array($consult28Result)) {
         $data['success'] = false;
-        $data['message'] = "Ya se liberó";
+        $data['message'] = "Ya se liberó, ve a Subastas para ver su puja actual";
       }
       if($data['success'] == true) {
         $query2="INSERT INTO signins (player, first_team, buyer_team,amount,signin_type,market,accepted,limit_date) values (".$params->player.",".$params->firstTeam.", 0, ".$params->amount.", 'L', ".$params->market.", false, DATE_ADD(NOW(), INTERVAL 37 HOUR))";
@@ -696,6 +702,17 @@
     $data['id'] = mysqli_insert_id($con);
     $data['success'] = true;
     $data['message'] = "Torneo creado";
+    echo json_encode($data);
+    exit;
+  }
+
+  function insertClub($con, $params) {
+    $data = array();
+    $query="INSERT INTO team_cup_teams (club, team, tournament) values (".$params->club.", ".$params->team.", ".$params->tournament.")";
+    $resultado=mysqli_query($con, $query) or die("Error insertando club");
+    $data['id'] = mysqli_insert_id($con);
+    $data['success'] = true;
+    $data['message'] = "Team Club creado";
     echo json_encode($data);
     exit;
   }
@@ -1218,7 +1235,7 @@
     $query="SELECT * from suggestions";
     $resultado=mysqli_query($con, $query) or die("Error recuperando sugerencias");
   
-    $log=array();
+    $suggestions=array();
     while($row = mysqli_fetch_array($resultado))
     {
         $user=$row['user'];
@@ -1226,6 +1243,26 @@
         $suggestions[] = array('user'=>$user, 'suggestion'=> $suggestion);
     }
     $data['suggestions']=$suggestions;
+    $data['success'] = true;
+    $data['message'] = "Datos recogidos";
+    echo json_encode($data);
+    exit;
+  }
+
+  function obtainTeamCupTeams($con) {
+    $data = array();
+    $query="SELECT * from team_cup_teams";
+    $resultado=mysqli_query($con, $query) or die("Error recuperando clubes");
+
+    $teamCupTeams=array();
+    while($row = mysqli_fetch_array($resultado))
+    {
+        $club=$row['club'];
+        $team=$row['team'];
+        $tournament=$row['tournament'];
+        $teamCupTeams[] = array('club'=>$club, 'team'=> $team, 'tournament' => $tournament);
+    }
+    $data['teamCupTeams']=$teamCupTeams;
     $data['success'] = true;
     $data['message'] = "Datos recogidos";
     echo json_encode($data);
