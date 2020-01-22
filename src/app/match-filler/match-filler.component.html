@@ -4,9 +4,9 @@
             <div class="card" style="padding: 16px;">
                 <h1 style="text-align: right !important;" *ngIf="getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.nationsLeague.name">
                     {{appService.getTeamById(data.local).name}} {{local.score}}</h1>
-                <h1 style="text-align: right !important;" *ngIf="getTournamentName(data.tournament) == appService.config.tournamentGeneralInfo.nationsLeague.name">
+                <h1 style="text-align: right !important;" *ngIf="getTournamentName(data.tournament) == appService.config.tournamentGeneralInfo.nationsLeague.name || getTournamentName(data.tournament) == appService.config.tournamentGeneralInfo.goldenTrophy.name">
                     {{appService.getTeamById(data.local).nation}} <input class="col-md-3" type="number" step="1" min="0" [(ngModel)]="local.score"></h1>
-                <div *ngIf="getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.nationsLeague.name && getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.teamCup.name">
+                <div *ngIf="getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.nationsLeague.name && getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.teamCup.name && getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.goldenTrophy.name">
                     <span style="display:block;">Goles</span>
                     <div>
                         <ul class="heroes">
@@ -126,11 +126,11 @@
 
         <div class="col-md-6 col-sm-12">
             <div class="card" style="padding: 16px;">
-                <h1 style="text-align: right !important;" *ngIf="getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.nationsLeague.name && getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.teamCup.name">
+                <h1 style="text-align: right !important;" *ngIf="getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.nationsLeague.name">
                 {{appService.getTeamById(data.away).name}} {{away.score}}</h1>
-                <h1 style="text-align: right !important;" *ngIf="getTournamentName(data.tournament) == appService.config.tournamentGeneralInfo.nationsLeague.name">
+                <h1 style="text-align: right !important;" *ngIf="getTournamentName(data.tournament) == appService.config.tournamentGeneralInfo.nationsLeague.name || getTournamentName(data.tournament) == appService.config.tournamentGeneralInfo.goldenTrophy.name">
                 {{appService.getTeamById(data.away).nation}} <input class="col-md-3" type="number" step="1" min="0" [(ngModel)]="away.score"></h1>
-                <div *ngIf="getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.nationsLeague.name && getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.teamCup.name">
+                <div *ngIf="getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.nationsLeague.name && getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.teamCup.name && getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.goldenTrophy.name">
                     <span style="display:block;">Goles</span>
                     <div>
                         <ul class="heroes">

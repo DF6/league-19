@@ -249,6 +249,33 @@ export class MatchFillerComponent implements OnInit{
         }
     }
 
+    public sendGoldenTrophyMatchInfo() {
+        if (!this.sent) {
+            this.sent = true;
+            this.http.post('./test_CMDataRequesting.php', {type: 'setRes', localGoals: this.local.score, awayGoals: this.away.score, matchID: this.data.id}).subscribe( (response) => {
+                if (response.json().success) {
+                    let local = {points: 0, won: 0, draw: 0, lost: 0, nonPlayed: 0, goalsAgainst: 0};
+                    let away = {points: 0, won: 0, draw: 0, lost: 0, nonPlayed: 0, goalsAgainst: 0};
+                    if (this.local.score > this.away.score) {
+                        local.points = this.local.score;
+                        local.won = 1;
+                    }else {
+                        away.points = this.away.score;
+                        away.won = 1;
+                    }
+                    this.http.post('./test_CMDataRequesting.php', {type: 'updSta', points: local.points, won: local.won, draw: local.draw, lost: local.lost, nonPlayed: local.nonPlayed, goalsFor: local.points, goalsAgainst: local.goalsAgainst, tournamentID: this.data.tournament, team: this.data.local}).subscribe( () => {});
+                    this.http.post('./test_CMDataRequesting.php', {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, nonPlayed: away.nonPlayed, goalsFor: away.points, goalsAgainst: away.goalsAgainst, tournamentID: this.data.tournament, team: this.data.away}).subscribe( () => {});
+                    this.appService.increaseSalaries(this.data);
+                    this.matchFilled.emit();
+                } else {
+                    alert(response.json().message);
+                }
+            });
+        } else {
+            alert('Resultado ya introducido');
+        }
+    }
+
     public getTournamentName(tournament) {
         return this.appService.getTournamentById(tournament).name;
     }
