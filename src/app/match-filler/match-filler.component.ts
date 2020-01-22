@@ -93,6 +93,16 @@ export class MatchFillerComponent implements OnInit{
         }
     }
 
+    public addTeamCupScorer(team) {
+        if (team == this.data.local) {
+            this.local.scorers.push(this.models.localScorer);
+            this.local.score += parseInt(this.appService.getPlayerById(this.models.localScorer).overage);
+        } else if (team == this.data.away) {
+            this.away.scorers.push(this.models.awayScorer);
+            this.away.score += parseInt(this.appService.getPlayerById(this.models.awayScorer).overage);
+        }
+    }
+
     public removeScorer(team, position) {
         if (team == this.data.local) {
             this.local.scorers.splice(position, 1);
@@ -100,6 +110,16 @@ export class MatchFillerComponent implements OnInit{
         } else if (team == this.data.away) {
             this.away.scorers.splice(position, 1);
             this.away.score--;
+        }
+    }
+
+    public removeTeamCupScorer(team, position) {
+        if (team == this.data.local) {
+            const scorer = this.local.scorers.splice(position, 1);
+            this.local.score -= parseInt(this.appService.getPlayerById(scorer).overage);
+        } else if (team == this.data.away) {
+            const scorer = this.away.scorers.splice(position, 1);
+            this.away.score -= parseInt(this.appService.getPlayerById(scorer).overage);
         }
     }
 
@@ -215,7 +235,21 @@ export class MatchFillerComponent implements OnInit{
         }
     }
 
-    public isNationsLeague(tournament) {
-        return this.appService.getTournamentById(tournament).name == this.appService.config.tournamentGeneralInfo.nationsLeague.name;
+    public sendTeamCupMatchInfo() {
+        if (!this.sent) {
+            this.sent = true;
+            this.http.post('./test_CMDataRequesting.php', {type: 'setRes', localGoals: this.local.score, awayGoals: this.away.score, matchID: this.data.id}).subscribe( (response) => {
+                if (response.json().success) {
+                    this.appService.increaseSalaries(this.data);
+                    this.matchFilled.emit();
+                }
+            });
+        } else {
+            alert('Resultado ya introducido');
+        }
+    }
+
+    public getTournamentName(tournament) {
+        return this.appService.getTournamentById(tournament).name;
     }
 }
