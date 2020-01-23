@@ -95,11 +95,19 @@ export class MatchFillerComponent implements OnInit{
 
     public addTeamCupScorer(team) {
         if (team == this.data.local) {
-            this.local.scorers.push(this.models.localScorer);
-            this.local.score += parseInt(this.appService.getPlayerById(this.models.localScorer).overage);
+            if(this.local.scorers.find( (scorer) => { return this.models.localScorer == scorer; })) {
+                alert('Jugador ya introducido');
+            } else {
+                this.local.scorers.push(this.models.localScorer);
+                this.local.score += parseInt(this.appService.getPlayerById(this.models.localScorer).overage);
+            }
         } else if (team == this.data.away) {
-            this.away.scorers.push(this.models.awayScorer);
-            this.away.score += parseInt(this.appService.getPlayerById(this.models.awayScorer).overage);
+            if(this.away.scorers.find( (scorer) => { return this.models.awayScorer == scorer; })) {
+                alert('Jugador ya introducido');
+            } else {
+                this.away.scorers.push(this.models.awayScorer);
+                this.away.score += parseInt(this.appService.getPlayerById(this.models.awayScorer).overage);
+            }
         }
     }
 
