@@ -2,13 +2,13 @@
     <div class="row">
         <div class="col-md-6 col-sm-12">
             <div class="card" style="padding: 16px;">
-                <h1 style="text-align: right !important;"
-                *ngIf="!isNationsLeague(data.tournament)">
-                {{appService.getTeamById(data.local).name}} {{local.score}}</h1>
-                <h1 style="text-align: right !important;"
-                *ngIf="isNationsLeague(data.tournament)">
-                {{appService.getTeamById(data.local).nation}} <input class="col-md-3" type="number" step="1" min="0" [(ngModel)]="local.score"></h1>
-                <div *ngIf="!isNationsLeague(data.tournament)">
+                <h1 style="text-align: right !important;" *ngIf="getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.nationsLeague.name && getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.goldenTrophy.name">
+                    {{appService.getTeamById(data.local).name}} {{local.score}}</h1>
+                <h1 style="text-align: right !important;" *ngIf="getTournamentName(data.tournament) == appService.config.tournamentGeneralInfo.nationsLeague.name">
+                    {{appService.getTeamById(data.local).nation}} <input class="col-md-3" type="number" step="1" min="0" [(ngModel)]="local.score"></h1>
+                <h1 style="text-align: right !important;" *ngIf="getTournamentName(data.tournament) == appService.config.tournamentGeneralInfo.goldenTrophy.name">
+                    {{appService.getTeamById(data.local).name}} <input class="col-md-3" type="number" step="1" min="0" [(ngModel)]="local.score"></h1>
+                <div *ngIf="getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.nationsLeague.name && getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.teamCup.name && getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.goldenTrophy.name">
                     <span style="display:block;">Goles</span>
                     <div>
                         <ul class="heroes">
@@ -79,9 +79,9 @@
                     <div>
                         <ul class="heroes">
                             <li style="list-style: none;" *ngFor="let locInjury of local.injuries; let i = index">
-                                    <span *ngIf="locInjury > 0">{{appService.getPlayerById(locInjury).name}}</span>
-                                    <span *ngIf="locInjury == -1">Desconocido</span> 
-                                    <i class="ti-close" (click)="removeInjury(data.local, i)"></i>
+                                <span *ngIf="locInjury > 0">{{appService.getPlayerById(locInjury).name}}</span>
+                                <span *ngIf="locInjury == -1">Desconocido</span> 
+                                <i class="ti-close" (click)="removeInjury(data.local, i)"></i>
                             </li>
                         </ul>
                         <select [(ngModel)]="models.localinjury">
@@ -95,9 +95,9 @@
                     <div>
                         <ul class="heroes">
                             <li style="list-style: none;" *ngFor="let locMVP of local.mvp; let i = index">
-                                    <span *ngIf="locMVP > 0">{{appService.getPlayerById(locMVP).name}}</span>
-                                    <span *ngIf="locMVP == -1">Desconocido</span> 
-                                    <i class="ti-close" (click)="removeMVP(data.local, i)"></i>
+                                <span *ngIf="locMVP > 0">{{appService.getPlayerById(locMVP).name}}</span>
+                                <span *ngIf="locMVP == -1">Desconocido</span> 
+                                <i class="ti-close" (click)="removeMVP(data.local, i)"></i>
                             </li>
                         </ul>
                         <select [(ngModel)]="models.localmvp">
@@ -108,18 +108,33 @@
                     </div>
                     <button (click)="addMVP(data.local)" style="margin-top: 4px;">Añadir</button>
                 </div>
+                <div *ngIf="getTournamentName(data.tournament) == appService.config.tournamentGeneralInfo.teamCup.name">
+                    <div>
+                        <ul class="heroes">
+                            <li style="list-style: none;" *ngFor="let locScore of local.scorers; let i = index">
+                                <span *ngIf="locScore > 0">{{appService.getPlayerById(locScore).name}} - {{appService.getPlayerById(locScore).overage}} puntos</span>
+                                <i class="ti-close" (click)="removeTeamCupScorer(data.local, i)"></i>
+                            </li>
+                        </ul>
+                        <select [(ngModel)]="models.localScorer">
+                            <option *ngFor="let teamPlayer of awayPlayers" 
+                            [ngValue]="teamPlayer.id">{{teamPlayer.name}} ({{teamPlayer.overage}})</option>
+                        </select>
+                    </div>
+                    <button (click)="addTeamCupScorer(data.local)" style="margin-top: 4px;">Añadir</button>
+                </div>
             </div>
         </div>
 
         <div class="col-md-6 col-sm-12">
             <div class="card" style="padding: 16px;">
-                <h1 style="text-align: right !important;"
-                *ngIf="!isNationsLeague(data.tournament)">
-                {{appService.getTeamById(data.away).name}} {{away.score}}</h1>
-                <h1 style="text-align: right !important;"
-                *ngIf="isNationsLeague(data.tournament)">
-                {{appService.getTeamById(data.away).nation}} <input class="col-md-3" type="number" step="1" min="0" [(ngModel)]="away.score"></h1>
-                <div *ngIf="!isNationsLeague(data.tournament)">
+                <h1 style="text-align: right !important;" *ngIf="getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.nationsLeague.name && getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.goldenTrophy.name">
+                    {{appService.getTeamById(data.away).name}} {{away.score}}</h1>
+                <h1 style="text-align: right !important;" *ngIf="getTournamentName(data.tournament) == appService.config.tournamentGeneralInfo.nationsLeague.name">
+                    {{appService.getTeamById(data.away).nation}} <input class="col-md-3" type="number" step="1" min="0" [(ngModel)]="away.score"></h1>
+                <h1 style="text-align: right !important;" *ngIf="getTournamentName(data.tournament) == appService.config.tournamentGeneralInfo.goldenTrophy.name">
+                    {{appService.getTeamById(data.away).name}} <input class="col-md-3" type="number" step="1" min="0" [(ngModel)]="away.score"></h1>
+                <div *ngIf="getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.nationsLeague.name && getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.teamCup.name && getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.goldenTrophy.name">
                     <span style="display:block;">Goles</span>
                     <div>
                         <ul class="heroes">
@@ -219,10 +234,27 @@
                         </div>
                         <button (click)="addMVP(data.away)" style="margin-top: 4px;">Añadir</button>
                 </div>
+                <div *ngIf="getTournamentName(data.tournament) == appService.config.tournamentGeneralInfo.teamCup.name">
+                    <div>
+                        <ul class="heroes">
+                            <li style="list-style: none;" *ngFor="let locScore of away.scorers; let i = index">
+                                <span *ngIf="locScore > 0">{{appService.getPlayerById(locScore).name}} - {{appService.getPlayerById(locScore).overage}} puntos</span>
+                                <i class="ti-close" (click)="removeTeamCupScorer(data.away, i)"></i>
+                            </li>
+                        </ul>
+                        <select [(ngModel)]="models.awayScorer">
+                            <option *ngFor="let teamPlayer of localPlayers" 
+                            [ngValue]="teamPlayer.id">{{teamPlayer.name}} ({{teamPlayer.overage}})</option>
+                        </select>
+                    </div>
+                    <button (click)="addTeamCupScorer(data.away)" style="margin-top: 4px;">Añadir</button>
+                </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <button class="col-md-12" (click)="sendMatchInfo()">Enviar Informe</button>
+        <button *ngIf="getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.teamCup.name && getTournamentName(data.tournament) != appService.config.tournamentGeneralInfo.goldenTrophy.name" class="col-md-12" (click)="sendMatchInfo()">Enviar Informe</button>
+        <button *ngIf="getTournamentName(data.tournament) == appService.config.tournamentGeneralInfo.teamCup.name" class="col-md-12" (click)="sendTeamCupMatchInfo()">Enviar Informe</button>
+        <button *ngIf="getTournamentName(data.tournament) == appService.config.tournamentGeneralInfo.goldenTrophy.name" class="col-md-12" (click)="sendGoldenTrophyMatchInfo()">Enviar Informe</button>
     </div>
 </div>

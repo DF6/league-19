@@ -30,7 +30,6 @@ export class TeamCupComponent implements OnInit{
 
     private getMatches() {
         this.appService.getMatchesObservable().subscribe( (response) => {
-            let finalTableMatches = [];
             this.appService.data.matches = response.json().matches;
             const tournament = this.appService.getLastEdition(this.appService.config.tournamentGeneralInfo.teamCup.name);
             this.season = tournament.edition;
@@ -42,6 +41,29 @@ export class TeamCupComponent implements OnInit{
                 return this.myClub.find( (myClubTeam) => { return myClubTeam.team == filteredMatch.local || myClubTeam.team == filteredMatch.away; }) != undefined;
             });
             this.myClubMatchesTable = this.appService.getTableConfig(this.appService.config.tableHeaders.myClubMatches, myClubMatches);
+            for(let i = 1; i <= this.appService.config.tournamentGeneralInfo.teamCup.finalRound; i++) {
+                const filteredRound = allMatches.filter( (filteredMatch) => {
+                    return filteredMatch.round == i;
+                });
+                let score = [ { club: '1', points: 0, rival: '0'}, { club: '2', points: 0, rival: '0'}, { club: '3', points: 0, rival: '0'}, { club: '4', points: 0, rival: '0'}];
+                let myClubPosition = 0;
+                filteredRound.forEach( (match) => {
+                    if(match.localGoals != '-1') {
+                        const localClub = this.appService.getClubByTeam(this.appService.getTeamById(match.local));
+                        const awayClub = this.appService.getClubByTeam(this.appService.getTeamById(match.away));
+                        score.forEach( (club) => {
+                            if(club.club == localClub.club) {
+                                club.points += match.localGoals;
+                                club.rival = awayClub;
+                            } else if(club.club == awayClub.club){
+                                club.points += match.awayGoals;
+                                club.rival = localClub;
+                            }
+                        });
+                    }
+                });
+                let myScore = { local: '0', away: '0', localPoints: 0, awayPoints: 0 };
+            }
             /*for(let i = 1; i <= this.appService.config.tournamentGeneralInfo.teamCup.finalRound; i++) {
                 const filteredRound = allMatches.filter( (filteredMatch) => {
                     return filteredMatch.round == i;
@@ -53,7 +75,7 @@ export class TeamCupComponent implements OnInit{
             }
             this.matches = finalTableMatches;
             this.champion = this.appService.whoWon(this.appService.data.matches.filter( (filteredMatch) => {
-                return filteredMatch.tournament == tournament.id && filteredMatch.round == this.appService.config.tournamentGeneralInfo.copaMugre.finalRound;
+                return filteredMatch.tournament == tournament.id && filteredMatch.round == this.appService.config.tournamentGeneralInfo.teamCup.finalRound;
             })[0]);*/
         });
     }

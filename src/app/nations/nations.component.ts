@@ -125,7 +125,7 @@ export class NationsComponent implements OnInit{
                 });
                 this.allMatches = this.appService.getTableConfig(this.appService.config.tableHeaders.leagueMatches, finalTableMatches);
                 let finalMatches = [];
-                for(let i = this.appService.config.tournamentGeneralInfo.nationsLeague.KORound; i <= this.appService.config.tournamentGeneralInfo.nationsLeague.finalRound; i=i) {
+                for(let i = this.appService.config.tournamentGeneralInfo.nationsLeague.KORound; i <= this.appService.config.tournamentGeneralInfo.nationsLeague.finalRound; i++) {
                     const filteredRound1 = finalTableMatches.filter( (filteredMatch) => {
                         return filteredMatch.round == i;
                     });

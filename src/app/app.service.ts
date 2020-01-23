@@ -313,13 +313,12 @@ export class AppService {
                     case 2: return this.config.roundNames.thirdAndFourthPlace; 
                     case 3: return this.config.roundNames.final;
                 }
-                break;
             case this.config.tournamentGeneralInfo.goldenTrophy.name: return match.round;
             case this.config.tournamentGeneralInfo.nationsLeague.name:
                 switch(parseInt(match.round)) {
-                    case 4: return this.config.roundNames.semifinals; 
-                    case 5: return this.config.roundNames.thirdAndFourthPlace; 
-                    case 6: return this.config.roundNames.final;
+                    case 6: return this.config.roundNames.semifinals;
+                    case 7: return this.config.roundNames.thirdAndFourthPlace;
+                    case 8: return this.config.roundNames.final;
                     default: return match.round;
                 }
         }
@@ -504,6 +503,9 @@ export class AppService {
             case this.config.tournamentGeneralInfo.segunda.name: return parseInt(match.round) <= this.config.validRounds.segunda;
             case this.config.tournamentGeneralInfo.supercopaDeClubes.name: return parseInt(match.round) <= this.config.validRounds.supercopaDeClubes;
             case this.config.tournamentGeneralInfo.supercopaEuropea.name: return parseInt(match.round) <= this.config.validRounds.supercopaEuropea;
+            case this.config.tournamentGeneralInfo.teamCup.name: return parseInt(match.round) <= this.config.validRounds.teamCup;
+            case this.config.tournamentGeneralInfo.goldenTrophy.name: return parseInt(match.round) <= this.config.validRounds.goldenTrophy;
+            case this.config.tournamentGeneralInfo.nationsLeague.name: return parseInt(match.round) <= this.config.validRounds.nationsLeague;
         }
     }
 
