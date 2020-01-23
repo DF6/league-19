@@ -29,7 +29,7 @@ export class GoldenTrophyComponent implements OnInit{
         this.appService.getMatchesObservable().subscribe( (response2) => {
             this.appService.data.matches = response2.json().matches;
             this.appService.getStandingsObservable().subscribe( (response) => {
-                if(response.json().success) {
+                if (response.json().success) {
                     this.appService.data.standings = response.json().standings;
                     const leagueLastEdition = this.appService.getLastEdition(this.appService.config.tournamentGeneralInfo.goldenTrophy.name);
                     this.season = parseInt(leagueLastEdition.edition);
@@ -42,7 +42,7 @@ export class GoldenTrophyComponent implements OnInit{
                             team: this.appService.getTeamById(parseInt(value.team)),
                             round: parseInt(value.round),
                             won: parseInt(value.won),
-                            minutes: parseInt(value.minutes)
+                            minutes: parseInt(value.points)
                         };
                     });
                     let pStands = [];

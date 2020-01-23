@@ -67,6 +67,9 @@ export class PenaltiesComponent implements OnInit{
             case this.appService.config.tournamentGeneralInfo.copaMugre.name: return (penalty.round <= this.appService.config.validRounds.copaMugre);
             case this.appService.config.tournamentGeneralInfo.supercopaDeClubes.name:
             case this.appService.config.tournamentGeneralInfo.supercopaEuropea.name: return;
+            case this.appService.config.tournamentGeneralInfo.teamCup.name: return;
+            case this.appService.config.tournamentGeneralInfo.goldenTrophy.name: return (penalty.round <= this.appService.config.validRounds.goldenTrophy - 2);
+            case this.appService.config.tournamentGeneralInfo.nationsLeague.name: return;
         }
     }
 
@@ -93,6 +96,8 @@ export class PenaltiesComponent implements OnInit{
             case this.appService.config.tournamentGeneralInfo.primera.name:
             case this.appService.config.tournamentGeneralInfo.segunda.name:
                 return this.getPenaltyAmount(action, this.appService.getTournamentByMatch(action.matchID), 3);
+            case this.appService.config.tournamentGeneralInfo.goldenTrophy.name:
+                return this.getPenaltyAmount(action, this.appService.getTournamentByMatch(action.matchID), 2);
             case this.appService.config.tournamentGeneralInfo.copa.name:
             case this.appService.config.tournamentGeneralInfo.championsLeague.name:
             case this.appService.config.tournamentGeneralInfo.europaLeague.name:
@@ -100,6 +105,8 @@ export class PenaltiesComponent implements OnInit{
                 return this.getPenaltyAmount(action, this.appService.getTournamentByMatch(action.matchID), 1);
             case this.appService.config.tournamentGeneralInfo.supercopaDeClubes.name:
             case this.appService.config.tournamentGeneralInfo.supercopaEuropea.name:
+            case this.appService.config.tournamentGeneralInfo.nationsLeague.name:
+            case this.appService.config.tournamentGeneralInfo.teamCup.name:
                 return [{ teamFor: null, teamAgainst: null, player: null, round: 0, cause: '' }];
         }
         return action;
