@@ -250,6 +250,8 @@ export class MatchFillerComponent implements OnInit{
                 if (response.json().success) {
                     this.appService.increaseSalaries(this.data);
                     this.matchFilled.emit();
+                    this.appService.insertLog({logType: this.appService.config.logTypes.matchFilled, logInfo: 'Partido insertado: ' + this.data.id + ''});
+                    alert('Partido insertado');
                 }
             });
         } else {
@@ -275,6 +277,8 @@ export class MatchFillerComponent implements OnInit{
                     this.http.post('./test_CMDataRequesting.php', {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, nonPlayed: away.nonPlayed, goalsFor: away.points, goalsAgainst: away.goalsAgainst, tournamentID: this.data.tournament, team: this.data.away}).subscribe( () => {});
                     this.appService.increaseSalaries(this.data);
                     this.matchFilled.emit();
+                    this.appService.insertLog({logType: this.appService.config.logTypes.matchFilled, logInfo: 'Partido insertado: ' + this.data.id + ''});
+                    alert('Partido insertado');
                 } else {
                     alert(response.json().message);
                 }
