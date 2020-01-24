@@ -17,87 +17,101 @@ const PHPFILENAME = './test_CMDataRequesting.php';
 
 export class PrivilegesComponent implements OnInit{
 
-    public matchToAdd;
+    public newBadgeAndClothing;
+
     public prizes;
-    public teamSalaries: TableData;
-    public salaryData;
-    public tournamentToReset;
-    public tournamentToCreate;
-    public tournamentToRandomize;
-    public matchToResolve;
+    public targetsTable: TableData;
+    public playerToUntouchable;
     public showModule;
-    public suggestionsTable;
-    public adminMatchesTable;
-    public insertMatch;
-    public insertPlayer;
-    public showNewRound = false;
-    public showMatchToResolve;
 
     constructor(private http: Http, private appService: AppService) {
         this.resetView();
         this.appService.getPlayers();
         this.appService.getTeams();
         this.appService.getTournaments();
-        this.appService.getSuggestions();
         this.appService.getSignins();
     }
 
     ngOnInit() {
         this.appService.getSigninsObservable().subscribe( (response2) => {
-            this.appService.data.signins = response2.json().signins;    
+            this.appService.data.signins = response2.json().signins;
             this.appService.getMatchesObservable().subscribe( (response) => {
                 this.appService.data.matches = response.json().matches;
-                this.matchToAdd = {
-                    local: -1,
-                    away: -1,
-                    tournament: -1,
-                    round: -1
-                };
-                this.prizes = {
-                    first: -1,
-                    second: -1,
-                    third: -1,
-                    fourth: -1,
-                    fifth: -1,
-                    sixth: -1,
-                    seventh: -1,
-                    eight: -1
-                };
-                this.getTotalSalaries();
             });
         });
     }
 
-    public getTotalSalaries() {
-        this.salaryData = this.appService.data.teams.map( (value) => {
-            return { team: value.id, salaries: this.getTotalSalariesByTeam(value.id) };
-        });
-        this.teamSalaries = this.appService.getTableConfig(this.appService.config.tableHeaders.adminSalaries, this.salaryData);
+    public buy30MinutesNextMarket() {
+        if (confirm('¿Comprar adelanto de 30 minutos en cláusulas el próximo mercado?')) {
+            this.http.post(PHPFILENAME, {type: 'buyThi', team: this.appService.data.user.teamID, price: this.appService.config.privilegePrices.thirtyMinutes}).subscribe( (response) => {
+                alert(response.json().message);
+            });
+        }
     }
 
-    public getTotalSalariesByTeam(team) {
-        let playerToBe = this.appService.getPlayersByTeam(team);
-        let total = 0;
-        playerToBe.forEach( (value) => {
-            if(value.cedido == 0) {
-                total += parseFloat(value.salary);
-            }
-        });
-        return Math.round(total * 100) / 100;
+    public buyExtraForcedSignin() {
+        if (confirm('¿Comprar cláusula extra?')) {
+            this.http.post(PHPFILENAME, {type: 'extFor', team: this.appService.data.user.teamID, price: this.appService.config.privilegePrices.extraForcedSignin}).subscribe( (response) => {
+                alert(response.json().message);
+            });
+        }
     }
+
+    public buyExtraAuction() {
+        if (confirm('¿Comprar subasta extra?')) {
+            this.http.post(PHPFILENAME, {type: 'extAuc', team: this.appService.data.user.teamID, price: this.appService.config.privilegePrices.extraAuction}).subscribe( (response) => {
+                alert(response.json().message);
+            });
+        }
+    }
+
+    public buyInstantAuctionWin() {
+        
+    }
+
+    public buy30PointsToMyTeamCupTeam() {
+        
+    }
+
+    public buyUntouchable() {
+        if (confirm('¿Hacer intocable?')) {
+            this.http.post(PHPFILENAME, {type: 'setUnt', team: this.appService.data.user.teamID, player: this.playerToUntouchable, price: this.appService.config.privilegePrices.untouchable}).subscribe( (response) => {
+                alert(response.json().message);
+            });
+        }
+    }
+
+    public buyChampionsLeagueVacancy() {
+        
+    }
+
+    public changeBadgeAndClothing() {
+        if (confirm('¿Cambiar escudo y equipación?')) {
+            this.http.post(PHPFILENAME, {type: 'chaBad', team: this.appService.data.user.teamID, newBadge: this.newBadgeAndClothing, price: this.appService.config.privilegePrices.changeBadgeAndClothing}).subscribe( (response) => {
+                alert(response.json().message);
+                this.newBadgeAndClothing = '';
+            });
+        }
+    }
+
+    public buyPartnerTargetProtection() {
+        
+    }
+
+    public sellMyTeam() {
+        if (confirm('Esta acción supondrá desprenderte de todos tus jugadores por encima de media 80 y recibir instantáneamente el pago íntegro de su cláusula, sin subastarlos ¿Realizar?')) {
+            this.http.post(PHPFILENAME, {type: 'venEqu', team: this.appService.data.user.teamID, price: this.appService.config.privilegePrices.sellTeam}).subscribe( (response) => {
+                alert(response.json().message);
+                this.newBadgeAndClothing = '';
+            });
+        } 
+    }
+
     public resetView() {
         this.showModule = {
-            changeSeasonslot: false,
-            createTournament: false,
-            discountSalaries: false,
-            editMatch: false,
-            insertMatch: false,
-            insertPlayer: false,
-            nonPlayed: false,
-            randomize: false,
-            recalculateStandings: false,
-            showPendingMatches: false,
-            suggestions: false
+            changeBadgeAndClothing: false,
+            protectPartnerTarget: false,
+            untouchable: false
         };
     }
 

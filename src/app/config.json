@@ -82,6 +82,18 @@
     "notMobileMenuWidth": 479,
     "notResolvedMatch": -1,
     "notTeam": 0,
+    "privilegePrices": {
+        "championsLeagueVacancy": 10,
+        "changeBadgeAndClothing": 10,
+        "extraAuction": 10,
+        "extraForcedSignin": 10,
+        "instantAuctionWin": 10,
+        "pointsTeamCup": 10,
+        "protectPartnerTarget": 10,
+        "sellTeam": 0,
+        "thirtyMinutes": 10,
+        "untouchable": 10
+    },
     "roundNames": {
         "previousRound": "Ronda Previa",
         "groupStage": "Fase de Grupos",

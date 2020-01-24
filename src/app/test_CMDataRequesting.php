@@ -185,6 +185,23 @@
        case "senSug":
           insertSuggestion($link, $params);
             break;
+       case "buyThi":
+          buyThirtyMinutesNextMarket($link, $params);
+            break;
+       case "extFor":
+          buyExtraForcedSignin($link, $params);
+            break;
+       case "extAuc":
+          buyExtraAuction($link, $params);
+            break;
+       case "setUnt":
+          buyNewUntouchable($link, $params);
+            break;
+       case "chaBad":
+          changeBadgeAndClothing($link, $params);
+            break;
+       case "venEqu":
+          sellTeam($link, $params);
         default:
           invalidRequest();
     }
@@ -834,8 +851,77 @@
     echo json_encode($data);
     exit;
   }
+//PROBAR
+  function buyThirtyMinutesNextMarket($con, $params)
+  {
+    $data = array();
+    $query="UPDATE test_teams SET budget=budget-". $params->price .", next_market_privilege=1 where id=" . $params->team;
+    $resultado=mysqli_query($con, $query) or die("Error comprando privilegio");
+    $data['success'] = true;
+    $data['message'] = "Privilegio 30 minutos comprado. El próximo mercado tendrás un adelanto de 30 minutos para realizar cláusulas";
+    echo json_encode($data);
+    exit;
+  }
 
-  
+  function buyExtraForcedSignin($con, $params)
+  {
+    $data = array();
+    $query="UPDATE test_teams SET budget=budget-". $params->price .", forced_signins_available=forced_signins_available+1 where id=" . $params->team;
+    $resultado=mysqli_query($con, $query) or die("Error comprando privilegio");
+    $data['success'] = true;
+    $data['message'] = "Ahora tienes un clausulazo disponible más";
+    echo json_encode($data);
+    exit;
+  }
+
+  function buyExtraAuction($con, $params)
+  {
+    $data = array();
+    $query="UPDATE test_teams SET budget=budget-". $params->price .", auctions_available=auctions_available+1 where id=" . $params->team;
+    $resultado=mysqli_query($con, $query) or die("Error comprando privilegio");
+    $data['success'] = true;
+    $data['message'] = "Ahora tienes una subasta de jugador nuevo más";
+    echo json_encode($data);
+    exit;
+  }
+
+  function buyNewUntouchable($con, $params)
+  {
+    $data = array();
+    $query2="UPDATE test_players SET untouchable=1 where id=" . $params->player;
+    $resultado2=mysqli_query($con, $query2) or die("Error intocabilizando jugador");
+    $query="UPDATE test_teams SET budget=budget-". $params->price ." where id=" . $params->team;
+    $resultado=mysqli_query($con, $query) or die("Error comprando privilegio");
+    $data['success'] = true;
+    $data['message'] = "El jugador es intocable el próximo mercado";
+    echo json_encode($data);
+    exit;
+  }
+
+  function changeBadgeAndClothing($con, $params)
+  {
+    $data = array();
+    $query="UPDATE test_teams SET budget=budget-". $params->price .", name='".$params->newBadge."' where id=" . $params->team;
+    $resultado=mysqli_query($con, $query) or die("Error comprando privilegio");
+    $data['success'] = true;
+    $data['message'] = "Escudo y equipación cambiados";
+    echo json_encode($data);
+    exit;
+  }
+
+  function sellTeam($con, $params)
+  {
+    $data = array();
+    $query2="UPDATE test_players SET team_id=0 where overage >= 80 and team_id=" . $params->team;
+    $resultado2=mysqli_query($con, $query2) or die("Error vendiendo jugadores");
+    $query="UPDATE test_teams SET budget=budget+".$params->totalSelling."-". $params->price ." where id=" . $params->team;
+    $resultado=mysqli_query($con, $query) or die("Error comprando privilegio");
+    $data['success'] = true;
+    $data['message'] = "Llegó el jeque y te dejó ".$params->totalSelling. "M€";
+    echo json_encode($data);
+    exit;
+  }
+  //PROBAR HASTA AQUI
   function addZero($number)
   {
     if($number<10){$number="0"+$number;}

@@ -3,21 +3,21 @@
         <div class="col-md-4 col-sm-12" (click)="buy30MinutesNextMarket()">
             <div style="cursor: pointer" class="card">
                 <div class="header text-center">
-                    <p style="font-weight: bold" class="category">30 minutos de Acceso Prioritario a Clausulazos en el próximo mercado - M€<br/><br/></p>
+                    <p style="font-weight: bold" class="category">30 minutos de Acceso Prioritario a Clausulazos en el próximo mercado<br/><br/>{{appService.config.privilegePrices.thirtyMinutes}}M€</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4 col-sm-12" (click)="buyExtraForcedSignin()">
             <div style="cursor: pointer" class="card">
                 <div class="header text-center">
-                    <p style="font-weight: bold" class="category">Clausulazo Extra<br/><br/></p>
+                    <p style="font-weight: bold" class="category">Clausulazo Extra<br/><br/>{{appService.config.privilegePrices.extraForcedSignin}}M€</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4 col-sm-12" (click)="buyExtraAuction()">
             <div style="cursor: pointer" class="card">
                 <div class="header text-center">
-                    <p style="font-weight: bold" class="category">Subasta por Jugador Nuevo Extra<br/><br/></p>
+                    <p style="font-weight: bold" class="category">Subasta por Jugador Nuevo Extra<br/><br/>{{appService.config.privilegePrices.extraAuction}}M€</p>
                 </div>
             </div>
         </div>
@@ -26,21 +26,21 @@
         <div class="col-md-4 col-sm-12" (click)="buyInstantAuctionWin()">
             <div style="cursor: pointer" class="card">
                 <div class="header text-center">
-                    <p style="font-weight: bold" class="category">Cierre Instantáneo de Subasta<br/><br/></p>
+                    <p style="font-weight: bold" class="category">Cierre Instantáneo de Subasta<br/><br/>{{appService.config.privilegePrices.instantAuctionWin}}M€</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4 col-sm-12" (click)="resetView();showModule.untouchable = true">
             <div style="cursor: pointer" class="card">
                 <div class="header text-center">
-                    <p style="font-weight: bold" class="category">Jugador Intocable durante el próximo Mercado<br/><br/></p>
+                    <p style="font-weight: bold" class="category">Jugador Intocable durante el próximo Mercado<br/><br/>{{appService.config.privilegePrices.untouchable}}M€</p>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col-sm-12" (click)="buy30PointsToMyTeamCupTeam(5)">
+        <div class="col-md-4 col-sm-12" (click)="buy30PointsToMyTeamCupTeam()">
             <div style="cursor: pointer" class="card">
                 <div class="header text-center">
-                    <p style="font-weight: bold" class="category">Añadir 30 puntos de Equipo a tu Equipo de Team Cup<br/><br/></p>
+                    <p style="font-weight: bold" class="category">Añadir 30 puntos de Equipo a tu Equipo de Team Cup<br/><br/>{{appService.config.privilegePrices.pointsTeamCup}}M€</p>
                 </div>
             </div>
         </div>
@@ -65,21 +65,21 @@
         <div class="col-md-4 col-sm-12" (click)="resetView();showModule.changeBadgeAndClothing = true">
             <div style="cursor: pointer" class="card">
                 <div class="header text-center">
-                    <p style="font-weight: bold" class="category">Cambio de Escudo y Equipación<br/><br/></p>
+                    <p style="font-weight: bold" class="category">Cambio de Escudo y Equipación<br/><br/>{{appService.config.privilegePrices.changeBadgeAndClothing}}M€</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4 col-sm-12" (click)="resetView();showModule.protectPartnerTarget = true">
             <div style="cursor: pointer" class="card">
                 <div class="header text-center">
-                    <p style="font-weight: bold" class="category">Blindar un Objetivo de Patrocinio<br/><br/></p>
+                    <p style="font-weight: bold" class="category">Blindar un Objetivo de Patrocinio<br/><br/>{{appService.config.privilegePrices.protectPartnerTarget}}M€</p>
                 </div>
             </div>
         </div>
         <div class="col-md-4 col-sm-12" (click)="buyChampionsLeagueVacancy()">
             <div style="cursor: pointer" class="card">
                 <div class="header text-center">
-                    <p style="font-weight: bold" class="category">Comprar Plaza en Champions<br/><br/></p>
+                    <p style="font-weight: bold" class="category">Comprar Plaza en Champions<br/><br/>{{appService.config.privilegePrices.championsLeagueVacancy}}M€</p>
                 </div>
             </div>
         </div>
@@ -120,7 +120,7 @@
         <div class="col-md-4 col-sm-12" (click)="sellMyTeam()">
             <div style="cursor: pointer" class="card">
                 <div class="header text-center">
-                    <p style="font-weight: bold" class="category">Venta del Equipo a un Jeque<br/><br/></p>
+                    <p style="font-weight: bold" class="category">Venta del Equipo a un Jeque<br/><br/>{{appService.config.privilegePrices.sellTeam}}M€</p>
                 </div>
             </div>
         </div>
