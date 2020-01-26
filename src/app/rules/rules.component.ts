@@ -24,7 +24,9 @@ export class RulesComponent{
             marketRules: false,
             penaltyRules: false,
             prizes: false,
-            polls: false
+            polls: false,
+            calendar: false,
+            emblemActions: false
         }
     }
 

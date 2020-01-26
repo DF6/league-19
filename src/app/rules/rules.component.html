@@ -38,6 +38,20 @@
                     </div>
                 </div>
             </div>
+            <div class="col-md-4 col-sm-12" (click)="resetView();showCard.calendar = true">
+                <div style="cursor: pointer" class="card">
+                    <div class="header text-center">
+                        <p style="font-weight: bold" class="category">Calendario<br/><br/></p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 col-sm-12" (click)="resetView();showCard.emblemActions = true">
+                <div style="cursor: pointer" class="card">
+                    <div class="header text-center">
+                        <p style="font-weight: bold" class="category">Acciones de Emblema<br/><br/></p>
+                    </div>
+                </div>
+            </div>
             <div class="col-md-4 col-sm-12" (click)="resetView();showCard.polls = true">
                 <div style="cursor: pointer" class="card">
                     <div class="header text-center">
@@ -96,7 +110,7 @@
                         <h3 class="title">Normas de Mercado</h3>
                         <p class="category" style="text-align: left">
                                 <br/><br/> <span>Se realizarán dos periodos de mercado: de verano (entre temporadas, 2-3 días de duración) y de invierno (a mitad de temporada, 1-2 días de duración)</span>
-                                <br/><br/> <span>Antes de comenzar el mercado de verano, cada equipo podrá elegir un patrocinador que le otorgará dinero extra en función de objetivos dentro de la siguiente temporada, además de un pago base instantáneo</span>
+                                <br/><br/> <span>Antes de comenzar y durante el mercado de verano, cada equipo podrá elegir un patrocinador que le otorgará dinero extra en función de objetivos dentro de la siguiente temporada, además de un pago base instantáneo</span>
                                 <br/><br/> <span>En caso de perder un jugador por desaparición de éste en el juego, el manager podrá elegir entre obtener un jugador libre de la misma media o dinero, 10M€ en caso de tener media de 80 o más y 5M€ en lugar de tener media de 79 o menos</span>
                                 <br/><br/> <span>Los jugadores libres podrán ser adquiridos mediante subasta por cualquier manager excepto el anterior poseedor. Las subastas de jugadores liberados duran 36 horas</span> 
                                 <br/><br/> <span>Si en el momento de pagar sueldos (al principio del mercado) el equipo no tiene presupuesto suficiente, se liberarán los jugadores con mayor media, y por ende, mayor sueldo, hasta que el total de los sueldos no deje en negativo al equipo</span>
@@ -164,15 +178,18 @@
                     <div class="header text-center">
                         <p class="category">
                             Primera División
-                            <br/><br/> <span>Un campeonato regular de 14 jornadas a ida y vuelta. El primero gana la liga</span>
-                            <br/><br/> <span>1º - 110M€</span>
-                            <br/><span>2º - 100M€</span>
-                            <br/><span>3º -  95M€</span>
-                            <br/><span>4º -  90M€</span>
-                            <br/><span>5º -  85M€</span>
-                            <br/><span>6º -  80M€</span>
-                            <br/><span>7º -  75M€</span>
-                            <br/><span>8º -  70M€</span>
+                            <br/><br/> <span>Un campeonato regular de 18 jornadas. Se divide en dos fases: Apertura y Clausura, que otorgan distintos premios:</span>
+                            <br/><br/> <span>En ambas fases, los dos primeros de la liga se clasifican para el play-off final de campeón de liga. Si los clasificados se repiten, correrá plaza al tercero del clausura, luego al tercero del apertura, y así sucesivamente. El torneo Apertura tendrá dos descensos, y dirimirá la clasificación a los torneos europeos. El clausura tendrá tres equipos descendidos, y otorgará los siguientes premios económicos:</span>
+                            <br/><br/> <span>1º - M€</span>
+                            <br/><span>2º - M€</span>
+                            <br/><span>3º -  M€</span>
+                            <br/><span>4º -  M€</span>
+                            <br/><span>5º -  M€</span>
+                            <br/><span>6º -  M€</span>
+                            <br/><span>7º -  M€</span>
+                            <br/><span>8º -  M€</span>
+                            <br/><span>8º -  M€</span>
+                            <br/><span>8º -  M€</span>
                         </p>
                         <br>
                     </div>
@@ -183,15 +200,16 @@
                         <div class="header text-center">
                             <p class="category">
                                 Segunda División
-                                <br/><br/> <span>Un campeonato regular de 14 jornadas a ida y vuelta. El primero asciende directamente, del 2 al 5 disputan un playoff (2 vs 5 y 3 vs 4) a doble partido, y los ganadores se disputarán a doble partido el ascenso a primera</span>
-                                <br/><br/> <span>1º - 95M€</span>
-                                <br/><span>2º - 85M€</span>
-                                <br/><span>3º - 80M€</span>
-                                <br/><span>4º - 75M€</span>
-                                <br/><span>5º - 70M€</span>
-                                <br/><span>6º - 65M€</span>
-                                <br/><span>7º - 60M€</span>
-                                <br/><span>8º - 60M€</span>
+                                <br/><br/> <span>Un campeonato regular de 18 jornadas. Se divide en dos fases: Apertura y Clausura, que otorgan distintos premios:</span>
+                                <br/><br/> <span>El torneo Apertura tendrá dos ascensos directos, y dirimirá la clasificación a los torneos europeos. El clausura tendrá dos ascensos directos más un ascenso por play-off a doble partido con los siguientes emparejamientos: 6º vs 3º y 5º vs 4º. Además, otorgará los siguientes premios económicos:</span>
+                                <br/><br/> <span>1º - M€</span>
+                                <br/><span>2º - M€</span>
+                                <br/><span>3º - M€</span>
+                                <br/><span>4º - M€</span>
+                                <br/><span>5º - M€</span>
+                                <br/><span>6º - M€</span>
+                                <br/><span>7º - M€</span>
+                                <br/><span>8º - M€</span>
                             </p>
                             <br>
                         </div>
@@ -202,11 +220,11 @@
                         <div class="header text-center">
                             <p class="category">
                                 Premios Auxiliares de Liga Regular
-                                <br/><br/> <span>Pichichi en temporada: 12 M€</span>
-                                <br/><span>Equipo menos goleado: 10 M€</span>
-                                <br/><span>Equipo más goleador: 10 M€</span>
-                                <br/><span>MVP temporada: 10 M€</span>
-                                <br/><span>Maximo asistente: 8 M€</span>
+                                <br/><br/> <span>Pichichi en temporada: M€</span>
+                                <br/><span>Equipo menos goleado: M€</span>
+                                <br/><span>Equipo más goleador: M€</span>
+                                <br/><span>MVP temporada: M€</span>
+                                <br/><span>Maximo asistente: M€</span>
                             </p>
                             <br>
                         </div>
@@ -219,11 +237,11 @@
                         <div class="header text-center">
                             <p class="category">
                                 Copa General de Clubes
-                                <br/><br/> <span>Copa por eliminatorias a doble partido hasta la final a partido único</span>
-                                <br/><br/> <span>1º - 18M€</span>
-                                <br/><span>2º - 12M€</span>
-                                <br/><span>3º -  8M€</span>
-                                <br/><span>4º -  5M€</span>
+                                <br/><br/> <span>Copa por eliminatorias a partido único hasta la final, con sorteo puro. Ronda previa con 8 equipos, los ganadores pasarán a las eliminatorias con los 12 equipos restantes</span>
+                                <br/><br/> <span>1º - M€</span>
+                                <br/><span>2º - M€</span>
+                                <br/><span>3º - M€</span>
+                                <br/><span>4º - M€</span>
                             </p>
                             <br>
                         </div>
@@ -234,12 +252,12 @@
                             <div class="header text-center">
                                 <p class="category">
                                     Champions League
-                                    <br/><br/> <span>El máximo trofeo continental. Fase de grupos más eliminatorias a doble partido hasta la final</span>
-                                    <br/><br/> <span>1º - 25M€</span>
-                                    <br/><span>2º - 18M€</span>
-                                    <br/><span>3º - 14M€</span>
-                                    <br/><span>4º - 10M€</span>
-                                    <br/><span>Participación - 2M€</span>
+                                    <br/><br/> <span>El máximo trofeo continental. Participan 8 equipos. Clasifican los 2 primeros de cada división, más los equipos provenientes de Europa League. Eliminatorias a doble partido hasta la final.</span>
+                                    <br/><br/> <span>1º - M€</span>
+                                    <br/><span>2º - M€</span>
+                                    <br/><span>3º - M€</span>
+                                    <br/><span>4º - M€</span>
+                                    <br/><span>Participación - M€</span>
                                 </p>
                                 <br>
                             </div>
@@ -250,11 +268,11 @@
                             <div class="header text-center">
                                 <p class="category">
                                     Europa League
-                                    <br/><br/> <span>El segundo trofeo continental. Participan los eliminados en fase de grupos de Champions. Eliminatorias a doble partido hasta la final</span>
-                                    <br/><br/> <span>1º - 15M€</span>
-                                    <br/><span>2º - 10M€</span>
-                                    <br/><span>3º -  7M€</span>
-                                    <br/><span>4º -  5M€</span>
+                                    <br/><br/> <span>El segundo trofeo continental. Participan 12 equipos. Clasifican del 3º al 9º de Primera y del 3º al 7º de Segunda. Se formarán 4 grupos de 3 clubes cada uno, del cual el primero subirá a Champions League, el resto irán a eliminatorias a doble partido hasta la final por la Europa League.</span>
+                                    <br/><br/> <span>1º - M€</span>
+                                    <br/><span>2º - M€</span>
+                                    <br/><span>3º - M€</span>
+                                    <br/><span>4º - M€</span>
                                 </p>
                                 <br>
                             </div>
@@ -267,11 +285,11 @@
                         <div class="header text-center">
                             <p class="category">
                                 Copa Mugre
-                                <br/><br/> <span>EL AUTÉNTICO TROFEO DE LA LIGA. Participan los eliminados en primera ronda de Europa League. Semifinal a doble partido y final a partido único</span>
-                                <br/><br/> <span>1º - 5M€</span>
-                                <br/><span>2º - 3M€</span>
-                                <br/><span>3º - 2M€</span>
-                                <br/><span>4º -  1M€</span>
+                                <br/><br/> <span>EL AUTÉNTICO TROFEO. Participan 4 equipos. Clasifican el último de Primera y los 3 últimos de Segunda. Semifinal a doble partido y final a partido único</span>
+                                <br/><br/> <span>1º - M€</span>
+                                <br/><span>2º - M€</span>
+                                <br/><span>3º - M€</span>
+                                <br/><span>4º - M€</span>
                             </p>
                             <br>
                         </div>
@@ -282,17 +300,15 @@
                             <div class="header text-center">
                                 <p class="category">
                                     Liga de Naciones
-                                    <br/><br/> <span>Competición de selecciones con 4 divisiones de 4 equipos cada una. 
-                                    Se jugarán 3 jornadas, ascendiendo el primero de cada división y descendiendo el último. 
-                                    Las 3 jornadas se jugarán durante una vuelta entera, de manera que haya dos ligas de naciones 
-                                    por temporada. Cada temporada se sortearán de nuevo las selecciones. La convocatoria de éstas 
-                                    es libre. Los ganadores de la segunda vuelta además disputarán un playoff a partido único 
-                                    por ser el campeón del año, en el que el premio será 30 minutos de acceso prioritario a las 
-                                    cláusulas del siguiente mercado.</span>
-                                    <br/><br/> <span>Ganador Primera - 6M€</span>
-                                    <br/><span>Ganador Segunda - 6M€</span>
-                                    <br/><span>Ganador Tercera - 2M€</span>
-                                    <br/><span>Ganador Cuarta - 1M€</span>
+                                    <br/><br/> <span>Competición de selecciones con 4 divisiones de 5 equipos cada una. 
+                                    Se jugarán 5 jornadas, ascendiendo los dos primeros de cada división y descendiendo los dos últimos. 
+                                    Cada temporada se sortearán de nuevo las selecciones. La convocatoria de éstas 
+                                    es libre. Los ganadores de cada división además disputarán un playoff a partido único 
+                                    por ser el campeón del año, en el que el premio será [privilegio]</span>
+                                    <br/><br/> <span>Ganador Primera - M€</span>
+                                    <br/><span>Ganador Segunda - M€</span>
+                                    <br/><span>Ganador Tercera - M€</span>
+                                    <br/><span>Ganador Cuarta - M€</span>
                                 </p>
                                 <br>
                             </div>
@@ -303,7 +319,8 @@
                             <div class="header text-center">
                                 <p class="category">
                                     Supercopas
-                                    <br/><br/> <span>El segundo trofeo continental. Participan los eliminados en fase de grupos de Champions. Eliminatorias a doble partido hasta la final</span>
+                                    <br/><br/> <span>Europea - Ganador de Champions League vs Ganador de Europa League</span>
+                                    <br/><br/> <span>De Clubes - Ganador de Liga vs Ganador de Copa</span>
                                     <br/><br/> <span>Campeón - 3M€</span>
                                     <br/><span>Subcampeón - 1M€</span>
                                 </p>
@@ -311,6 +328,71 @@
                             </div>
                         </div>
                 </div>
+            </div>
+            <div class="row" *ngIf="showCard.prizes">
+                <div class="col-md-4 col-sm-12">
+                    <div class="card">
+                        <div class="header text-center">
+                            <p class="category">
+                                Team Cup
+                                <br/><br/> <span>Copa por equipos. Se forman equipos de 5 clubes, se sortean los emparejamientos (un partido cada club) y, por cada gol marcado, el club podrá elegir un jugador contrario y sumar su media al total de puntos de su club. </span>
+                                <br/><br/> <span>El club que tenga más puntos ganará la eliminatoria</span>
+                                <br/><br/> <span>Campeón - M€ a cada equipo</span>
+                                <br/><span>Subcampeón - M€ a cada equipo</span>
+                            </p>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 col-sm-12">
+                    <div class="card">
+                        <div class="header text-center">
+                            <p class="category">
+                                Golden Trophy
+                                <br/><br/> <span>Trofeo con partidos a gol de oro. 6 partidos por temporada, al azar. El primero que marque, gana el partido y anota el minuto en que se marcó (según datos). El que más partidos ganados y menos minutos tenga al final de la temporada gana el trofeo.</span>
+                                <br/><br/> <span>Campeón - M€</span>
+                                <br/><span>Subcampeón - M€</span>
+                            </p>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        <div class="row" *ngIf="showCard.calendar">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header text-center">
+                        <h3 class="title">Calendario por Semanas</h3>
+                        <p class="category" style="text-align: left">
+                            <br/><br/> <span>SEMANA 1 - Jornadas 1-2-3 de Liga Apertura + Ronda Previa de Copa + Supercopa Europea + Supercopa de Clubes</span>
+                            <br/><br/> <span>SEMANA 2 - Jornadas 4-5-6 de Liga Apertura + Octavos de Copa</span>
+                            <br/><br/> <span>SEMANA 3 - Semifinales de Team Cup + Jornadas 1-2 de Golden Trophy + Jornadas 1-5 de Liga de Naciones</span>
+                            <br/><br/> <span>SEMANA 4 - Jornadas 7-8-9 de Liga Apertura + Ronda Previa de Copa + Supercopa Europea + Supercopa de Clubes</span>
+                            <br/><br/> <span>SEMANA 5 - Final y 3er y 4º Puesto de Team Cup + Jornadas 3-4 de Golden Trophy + Semifinal Liga de Naciones + Mercado de Invierno (último día)</span>
+                            <br/><br/> <span>SEMANA 6 - Jornada 1 de Liga Clausura + Fase de Grupos de Europa League + Semifinales de Copa Mugre + Semifinales de Copa</span>
+                            <br/><br/> <span>SEMANA 7 - Jornadas 2-3-4 de Liga Clausura + Cuartos de Final de Champions League + Cuartos de Final de Europea League</span>
+                            <br/><br/> <span>SEMANA 8 - Jornadas 5-6-7-8 de Liga Clausura + Semifinales de Champions League + Semifinales de Europa League</span>
+                            <br/><br/> <span>SEMANA 9 - Jornada 9 de Liga Clausura + Jornadas 5-6 de Golden Trophy + Final y 3er y 4º Puesto de Copa + Final y 3er y 4º Puesto de Champions League + Final y 3er y 4º Puesto de Europa League + Final y 3er y 4º Puesto de Copa Mugre + Final y 3er y 4º Puesto de Liga de Naciones</span>
+                            <br/><br/> <span>SEMANA 10 - Play-off de Ascenso a Primera + Play-off de Campeón de Liga + Mercado de Verano</span>
+                        <br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row" *ngIf="showCard.emblemActions">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header text-center">
+                        <h3 class="title">Acciones de Emblema por Posición</h3>
+                        <p class="category" style="text-align: left">
+                            <br/><br/> <span>POR - Partido con la portería imbatida</span>
+                            <br/><br/> <span>DFC, LI, LD, CAR - Dos partidos sin amonestación</span>
+                            <br/><br/> <span>MCD, MC, MI, MD, MCO - Asistencia</span>
+                            <br/><br/> <span>DC, EI, ED, SD - Gol</span>
+                        <br>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="row" *ngIf="showCard.polls">
             <div class="col-md-12">
@@ -326,7 +408,7 @@
                                 <span style="font-weight: bold; padding: 8px;border: 2pt solid black; background-color: #9A9A9A; border-radius: 5px;" (click)="sendSuggestion()">Enviar</span>
                             </div>
                             <hr/>
-                            <span>¡Todavía no hay encuestas!</span>
+                            <span style="margin-top: 16px;">¡Todavía no hay encuestas!</span>
                     </div>
                 </div>
             </div>
