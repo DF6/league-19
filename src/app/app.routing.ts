@@ -1,13 +1,12 @@
 import { Routes } from '@angular/router';
 
-import { DashboardComponent }   from './dashboard/dashboard.component';
-import { UserComponent }   from './user/user.component';
-import { PremierComponent }   from './premier/premier.component';
-import { PendingMatchesComponent }   from './pendingmatches/pendingmatches.component';
-import { SquadsComponent }   from './squads/squads.component';
-import { MapsComponent }   from './maps/maps.component';
-import { GeneralCupComponent }   from './generalcup/generalcup.component';
-import { RulesComponent }   from './rules/rules.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { UserComponent } from './user/user.component';
+import { PremierComponent } from './premier/premier.component';
+import { PendingMatchesComponent } from './pendingmatches/pendingmatches.component';
+import { SquadsComponent } from './squads/squads.component';
+import { GeneralCupComponent } from './generalcup/generalcup.component';
+import { RulesComponent } from './rules/rules.component';
 import { LoginComponent } from './login/login.component';
 import { RegistroComponent } from './registro/registro.component';
 import { LogoutComponent } from './logout/logout.component';

@@ -1,0 +1,128 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 col-sm-12" (click)="buy30MinutesNextMarket()">
+            <div style="cursor: pointer" class="card">
+                <div class="header text-center">
+                    <p style="font-weight: bold" class="category">30 minutos de Acceso Prioritario a Clausulazos en el próximo mercado<br/><br/>{{appService.config.privilegePrices.thirtyMinutes}}M€</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12" (click)="buyExtraForcedSignin()">
+            <div style="cursor: pointer" class="card">
+                <div class="header text-center">
+                    <p style="font-weight: bold" class="category">Clausulazo Extra<br/><br/>{{appService.config.privilegePrices.extraForcedSignin}}M€</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12" (click)="buyExtraAuction()">
+            <div style="cursor: pointer" class="card">
+                <div class="header text-center">
+                    <p style="font-weight: bold" class="category">Subasta por Jugador Nuevo Extra<br/><br/>{{appService.config.privilegePrices.extraAuction}}M€</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-sm-12" (click)="buyInstantAuctionWin()">
+            <div style="cursor: pointer" class="card">
+                <div class="header text-center">
+                    <p style="font-weight: bold" class="category">Cierre Instantáneo de Subasta<br/><br/>{{appService.config.privilegePrices.instantAuctionWin}}M€</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12" (click)="resetView();showModule.untouchable = true">
+            <div style="cursor: pointer" class="card">
+                <div class="header text-center">
+                    <p style="font-weight: bold" class="category">Jugador Intocable durante el próximo Mercado<br/><br/>{{appService.config.privilegePrices.untouchable}}M€</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12" (click)="buy30PointsToMyTeamCupTeam()">
+            <div style="cursor: pointer" class="card">
+                <div class="header text-center">
+                    <p style="font-weight: bold" class="category">Añadir 30 puntos de Equipo a tu Equipo de Team Cup<br/><br/>{{appService.config.privilegePrices.pointsTeamCup}}M€</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <section class="col-md-12 col-sm-12" *ngIf="showModule.untouchable">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Designar Intocables</h4>
+                </div>
+                <div class="content" style="min-height: 100px">
+                    <select class="col-md-12 col-sm-12" [(ngModel)]="playerToMakeUntouchable">
+                        <option *ngFor="let player of appService.getPlayersByTeam(appService.data.user.teamID)" 
+                            [ngValue]="player">{{player.name}}</option>
+                    </select>
+                    <button style="margin-top: 16px" class="col-md-12 col-sm-12" (click)="buyUntouchable()">Hacer Intocable</button>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-sm-12" (click)="resetView();showModule.changeBadgeAndClothing = true">
+            <div style="cursor: pointer" class="card">
+                <div class="header text-center">
+                    <p style="font-weight: bold" class="category">Cambio de Escudo y Equipación<br/><br/>{{appService.config.privilegePrices.changeBadgeAndClothing}}M€</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12" (click)="resetView();showModule.protectPartnerTarget = true">
+            <div style="cursor: pointer" class="card">
+                <div class="header text-center">
+                    <p style="font-weight: bold" class="category">Blindar un Objetivo de Patrocinio<br/><br/>{{appService.config.privilegePrices.protectPartnerTarget}}M€</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12" (click)="buyChampionsLeagueVacancy()">
+            <div style="cursor: pointer" class="card">
+                <div class="header text-center">
+                    <p style="font-weight: bold" class="category">Comprar Plaza en Champions<br/><br/>{{appService.config.privilegePrices.championsLeagueVacancy}}M€</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <section class="col-md-12 col-sm-12" *ngIf="showModule.changeBadgeAndClothing">
+            Equipo Nuevo <input type="text" [(ngModel)]="newBadgeAndClothing">
+            <a style="cursor:pointer;" (click)="changeBadgeAndClothing()">Enviar</a>
+        </section>
+        <section class="col-md-12 col-sm-12" *ngIf="showModule.protectPartnerTarget">
+            <div class="card" *ngIf="targetsTable">
+                <div class="header">
+                    <h4 class="title">Blindar Patrocinio</h4>
+                </div>
+                <div *ngIf="targetsTable.dataRows.length !=0" class="content table-responsive table-full-width">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Objetivo</th>
+                                <th>Blindar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let row of appService.config.partnerTargets[partner]">
+                                <td>{{row.target}}</td>
+                                <td><a style="cursor:pointer;" (click)="buyPartnerTargetProtection()">Blindar</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div *ngIf="targetsTable.dataRows.length == 0" class="content table-responsive table-full-width" style="text-align: center; color: #9a9a9a">
+                    No hay Objetivos
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="row">
+        <div class="col-md-4 col-sm-12" (click)="sellMyTeam()">
+            <div style="cursor: pointer" class="card">
+                <div class="header text-center">
+                    <p style="font-weight: bold" class="category">Venta del Equipo a un Jeque<br/><br/>{{appService.config.privilegePrices.sellTeam}}M€</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
