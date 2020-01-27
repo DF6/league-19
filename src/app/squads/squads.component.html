@@ -11,7 +11,7 @@
             <div *ngFor="let team of appService.data.teams" class="col-md-12">
                 <div *ngIf="isThereAnyPlayer(team.id)" class="card">
                     <div class="header">
-                        <img src="{{team.imageRoute}}"/><h4 class="title">{{team.name}}</h4>
+                        <img src="{{team.teamImage}}"/><h4 class="title">{{team.name}}</h4>
                         <p class="category">{{team.shortName}}</p>
                     </div>
                     <div class="content table-responsive table-full-width">

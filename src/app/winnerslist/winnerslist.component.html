@@ -1,0 +1,29 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div *ngIf="filters">
+                Torneo <select class="col-md-12 col-sm-12" [(ngModel)]="filters.tournament">
+                        <option *ngFor="let tournament of appService.config.roundSetter" 
+                            [ngValue]="tournament.name">{{tournament.name}}</option>
+                    </select>
+                Temporada <select class="col-md-12 col-sm-12" [(ngModel)]="filters.edition">
+                        <option *ngFor="let edition of appService.getAllTournamentEditions()" 
+                            [ngValue]="edition">{{edition}}</option>
+                    </select>
+            </div>
+        </div>
+        <div class="row" *ngFor="let wonTournament of appService.getWonTournaments()">
+            <div class="col-md-2 col-sm-12" *ngIf="(wonTournament.name == filters.tournament || filters.tournament == '') || (wonTournament.edition == filters.edition || filters.edition == '')">
+                <div style="cursor: pointer" class="card">
+                    <div class="header text-center">
+                        <p style="font-weight: bold" class="category">{{wonTournament.name}}<br/><br/></p>
+                    </div>
+                    <div class="content">
+                        <img style="width: 16%;" src="{{appService.getTeamById(wonTournament.team).teamImage}}"/><br/>
+                        <p>{{appService.getTeamById(wonTournament.team).name}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

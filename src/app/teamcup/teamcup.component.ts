@@ -17,6 +17,8 @@ export class TeamCupComponent implements OnInit{
     public champion;
     public myClub;
     public myClubMatchesTable: TableData;
+    public myClubLocalScore = 0;
+    public myClubAwayScore = 0;
 
     constructor(private appService: AppService) {
         this.appService.getTournaments();
@@ -41,6 +43,12 @@ export class TeamCupComponent implements OnInit{
                 return this.myClub.find( (myClubTeam) => { return myClubTeam.team == filteredMatch.local || myClubTeam.team == filteredMatch.away; }) != undefined;
             });
             this.myClubMatchesTable = this.appService.getTableConfig(this.appService.config.tableHeaders.myClubMatches, myClubMatches);
+            myClubMatches.forEach( (myClubMatch) => {
+                if (myClubMatch.localGoals != '-1') {
+                    this.myClubLocalScore += myClubMatch.localGoals;
+                    this.myClubAwayScore += myClubMatch.awayGoals;
+                }
+            });
             for(let i = 1; i <= this.appService.config.tournamentGeneralInfo.teamCup.finalRound; i++) {
                 const filteredRound = allMatches.filter( (filteredMatch) => {
                     return filteredMatch.round == i;

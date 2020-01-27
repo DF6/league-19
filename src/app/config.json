@@ -325,10 +325,10 @@
         "supercopaEuropea": 1,
         "copa": 2,
         "copaMugre": 0,
-        "nationsLeague": 0,
+        "nationsLeague": 5,
         "primera": 6,
         "segunda": 6,
-        "teamCup": 0,
-        "goldenTrophy": 0
+        "teamCup": 1,
+        "goldenTrophy": 2
     }
 }

@@ -212,7 +212,19 @@ export class AppService {
     public getMatchesByTeam(team) {
         return this.data.matches.filter( (filteredMatch) => {
             return filteredMatch.local == team || filteredMatch.away == team;
-        })
+        });
+    }
+
+    public getMatchesByTeamToThisMoment(team) {
+        return this.data.matches.filter( (filteredMatch) => {
+            return (filteredMatch.local == team || filteredMatch.away == team) && this.isCalendarMatch(filteredMatch);
+        });
+    }
+
+    public getMatchesByTournament(tournament) {
+        return this.data.matches.filter( (filteredMatch) => {
+            return filteredMatch.tournament == tournament;
+        });
     }
 
     public getMatchesObservable(): Observable<any> {
@@ -447,6 +459,21 @@ export class AppService {
         return this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'U'});
     }
 
+    public getWonTournaments() {
+        const tournamentsInFinalRound = this.data.tournaments.filter( (filteredTournament) => {
+            const final = this.getMatchesByTournament(filteredTournament.id).filter( (filteredMatch) => {
+                return filteredMatch.round == this.config.roundSetter.find( (tournament) => { return tournament.name == filteredTournament.name; }).round;
+            });
+            return final.length > 0;
+        });
+        return tournamentsInFinalRound.map( (finalTournament) => {
+            const resolvedFinal = this.getMatchesByTournament(finalTournament.id).filter( (filteredFinal) => {
+                return filteredFinal.round == this.config.roundSetter.find( (tournament) => { return tournament.name == finalTournament.name; }).round && this.whoWon(filteredFinal) != undefined;
+            });
+            return { name: finalTournament.name, edition: finalTournament.edition, team: this.whoWon(resolvedFinal)};
+        });
+    }
+
     public goTo(url){
         this.router.navigateByUrl(url);
     }
@@ -515,26 +542,11 @@ export class AppService {
         }).length > 0;
     }
 
-    public isThisInterval(tournament, round) {
-        let ret = false;
-        this.config.leagues.forEach( (value) => {
-            if (value == this.getTournamentById(tournament).name) {
-                ret = true;
-            }
-        });
-        if (ret && parseInt(round) > parseInt(this.data.constants.intervalActual)) {
-            ret = false;
-        } else if (!ret) {
-            ret = true;
-        }
-        return ret;
-    }
-
     public mountAction(match, type, player) {
-        return "INSERT INTO test_actions (match_id, type, player) values ("
-         + match.id + ", '"
-         + type + "', "
-         + player + "); ";
+        return 'INSERT INTO test_actions (match_id, type, player) values ('
+         + match.id + ', \''
+         + type + '\', '
+         + player + ');';
     }
 
     public refreshConfig() {
