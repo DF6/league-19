@@ -152,28 +152,92 @@ export class AdminPageComponent implements OnInit{
     }
 
     private randomGeneralCupDraw(tournament) {
-        let teamsSecond = this.appService.data.teams;
-        let teamsFirst = [];
-        while(teamsFirst.length < 8) {
-            teamsFirst.push(teamsSecond.splice(Math.floor(Math.random() * teamsSecond.length), 1)[0]);
-        }
-        while(teamsFirst.length > 0) {
-            const local = teamsFirst.splice(Math.floor(Math.random() * teamsFirst.length), 1);
-            const away = teamsFirst.splice(Math.floor(Math.random() * teamsFirst.length), 1);
-            this.http.post(PHPFILENAME, {type: 'insMat', local: local[0].id, away: away[0].id, tournament: tournament.id, round: 1}).subscribe( (response) => {
-                if (response.json().success) {
-                    this.appService.insertLog({logType: this.appService.config.logTypes.insertMatch, logInfo: 'Partido creado: ' + tournament.name + ' - ' + local + ' - ' + away});
+        const already = this.appService.data.matches.filter( (filteredMatch) => { return tournament.id == filteredMatch.tournament;}).length > 0;
+        if(!already) {
+            let teamsSecond = this.appService.data.teams;
+            let teamsFirst = [];
+            while(teamsFirst.length < 8) {
+                teamsFirst.push(teamsSecond.splice(Math.floor(Math.random() * teamsSecond.length), 1)[0]);
+            }
+            while(teamsFirst.length > 0) {
+                const local = teamsFirst.splice(Math.floor(Math.random() * teamsFirst.length), 1);
+                const away = teamsFirst.splice(Math.floor(Math.random() * teamsFirst.length), 1);
+                this.http.post(PHPFILENAME, {type: 'insMat', local: local[0].id, away: away[0].id, tournament: tournament.id, round: 1}).subscribe( (response) => {
+                    if (response.json().success) {
+                        this.appService.insertLog({logType: this.appService.config.logTypes.insertMatch, logInfo: 'Partido creado: ' + tournament.name + ' - ' + local + ' - ' + away});
+                    }
+                });
+            }
+            while(teamsSecond.length > 0) {
+                const local = teamsSecond.splice(Math.floor(Math.random() * teamsSecond.length), 1);
+                const away = teamsSecond.length > 4  ? teamsSecond.splice(Math.floor(Math.random() * teamsSecond.length), 1) : [{id: 0}];
+                this.http.post(PHPFILENAME, {type: 'insMat', local: local[0].id, away: away[0].id, tournament: tournament.id, round: 2}).subscribe( (response) => {
+                    if (response.json().success) {
+                        this.appService.insertLog({logType: this.appService.config.logTypes.insertMatch, logInfo: 'Partido creado: ' + tournament.name + ' - ' + local + ' - ' + away});
+                    }
+                });
+            }
+        } else {
+            let roundMatches = [];
+            let roundToDraw = 0;
+            for(let i = 1; i < this.appService.config.tournamentGeneralInfo.copa.finalRound - 1; i++) {
+                roundMatches = this.appService.data.matches.filter( (filteredMatch) => {
+                    return filteredMatch.tournament == tournament.id && filteredMatch.round == i;
+                });
+                if(roundMatches.length > 0) { roundToDraw = i; }
+            }
+            if(roundToDraw != 0 && roundToDraw < this.appService.config.tournamentGeneralInfo.copa.finalRound - 2) {
+                const roundToDrawMatches = this.appService.data.matches.filter( (filteredMatch) => {
+                    return filteredMatch.tournament == tournament.id && parseInt(filteredMatch.round) == roundToDraw;
+                });
+                let contendants = [];
+                roundToDrawMatches.forEach( (match) => {
+                    contendants.push(this.appService.whoWon(match));
+                });
+                while(contendants.length > 0) {
+                    const local = contendants.splice(Math.floor(Math.random() * contendants.length), 1);
+                    const away = contendants.splice(Math.floor(Math.random() * contendants.length), 1);
+                    this.http.post(PHPFILENAME, {type: 'insMat', local: local[0], away: away[0], tournament: tournament.id, round: roundToDraw + 1}).subscribe( (response) => {
+                        if (response.json().success) {
+                            this.appService.insertLog({logType: this.appService.config.logTypes.insertMatch, logInfo: 'Partido creado: ' + tournament.name + ' - ' + local + ' - ' + away});
+                        }
+                    });
                 }
-            });
-        }
-        while(teamsSecond.length > 0) {
-            const local = teamsSecond.splice(Math.floor(Math.random() * teamsSecond.length), 1);
-            const away = teamsSecond.length > 4  ? teamsSecond.splice(Math.floor(Math.random() * teamsSecond.length), 1) : [{id: 0}];
-            this.http.post(PHPFILENAME, {type: 'insMat', local: local[0].id, away: away[0].id, tournament: tournament.id, round: 2}).subscribe( (response) => {
-                if (response.json().success) {
-                    this.appService.insertLog({logType: this.appService.config.logTypes.insertMatch, logInfo: 'Partido creado: ' + tournament.name + ' - ' + local + ' - ' + away});
+            } else if(roundToDraw != 0 && roundToDraw == this.appService.config.tournamentGeneralInfo.copa.finalRound - 2) {
+                const roundToDrawMatches = this.appService.data.matches.filter( (filteredMatch) => {
+                    return filteredMatch.tournament == tournament.id && parseInt(filteredMatch.round) == roundToDraw;
+                });
+                let finalists = [];
+                let losers = [];
+                roundToDrawMatches.forEach( (match) => {
+                    finalists.push(this.appService.whoWon(match));
+                });
+                roundToDrawMatches.forEach( (match2) => {
+                    if(finalists.find( (finalist) => { return finalist == match2.local;})) {
+                        losers.push(match2.away);
+                    } else {
+                        losers.push(match2.local);
+                    }
+                });
+                while(losers.length > 0) {
+                    const local = losers.splice(Math.floor(Math.random() * losers.length), 1);
+                    const away = losers.splice(Math.floor(Math.random() * losers.length), 1);
+                    this.http.post(PHPFILENAME, {type: 'insMat', local: local[0], away: away[0], tournament: tournament.id, round: roundToDraw + 1}).subscribe( (response) => {
+                        if (response.json().success) {
+                            this.appService.insertLog({logType: this.appService.config.logTypes.insertMatch, logInfo: 'Partido creado: ' + tournament.name + ' - ' + local + ' - ' + away});
+                        }
+                    });
                 }
-            });
+                while(finalists.length > 0) {
+                    const local = finalists.splice(Math.floor(Math.random() * finalists.length), 1);
+                    const away = finalists.splice(Math.floor(Math.random() * finalists.length), 1);
+                    this.http.post(PHPFILENAME, {type: 'insMat', local: local[0], away: away[0], tournament: tournament.id, round: roundToDraw + 2}).subscribe( (response) => {
+                        if (response.json().success) {
+                            this.appService.insertLog({logType: this.appService.config.logTypes.insertMatch, logInfo: 'Partido creado: ' + tournament.name + ' - ' + local + ' - ' + away});
+                        }
+                    });
+                }
+            }
         }
     }
 
