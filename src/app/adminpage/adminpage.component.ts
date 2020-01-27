@@ -109,8 +109,19 @@ export class AdminPageComponent implements OnInit{
 
     public discountSalaries() {
         this.salaryData.forEach( (value) => {
+            const players = this.appService.getPlayersByTeam(value.team);
+            while (value.salaries >= parseFloat(this.appService.getTeamById(value.team).budget)) {
+                const maxPlayer = this.appService.getPlayerWithMaximumOverage(players);
+                value.salaries -= parseFloat(maxPlayer.salary);
+                this.http.post(PHPFILENAME, {type: 'nueSub', player: maxPlayer.id, auctionType: this.appService.config.signinTypes.freeAuction, firstTeam: this.appService.getPlayerById(maxPlayer.id).teamID, amount: this.appService.getAuctionInitialAmount({overage: parseInt(this.appService.getPlayerById(maxPlayer.id).overage), amount: undefined}).amount, market: this.appService.data.constants.marketEdition}).subscribe( (response) => {
+                    if (response.json().success) {
+                        this.appService.insertLog({logType: this.appService.config.logTypes.freePlayer, logInfo: 'Jugador liberado: ' + this.appService.getPlayerById(maxPlayer.id).name});
+                    }
+                });
+                players.splice(players.findIndex( (player) => { return player.id == maxPlayer.id;}), 1);
+            }
             this.http.post(PHPFILENAME, {type: 'chaSal', amount: value.salaries, id: value.team}).subscribe( (response) => {
-                if(response.json().success) {
+                if (response.json().success) {
                     this.appService.insertLog({logType: this.appService.config.logTypes.salariesDiscounted, logInfo: 'Salarios descontados de ' + this.appService.getTeamById(value.team).name });
                 }
             });

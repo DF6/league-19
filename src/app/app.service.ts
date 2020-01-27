@@ -243,6 +243,18 @@ export class AppService {
         return this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'PCS'});
     }
 
+    public getPlayerWithMaximumOverage(players) {
+        let maxOverage = -1;
+        let playerToReturn = null;
+        players.forEach( (player) => {
+            if (parseInt(player.overage) > maxOverage) {
+                maxOverage = parseInt(player.overage);
+                playerToReturn = player;
+            }
+        });
+        return playerToReturn;
+    }
+
     public getPlayers() {
         this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'P'}).subscribe( (response) => {
             this.data.players = response.json() ? response.json().players : [];
