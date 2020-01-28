@@ -12,9 +12,14 @@ export class WinnersListComponent {
     public filters;
 
     constructor(private appService: AppService) {
-        this.filters = {
-            tournament: '',
-            edition: ''
-        };
+        this.appService.getTournaments();
+        this.appService.getTeams();
+        this.appService.getMatchesObservable().subscribe( (response) => {
+            this.appService.data.matches = response.json().matches;
+            this.filters = {
+                tournament: '',
+                edition: ''
+            };
+        });
     }
 }

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
+import { THROW_IF_NOT_FOUND } from '@angular/core/src/di/injector';
 
 export interface TableData {
     headerRow: string[];
@@ -110,6 +111,14 @@ export class AppService {
 
     public getActiveUsers() {
         return this.data.users.filter( (user) => { return user.teamID != 0 && user.teamID != -1 });
+    }
+
+    public getAllTournamentEditions() {
+        let allEditions = [];
+        this.data.tournaments.forEach( (tournament) => {
+            if(!allEditions.includes(tournament.edition)) { allEditions.push(tournament.edition); }
+        });
+        return allEditions;
     }
 
     public getAnotherMatchOfRound(currentMatches, roundMatches) {
@@ -478,12 +487,16 @@ export class AppService {
             });
             return final.length > 0;
         });
-        return tournamentsInFinalRound.map( (finalTournament) => {
+        let toReturn = [];
+        tournamentsInFinalRound.map( (finalTournament) => {
             const resolvedFinal = this.getMatchesByTournament(finalTournament.id).filter( (filteredFinal) => {
                 return filteredFinal.round == this.config.roundSetter.find( (tournament) => { return tournament.name == finalTournament.name; }).round && this.whoWon(filteredFinal) != undefined;
             });
-            return { name: finalTournament.name, edition: finalTournament.edition, team: this.whoWon(resolvedFinal)};
+            if(this.whoWon(resolvedFinal[0]) != undefined) {
+                toReturn.push({ name: finalTournament.name, edition: finalTournament.edition, team: this.whoWon(resolvedFinal[0])});
+            }
         });
+        return toReturn;
     }
 
     public goTo(url){

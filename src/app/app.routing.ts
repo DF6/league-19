@@ -27,6 +27,7 @@ import { AdminPageComponent } from './adminpage/adminpage.component';
 import { SecondComponent } from './second/second.component';
 import { TeamCupComponent } from './teamcup/teamcup.component';
 import { GoldenTrophyComponent } from './goldentrophy/goldentrophy.component';
+import { WinnersListComponent } from './winnerslist/winnerslist.component';
 
 export const AppRoutes: Routes = [
     {
@@ -60,5 +61,6 @@ export const AppRoutes: Routes = [
     { path: 'patrocinadores', component: PartnersComponent },
     { path: 'offer', component: OfferComponent },
     { path: 'europesupercup', component: EuropeSupercupComponent },
-    { path: 'adminpage', component: AdminPageComponent }
+    { path: 'adminpage', component: AdminPageComponent },
+    { path: 'palmares', component: WinnersListComponent }
 ]

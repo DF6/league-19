@@ -45,8 +45,8 @@ export class TeamCupComponent implements OnInit{
             this.myClubMatchesTable = this.appService.getTableConfig(this.appService.config.tableHeaders.myClubMatches, myClubMatches);
             myClubMatches.forEach( (myClubMatch) => {
                 if (myClubMatch.localGoals != '-1') {
-                    this.myClubLocalScore += myClubMatch.localGoals;
-                    this.myClubAwayScore += myClubMatch.awayGoals;
+                    this.myClubLocalScore += parseInt(myClubMatch.localGoals);
+                    this.myClubAwayScore += parseInt(myClubMatch.awayGoals);
                 }
             });
             for(let i = 1; i <= this.appService.config.tournamentGeneralInfo.teamCup.finalRound; i++) {
