@@ -109,8 +109,19 @@ export class AdminPageComponent implements OnInit{
 
     public discountSalaries() {
         this.salaryData.forEach( (value) => {
+            const players = this.appService.getPlayersByTeam(value.team);
+            while (value.salaries >= parseFloat(this.appService.getTeamById(value.team).budget)) {
+                const maxPlayer = this.appService.getPlayerWithMaximumOverage(players);
+                value.salaries -= parseFloat(maxPlayer.salary);
+                this.http.post(PHPFILENAME, {type: 'nueSub', player: maxPlayer.id, auctionType: this.appService.config.signinTypes.freeAuction, firstTeam: this.appService.getPlayerById(maxPlayer.id).teamID, amount: this.appService.getAuctionInitialAmount({overage: parseInt(this.appService.getPlayerById(maxPlayer.id).overage), amount: undefined}).amount, market: this.appService.data.constants.marketEdition}).subscribe( (response) => {
+                    if (response.json().success) {
+                        this.appService.insertLog({logType: this.appService.config.logTypes.freePlayer, logInfo: 'Jugador liberado: ' + this.appService.getPlayerById(maxPlayer.id).name});
+                    }
+                });
+                players.splice(players.findIndex( (player) => { return player.id == maxPlayer.id;}), 1);
+            }
             this.http.post(PHPFILENAME, {type: 'chaSal', amount: value.salaries, id: value.team}).subscribe( (response) => {
-                if(response.json().success) {
+                if (response.json().success) {
                     this.appService.insertLog({logType: this.appService.config.logTypes.salariesDiscounted, logInfo: 'Salarios descontados de ' + this.appService.getTeamById(value.team).name });
                 }
             });
@@ -410,7 +421,11 @@ export class AdminPageComponent implements OnInit{
                     toPenalty.push(this.matchToResolve.away);
                 break;
         }
-        this.appService.sendMatchInfo(this.matchToResolve, local, away);
+        switch(this.appService.getTournamentById(this.matchToResolve.tournament).name) {
+            case this.appService.config.tournamentGeneralInfo.goldenTrophy: this.resolveGoldenTrophyNonPlayed(resolution); break;
+            case this.appService.config.tournamentGeneralInfo.teamCup: this.resolveTeamCupNonPlayed(resolution); break;
+            default: this.appService.sendMatchInfo(this.matchToResolve, local, away); break;
+        }
         toPenalty.forEach( (value) => {
             this.http.post(PHPFILENAME, {type: 'chaSal', amount: this.appService.config.nonPlayedPenalty, id: value}).subscribe( (response) => {
                 if(response.json().success) {
@@ -419,6 +434,58 @@ export class AdminPageComponent implements OnInit{
             });
         });
         this.resetView();
+    }
+
+    public resolveGoldenTrophyNonPlayed(resolution) {
+        let local = { score: 0, won: 0, nonPlayed: 0 };
+        let away = { score: 0, won: 0, nonPlayed: 0 };
+        switch (resolution) {
+            case 1: local.score = -2;
+                    away.score = 45;
+                    away.won += 1;
+                    local.nonPlayed +=1;
+                break;
+            case 2: local.score = -2;
+                    away.score = -2;
+                    local.nonPlayed +=1;
+                    away.nonPlayed +=1;
+                break;
+            case 3: local.score = 45;
+                    away.score = -2;
+                    local.won += 1;
+                    away.nonPlayed +=1;
+                break;
+        }
+        this.http.post('./test_CMDataRequesting.php', {type: 'setRes', localGoals: local.score, awayGoals: away.score, matchID: this.matchToResolve.id}).subscribe( (response) => {
+            if (response.json().success) {
+                this.appService.increaseSalaries(this.matchToResolve);
+            }
+        });
+        if(local.score == -2) { local.score = 0; }
+        if(away.score == -2) { away.score = 0; }
+        this.http.post(PHPFILENAME, {type: 'updSta', points: local.score, won: local.won, draw: 0, lost: 0, nonPlayed: local.nonPlayed, goalsFor: 0, goalsAgainst: 0, tournamentID: this.matchToResolve.tournament, team: this.matchToResolve.local}).subscribe( () => {});
+        this.http.post(PHPFILENAME, {type: 'updSta', points: away.score, won: away.won, draw: 0, lost: 0, nonPlayed: away.nonPlayed, goalsFor: 0, goalsAgainst: 0, tournamentID: this.matchToResolve.tournament, team: this.matchToResolve.away}).subscribe( () => {});
+    }
+
+    public resolveTeamCupNonPlayed(resolution) {
+        let local = { score: 0 };
+        let away = { score: 0 };
+        switch (resolution) {
+            case 1: local.score = -2;
+                    away.score = 300;
+                break;
+            case 2: local.score = -2;
+                    away.score = -2;
+                break;
+            case 3: local.score = 300;
+                    away.score = -2;
+                break;
+        }
+        this.http.post('./test_CMDataRequesting.php', {type: 'setRes', localGoals: local.score, awayGoals: away.score, matchID: this.matchToResolve.id}).subscribe( (response) => {
+            if (response.json().success) {
+                this.appService.increaseSalaries(this.matchToResolve);
+            }
+        });
     }
 
     public setMatchToResolve() {

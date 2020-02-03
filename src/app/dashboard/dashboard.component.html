@@ -1,187 +1,103 @@
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-3 col-sm-6">
-                <div class="card">
-                    <div class="content">
-                        <div class="row">
-                            <div class="col-xs-5">
-                                <div class="icon-big icon-warning text-center">
-                                    <img src="{{user.team.imageRoute}}"/>
-                                </div>
-                            </div>
-                            <div class="col-xs-7">
-                                <div class="numbers">
-                                    <p>Equipo</p>
-                                    {{user.team.name}}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="footer">
-                            <hr />
-                            <div class="stats">
-                                Código de equipo: {{user.team.shortName}}
-                            </div>
-                        </div>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4 col-sm-12">
+            <div class="card card-user" *ngIf="showUser">
+                <div class="content">
+                    <div class="author">
+                        <img class="avatar border-black" src="{{appService.getTeamById(appService.data.user.teamID).teamImage}}"/>   
+                        <h4 class="title" *ngIf="appService.data.user">{{appService.data.user.name}}<br />
+                        {{appService.getTeamById(appService.data.user.teamID).name}}<br/>
+                        {{appService.data.user.psnID}}<br/>
+                        <a href="http://www.{{appService.data.user.twitch}}" target="_blank"><i class="ti-sharethis"></i></a>
+                        </h4>
                     </div>
                 </div>
-            </div>
-            <div class="col-lg-3 col-sm-6">
-                <div class="card">
-                    <div class="content">
-                        <div class="row">
-                            <div class="col-xs-5">
-                                <div class="icon-big icon-success text-center">
-                                    <i class="ti-wallet"></i>
-                                </div>
-                            </div>
-                            <div class="col-xs-7">
-                                <div class="numbers">
-                                    <p>Presupuesto</p>
-                                    {{user.team.budget}}M€
-                                </div>
-                            </div>
+                <hr>
+                <div class="text-center">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h5> {{appService.getPlayersByTeam(appService.data.user.teamID).length}}<br /><small>Jugadores</small></h5>
                         </div>
-                        <div class="footer">
-                            <hr />
-                            <div class="stats">
-                                <span *ngIf="user.team.budget >= 0">Todo en regla</span>
-                                <span *ngIf="user.team.budget < 0" style="color: red">¡En negativo!</span>
-                            </div>
+                        <div class="col-md-3">
+                            <h5> {{appService.getTeamById(appService.data.user.teamID).budget}}<br /><small>M€</small></h5>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6">
-                <div class="card">
-                    <div class="content">
-                        <div class="row">
-                            <div class="col-xs-5">
-                                <div class="icon-big icon-danger text-center">
-                                    <i class="ti-pulse"></i>
-                                </div>
-                            </div>
-                            <div class="col-xs-7">
-                                <div class="numbers">
-                                    <p>Partidos</p>
-                                    {{getRemainingMatches(user.team.id)}}
-                                </div>
-                            </div>
+                        <div class="col-md-3">
+                            <h5> {{appService.getUndisputedMatches(appService.getMatchesByTeam(appService.data.user.teamID)).length}}<br /><small>Partidos por jugar</small></h5>
                         </div>
-                        <div class="footer">
-                            <hr />
-                            <div class="stats">
-                                <i class="ti-timer"></i>¡Es hora de jugar!
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-sm-6">
-                <div class="card">
-                    <div class="content">
-                        <div class="row">
-                            <div class="col-xs-5">
-                                <div class="icon-big icon-info text-center">
-                                    <i class="ti-twitter-alt"></i>
-                                </div>
-                            </div>
-                            <div class="col-xs-7">
-                                <div class="numbers">
-                                    <p>Jugadores</p>
-                                    {{getPlayersByTeam(user.team.id)}}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="footer">
-                            <hr />
-                            <div class="stats">
-                                Y todos corren más que tú
-                            </div>
+                        <div class="col-md-3">
+                            <h5> {{appService.getTotalSalariesByTeam(appService.getPlayersByTeam(this.appService.data.user.teamID))}}<br /><small>Salarios</small></h5>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <!--<div class="row">
-
-            <div class="col-md-12">
-                <div class="card">
-                    <div class="header">
-                        <h4 class="title">Partidos Pendientes</h4>
+        <div class="col-md-4 col-sm-12">
+            <div class="card card-user" *ngIf="showLog">
+                <div class="header">
+                    <h4 class="title">Mi actividad</h4>
+                </div>
+                <div class="content table-responsive">
+                        
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+            <div class="card card-user" *ngIf="showPrivileges">
+                <div class="header">
+                    <h4 class="title">Privilegios sin activar</h4>
+                </div>
+                <div class="content">
+                    <div class="author">
+                        
                     </div>
-                    <div class="content">
-                        <div id="chartHours" class="ct-chart">
-                            <div class="col-md-4" style="background-color: #31708f; height: 100%; border-radius: 2%;">
-                                
-                            </div>
-                            <div class="col-md-4" style="background-color: #a94442; height: 100%; border-radius: 2%;">
-
-                            </div>
-                            <div class="col-md-4" style="background-color: #8a6d3b; height: 100%; border-radius: 2%;">
-
-                            </div>
+                </div>
+                <hr>
+                <div class="text-center">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <h5> {{appService.getPlayersByTeam(appService.data.user.teamID).length}}<br /><small>Jugadores</small></h5>
                         </div>
-                        <div class="footer">
-                            <div class="chart-legend">
-                                <i *ngFor="getTournamentsByTeam(user.team.id)"></i>
-                                <i class="fa fa-circle text-info"></i> Liga
-                                <i class="fa fa-circle text-danger"></i> Copa
-                                <i class="fa fa-circle text-warning"></i> Champions
-                            </div>
-                            <hr>
-                            <div class="stats">
-                                
-                            </div>
+                        <div class="col-md-3">
+                            <h5> {{appService.getTeamById(appService.data.user.teamID).budget}}<br /><small>M€</small></h5>
+                        </div>
+                        <div class="col-md-3">
+                            <h5> {{appService.getUndisputedMatches(appService.getMatchesByTeam(appService.data.user.teamID))}}<br /><small>Partidos por jugar</small></h5>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="header">
-                        <h4 class="title">Email Statistics</h4>
-                        <p class="category">Last Campaign Performance</p>
-                    </div>
-                    <div class="content">
-                        <div id="chartPreferences" class="ct-chart ct-perfect-fourth"></div>
-
-                        <div class="footer">
-                            <div class="chart-legend">
-                                <i class="fa fa-circle text-info"></i> Open
-                                <i class="fa fa-circle text-danger"></i> Bounce
-                                <i class="fa fa-circle text-warning"></i> Unsubscribe
-                            </div>
-                            <hr>
-                            <div class="stats">
-                                <i class="ti-timer"></i> Campaign sent 2 days ago
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card ">
-                    <div class="header">
-                        <h4 class="title">2015 Sales</h4>
-                        <p class="category">All products including Taxes</p>
-                    </div>
-                    <div class="content">
-                        <div id="chartActivity" class="ct-chart"></div>
-
-                        <div class="footer">
-                            <div class="chart-legend">
-                                <i class="fa fa-circle text-info"></i> Tesla Model S
-                                <i class="fa fa-circle text-warning"></i> BMW 5 Series
-                            </div>
-                            <hr>
-                            <div class="stats">
-                                <i class="ti-check"></i> Data information certified
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>-->
     </div>
+    <div class="row">
+        <div class="col-md-12 col-sm-12">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Semana {{appService.data.constants.intervalActual}} (hasta domingo 23:59)</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-2 col-sm-12" *ngFor="let myMatches of appService.getMatchesByTeamToThisMoment(appService.data.user.teamID)">
+            <div class="card">
+                <div class="header">
+                    <h6 class="title">{{appService.getTournamentById(myMatches.tournament).name}}</h6>
+                </div>
+                <div class="content">
+                    <img src="{{appService.getTeamById(myMatches.local).teamImage}}"/>
+                    <span *ngIf="myMatches.localGoals != '-1' && myMatches.localGoals != '-2'">{{myMatches.localGoals}}</span>
+                    <span> - </span>
+                    <span *ngIf="myMatches.awayGoals != '-1' && myMatches.awayGoals != '-2'">{{myMatches.awayGoals}}</span>
+                    <img src="{{appService.getTeamById(myMatches.away).teamImage}}"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <h1>PRÓXIMO MERCADO DE INVIERNO EL SÁBADO 15 DE FEBRERO A LAS 15:00</h1>
+    </div>
+</div>
+<!--
+    COMPETICIONES EN LAS QUE ESTA PRESENTE
+    QUEDADAS CON JUGADORES
+-->

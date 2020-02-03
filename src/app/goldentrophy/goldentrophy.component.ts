@@ -61,7 +61,7 @@ export class GoldenTrophyComponent implements OnInit{
                     let aux = null;
                     for (let i = 0; i < pStands.length; i++) {
                         for (let j = 0; j < pStands.length - 1 - i; j++) {
-                            if (pStands[j].won == pStands[j+1].won && pStands[j].minutes < pStands[j+1].minutes) {
+                            if (pStands[j].won == pStands[j+1].won && pStands[j].minutes > pStands[j+1].minutes) {
                                 pStands[j][0]++;
                                 pStands[j+1][0]--;
                                 aux = pStands[j];

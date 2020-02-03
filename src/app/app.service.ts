@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import { Router } from '@angular/router';
+import { THROW_IF_NOT_FOUND } from '@angular/core/src/di/injector';
 
 export interface TableData {
     headerRow: string[];
@@ -112,6 +113,14 @@ export class AppService {
         return this.data.users.filter( (user) => { return user.teamID != 0 && user.teamID != -1 });
     }
 
+    public getAllTournamentEditions() {
+        let allEditions = [];
+        this.data.tournaments.forEach( (tournament) => {
+            if(!allEditions.includes(tournament.edition)) { allEditions.push(tournament.edition); }
+        });
+        return allEditions;
+    }
+
     public getAnotherMatchOfRound(currentMatches, roundMatches) {
         const anotherMatch = roundMatches.filter( (filteredMatch) => {
             return filteredMatch.tournament == currentMatches[0].tournament &&
@@ -212,7 +221,19 @@ export class AppService {
     public getMatchesByTeam(team) {
         return this.data.matches.filter( (filteredMatch) => {
             return filteredMatch.local == team || filteredMatch.away == team;
-        })
+        });
+    }
+
+    public getMatchesByTeamToThisMoment(team) {
+        return this.data.matches.filter( (filteredMatch) => {
+            return (filteredMatch.local == team || filteredMatch.away == team) && this.isCalendarMatch(filteredMatch);
+        });
+    }
+
+    public getMatchesByTournament(tournament) {
+        return this.data.matches.filter( (filteredMatch) => {
+            return filteredMatch.tournament == tournament;
+        });
     }
 
     public getMatchesObservable(): Observable<any> {
@@ -229,6 +250,18 @@ export class AppService {
 
     public getPlayerChangeSigninsObservable() {
         return this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'PCS'});
+    }
+
+    public getPlayerWithMaximumOverage(players) {
+        let maxOverage = -1;
+        let playerToReturn = null;
+        players.forEach( (player) => {
+            if (parseInt(player.overage) > maxOverage) {
+                maxOverage = parseInt(player.overage);
+                playerToReturn = player;
+            }
+        });
+        return playerToReturn;
     }
 
     public getPlayers() {
@@ -451,6 +484,25 @@ export class AppService {
         return this.http.post(PHPFILENAME, {type: 'recDat', dataType: 'U'});
     }
 
+    public getWonTournaments() {
+        const tournamentsInFinalRound = this.data.tournaments.filter( (filteredTournament) => {
+            const final = this.getMatchesByTournament(filteredTournament.id).filter( (filteredMatch) => {
+                return filteredMatch.round == this.config.roundSetter.find( (tournament) => { return tournament.name == filteredTournament.name; }).round;
+            });
+            return final.length > 0;
+        });
+        let toReturn = [];
+        tournamentsInFinalRound.map( (finalTournament) => {
+            const resolvedFinal = this.getMatchesByTournament(finalTournament.id).filter( (filteredFinal) => {
+                return filteredFinal.round == this.config.roundSetter.find( (tournament) => { return tournament.name == finalTournament.name; }).round && this.whoWon(filteredFinal) != undefined;
+            });
+            if(this.whoWon(resolvedFinal[0]) != undefined) {
+                toReturn.push({ name: finalTournament.name, edition: finalTournament.edition, team: this.whoWon(resolvedFinal[0])});
+            }
+        });
+        return toReturn;
+    }
+
     public goTo(url){
         this.router.navigateByUrl(url);
     }
@@ -519,26 +571,11 @@ export class AppService {
         }).length > 0;
     }
 
-    public isThisInterval(tournament, round) {
-        let ret = false;
-        this.config.leagues.forEach( (value) => {
-            if (value == this.getTournamentById(tournament).name) {
-                ret = true;
-            }
-        });
-        if (ret && parseInt(round) > parseInt(this.data.constants.intervalActual)) {
-            ret = false;
-        } else if (!ret) {
-            ret = true;
-        }
-        return ret;
-    }
-
     public mountAction(match, type, player) {
-        return "INSERT INTO actions (match_id, type, player) values ("
-         + match.id + ", '"
-         + type + "', "
-         + player + "); ";
+        return 'INSERT INTO test_actions (match_id, type, player) values ('
+         + match.id + ', \''
+         + type + '\', '
+         + player + ');';
     }
 
     public refreshConfig() {
