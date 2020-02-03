@@ -12,6 +12,8 @@ declare var $: any;
 
 export class DashboardComponent implements OnInit {
 
+    public showUser = false;
+
     constructor(private appService: AppService) {
         this.appService.getTournaments();
         this.appService.getTeams();
@@ -22,6 +24,7 @@ export class DashboardComponent implements OnInit {
             this.appService.data.players = response.json().players;
             this.appService.getMatchesObservable().subscribe( (response2) => {
                 this.appService.data.matches = response2.json().matches;
+                this.showUser = true;
             });
         });
     }

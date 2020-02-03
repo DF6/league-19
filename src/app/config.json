@@ -119,7 +119,6 @@
     ],
     "routes": {
         "admin": [
-            { "path": "panelcontrol", "title": "Panel de Control", "icon": "ti-panel", "class": "hidden" },
             { "path": "primera", "title": "Primera", "icon": "ti-calendar", "class": "" },
             { "path": "segunda", "title": "Segunda", "icon": "ti-calendar", "class": "" },
             { "path": "copa", "title": "Copa", "icon": "ti-vector", "class": "" },
@@ -139,11 +138,13 @@
             { "path": "mercado", "title": "Mercado", "icon": "ti-money", "class": "" },
             { "path": "patrocinadores", "title": "Patrocinadores", "icon": "ti-money", "class": "" },
             { "path": "usuario", "title": "Perfil", "icon": "ti-user", "class": "" },
+            { "path": "palmares", "title": "Palmares", "icon": "ti-cup", "class": "" },
             { "path": "plantillas", "title": "Plantillas", "icon": "ti-pencil-alt2", "class": "" },
             { "path": "normas", "title": "Normas", "icon": "ti-view-list-alt", "class": "" },
             { "path": "logout", "title": "Cerrar Sesion", "icon": "ti-user", "class": "" }
         ],
         "all": [
+            { "path": "panelcontrol", "title": "Panel de Control", "icon": "ti-panel", "class": "" },
             { "path": "registro", "title": "Registro", "icon": "ti-user", "class": "" },
             { "path": "login", "title": "Entrar", "icon": "ti-user", "class": "" },
             { "path": "normas", "title": "Normas", "icon": "ti-view-list-alt", "class": "" },
@@ -167,11 +168,12 @@
             { "path": "mercado", "title": "Mercado", "icon": "ti-money", "class": "hidden" },
             { "path": "patrocinadores", "title": "Patrocinadores", "icon": "ti-money", "class": "hidden" },
             { "path": "usuario", "title": "Perfil", "icon": "ti-user", "class": "" },
+            { "path": "palmares", "title": "Palmares", "icon": "ti-cup", "class": "" },
             { "path": "plantillas", "title": "Plantillas", "icon": "ti-pencil-alt2", "class": "" },
-            { "path": "adminpage", "title": "Administracion", "icon": "ti-text", "class": "" },
-            { "path": "panelcontrol", "title": "Panel de Control", "icon": "ti-panel", "class": "hidden" }
+            { "path": "adminpage", "title": "Administracion", "icon": "ti-text", "class": "" }
         ],
         "logged": [
+            { "path": "panelcontrol", "title": "Panel de Control", "icon": "ti-panel", "class": "" },
             { "path": "primera", "title": "Primera", "icon": "ti-calendar", "class": "" },
             { "path": "segunda", "title": "Segunda", "icon": "ti-calendar", "class": "" },
             { "path": "copa", "title": "Copa", "icon": "ti-vector", "class": "" },
@@ -188,11 +190,13 @@
             { "path": "partidospendientes", "title": "Partidos Pendientes", "icon":"ti-text", "class": "" },
             { "path": "patrocinadores", "title": "Patrocinadores", "icon": "ti-money", "class": "" },
             { "path": "usuario", "title": "Perfil", "icon": "ti-user", "class": "" },
+            { "path": "palmares", "title": "Palmares", "icon": "ti-cup", "class": "" },
             { "path": "plantillas", "title": "Plantillas", "icon": "ti-pencil-alt2", "class": "" },
             { "path": "normas", "title": "Normas", "icon": "ti-view-list-alt", "class": "" },
             { "path": "logout", "title": "Cerrar Sesion", "icon": "ti-user", "class": "" }
         ],
         "loggedInMarket": [
+            { "path": "panelcontrol", "title": "Panel de Control", "icon": "ti-panel", "class": "" },
             { "path": "primera", "title": "Primera", "icon": "ti-calendar", "class": "" },
             { "path": "segunda", "title": "Segunda", "icon": "ti-calendar", "class": "" },
             { "path": "copa", "title": "Copa", "icon": "ti-vector", "class": "" },
@@ -212,6 +216,7 @@
             { "path": "mercado", "title": "Mercado", "icon": "ti-money", "class": "" },
             { "path": "patrocinadores", "title": "Patrocinadores", "icon": "ti-money", "class": "" },
             { "path": "usuario", "title": "Perfil", "icon": "ti-user", "class": "" },
+            { "path": "palmares", "title": "Palmares", "icon": "ti-cup", "class": "" },
             { "path": "plantillas", "title": "Plantillas", "icon": "ti-pencil-alt2", "class": "" },
             { "path": "normas", "title": "Normas", "icon": "ti-view-list-alt", "class": "" },
             { "path": "logout", "title": "Cerrar Sesion", "icon": "ti-user", "class": "" }
@@ -323,12 +328,12 @@
         "supercopaDeClubes": 1,
         "europaLeague": 0,
         "supercopaEuropea": 1,
-        "copa": 2,
+        "copa": 3,
         "copaMugre": 0,
-        "nationsLeague": 0,
-        "primera": 6,
-        "segunda": 6,
-        "teamCup": 0,
-        "goldenTrophy": 0
+        "nationsLeague": 5,
+        "primera": 9,
+        "segunda": 9,
+        "teamCup": 1,
+        "goldenTrophy": 2
     }
 }
