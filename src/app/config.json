@@ -328,11 +328,11 @@
         "supercopaDeClubes": 1,
         "europaLeague": 0,
         "supercopaEuropea": 1,
-        "copa": 2,
+        "copa": 3,
         "copaMugre": 0,
         "nationsLeague": 5,
-        "primera": 6,
-        "segunda": 6,
+        "primera": 9,
+        "segunda": 9,
         "teamCup": 1,
         "goldenTrophy": 2
     }
