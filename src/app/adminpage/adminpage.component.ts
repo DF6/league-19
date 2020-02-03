@@ -456,7 +456,7 @@ export class AdminPageComponent implements OnInit{
                     away.nonPlayed +=1;
                 break;
         }
-        this.http.post('./test_CMDataRequesting.php', {type: 'setRes', localGoals: local.score, awayGoals: away.score, matchID: this.matchToResolve.id}).subscribe( (response) => {
+        this.http.post('./CMDataRequesting.php', {type: 'setRes', localGoals: local.score, awayGoals: away.score, matchID: this.matchToResolve.id}).subscribe( (response) => {
             if (response.json().success) {
                 this.appService.increaseSalaries(this.matchToResolve);
             }
@@ -481,7 +481,7 @@ export class AdminPageComponent implements OnInit{
                     away.score = -2;
                 break;
         }
-        this.http.post('./test_CMDataRequesting.php', {type: 'setRes', localGoals: local.score, awayGoals: away.score, matchID: this.matchToResolve.id}).subscribe( (response) => {
+        this.http.post('./CMDataRequesting.php', {type: 'setRes', localGoals: local.score, awayGoals: away.score, matchID: this.matchToResolve.id}).subscribe( (response) => {
             if (response.json().success) {
                 this.appService.increaseSalaries(this.matchToResolve);
             }

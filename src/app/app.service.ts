@@ -572,7 +572,7 @@ export class AppService {
     }
 
     public mountAction(match, type, player) {
-        return 'INSERT INTO test_actions (match_id, type, player) values ('
+        return 'INSERT INTO actions (match_id, type, player) values ('
          + match.id + ', \''
          + type + '\', '
          + player + ');';
