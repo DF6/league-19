@@ -422,8 +422,8 @@ export class AdminPageComponent implements OnInit{
                 break;
         }
         switch(this.appService.getTournamentById(this.matchToResolve.tournament).name) {
-            case this.appService.config.tournamentGeneralInfo.goldenTrophy: this.resolveGoldenTrophyNonPlayed(resolution); break;
-            case this.appService.config.tournamentGeneralInfo.teamCup: this.resolveTeamCupNonPlayed(resolution); break;
+            case this.appService.config.tournamentGeneralInfo.goldenTrophy.name: this.resolveGoldenTrophyNonPlayed(resolution); this.appService.increaseSalaries(this.matchToResolve); break;
+            case this.appService.config.tournamentGeneralInfo.teamCup.name: this.resolveTeamCupNonPlayed(resolution); this.appService.increaseSalaries(this.matchToResolve); break;
             default: this.appService.sendMatchInfo(this.matchToResolve, local, away); break;
         }
         toPenalty.forEach( (value) => {
@@ -456,11 +456,7 @@ export class AdminPageComponent implements OnInit{
                     away.nonPlayed +=1;
                 break;
         }
-        this.http.post('./test_CMDataRequesting.php', {type: 'setRes', localGoals: local.score, awayGoals: away.score, matchID: this.matchToResolve.id}).subscribe( (response) => {
-            if (response.json().success) {
-                this.appService.increaseSalaries(this.matchToResolve);
-            }
-        });
+        this.http.post('./CMDataRequesting.php', {type: 'setRes', localGoals: local.score, awayGoals: away.score, matchID: this.matchToResolve.id}).subscribe( () => {});
         if(local.score == -2) { local.score = 0; }
         if(away.score == -2) { away.score = 0; }
         this.http.post(PHPFILENAME, {type: 'updSta', points: local.score, won: local.won, draw: 0, lost: 0, nonPlayed: local.nonPlayed, goalsFor: 0, goalsAgainst: 0, tournamentID: this.matchToResolve.tournament, team: this.matchToResolve.local}).subscribe( () => {});
@@ -481,11 +477,7 @@ export class AdminPageComponent implements OnInit{
                     away.score = -2;
                 break;
         }
-        this.http.post('./test_CMDataRequesting.php', {type: 'setRes', localGoals: local.score, awayGoals: away.score, matchID: this.matchToResolve.id}).subscribe( (response) => {
-            if (response.json().success) {
-                this.appService.increaseSalaries(this.matchToResolve);
-            }
-        });
+        this.http.post('./CMDataRequesting.php', {type: 'setRes', localGoals: local.score, awayGoals: away.score, matchID: this.matchToResolve.id}).subscribe( () => {});
     }
 
     public setMatchToResolve() {

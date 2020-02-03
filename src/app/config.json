@@ -144,7 +144,7 @@
             { "path": "logout", "title": "Cerrar Sesion", "icon": "ti-user", "class": "" }
         ],
         "all": [
-            { "path": "panelcontrol", "title": "Panel de Control", "icon": "ti-panel", "class": "" },
+            { "path": "panelcontrol", "title": "Panel de Control", "icon": "ti-panel", "class": "hidden" },
             { "path": "registro", "title": "Registro", "icon": "ti-user", "class": "" },
             { "path": "login", "title": "Entrar", "icon": "ti-user", "class": "" },
             { "path": "normas", "title": "Normas", "icon": "ti-view-list-alt", "class": "" },
@@ -173,7 +173,7 @@
             { "path": "adminpage", "title": "Administracion", "icon": "ti-text", "class": "" }
         ],
         "logged": [
-            { "path": "panelcontrol", "title": "Panel de Control", "icon": "ti-panel", "class": "" },
+            { "path": "panelcontrol", "title": "Panel de Control", "icon": "ti-panel", "class": "hidden" },
             { "path": "primera", "title": "Primera", "icon": "ti-calendar", "class": "" },
             { "path": "segunda", "title": "Segunda", "icon": "ti-calendar", "class": "" },
             { "path": "copa", "title": "Copa", "icon": "ti-vector", "class": "" },
@@ -196,7 +196,7 @@
             { "path": "logout", "title": "Cerrar Sesion", "icon": "ti-user", "class": "" }
         ],
         "loggedInMarket": [
-            { "path": "panelcontrol", "title": "Panel de Control", "icon": "ti-panel", "class": "" },
+            { "path": "panelcontrol", "title": "Panel de Control", "icon": "ti-panel", "class": "hidden" },
             { "path": "primera", "title": "Primera", "icon": "ti-calendar", "class": "" },
             { "path": "segunda", "title": "Segunda", "icon": "ti-calendar", "class": "" },
             { "path": "copa", "title": "Copa", "icon": "ti-vector", "class": "" },
