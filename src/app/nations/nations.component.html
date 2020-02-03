@@ -84,7 +84,13 @@
                                     <tr *ngFor="let row of allMatches.dataRows">
                                         <td style="text-align: center;">{{row.round}}</td>
                                         <td style="text-align: center;">{{appService.getTeamById(row.local).nation}}</td>
-                                        <td style="text-align: center;"><span *ngIf="row.localGoals != -1">{{row.localGoals}} - {{row.awayGoals}}</span><span *ngIf="row.localGoals == -1">-</span></td>
+                                        <td style="text-align: center;">
+                                            <span *ngIf="row.localGoals != -1">{{row.localGoals}} - {{row.awayGoals}}</span>
+                                            <span *ngIf="row.localGoals == -1">-</span>
+                                            <span *ngIf="row.localGoals == -2 && row.awayGoals != -2">NP - X</span>
+                                            <span *ngIf="row.awayGoals == -2 && row.localGoals != -2">X - NP</span>
+                                            <span *ngIf="row.localGoals == -2 && row.awayGoals == -2">NP - NP</span>
+                                        </td>
                                         <td style="text-align: center;">{{appService.getTeamById(row.away).nation}}</td>
                                         <td style="text-align: center;"><a *ngIf="row.localGoals != -1" style="cursor:pointer;" (click)="showResume(row)">Resumen</a><span *ngIf="row.localGoals == -1">Por jugar</span></td>
                                     </tr>
