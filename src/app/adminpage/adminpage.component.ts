@@ -41,6 +41,7 @@ export class AdminPageComponent implements OnInit{
     public tournamentToCreate;
     public tournamentToRandomize;
     public matchToResolve;
+    public matchToEdit;
     public showModule;
     public suggestionsTable;
     public adminMatchesTable;
@@ -48,6 +49,9 @@ export class AdminPageComponent implements OnInit{
     public insertPlayer;
     public showNewRound = false;
     public showMatchToResolve;
+    public showMatchToEdit;
+    public localEditScore;
+    public awayEditScore;
 
     constructor(private http: Http, private appService: AppService) {
         this.resetView();
@@ -293,44 +297,82 @@ export class AdminPageComponent implements OnInit{
         }
     }
 
+    public recalculateDefault() {
+        this.appService.data.matches.forEach( (value) => {
+            if(value.tournament == this.tournamentToReset.id && value.localGoals != -1) {
+                let local = {points: 0, won: 0, draw: 0, lost: 0, nonPlayed: 0};
+                let away = {points: 0, won: 0, draw: 0, lost: 0, nonPlayed: 0};
+                if ((parseInt(value.localGoals) > parseInt(value.awayGoals)) || (parseInt(value.awayGoals) == -2 && parseInt(value.localGoals) != -2)) {
+                    local.points = 3;
+                    local.won = 1;
+                    if(parseInt(value.awayGoals) == -2) {
+                        away.nonPlayed = 1;
+                    }else {
+                        away.lost = 1;
+                    }
+                }else if ((parseInt(value.localGoals) < parseInt(value.awayGoals)) || (parseInt(value.localGoals) == -2 && parseInt(value.awayGoals) != -2)) {
+                    away.points = 3;
+                    away.won = 1;
+                    if(parseInt(value.localGoals) == -2) {
+                        local.nonPlayed = 1;
+                    }else {
+                        local.lost = 1;
+                    }
+                } else if(parseInt(value.localGoals) == -2 && parseInt(value.awayGoals) == -2) {
+                    local.nonPlayed = 1;
+                    away.nonPlayed = 1;
+                } else {
+                    local.points = 1;
+                    away.points = 1;
+                    local.draw = 1;
+                    away.draw = 1;
+                }
+                if(parseInt(value.localGoals) == -2) { value.localGoals = "0"; }
+                if(parseInt(value.awayGoals) == -2) { value.awayGoals = "0"; }
+                this.http.post(PHPFILENAME, {type: 'updSta', points: local.points, won: local.won, draw: local.draw, lost: local.lost, nonPlayed: local.nonPlayed, goalsFor: parseInt(value.localGoals), goalsAgainst: parseInt(value.awayGoals), tournamentID: value.tournament, team: value.local}).subscribe( () => {});
+                this.http.post(PHPFILENAME, {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, nonPlayed: away.nonPlayed, goalsFor: parseInt(value.awayGoals), goalsAgainst: parseInt(value.localGoals), tournamentID: value.tournament, team: value.away}).subscribe( () => {});
+            }
+        });
+    }
+
+    public recalculateGT() {
+        this.appService.data.matches.forEach( (value) => {
+            if(value.tournament == this.tournamentToReset.id && value.localGoals != -1) {
+                let local = {points: 0, won: 0, draw: 0, lost: 0, nonPlayed: 0};
+                let away = {points: 0, won: 0, draw: 0, lost: 0, nonPlayed: 0};
+                if ((parseInt(value.localGoals) > parseInt(value.awayGoals)) || (parseInt(value.awayGoals) == -2 && parseInt(value.localGoals) != -2)) {
+                    local.points = value.localGoals;
+                    local.won = 1;
+                    if(parseInt(value.awayGoals) == -2) {
+                        away.nonPlayed = 1;
+                        local.points = 45;
+                    }
+                }else if ((parseInt(value.localGoals) < parseInt(value.awayGoals)) || (parseInt(value.localGoals) == -2 && parseInt(value.awayGoals) != -2)) {
+                    away.points = value.awayGoals;
+                    away.won = 1;
+                    if(parseInt(value.localGoals) == -2) {
+                        local.nonPlayed = 1;
+                        away.points = 45;
+                    }
+                } else if(parseInt(value.localGoals) == -2 && parseInt(value.awayGoals) == -2) {
+                    local.nonPlayed = 1;
+                    away.nonPlayed = 1;
+                }
+                if(parseInt(value.localGoals) == -2) { value.localGoals = "0"; }
+                if(parseInt(value.awayGoals) == -2) { value.awayGoals = "0"; }
+                this.http.post(PHPFILENAME, {type: 'updSta', points: local.points, won: local.won, draw: local.draw, lost: local.lost, nonPlayed: local.nonPlayed, goalsFor: parseInt(value.localGoals), goalsAgainst: parseInt(value.awayGoals), tournamentID: value.tournament, team: value.local}).subscribe( () => {});
+                this.http.post(PHPFILENAME, {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, nonPlayed: away.nonPlayed, goalsFor: parseInt(value.awayGoals), goalsAgainst: parseInt(value.localGoals), tournamentID: value.tournament, team: value.away}).subscribe( () => {});
+            }
+        });
+    }
+
     public recalculateStandings() {
         this.http.post(PHPFILENAME, {type: 'resSta', tournament: this.tournamentToReset.id}).subscribe( (response) => {
             if(response.json().success) {
-                this.appService.data.matches.forEach( (value) => {
-                    if(value.tournament == this.tournamentToReset.id && value.localGoals != -1) {
-                        let local = {points: 0, won: 0, draw: 0, lost: 0, nonPlayed: 0};
-                        let away = {points: 0, won: 0, draw: 0, lost: 0, nonPlayed: 0};
-                        if ((parseInt(value.localGoals) > parseInt(value.awayGoals)) || (parseInt(value.awayGoals) == -2 && parseInt(value.localGoals) != -2)) {
-                            local.points = 3;
-                            local.won = 1;
-                            if(parseInt(value.awayGoals) == -2) {
-                                away.nonPlayed = 1;
-                            }else {
-                                away.lost = 1;
-                            }
-                        }else if ((parseInt(value.localGoals) < parseInt(value.awayGoals)) || (parseInt(value.localGoals) == -2 && parseInt(value.awayGoals) != -2)) {
-                            away.points = 3;
-                            away.won = 1;
-                            if(parseInt(value.localGoals) == -2) {
-                                local.nonPlayed = 1;
-                            }else {
-                                local.lost = 1;
-                            }
-                        } else if(parseInt(value.localGoals) == -2 && parseInt(value.awayGoals) == -2) {
-                            local.nonPlayed = 1;
-                            away.nonPlayed = 1;
-                        } else {
-                            local.points = 1;
-                            away.points = 1;
-                            local.draw = 1;
-                            away.draw = 1;
-                        }
-                        if(parseInt(value.localGoals) == -2) { value.localGoals = "0"; }
-                        if(parseInt(value.awayGoals) == -2) { value.awayGoals = "0"; }
-                        this.http.post(PHPFILENAME, {type: 'updSta', points: local.points, won: local.won, draw: local.draw, lost: local.lost, nonPlayed: local.nonPlayed, goalsFor: parseInt(value.localGoals), goalsAgainst: parseInt(value.awayGoals), tournamentID: value.tournament, team: value.local}).subscribe( () => {});
-                        this.http.post(PHPFILENAME, {type: 'updSta', points: away.points, won: away.won, draw: away.draw, lost: away.lost, nonPlayed: away.nonPlayed, goalsFor: parseInt(value.awayGoals), goalsAgainst: parseInt(value.localGoals), tournamentID: value.tournament, team: value.away}).subscribe( () => {});
-                    }
-                });
+                switch (this.tournamentToReset.name) {
+                    case this.appService.config.tournamentGeneralInfo.goldenTrophy.name: this.recalculateGT(); break;
+                    default: this.recalculateDefault(); break;
+                }
                 this.appService.insertLog({logType: this.appService.config.logTypes.resetStandings, logInfo: 'Clasificación reseteada en ' + this.tournamentToReset.name + ' (ID ' + this.tournamentToReset.id + ')'});
                 alert('Reinicio realizado');
             }
@@ -342,6 +384,31 @@ export class AdminPageComponent implements OnInit{
             this.appService.resetAllSalaries();
             this.appService.insertLog({logType: this.appService.config.logTypes.resetAllSalaries, logInfo: 'Todos los salarios reseteados'});
         }
+    }
+
+    public resetMatch() {
+        this.http.post('./test_CMDataRequesting.php', {type: 'setRes', localGoals: -1, awayGoals: -1, matchID: this.matchToEdit.id}).subscribe( (response) => {
+            if (response.json().success) {
+                this.appService.insertLog({logType: this.appService.config.logTypes.editMatch, logInfo: 'Partido reiniciado: ID ' + this.matchToEdit.id});
+                alert('Partido reiniciado');
+                this.resetView();
+            }
+        });
+    }
+
+    public editMatchResult() {
+        this.http.post('./test_CMDataRequesting.php', {type: 'setRes', localGoals: this.localEditScore, awayGoals: this.awayEditScore, matchID: this.matchToEdit.id}).subscribe( (response) => {
+            if (response.json().success) {
+                this.appService.insertLog({logType: this.appService.config.logTypes.editMatch, logInfo: 'Partido editado: ID ' + this.matchToEdit.id});
+                alert('Partido reiniciado');
+                this.resetView();
+            }
+        });
+    }
+
+    public resetMatchToEdit() {
+        this.matchToEdit = undefined;
+        this.showMatchToEdit = false;
     }
 
     public resetMatchToResolve() {
@@ -386,6 +453,9 @@ export class AdminPageComponent implements OnInit{
         this.resetNewMatch();
         this.resetNewPlayer();
         this.resetMatchToResolve();
+        this.resetMatchToEdit();
+        this.localEditScore = 0;
+        this.awayEditScore = 0;
     }
 
     public resolveMatchNonPlayed(resolution) {
@@ -456,7 +526,7 @@ export class AdminPageComponent implements OnInit{
                     away.nonPlayed +=1;
                 break;
         }
-        this.http.post('./CMDataRequesting.php', {type: 'setRes', localGoals: local.score, awayGoals: away.score, matchID: this.matchToResolve.id}).subscribe( () => {});
+        this.http.post('./test_CMDataRequesting.php', {type: 'setRes', localGoals: local.score, awayGoals: away.score, matchID: this.matchToResolve.id}).subscribe( () => {});
         if(local.score == -2) { local.score = 0; }
         if(away.score == -2) { away.score = 0; }
         this.http.post(PHPFILENAME, {type: 'updSta', points: local.score, won: local.won, draw: 0, lost: 0, nonPlayed: local.nonPlayed, goalsFor: 0, goalsAgainst: 0, tournamentID: this.matchToResolve.tournament, team: this.matchToResolve.local}).subscribe( () => {});
@@ -477,7 +547,7 @@ export class AdminPageComponent implements OnInit{
                     away.score = -2;
                 break;
         }
-        this.http.post('./CMDataRequesting.php', {type: 'setRes', localGoals: local.score, awayGoals: away.score, matchID: this.matchToResolve.id}).subscribe( () => {});
+        this.http.post('./test_CMDataRequesting.php', {type: 'setRes', localGoals: local.score, awayGoals: away.score, matchID: this.matchToResolve.id}).subscribe( () => {});
     }
 
     public setMatchToResolve() {

@@ -57,6 +57,7 @@
         "closedAuction": "CA",
         "createPlayer": "CP",
         "createTournament": "CT",
+        "editMatch": "EM",
         "freePlayer": "FP",
         "insertClub": "IC",
         "insertMatch": "IM",
