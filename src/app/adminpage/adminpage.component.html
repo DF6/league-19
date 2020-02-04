@@ -293,9 +293,9 @@
                             [ngValue]="match">{{appService.getTeamById(match.local).name}} {{match.localGoals}} - {{match.awayGoals}} {{appService.getTeamById(match.away).name}} ({{appService.getTournamentById(match.tournament).name}})</option>
                     </select>
                     <div class="col-md-12 col-sm-12" style="margin-top: 16px" *ngIf="showMatchToEdit">
-                        <span class="col-md-12 col-sm-12">{{appService.getTeamById(matchToEdit.local).name}}</span> {{match.localGoals}} - {{match.awayGoals}} <span>{{appService.getTeamById(matchToEdit.away).name}}</span>
+                        <span class="col-md-12 col-sm-12">{{appService.getTeamById(matchToEdit.local).name}}</span> {{matchToEdit.localGoals}} - {{matchToEdit.awayGoals}} <span>{{appService.getTeamById(matchToEdit.away).name}}</span>
                         <button style="margin-top: 16px" class="col-md-4 col-sm-12" (click)="resetMatch()">Reiniciar Partido</button>
-                        <button style="margin-top: 16px" class="col-md-4 col-sm-12" (click)="showEditSection()">Cambiar Resultado</button>
+                        <button style="margin-top: 16px" class="col-md-4 col-sm-12" (click)="setEditSection()">Cambiar Resultado</button>
                         <div *ngIf="showEditSection">
                             <span style="text-align: right !important;">{{appService.getTeamById(matchToEdit.local).name}} <input class="col-md-3" type="number" step="1" min="0" [(ngModel)]="localEditScore"></span>
                             <span style="text-align: left !important;"><input class="col-md-3" type="number" step="1" min="0" [(ngModel)]="awayEditScore"> {{appService.getTeamById(matchToEdit.away).name}}</span>

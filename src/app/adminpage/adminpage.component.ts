@@ -45,11 +45,13 @@ export class AdminPageComponent implements OnInit{
     public showModule;
     public suggestionsTable;
     public adminMatchesTable;
+    public matchesResolvedTable;
     public insertMatch;
     public insertPlayer;
     public showNewRound = false;
     public showMatchToResolve;
     public showMatchToEdit;
+    public showEditSection;
     public localEditScore;
     public awayEditScore;
 
@@ -86,6 +88,7 @@ export class AdminPageComponent implements OnInit{
                 this.getTotalSalaries();
                 this.getSuggestions();
                 this.setUndisputedMatches();
+                this.setDisputedMatches();
             });
         });
     }
@@ -387,7 +390,7 @@ export class AdminPageComponent implements OnInit{
     }
 
     public resetMatch() {
-        this.http.post('./test_CMDataRequesting.php', {type: 'setRes', localGoals: -1, awayGoals: -1, matchID: this.matchToEdit.id}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'forRes', localGoals: -1, awayGoals: -1, matchID: this.matchToEdit.id}).subscribe( (response) => {
             if (response.json().success) {
                 this.appService.insertLog({logType: this.appService.config.logTypes.editMatch, logInfo: 'Partido reiniciado: ID ' + this.matchToEdit.id});
                 alert('Partido reiniciado');
@@ -397,13 +400,17 @@ export class AdminPageComponent implements OnInit{
     }
 
     public editMatchResult() {
-        this.http.post('./test_CMDataRequesting.php', {type: 'setRes', localGoals: this.localEditScore, awayGoals: this.awayEditScore, matchID: this.matchToEdit.id}).subscribe( (response) => {
+        this.http.post('./test_CMDataRequesting.php', {type: 'forRes', localGoals: this.localEditScore, awayGoals: this.awayEditScore, matchID: this.matchToEdit.id}).subscribe( (response) => {
             if (response.json().success) {
                 this.appService.insertLog({logType: this.appService.config.logTypes.editMatch, logInfo: 'Partido editado: ID ' + this.matchToEdit.id});
                 alert('Partido reiniciado');
                 this.resetView();
             }
         });
+    }
+
+    public resetEditSection() {
+        this.showEditSection = false;
     }
 
     public resetMatchToEdit() {
@@ -454,6 +461,7 @@ export class AdminPageComponent implements OnInit{
         this.resetNewPlayer();
         this.resetMatchToResolve();
         this.resetMatchToEdit();
+        this.resetEditSection();
         this.localEditScore = 0;
         this.awayEditScore = 0;
     }
@@ -550,6 +558,11 @@ export class AdminPageComponent implements OnInit{
         this.http.post('./test_CMDataRequesting.php', {type: 'setRes', localGoals: local.score, awayGoals: away.score, matchID: this.matchToResolve.id}).subscribe( () => {});
     }
 
+    public setMatchToEdit() {
+        this.showMatchToEdit = false;
+        this.showMatchToEdit = true;
+    }
+
     public setMatchToResolve() {
         this.showMatchToResolve = false;
         this.showMatchToResolve = true;
@@ -558,6 +571,11 @@ export class AdminPageComponent implements OnInit{
     public setNewMatchRound() {
         this.showNewRound = false;
         this.showNewRound = true;
+    }
+
+    public setEditSection() {
+        this.showEditSection = false;
+        this.showEditSection = true;
     }
 
     public setNewRound(tournament) {
@@ -643,6 +661,17 @@ export class AdminPageComponent implements OnInit{
             }
         });
         alert('Hecho');
+    }
+
+    private setDisputedMatches() {
+        const finalTableMatches = this.appService.data.matches.filter( (filteredMatch) => {
+            return filteredMatch.localGoals != "-1" && filteredMatch.awayGoals != "-1";
+        })
+        .map( (value) => {
+            value.filling = false;
+            return value;
+        });
+        this.matchesResolvedTable = this.appService.getTableConfig(this.appService.config.tableHeaders.adminmatches, finalTableMatches);
     }
 
     private setUndisputedMatches() {

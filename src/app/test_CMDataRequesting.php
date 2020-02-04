@@ -158,6 +158,9 @@
        case "setRes":
           setMatchResult($link, $params);
             break;
+       case "forRes":
+          forceMatchResult($link, $params);
+            break;
        case "insAct":
           insertAction($link, $params);
             break;
@@ -744,6 +747,17 @@
     exit;
   }
 
+  function forceMatchResult($con, $params)
+  {
+    $data = array();
+    $query="UPDATE matches SET local_goals=". $params->localGoals .", away_goals=".$params->awayGoals." where id=" . $params->matchID;
+    $resultado=mysqli_query($con, $query) or die("Error introduciendo resultado");
+    $data['success'] = true;
+    $data['message'] = "Resultado introducido";
+    echo json_encode($data);
+    exit;
+  }
+  
   function setMatchResult($con, $params)
   {
     $data = array();
