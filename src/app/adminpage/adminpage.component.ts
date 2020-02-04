@@ -387,7 +387,7 @@ export class AdminPageComponent implements OnInit{
     }
 
     public resetMatch() {
-        this.http.post('./test_CMDataRequesting.php', {type: 'setRes', localGoals: -1, awayGoals: -1, matchID: this.matchToEdit.id}).subscribe( (response) => {
+        this.http.post('./CMDataRequesting.php', {type: 'setRes', localGoals: -1, awayGoals: -1, matchID: this.matchToEdit.id}).subscribe( (response) => {
             if (response.json().success) {
                 this.appService.insertLog({logType: this.appService.config.logTypes.editMatch, logInfo: 'Partido reiniciado: ID ' + this.matchToEdit.id});
                 alert('Partido reiniciado');
@@ -397,7 +397,7 @@ export class AdminPageComponent implements OnInit{
     }
 
     public editMatchResult() {
-        this.http.post('./test_CMDataRequesting.php', {type: 'setRes', localGoals: this.localEditScore, awayGoals: this.awayEditScore, matchID: this.matchToEdit.id}).subscribe( (response) => {
+        this.http.post('./CMDataRequesting.php', {type: 'setRes', localGoals: this.localEditScore, awayGoals: this.awayEditScore, matchID: this.matchToEdit.id}).subscribe( (response) => {
             if (response.json().success) {
                 this.appService.insertLog({logType: this.appService.config.logTypes.editMatch, logInfo: 'Partido editado: ID ' + this.matchToEdit.id});
                 alert('Partido reiniciado');
