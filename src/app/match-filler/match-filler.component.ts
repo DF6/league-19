@@ -218,7 +218,7 @@ export class MatchFillerComponent implements OnInit{
         })
         if(almostFilledMatches.length > 0) {
             const chosenMatch = almostFilledMatches.splice(Math.floor(Math.random() * almostFilledMatches.length), 1)[0];
-            this.http.post('./CMDataRequesting.php', {type: 'ediMat', id: chosenMatch.id, local: chosenMatch.local, away: this.appService.whoWon({local: match.local, localGoals: local.score, away: match.away, awayGoals: away.score}), tournament: chosenMatch.tournament, round: chosenMatch.round}).subscribe( (response) => {
+            this.http.post('./test_CMDataRequesting.php', {type: 'ediMat', id: chosenMatch.id, local: chosenMatch.local, away: this.appService.whoWon({local: match.local, localGoals: local.score, away: match.away, awayGoals: away.score}), tournament: chosenMatch.tournament, round: chosenMatch.round}).subscribe( (response) => {
                 if (response.json().success) {
                     this.appService.insertLog({logType: this.appService.config.logTypes.ediMatch, logInfo: 'Partido editado: ' + this.appService.getTournamentById(match.tournament).name + ' - ' + this.appService.getTeamById(match.local).name + ' - ' + this.appService.getTeamById(match.away).name});
                 }
