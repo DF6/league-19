@@ -84,15 +84,15 @@
     "notResolvedMatch": -1,
     "notTeam": 0,
     "privilegePrices": {
-        "championsLeagueVacancy": 10,
-        "changeBadgeAndClothing": 10,
+        "championsLeagueVacancy": 15,
+        "changeBadgeAndClothing": 3,
         "extraAuction": 10,
-        "extraForcedSignin": 10,
-        "instantAuctionWin": 10,
-        "pointsTeamCup": 10,
-        "protectPartnerTarget": 10,
+        "extraForcedSignin": 15,
+        "instantAuctionWin": 20,
+        "pointsTeamCup": 25,
+        "protectPartnerTarget": 5,
         "sellTeam": 0,
-        "thirtyMinutes": 10,
+        "thirtyMinutes": 20,
         "untouchable": 10
     },
     "roundNames": {
@@ -331,10 +331,10 @@
         "supercopaEuropea": 1,
         "copa": 3,
         "copaMugre": 0,
-        "nationsLeague": 5,
+        "nationsLeague": 6,
         "primera": 9,
         "segunda": 9,
-        "teamCup": 1,
-        "goldenTrophy": 2
+        "teamCup": 2,
+        "goldenTrophy": 4
     }
 }
