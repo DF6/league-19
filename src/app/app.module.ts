@@ -46,6 +46,7 @@ import { SecondComponent } from './second/second.component';
 import { TeamCupComponent } from './teamcup/teamcup.component';
 import { GoldenTrophyComponent } from './goldentrophy/goldentrophy.component';
 import { WinnersListComponent } from './winnerslist/winnerslist.component';
+import { PrivilegesComponent } from './privileges/privileges.component';
 
 @NgModule({
   declarations: [
@@ -78,7 +79,8 @@ import { WinnersListComponent } from './winnerslist/winnerslist.component';
     OfferComponent,
     EuropeSupercupComponent,
     AdminPageComponent,
-    WinnersListComponent
+    WinnersListComponent,
+    PrivilegesComponent
   ],
   imports: [
     BrowserModule,
