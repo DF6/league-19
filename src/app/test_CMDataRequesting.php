@@ -292,6 +292,10 @@
         $data['success'] = false;
         $data['message'] = "Jugador ya comprado este mercado";
       }
+      if($row2['untouchable'] == 1) {
+        $data['success'] = false;
+        $data['message'] = "Jugador intocable este mercado";
+      }
     }
     $consult3="SELECT * from test_constants";
     $consult3Result=mysqli_query($con, $consult3) or die("Error consultando mercado");
@@ -1010,8 +1014,7 @@
         $nation=utf8_decode($row['nation']);
         $auctions=$row['auctions_available'];
         $forcedSigninsAvailable=$row['forced_signins_available'];
-        $untouchables=$row['untouchables'];
-        $teams[] = array('id'=> $id, 'name'=> $name, 'shortName'=> $shortName, 'budget'=> $budget, 'teamImage'=> $teamImage, 'nation'=> $nation, 'auctionsLeft'=> $auctions, 'forcedSigninsAvailable'=> $forcedSigninsAvailable, 'untouchables'=> $untouchables);
+        $teams[] = array('id'=> $id, 'name'=> $name, 'shortName'=> $shortName, 'budget'=> $budget, 'teamImage'=> $teamImage, 'nation'=> $nation, 'auctionsLeft'=> $auctions, 'forcedSigninsAvailable'=> $forcedSigninsAvailable);
     }
     $data['teams']=$teams;
     $data['success'] = true;
@@ -1038,7 +1041,8 @@
         $buyedThisMarket=$row['buyed_this_market'];
         $emblem=$row['emblem'];
         $cedido=$row['cedido'];
-        $players[] = array('id'=> $id, 'teamID'=> $teamID, 'name'=> $name, 'salary'=> $salary, 'position'=> $position, 'overage' => $overage, 'buyedThisMarket'=> $buyedThisMarket, 'emblem'=>$emblem, 'cedido'=>$cedido);
+        $untouchable=$row['untouchable'];
+        $players[] = array('id'=> $id, 'teamID'=> $teamID, 'name'=> $name, 'salary'=> $salary, 'position'=> $position, 'overage' => $overage, 'buyedThisMarket'=> $buyedThisMarket, 'emblem'=>$emblem, 'cedido'=>$cedido, 'untouchable'=>$untouchable);
     }
     $data['players']=$players;
     $data['success'] = true;
