@@ -22,6 +22,7 @@ export class PrivilegesComponent implements OnInit{
     public prizes;
     public targetsTable: TableData;
     public playerToUntouchable;
+    public auctionToWin;
     public showModule;
 
     constructor(private http: Http, private appService: AppService) {
@@ -46,6 +47,9 @@ export class PrivilegesComponent implements OnInit{
             this.http.post(PHPFILENAME, {type: 'buyThi', team: this.appService.data.user.teamID, price: this.appService.config.privilegePrices.thirtyMinutes}).subscribe( (response) => {
                 this.appService.insertLog({logType: this.appService.config.logTypes.buyedPrivilege, logInfo: 'Privilegio comprado: ' + this.appService.getTeamById(this.appService.data.user.teamID).name + ' compra 30 minutos extra en el próximo mercado para cláusulas'});
                 alert(response.json().message);
+                let team = this.appService.getTeamById(this.appService.data.user.teamID);
+                team.nextMarketPrivilege = '1';
+                this.appService.setTeamById(team);
             });
         }else if(this.appService.getTeamById(this.appService.data.user.teamID).nextMarketPrivilege == '1'){
             alert('Ya tienes este privilegio');
@@ -57,7 +61,10 @@ export class PrivilegesComponent implements OnInit{
             this.http.post(PHPFILENAME, {type: 'extFor', team: this.appService.data.user.teamID, price: this.appService.config.privilegePrices.extraForcedSignin}).subscribe( (response) => {
                 this.appService.insertLog({logType: this.appService.config.logTypes.buyedPrivilege, logInfo: 'Privilegio comprado: ' + this.appService.getTeamById(this.appService.data.user.teamID).name + ' compra una cláusula extra'});
                 alert(response.json().message);
-                this.appService.getTeamById(this.appService.data.user.teamID).forcedSignins += 1;
+                let team = this.appService.getTeamById(this.appService.data.user.teamID);
+                team.forcedSigninsAvailable = parseInt(team.forcedSigninsAvailable) + 1;
+                team.forcedSigninsAvailable = team.forcedSigninsAvailable.toString();
+                this.appService.setTeamById(team);
             });
         }
     }
@@ -67,13 +74,21 @@ export class PrivilegesComponent implements OnInit{
             this.http.post(PHPFILENAME, {type: 'extAuc', team: this.appService.data.user.teamID, price: this.appService.config.privilegePrices.extraAuction}).subscribe( (response) => {
                 this.appService.insertLog({logType: this.appService.config.logTypes.buyedPrivilege, logInfo: 'Privilegio comprado: ' + this.appService.getTeamById(this.appService.data.user.teamID).name + ' compra una subasta extra'});
                 alert(response.json().message);
-                this.appService.getTeamById(this.appService.data.user.teamID).auctionsAvailable += 1;
+                let team = this.appService.getTeamById(this.appService.data.user.teamID);
+                team.auctionsLeft = parseInt(team.auctionsLeft) + 1;
+                team.auctionsLeft = team.auctionsLeft.toString();
+                this.appService.setTeamById(team);
             });
         }
     }
 
     public buyInstantAuctionWin() {
-        
+        if (confirm('¿Cerrar subasta por ' + this.appService.getPlayerById(this.auctionToWin.player).name + '?')) {
+            this.http.post(PHPFILENAME, {type: 'cloAuc', signin: this.auctionToWin.id, myTeam: parseInt(this.appService.data.user.id), price: this.appService.config.privilegePrices.instantAuctionWin}).subscribe( (response) => {
+                this.appService.insertLog({logType: this.appService.config.logTypes.buyedPrivilege, logInfo: 'Privilegio comprado: ' + this.appService.getTeamById(this.appService.data.user.teamID).name + ' cierra subasta de ' + this.appService.getPlayerById(this.auctionToWin.player).name + ' por ' + this.auctionToWin.amount + 'M€ y un recargo por cierre de ' + this.appService.config.privilegePrices.instantAuctionWin + 'M€'});
+                alert(response.json().message);
+            });
+        }
     }
 
     // public buy30PointsToMyTeamCupTeam() {}
@@ -81,7 +96,9 @@ export class PrivilegesComponent implements OnInit{
     public buyUntouchable() {
         if (confirm('¿Hacer intocable?')) {
             this.http.post(PHPFILENAME, {type: 'setUnt', team: this.appService.data.user.teamID, player: this.playerToUntouchable.id, price: this.appService.config.privilegePrices.untouchable}).subscribe( (response) => {
-                this.appService.insertLog({logType: this.appService.config.logTypes.buyedPrivilege, logInfo: 'Privilegio comprado: ' + this.appService.getTeamById(this.appService.data.user.teamID).name + ' hace intocable a ' + this.playerToUntouchable.name + ' el próximo mercado'});
+                if(response.json().success) {
+                    this.appService.insertLog({logType: this.appService.config.logTypes.buyedPrivilege, logInfo: 'Privilegio comprado: ' + this.appService.getTeamById(this.appService.data.user.teamID).name + ' hace intocable a ' + this.playerToUntouchable.name + ' el próximo mercado'});
+                }
                 alert(response.json().message);
             });
         }
@@ -91,7 +108,7 @@ export class PrivilegesComponent implements OnInit{
 
     public changeBadgeAndClothing() {
         if (confirm('¿Cambiar escudo y equipación?')) {
-            this.http.post(PHPFILENAME, {type: 'chaBad', team: this.appService.data.user.teamID, newBadge: this.newBadgeAndClothing, price: this.appService.config.privilegePrices.changeBadgeAndClothing}).subscribe( (response) => {
+            this.http.post(PHPFILENAME, {type: 'chaBad', team: this.appService.data.user.teamID, newBadge: this.appService.removeAccents(this.newBadgeAndClothing), price: this.appService.config.privilegePrices.changeBadgeAndClothing}).subscribe( (response) => {
                 this.appService.insertLog({logType: this.appService.config.logTypes.buyedPrivilege, logInfo: 'Privilegio comprado: ' + this.appService.getTeamById(this.appService.data.user.teamID).name + ' se cambia de nombre a ' + this.newBadgeAndClothing});
                 alert(response.json().message);
                 this.newBadgeAndClothing = '';
@@ -114,6 +131,7 @@ export class PrivilegesComponent implements OnInit{
     public resetView() {
         this.showModule = {
             changeBadgeAndClothing: false,
+            instantAuctionWin: false,
             protectPartnerTarget: false,
             untouchable: false
         };

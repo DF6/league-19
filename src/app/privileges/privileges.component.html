@@ -1,43 +1,43 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-4 col-sm-12" (click)="buy30MinutesNextMarket()">
+        <!--<div class="col-md-4 col-sm-12" (click)="buy30MinutesNextMarket()">
             <div style="cursor: pointer" class="card">
                 <div class="header text-center">
                     <p style="font-weight: bold" class="category">30 minutos de Acceso Prioritario a Clausulazos en el próximo mercado<br/><br/>{{appService.config.privilegePrices.thirtyMinutes}}M€<br/><br/></p>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4 col-sm-12" (click)="buyExtraForcedSignin()">
+        </div>-->
+        <div class="col-md-6 col-sm-12" (click)="buyExtraForcedSignin()">
             <div style="cursor: pointer" class="card">
                 <div class="header text-center">
-                    <p style="font-weight: bold" class="category">Clausulazo Extra<br/><br/>{{appService.config.privilegePrices.extraForcedSignin}}M€<br/><br/>Tienes: {{appService.getTeamById(appService.data.user.teamID).forcedSignins}}<br/><br/></p>
+                    <p style="font-weight: bold" class="category">Clausulazo Extra<br/><br/>{{appService.config.privilegePrices.extraForcedSignin}}M€<br/><br/>Tienes: {{appService.getTeamById(appService.data.user.teamID).forcedSigninsAvailable}}<br/><br/></p>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col-sm-12" (click)="buyExtraAuction()">
+        <div class="col-md-6 col-sm-12" (click)="buyExtraAuction()">
             <div style="cursor: pointer" class="card">
                 <div class="header text-center">
-                    <p style="font-weight: bold" class="category">Subasta por Jugador Nuevo Extra<br/><br/>{{appService.config.privilegePrices.extraAuction}}M€<br/><br/>Tienes: {{appService.getTeamById(appService.data.user.teamID).auctionsAvailable}}<br/><br/></p>
+                    <p style="font-weight: bold" class="category">Subasta por Jugador Nuevo Extra<br/><br/>{{appService.config.privilegePrices.extraAuction}}M€<br/><br/>Tienes: {{appService.getTeamById(appService.data.user.teamID).auctionsLeft}}<br/><br/></p>
                 </div>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-md-4 col-sm-12" (click)="buyInstantAuctionWin()">
+        <!--<div class="col-md-4 col-sm-12" (click)="resetView();showModule.instantAuctionWin = true">
             <div style="cursor: pointer" class="card">
                 <div class="header text-center">
                     <p style="font-weight: bold" class="category">Cierre Instantáneo de Subasta<br/><br/>{{appService.config.privilegePrices.instantAuctionWin}}M€<br/><br/></p>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4 col-sm-12" (click)="resetView();showModule.untouchable = true">
+        </div>-->
+        <div class="col-md-6 col-sm-12" (click)="resetView();showModule.untouchable = true">
             <div style="cursor: pointer" class="card">
                 <div class="header text-center">
                     <p style="font-weight: bold" class="category">Jugador Intocable durante el próximo Mercado<br/><br/>{{appService.config.privilegePrices.untouchable}}M€<br/><br/></p>
                 </div>
             </div>
         </div>
-        <div class="col-md-4 col-sm-12" (click)="resetView();showModule.changeBadgeAndClothing = true">
+        <div class="col-md-6 col-sm-12" (click)="resetView();showModule.changeBadgeAndClothing = true">
             <div style="cursor: pointer" class="card">
                 <div class="header text-center">
                     <p style="font-weight: bold" class="category">Cambio de Escudo y Equipación<br/><br/>{{appService.config.privilegePrices.changeBadgeAndClothing}}M€<br/><br/></p>
@@ -53,6 +53,20 @@
         </div>-->
     </div>
     <div class="row">
+        <section class="col-md-12 col-sm-12" *ngIf="showModule.instantAuctionWin">
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Cerrar subasta</h4>
+                </div>
+                <div class="content" style="min-height: 100px">
+                    <select class="col-md-12 col-sm-12" [(ngModel)]="auctionToWin">
+                        <option *ngFor="let auction of appService.getAuctionsByTeam(appService.data.user.teamID)" 
+                            [ngValue]="auction">{{appService.getPlayerById(auction.player).name}} - {{auction.amount}}M€</option>
+                    </select>
+                    <button style="margin-top: 16px" class="col-md-12 col-sm-12" (click)="buyInstantAuctionWin()">Cerrar subasta</button>
+                </div>
+            </div>
+        </section>
         <section class="col-md-12 col-sm-12" *ngIf="showModule.untouchable">
             <div class="card">
                 <div class="header">
@@ -86,8 +100,15 @@
     </div>
     <div class="row">
         <section class="col-md-12 col-sm-12" *ngIf="showModule.changeBadgeAndClothing">
-            Equipo Nuevo <input type="text" [(ngModel)]="newBadgeAndClothing">
-            <a style="cursor:pointer;" (click)="changeBadgeAndClothing()">Enviar</a>
+            <div class="card">
+                <div class="header">
+                    <h4 class="title">Cambiar Escudo y Equipación</h4>
+                </div>
+                <div class="content" style="min-height: 100px">
+                    Equipo Nuevo <input type="text" [(ngModel)]="newBadgeAndClothing">
+                    <a style="cursor:pointer;" (click)="changeBadgeAndClothing()">Enviar</a>
+                </div>
+            </div>
         </section>
         <section class="col-md-12 col-sm-12" *ngIf="showModule.protectPartnerTarget">
             <div class="card" *ngIf="targetsTable">

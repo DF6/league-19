@@ -869,14 +869,24 @@
     echo json_encode($data);
     exit;
   }
-//PROBAR
+
   function buyThirtyMinutesNextMarket($con, $params)
   {
     $data = array();
-    $query="UPDATE test_teams SET budget=budget-". $params->price .", next_market_privilege=1 where id=" . $params->team;
-    $resultado=mysqli_query($con, $query) or die("Error comprando privilegio");
     $data['success'] = true;
     $data['message'] = "Privilegio 30 minutos comprado. El próximo mercado tendrás un adelanto de 30 minutos para realizar cláusulas";
+    $consult2 = "SELECT * from test_teams where id=" . $params->team;
+    $consult2Result = mysqli_query($con, $consult2) or die("Error consultando subastas");
+    while($row2 = mysqli_fetch_array($consult2Result)) {
+      if($row2['next_market_privilege'] == 1) {
+        $data['success'] = false;
+        $data['message'] = "Ya posees este privilegio para el próximo mercado";
+      }
+    }
+    if($data['success'] == true) {
+      $query="UPDATE test_teams SET budget=budget-". $params->price .", next_market_privilege=1 where id=" . $params->team;
+      $resultado=mysqli_query($con, $query) or die("Error comprando privilegio");
+    }
     echo json_encode($data);
     exit;
   }
@@ -906,12 +916,22 @@
   function buyNewUntouchable($con, $params)
   {
     $data = array();
-    $query2="UPDATE test_players SET untouchable=1 where id=" . $params->player;
-    $resultado2=mysqli_query($con, $query2) or die("Error intocabilizando jugador");
-    $query="UPDATE test_teams SET budget=budget-". $params->price ." where id=" . $params->team;
-    $resultado=mysqli_query($con, $query) or die("Error comprando privilegio");
     $data['success'] = true;
-    $data['message'] = "El jugador es intocable el próximo mercado";
+    $data['message'] = "Ahora el jugador es intocable el próximo mercado";
+    $consult2 = "SELECT * from test_players where id=" . $params->player;
+    $consult2Result = mysqli_query($con, $consult2) or die("Error consultando jugador");
+    while($row2 = mysqli_fetch_array($consult2Result)) {
+      if($row2['untouchable'] == 1) {
+        $data['success'] = false;
+        $data['message'] = "Este jugador ya tiene el privilegio para el próximo mercado";
+      }
+    }
+    if($data['success'] == true) {
+      $query="UPDATE test_teams SET budget=budget-". $params->price ." where id=" . $params->team;
+      $resultado=mysqli_query($con, $query) or die("Error comprando privilegio");
+      $query2="UPDATE test_players SET untouchable=1 where id=" . $params->player;
+      $resultado2=mysqli_query($con, $query2) or die("Error intocabilizando jugador");
+    }
     echo json_encode($data);
     exit;
   }
@@ -926,7 +946,7 @@
     echo json_encode($data);
     exit;
   }
-
+  //PROBAR
   function sellTeam($con, $params)
   {
     $data = array();
@@ -939,6 +959,48 @@
     echo json_encode($data);
     exit;
   }
+
+  /*function closeAuctionPrivilege($con, $params) {
+    $data['success'] = true;
+    $data['message'] = "Subasta ganada";
+    $consult = "SELECT * from test_signins where id=". $params->signin;
+    $result = mysqli_query($con, $consult) or die("Error comparando fechas");
+    $fecha_actual = date("d-m-Y H:i:s", time());
+    $fecha_actual = strtotime('+1 hour', strtotime($fecha_actual));
+    $fecha_cerrado = date("d-m-Y H:i:s" time()-86400);
+    while($row = mysqli_fetch_array($result)) {
+      $fecha_limite = strtotime($row['limit_date']);
+      $tipo = utf8_decode($row['signin_type']);
+      $equipo = $row['buyer_team'];
+      $origen = $row['first_team'];
+      $jugador = $row['player'];
+      $id = $row['id'];
+      $amount = $row['amount'];
+      $media = 1;
+      if($fecha_actual < $fecha_limite) {
+        $consult5 = "SELECT * from test_teams";
+        $result5 = mysqli_query($con, $consult5) or die("Error consultando equipo");
+        while($row2 = mysqli_fetch_array($result5)) {
+            if($row2['id'] == $equipo && $equipo == $params->myTeam && strcmp($tipo, "A") == 0 && $row2['auctions_available'] == 0) {
+                $data['success'] = false;
+                $data['message'] = "No tienes más subastas para ganar, compra un privilegio de subasta para poder cerrar";
+            } else if($row2['id'] == $equipo && $equipo != $params->myTeam && strcmp($tipo, "A") == 0 && $row2['auctions_available'] == 0) {
+                $data['success'] = false;
+                $data['message'] = "Alguien te ha sobrepujado: debes ser el ganador actual de la subasta para poder cerrarla";
+            }
+        }
+        if($data['success'] == true) {
+            $consult2 = "UPDATE test_signins SET limit_date=DATE_SUB(NOW(), INTERVAL 24 HOUR) where id=". $signin;
+            $result2 = mysqli_query($con, $consult2) or die("Error cerrando subasta");
+        }
+      } else {
+        $data['success'] = false;
+        $data['message'] = "La subasta ya había acabado";
+      }
+    }
+    echo json_encode($data);
+    exit;
+  }*/
   //PROBAR HASTA AQUI
   function addZero($number)
   {
@@ -1014,7 +1076,8 @@
         $nation=utf8_decode($row['nation']);
         $auctions=$row['auctions_available'];
         $forcedSigninsAvailable=$row['forced_signins_available'];
-        $teams[] = array('id'=> $id, 'name'=> $name, 'shortName'=> $shortName, 'budget'=> $budget, 'teamImage'=> $teamImage, 'nation'=> $nation, 'auctionsLeft'=> $auctions, 'forcedSigninsAvailable'=> $forcedSigninsAvailable);
+        $nextMarketPrivilege=$row['next_market_privilege'];
+        $teams[] = array('id'=> $id, 'name'=> $name, 'shortName'=> $shortName, 'budget'=> $budget, 'teamImage'=> $teamImage, 'nation'=> $nation, 'auctionsLeft'=> $auctions, 'forcedSigninsAvailable'=> $forcedSigninsAvailable, 'nextMarketPrivilege'=> $nextMarketPrivilege);
     }
     $data['teams']=$teams;
     $data['success'] = true;
