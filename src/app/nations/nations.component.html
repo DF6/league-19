@@ -85,7 +85,7 @@
                                         <td style="text-align: center;">{{row.round}}</td>
                                         <td style="text-align: center;">{{appService.getTeamById(row.local).nation}}</td>
                                         <td style="text-align: center;">
-                                            <span *ngIf="row.localGoals != -1">{{row.localGoals}} - {{row.awayGoals}}</span>
+                                            <span *ngIf="row.localGoals > -1 && row.awayGoals > -1">{{row.localGoals}} - {{row.awayGoals}}</span>
                                             <span *ngIf="row.localGoals == -1">-</span>
                                             <span *ngIf="row.localGoals == -2 && row.awayGoals != -2">NP - X</span>
                                             <span *ngIf="row.awayGoals == -2 && row.localGoals != -2">X - NP</span>

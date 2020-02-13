@@ -763,6 +763,14 @@ export class AppService {
         this.data.signins = signins;
     }
 
+    public setTeamById(team) {
+        this.data.teams.forEach( (value) => {
+            if(value.id == team.id) {
+                value = team;
+            }
+        });
+    }
+
     public setUser(user) {
         this.data.user = user;
     }

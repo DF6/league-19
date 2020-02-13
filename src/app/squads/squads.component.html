@@ -32,7 +32,8 @@
                                     <td *ngIf="!row.filling && row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.position.toLowerCase().indexOf(filters.position.toLowerCase()) != -1 && row.overageFilter <= filters.overageMax && row.overageFilter >= filters.overageMin">{{row.overage}}</td>
                                     <td *ngIf="!row.filling && row.name.toLowerCase().indexOf(filters.name.toLowerCase()) != -1 && row.position.toLowerCase().indexOf(filters.position.toLowerCase()) != -1 && row.overageFilter <= filters.overageMax && row.overageFilter >= filters.overageMin && row.salary<10 && row.buyedThisMarket == '0'">{{row.overage}} M€ 
                                         <span *ngIf="appService.data.user.teamID != team.id && appService.data.constants.marketOpened == '1' && row.buyedThisMarket == '0'">-</span> 
-                                        <a style="cursor:pointer;" (click)="forceSignin(row)" *ngIf="appService.data.user.teamID != team.id && appService.data.constants.marketOpened == '1' && row.buyedThisMarket == '0'">Clausulazo</a> 
+                                        <a style="cursor:pointer;" (click)="forceSignin(row)" *ngIf="appService.data.user.teamID != team.id && appService.data.constants.marketOpened == '1' && row.buyedThisMarket == '0' && row.untouchable == '0'">Clausulazo</a>
+                                        <span *ngIf="row.untouchable == '1'">INTOCABLE</span> 
                                         <span *ngIf="appService.data.user.teamID != team.id && appService.data.constants.marketOpened == '1' && row.buyedThisMarket == '0'">-</span> 
                                         <a style="cursor:pointer;" (click)="setOfferToRedirect(row)" *ngIf="appService.data.user.teamID != team.id && appService.data.constants.marketOpened == '1' && row.buyedThisMarket == '0'">Oferta</a>
                                     </td>
