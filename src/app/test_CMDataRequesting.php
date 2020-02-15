@@ -131,6 +131,9 @@
        case "chaSal":
           changeSalaries($link, $params);
             break;
+       case "insSta":
+          insertStanding($link, $params);
+            break;
        case "insMat":
           insertMatch($link, $params);
             break;
@@ -316,7 +319,7 @@
       $data['message'] = "El equipo recibió todas sus cláusulas";
     }
     if($data['success'] == true) {
-      $query="UPDATE test_players SET team_id=".$params->buyerTeam.", salary=overage/100, emblem=0, buyed_this_market=1 where id=".$params->player;
+      $query="UPDATE test_players SET team_id=".$params->buyerTeam.", salary=overage/100, emblem=0, untouchable=0, buyed_this_market=1 where id=".$params->player;
       $resultado=mysqli_query($con, $query) or die("Error realizando cláusula");
       $query2="INSERT INTO test_signins (player,old_team,buyer_team,amount,signin_type,market,accepted) values (".$params->player.", " . $params->oldTeam . ", ".$params->buyerTeam.",".$params->amount.", 'F', ".$params->market.", true)";
       $resultado2=mysqli_query($con, $query2) or die("Error insertando fichaje");
@@ -393,10 +396,10 @@
     }
     if($data['success'] == true) {
       if($params->signinType == "C") {
-        $query="UPDATE test_players SET buyed_this_market=1, emblem=0, team_id=".$params->newTeam." where id=".$params->player;
+        $query="UPDATE test_players SET buyed_this_market=1, emblem=0, untouchable=0, team_id=".$params->newTeam." where id=".$params->player;
         $resultado=mysqli_query($con, $query) or die("Error realizando fichaje");
       } else {
-        $query="UPDATE test_players SET buyed_this_market=1, emblem=0, salary=overage/100, team_id=".$params->newTeam." where id=".$params->player;
+        $query="UPDATE test_players SET buyed_this_market=1, emblem=0, untouchable=0, salary=overage/100, team_id=".$params->newTeam." where id=".$params->player;
         $resultado=mysqli_query($con, $query) or die("Error realizando fichaje");
       }
       $query2="UPDATE test_signins SET accepted=1 where id=". $params->id;
@@ -693,6 +696,17 @@
     $resultado=mysqli_query($con, $query) or die("Error cambiando salarios");
     $data['success'] = true;
     $data['message'] = "Salarios decrementados";
+    echo json_encode($data);
+    exit;
+  }
+
+  function insertStanding($con, $params)
+  {
+    $data = array();
+    $query="INSERT INTO test_standings (tournament_id,team) values (".$params->tournament.", ".$params->team.")";
+    $resultado=mysqli_query($con, $query) or die("Error insertando clasificacion");
+    $data['success'] = true;
+    $data['message'] = "Clasificacion creada";
     echo json_encode($data);
     exit;
   }

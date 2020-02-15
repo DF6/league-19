@@ -156,8 +156,8 @@
             { "path": "segunda", "title": "Segunda", "icon": "ti-calendar", "class": "" },
             { "path": "copa", "title": "Copa", "icon": "ti-vector", "class": "" },
             { "path": "champions", "title": "Champions", "icon": "ti-cup", "class": "hidden" },
-            { "path": "el", "title": "Europa League", "icon": "ti-cup", "class": "hidden" },
-            { "path": "copamugre", "title": "Copa Mugre", "icon": "ti-thumb-down", "class": "hidden" },
+            { "path": "el", "title": "Europa League", "icon": "ti-cup", "class": "" },
+            { "path": "copamugre", "title": "Copa Mugre", "icon": "ti-thumb-down", "class": "" },
             { "path": "nations", "title": "Liga de Naciones", "icon": "ti-flag-alt-2", "class": "" },
             { "path": "clubsupercup", "title": "Supercopa de Clubes", "icon": "ti-crown", "class": "" },
             { "path": "europesupercup", "title": "Supercopa de Europa", "icon": "ti-crown", "class": "" },
@@ -182,8 +182,8 @@
             { "path": "segunda", "title": "Segunda", "icon": "ti-calendar", "class": "" },
             { "path": "copa", "title": "Copa", "icon": "ti-vector", "class": "" },
             { "path": "champions", "title": "Champions", "icon": "ti-cup", "class": "hidden" },
-            { "path": "el", "title": "Europa League", "icon": "ti-cup", "class": "hidden" },
-            { "path": "copamugre", "title": "Copa Mugre", "icon": "ti-thumb-down", "class": "hidden" },
+            { "path": "el", "title": "Europa League", "icon": "ti-cup", "class": "" },
+            { "path": "copamugre", "title": "Copa Mugre", "icon": "ti-thumb-down", "class": "" },
             { "path": "nations", "title": "Liga de Naciones", "icon": "ti-flag-alt-2", "class": "" },
             { "path": "clubsupercup", "title": "Supercopa de Clubes", "icon": "ti-crown", "class": "" },
             { "path": "europesupercup", "title": "Supercopa de Europa", "icon": "ti-crown", "class": "" },
@@ -206,8 +206,8 @@
             { "path": "segunda", "title": "Segunda", "icon": "ti-calendar", "class": "" },
             { "path": "copa", "title": "Copa", "icon": "ti-vector", "class": "" },
             { "path": "champions", "title": "Champions", "icon": "ti-cup", "class": "hidden" },
-            { "path": "el", "title": "Europa League", "icon": "ti-cup", "class": "hidden" },
-            { "path": "copamugre", "title": "Copa Mugre", "icon": "ti-thumb-down", "class": "hidden" },
+            { "path": "el", "title": "Europa League", "icon": "ti-cup", "class": "" },
+            { "path": "copamugre", "title": "Copa Mugre", "icon": "ti-thumb-down", "class": "" },
             { "path": "nations", "title": "Liga de Naciones", "icon": "ti-flag-alt-2", "class": "" },
             { "path": "clubsupercup", "title": "Supercopa de Clubes", "icon": "ti-crown", "class": "" },
             { "path": "europesupercup", "title": "Supercopa de Europa", "icon": "ti-crown", "class": "" },
@@ -275,7 +275,8 @@
         "championsLeague": {
             "name": "Champions League",
             "KORound": 1,
-            "finalRound": 6
+            "finalRound": 6,
+            "seedTeams": [19, 1, 6, 15]
         },
         "supercopaDeClubes": {
             "name": "Supercopa de Clubes",
@@ -285,7 +286,9 @@
         "europaLeague": {
             "name": "Europa League",
             "KORound": 4,
-            "finalRound": 9
+            "finalRound": 9,
+            "seedTeams": [2, 3, 4, 5, 7, 9, 10, 11, 13, 16, 18, 20],
+            "groupSize": 3
         },
         "supercopaEuropea": {
             "name": "Supercopa Europea",
@@ -300,7 +303,8 @@
         "copaMugre": {
             "name": "Copa Mugre",
             "KORound": 1,
-            "finalRound": 4
+            "finalRound": 4,
+            "seedTeams": [8, 12, 14, 17]
         },
         "nationsLeague": {
             "name": "Nations League",

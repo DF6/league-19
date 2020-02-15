@@ -554,6 +554,9 @@ export class AppService {
             case this.config.tournamentGeneralInfo.teamCup.name: return parseInt(match.round) <= this.config.validRounds.teamCup;
             case this.config.tournamentGeneralInfo.goldenTrophy.name: return parseInt(match.round) <= this.config.validRounds.goldenTrophy;
             case this.config.tournamentGeneralInfo.nationsLeague.name: return parseInt(match.round) <= this.config.validRounds.nationsLeague;
+            case this.config.tournamentGeneralInfo.europaLeague.name: return parseInt(match.round) <= this.config.validRounds.europaLeague;
+            case this.config.tournamentGeneralInfo.copaMugre.name: return parseInt(match.round) <= this.config.validRounds.copaMugre;
+            case this.config.tournamentGeneralInfo.championsLeague.name: return parseInt(match.round) <= this.config.validRounds.championsLeague;
         }
     }
 
