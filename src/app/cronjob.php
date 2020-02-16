@@ -14,22 +14,22 @@
 	$link=mysqli_connect($db_host, $db_user, $db_pass) or die ("Error conectando a la base de datos - " . mysql_error());
     mysqli_select_db($link, $db_name) or die("Error seleccionando la base de datos.");
 
-    $query="UPDATE constants SET market_opened=1, auctions_opened=1";
+    /*$query="UPDATE constants SET market_opened=1, auctions_opened=1";
     $resultado=mysqli_query($link, $query) or die("Error abriendo mercado");
     
-    /*$query="UPDATE constants SET market_opened=1, forced_signins_opened=1, auctions_opened=1";
-    $resultado=mysqli_query($link, $query) or die("Error abriendo mercado");
+    $query="UPDATE constants SET market_opened=1, forced_signins_opened=1, auctions_opened=1";
+    $resultado=mysqli_query($link, $query) or die("Error abriendo mercado");*/
 
     $query2="UPDATE constants SET market_opened=0";
     $resultado2=mysqli_query($link, $query2) or die("Error cerrando mercado");
 
     $query3="UPDATE constants SET forced_signins_opened=0";
-    $resultado3=mysqli_query($link, $query3) or die("Error cerrando clausulas");
+    $resultado3=mysqli_query($link, $query3) or die("Error cerrando clausulas");*/
 
     $query4="UPDATE constants SET auctions_opened=0";
     $resultado4=mysqli_query($link, $query4) or die("Error cerrando subastas");
 
-    $query5="UPDATE partners SET partner=0";
+    /*$query5="UPDATE partners SET partner=0";
     $resultado5=mysqli_query($link, $query5) or die("Error reiniciando patrocinadores");
 
     $query6="UPDATE standings SET round=0, points=0, won=0, draw=0, lost=0, goals_for=0, goals_against=0";

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { AppService } from 'app/app.service';
+import { keyframes } from '@angular/core/src/animation/dsl';
 
 export interface OfferData {
     player: any;
@@ -169,6 +170,43 @@ export class AdminPageComponent implements OnInit{
         });
     }
 
+    private randomRoundRobinDraw(tournament) {
+        let teams = [];
+        if(tournament.name == this.appService.config.tournamentGeneralInfo.primera.name) {
+            teams = this.appService.config.tournamentGeneralInfo.primera.seedTeams;
+        } else if(tournament.name == this.appService.config.tournamentGeneralInfo.segunda.name) {
+            teams = this.appService.config.tournamentGeneralInfo.segunda.seedTeams;
+        }
+
+        teams.forEach( (team) => {
+            this.http.post(PHPFILENAME, { type: 'insSta', team: team, group: 0, tournament: tournament.id}).subscribe( (response) => {
+                if (response.json().success) {
+                    this.appService.insertLog({logType: this.appService.config.logTypes.insertStanding, logInfo: 'Clasificación creada'});
+                }
+            });
+        });
+
+        for (let j = 0; j < teams.length - 1; j += 1) {
+            for (let i = 0; i < teams.length / 2; i += 1) {
+                if (teams[i] !== -1 && teams[teams.length - 1 - i] !== -1 && j % 2 !== 0) {
+                    this.http.post(PHPFILENAME, {type: 'insMat', local: teams[i], away: teams[teams.length - 1 - i], tournament: tournament.id, round: j + 1}).subscribe( (response) => {
+                        if (response.json().success) {
+                            this.appService.insertLog({logType: this.appService.config.logTypes.insertMatch, logInfo: 'Partido creado: ' + tournament.name + ' - ' + this.appService.getTeamById(teams[i]).name + ' - ' + this.appService.getTeamById(teams[teams.length - 1 - i]).name});
+                        }
+                    });
+                } else if (teams[i] !== -1 && teams[teams.length - 1 - i] !== -1 && j % 2 === 0) {
+                    this.http.post(PHPFILENAME, {type: 'insMat', local: teams[teams.length - 1 -i], away: teams[i], tournament: tournament.id, round: j + 1}).subscribe( (response) => {
+                        if (response.json().success) {
+                            this.appService.insertLog({logType: this.appService.config.logTypes.insertMatch, logInfo: 'Partido creado: ' + tournament.name + ' - ' + this.appService.getTeamById(teams[teams.length - 1 - i]).name + ' - ' + this.appService.getTeamById(teams[i]).name});
+                        }
+                    });
+                }
+            }
+            teams.splice(1, 0, teams.pop());
+        }
+        alert('Calendario creado');
+    }
+
     private randomGeneralCupDraw(tournament) {
         const already = this.appService.data.matches.filter( (filteredMatch) => { return tournament.id == filteredMatch.tournament;}).length > 0;
         if(!already) {
@@ -195,6 +233,7 @@ export class AdminPageComponent implements OnInit{
                     }
                 });
             }
+            alert('Primera ronda creada');
         } else {
             let roundMatches = [];
             let roundToDraw = 0;
@@ -256,7 +295,136 @@ export class AdminPageComponent implements OnInit{
                     });
                 }
             }
+            alert('Ronda creada');
         }
+    }
+
+    private randomRawKOCupDraw(tournament) {
+        /*let finalRound = 0;
+        switch(tournament.name) {
+            case this.appService.config.tournamentGeneralInfo.championsLeague.name: finalRound = this.appService.config.tournamentGeneralInfo.championsLeague.finalRound; break;
+            case this.appService.config.tournamentGeneralInfo.copaMugre.name: finalRound = this.appService.config.tournamentGeneralInfo.copaMugre.finalRound; break;
+        }
+        let roundMatches = [];
+        let roundToDraw = 0;
+        for(let i = 1; i < finalRound - 1; i++) {
+            roundMatches = this.appService.data.matches.filter( (filteredMatch) => {
+                return filteredMatch.tournament == tournament.id && filteredMatch.round == i;
+            });
+            if(roundMatches.length > 0) { roundToDraw = i; }
+        }
+        if(roundToDraw != 0 && roundToDraw < finalRound - 3) {
+            const roundToDrawMatches = this.appService.data.matches.filter( (filteredMatch) => {
+                return filteredMatch.tournament == tournament.id && parseInt(filteredMatch.round) == roundToDraw;
+            });
+            let contendants = [];
+            roundToDrawMatches.forEach( (match) => {
+                contendants.push(this.appService.whoWon(match));
+            });
+            while(contendants.length > 0) {
+                const local = contendants.splice(Math.floor(Math.random() * contendants.length), 1);
+                const away = contendants.splice(Math.floor(Math.random() * contendants.length), 1);
+                this.http.post(PHPFILENAME, {type: 'insMat', local: local[0], away: away[0], tournament: tournament.id, round: roundToDraw + 1}).subscribe( (response) => {
+                    if (response.json().success) {
+                        this.appService.insertLog({logType: this.appService.config.logTypes.insertMatch, logInfo: 'Partido creado: ' + tournament.name + ' - ' + local + ' - ' + away});
+                    }
+                });
+            }
+        } else if(roundToDraw != 0 && roundToDraw == this.appService.config.tournamentGeneralInfo.copa.finalRound - 2) {
+            const roundToDrawMatches = this.appService.data.matches.filter( (filteredMatch) => {
+                return filteredMatch.tournament == tournament.id && parseInt(filteredMatch.round) == roundToDraw;
+            });
+            let finalists = [];
+            let losers = [];
+            roundToDrawMatches.forEach( (match) => {
+                finalists.push(this.appService.whoWon(match));
+            });
+            roundToDrawMatches.forEach( (match2) => {
+                if(finalists.find( (finalist) => { return finalist == match2.local;})) {
+                    losers.push(match2.away);
+                } else {
+                    losers.push(match2.local);
+                }
+            });
+            while(losers.length > 0) {
+                const local = losers.splice(Math.floor(Math.random() * losers.length), 1);
+                const away = losers.splice(Math.floor(Math.random() * losers.length), 1);
+                this.http.post(PHPFILENAME, {type: 'insMat', local: local[0], away: away[0], tournament: tournament.id, round: roundToDraw + 1}).subscribe( (response) => {
+                    if (response.json().success) {
+                        this.appService.insertLog({logType: this.appService.config.logTypes.insertMatch, logInfo: 'Partido creado: ' + tournament.name + ' - ' + local + ' - ' + away});
+                    }
+                });
+            }
+            while(finalists.length > 0) {
+                const local = finalists.splice(Math.floor(Math.random() * finalists.length), 1);
+                const away = finalists.splice(Math.floor(Math.random() * finalists.length), 1);
+                this.http.post(PHPFILENAME, {type: 'insMat', local: local[0], away: away[0], tournament: tournament.id, round: roundToDraw + 2}).subscribe( (response) => {
+                    if (response.json().success) {
+                        this.appService.insertLog({logType: this.appService.config.logTypes.insertMatch, logInfo: 'Partido creado: ' + tournament.name + ' - ' + local + ' - ' + away});
+                    }
+                });
+            }
+        }*/
+
+        let contendants = this.appService.config.tournamentGeneralInfo.copaMugre.seedTeams;
+        while(contendants.length > 0) {
+            const local = contendants.splice(Math.floor(Math.random() * contendants.length), 1);
+            const away = contendants.splice(Math.floor(Math.random() * contendants.length), 1);
+            this.http.post(PHPFILENAME, {type: 'insMat', local: local[0], away: away[0], tournament: tournament.id, round: 1}).subscribe( (response) => {
+                if (response.json().success) {
+                    this.appService.insertLog({logType: this.appService.config.logTypes.insertMatch, logInfo: 'Partido creado: ' + tournament.name + ' - ' + local + ' - ' + away});
+                }
+            });
+            this.http.post(PHPFILENAME, {type: 'insMat', local: away[0], away: local[0], tournament: tournament.id, round: 2}).subscribe( (response) => {
+                if (response.json().success) {
+                    this.appService.insertLog({logType: this.appService.config.logTypes.insertMatch, logInfo: 'Partido creado: ' + tournament.name + ' - ' + away + ' - ' + local});
+                }
+            });
+        }
+    }
+
+    public randomEuropaLeagueDraw(tournament) {
+        let teams = this.appService.config.tournamentGeneralInfo.europaLeague.seedTeams;
+        let groups = [[], [], [], []];
+        let group = 0;
+        let cont = 0;
+        while(teams.length != 0) {
+            if(cont == 3) { group++; cont = 0; }
+            cont++;
+            groups[group].push(teams.splice(Math.floor(Math.random() * teams.length), 1)[0]);
+        }
+        groups.forEach( (myGroup, key) => {
+            this.http.post(PHPFILENAME, { type: 'insSta', team: myGroup[0], group: key + 1, tournament: tournament.id}).subscribe( (response) => {
+                if (response.json().success) {
+                    this.appService.insertLog({logType: this.appService.config.logTypes.insertStanding, logInfo: 'Clasificación creada'});
+                }
+            });
+            this.http.post(PHPFILENAME, { type: 'insSta', team: myGroup[1], group: key + 1, tournament: tournament.id}).subscribe( (response) => {
+                if (response.json().success) {
+                    this.appService.insertLog({logType: this.appService.config.logTypes.insertStanding, logInfo: 'Clasificación creada'});
+                }
+            });
+            this.http.post(PHPFILENAME, { type: 'insSta', team: myGroup[2], group: key + 1, tournament: tournament.id}).subscribe( (response) => {
+                if (response.json().success) {
+                    this.appService.insertLog({logType: this.appService.config.logTypes.insertStanding, logInfo: 'Clasificación creada'});
+                }
+            });
+            this.http.post(PHPFILENAME, { type: 'insMat', local: myGroup[0], away: myGroup[1], tournament: tournament.id, round: 1 }).subscribe( (response) => {
+                if (response.json().success) {
+                    this.appService.insertLog({logType: this.appService.config.logTypes.insertClub, logInfo: 'Partido creado: ' + myGroup[0] + ' - ' + myGroup[1] });
+                }
+            });
+            this.http.post(PHPFILENAME, { type: 'insMat', local: myGroup[1], away: myGroup[2], tournament: tournament.id, round: 2 }).subscribe( (response) => {
+                if (response.json().success) {
+                    this.appService.insertLog({logType: this.appService.config.logTypes.insertClub, logInfo: 'Partido creado: ' + myGroup[1] + ' - ' + myGroup[2] });
+                }
+            });
+            this.http.post(PHPFILENAME, { type: 'insMat', local: myGroup[2], away: myGroup[0], tournament: tournament.id, round: 3 }).subscribe( (response) => {
+                if (response.json().success) {
+                    this.appService.insertLog({logType: this.appService.config.logTypes.insertClub, logInfo: 'Partido creado: ' + myGroup[2] + ' - ' + myGroup[0] });
+                }
+            });
+        });
     }
 
     public randomTeamCupDraw(tournament) {
@@ -291,12 +459,18 @@ export class AdminPageComponent implements OnInit{
                 });
             }
         }
+        alert('Sorteo de Team Cup creado');
     }
 
     public randomDraw() {
         switch (this.tournamentToRandomize.name) {
             case this.appService.config.tournamentGeneralInfo.copa.name: this.randomGeneralCupDraw(this.tournamentToRandomize); break;
             case this.appService.config.tournamentGeneralInfo.teamCup.name: this.randomTeamCupDraw(this.tournamentToRandomize); break;
+            // case this.appService.config.tournamentGeneralInfo.championsLeague.name: 
+            case this.appService.config.tournamentGeneralInfo.copaMugre.name: this.randomRawKOCupDraw(this.tournamentToRandomize); break;
+            case this.appService.config.tournamentGeneralInfo.europaLeague.name: this.randomEuropaLeagueDraw(this.tournamentToRandomize); break;
+            case this.appService.config.tournamentGeneralInfo.primera.name:
+            case this.appService.config.tournamentGeneralInfo.segunda.name: this.randomRoundRobinDraw(this.tournamentToRandomize); break;
         }
     }
 
