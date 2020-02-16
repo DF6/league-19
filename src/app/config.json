@@ -62,6 +62,7 @@
         "freePlayer": "FP",
         "insertClub": "IC",
         "insertMatch": "IM",
+        "insertStanding": "IS",
         "login": "LI",
         "logout": "LO",
         "matchFilled": "MF",
@@ -314,12 +315,15 @@
         "primera": {
             "name": "Primera",
             "KORound": 15,
-            "finalRound": 14
+            "finalRound": 14,
+            "seedTeams": [19, 1, 10, 9, 13, 4, 5, 3, 6, 15],
+            "finalPlayOff": [19, 1]
         },
         "segunda": {
             "name": "Segunda",
             "KORound": 15,
-            "finalRound": 14
+            "finalRound": 14,
+            "seedTeams": [16, 17, 11, 18, 2, 20, 7, 8, 12, 14]
         },
         "teamCup": {
             "name": "Team Cup",
