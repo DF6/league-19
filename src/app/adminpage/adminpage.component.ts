@@ -170,7 +170,7 @@ export class AdminPageComponent implements OnInit{
         });
     }
 
-    private randomRoundRobinDraw(tournament) {
+    public randomRoundRobinDraw(tournament) {
         let teams = [];
         if(tournament.name == this.appService.config.tournamentGeneralInfo.primera.name) {
             teams = this.appService.config.tournamentGeneralInfo.primera.seedTeams;
@@ -207,7 +207,7 @@ export class AdminPageComponent implements OnInit{
         alert('Calendario creado');
     }
 
-    private randomGeneralCupDraw(tournament) {
+    public randomGeneralCupDraw(tournament) {
         const already = this.appService.data.matches.filter( (filteredMatch) => { return tournament.id == filteredMatch.tournament;}).length > 0;
         if(!already) {
             let teamsSecond = this.appService.data.teams;
@@ -299,7 +299,7 @@ export class AdminPageComponent implements OnInit{
         }
     }
 
-    private randomRawKOCupDraw(tournament) {
+    public randomRawKOCupDraw(tournament) {
         /*let finalRound = 0;
         switch(tournament.name) {
             case this.appService.config.tournamentGeneralInfo.championsLeague.name: finalRound = this.appService.config.tournamentGeneralInfo.championsLeague.finalRound; break;

@@ -340,13 +340,13 @@
     "validRounds": {
         "championsLeague": 0,
         "supercopaDeClubes": 1,
-        "europaLeague": 0,
+        "europaLeague": 3,
         "supercopaEuropea": 1,
-        "copa": 3,
-        "copaMugre": 0,
+        "copa": 4,
+        "copaMugre": 2,
         "nationsLeague": 6,
-        "primera": 9,
-        "segunda": 9,
+        "primera": 1,
+        "segunda": 1,
         "teamCup": 3,
         "goldenTrophy": 4
     }
